@@ -1495,29 +1495,41 @@ async function genHistoryImage(prompt, style='watercolor') {
 
   const fullPrompt = `${prompt}, ${styleMap[style]||styleMap.watercolor}, 역사적 장면, 교육용 이미지, 폭력적이지 않은`;
 
-  try {
-    const r = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=' + key,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: fullPrompt }] }],
-          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-        })
+  // 시도할 모델 목록
+  const models = [
+    'gemini-2.0-flash-preview-image-generation',
+    'gemini-2.0-flash-exp-image-generation',
+  ];
+
+  for (const model of models) {
+    try {
+      console.log('이미지 생성 시도:', model);
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: fullPrompt }] }],
+            generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+          })
+        }
+      );
+      const d = await r.json();
+      console.log('응답:', model, d.error ? d.error : '성공');
+      if (d.error) continue;
+      const parts = d.candidates?.[0]?.content?.parts || [];
+      const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+      if (imgPart) {
+        console.log('이미지 생성 성공:', model);
+        return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
       }
-    );
-    const d = await r.json();
-    const parts = d.candidates?.[0]?.content?.parts || [];
-    const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-    if (imgPart) {
-      return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
+    } catch(e) {
+      console.error('모델 오류:', model, e.message);
     }
-    return null;
-  } catch(e) {
-    console.error('이미지 생성 오류:', e);
-    return null;
   }
+  console.error('모든 이미지 생성 모델 실패');
+  return null;
 }
 
 // ══ 이미지 생성 관련 ══
