@@ -409,7 +409,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
         </div>
       </div>
       <div id="bg-generated" style="display:none;margin-top:9px">
-        <img id="bg-gen-img" style="width:100%;border-radius:10px;margin-bottom:8px;max-height:200px;object-fit:cover;cursor:pointer;border:2px solid var(--border)" onclick="setBgFromGenerated()" alt="생성된 배경">
+        <img id="bg-gen-img" style="width:100%;border-radius:10px;margin-bottom:8px;max-height:220px;object-fit:cover;cursor:pointer;border:2px solid var(--border);min-height:120px;background:var(--paper2)" onclick="setBgFromGenerated()" alt="생성된 배경">
         <div style="display:flex;gap:7px">
           <button onclick="setBgFromGenerated()" class="btn bp bsm" style="flex:1">✅ 배경으로 설정</button>
           <button onclick="genBgImage()" class="btn bg2 bsm" style="flex:1">🔄 다시 생성</button>
@@ -1480,16 +1480,17 @@ function copyHistSuno() {
 // ══ Gemini 2.0 이미지 생성 ══
 async function genHistoryImage(prompt, style='watercolor') {
   const styleMap = {
-    watercolor: 'watercolor painting, soft colors, artistic, Korean history',
-    minhwa: 'Korean traditional minhwa folk art, flat colors, oriental painting',
-    woodblock: 'woodblock print, monochrome, traditional Korean art',
-    illustration: 'historical illustration, educational, detailed, textbook art',
+    watercolor: 'watercolor painting soft colors artistic Korean history scene',
+    minhwa: 'Korean minhwa folk art flat colors traditional oriental',
+    woodblock: 'woodblock print monochrome traditional Korean art',
+    illustration: 'historical illustration educational textbook detailed',
   };
   const styleText = styleMap[style] || styleMap.watercolor;
-  const fullPrompt = `${prompt}, ${styleText}, educational, child-safe, no violence, no people`;
-
-  // Pollinations AI - URL 바로 반환 (로드는 브라우저가 처리)
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=800&height=500&nologo=true&seed=${Math.floor(Math.random()*1000)}`;
+  // 영어로만, 특수문자 없이, 간단하게
+  const engPrompt = styleText + ' ' + prompt.replace(/[^\w\s가-힣]/g, ' ');
+  const seed = Math.floor(Math.random() * 9999);
+  // Pollinations 안정적인 URL 형식
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(engPrompt)}?width=800&height=450&model=flux&seed=${seed}&nologo=true`;
   return url;
 }
 
