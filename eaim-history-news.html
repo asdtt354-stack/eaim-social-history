@@ -1487,48 +1487,57 @@ async function genHistoryImage(prompt, style='watercolor') {
   if (!key) return null;
 
   const styleMap = {
-    watercolor: '수채화 스타일, 부드러운 색감, 예술적인',
-    minhwa: '한국 전통 민화 스타일, 평면적, 동양화풍',
-    woodblock: '목판화 스타일, 흑백 또는 단색, 전통적인',
-    illustration: '역사 삽화 스타일, 교과서 그림체, 상세한',
+    watercolor: 'watercolor style, soft colors, artistic',
+    minhwa: 'Korean traditional minhwa painting style, flat, oriental',
+    woodblock: 'woodblock print style, monochrome, traditional',
+    illustration: 'historical illustration style, educational, detailed',
   };
 
-  const fullPrompt = `${prompt}, ${styleMap[style]||styleMap.watercolor}, 역사적 장면, 교육용 이미지, 폭력적이지 않은`;
+  const fullPrompt = `${prompt}, ${styleMap[style]||styleMap.watercolor}, historical scene, educational image, non-violent, child-safe`;
 
-  // 시도할 모델 목록
-  const models = [
-    'gemini-2.0-flash-preview-image-generation',
-    'gemini-2.0-flash-exp-image-generation',
-  ];
-
-  for (const model of models) {
-    try {
-      console.log('이미지 생성 시도:', model);
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: fullPrompt }] }],
-            generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-          })
-        }
-      );
-      const d = await r.json();
-      console.log('응답:', model, d.error ? d.error : '성공');
-      if (d.error) continue;
-      const parts = d.candidates?.[0]?.content?.parts || [];
-      const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-      if (imgPart) {
-        console.log('이미지 생성 성공:', model);
-        return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
+  // Imagen 3 시도
+  try {
+    console.log('Imagen 3 시도...');
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          instances: [{ prompt: fullPrompt }],
+          parameters: { sampleCount: 1, aspectRatio: '4:3' }
+        })
       }
-    } catch(e) {
-      console.error('모델 오류:', model, e.message);
+    );
+    const d = await r.json();
+    console.log('Imagen 3 응답:', d.error ? d.error.message : '성공');
+    if (!d.error && d.predictions?.[0]?.bytesBase64Encoded) {
+      return 'data:image/png;base64,' + d.predictions[0].bytesBase64Encoded;
     }
-  }
-  console.error('모든 이미지 생성 모델 실패');
+  } catch(e) { console.error('Imagen 3 오류:', e.message); }
+
+  // Gemini 2.0 Flash 이미지 생성 시도
+  try {
+    console.log('Gemini 2.0 Flash 이미지 시도...');
+    const r2 = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+        })
+      }
+    );
+    const d2 = await r2.json();
+    console.log('Gemini 2.0 응답:', d2.error ? d2.error.message : '성공');
+    const parts = d2.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+    if (imgPart) return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
+  } catch(e) { console.error('Gemini 2.0 오류:', e.message); }
+
+  console.error('모든 이미지 생성 실패');
   return null;
 }
 
