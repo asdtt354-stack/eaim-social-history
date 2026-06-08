@@ -272,6 +272,23 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .hist-genre-chip.on{background:var(--accent);border-color:#6A1008;color:white;box-shadow:0 3px 10px rgba(139,32,16,.3)}
 .hist-mood-chip.on{background:var(--gold);border-color:#A07008;color:#1C0A00;box-shadow:0 3px 10px rgba(200,148,10,.3)}
 
+
+/* ── 이미지 스타일 버튼 ── */
+.img-style-btn, .person-style-btn {
+  padding:6px 13px;border-radius:99px;font-size:.74rem;font-weight:700;
+  cursor:pointer;border:2px solid var(--border);background:#fff;
+  color:var(--ink2);transition:all .2s;font-family:inherit;
+}
+.img-style-btn:hover,.person-style-btn:hover{transform:scale(1.05)}
+.img-style-btn.on,.person-style-btn.on{
+  background:var(--accent);border-color:#6A1008;color:#fff;
+  box-shadow:0 3px 10px rgba(139,32,16,.28)
+}
+
+
+/* ── 위키백과 링크 ── */
+#wiki-link:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(56,189,248,.25); }
+
 </style>
 </head>
 <body>
@@ -367,13 +384,46 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">역사 배경 탐색</h3>
   </div>
 
-  <!-- 배경 이미지 선택 -->
+  <!-- 배경 이미지 생성 -->
   <div class="cd">
-    <div class="ct">🖼️ 시대 배경 이미지 선택</div>
-    <p style="font-size:.78rem;color:var(--ink3);margin-bottom:10px">클릭하면 배경으로 설정돼요!</p>
-    <div id="bg-imgs" class="bg-img-grid"></div>
-    <div id="bg-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:4px">이미지 검색 중...</span></div>
-    <div class="hint" style="margin-top:8px">💡 위키미디어에서 저작권 없는 역사 이미지를 검색해요. 배경으로 쓸 이미지를 골라주세요!</div>
+    <div class="ct">🎨 시대 배경 이미지 (AI 그림 생성)</div>
+
+    <!-- 스타일 선택 -->
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px">
+      <button onclick="selImgStyle('watercolor',this)" class="img-style-btn on">🖌️ 수채화</button>
+      <button onclick="selImgStyle('minhwa',this)" class="img-style-btn">🎭 민화</button>
+      <button onclick="selImgStyle('woodblock',this)" class="img-style-btn">📜 목판화</button>
+      <button onclick="selImgStyle('illustration',this)" class="img-style-btn">🖼️ 삽화</button>
+    </div>
+
+    <!-- 프롬프트 입력 -->
+    <div style="display:flex;gap:7px;margin-bottom:10px">
+      <input type="text" id="bg-prompt" class="ni"
+        placeholder="예: 임진왜란 해전 장면, 조선시대 궁궐..."
+        style="font-size:.88rem">
+      <button onclick="genBgImage()" id="bg-gen-btn" class="btn bp bsm" style="white-space:nowrap">🤖 생성!</button>
+    </div>
+
+    <!-- 생성된 배경 이미지 -->
+    <div id="bg-gen-loading" style="display:none;text-align:center;padding:16px">
+      <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+        <span style="margin-left:6px;font-size:.82rem">AI가 역사 이미지를 그리는 중...</span>
+      </div>
+    </div>
+    <div id="bg-generated" style="display:none">
+      <img id="bg-gen-img" style="width:100%;border-radius:10px;margin-bottom:8px;max-height:200px;object-fit:cover;cursor:pointer;border:2px solid var(--border)" onclick="setBgFromGenerated()" alt="생성된 배경">
+      <div style="display:flex;gap:7px">
+        <button onclick="setBgFromGenerated()" class="btn bp bsm" style="flex:1">✅ 배경으로 설정</button>
+        <button onclick="genBgImage()" class="btn bg2 bsm" style="flex:1">🔄 다시 생성</button>
+      </div>
+    </div>
+
+    <div id="bg-imgs" class="bg-img-grid" style="margin-top:10px"></div>
+    <div class="hint" style="margin-top:8px">💡 API 키가 있으면 AI가 역사 그림을 직접 생성해줘요! 없으면 직접 업로드하세요.</div>
+    <div style="margin-top:8px">
+      <button onclick="document.getElementById('bg-upload').click()" class="btn bg2 bsm">📁 이미지 직접 업로드</button>
+      <input type="file" id="bg-upload" accept="image/*" style="display:none" onchange="uploadBgImg(this)">
+    </div>
   </div>
 
   <!-- 시대 키워드 -->
@@ -397,15 +447,69 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   <!-- 인물 카드 -->
   <div id="person-card-wrap"></div>
 
-  <!-- 인물 이미지 교체 -->
+  <!-- 인물 이미지 -->
   <div class="cd">
-    <div class="ct">📷 인물 이미지</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-      <button onclick="searchPersonImg()" class="btn bg2">🔍 위키 자동 검색</button>
-      <button onclick="document.getElementById('img-upload').click()" class="btn bg2">📁 직접 업로드</button>
+    <div class="ct">🎨 인물 이미지 (AI 그림 생성)</div>
+
+    <!-- 스타일 선택 -->
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px">
+      <button onclick="selPersonStyle('watercolor',this)" class="person-style-btn on">🖌️ 수채화</button>
+      <button onclick="selPersonStyle('minhwa',this)" class="person-style-btn">🎭 민화</button>
+      <button onclick="selPersonStyle('woodblock',this)" class="person-style-btn">📜 목판화</button>
+      <button onclick="selPersonStyle('illustration',this)" class="person-style-btn">🖼️ 삽화</button>
+    </div>
+
+    <button onclick="genPersonImage()" id="person-gen-btn" class="btn bp bfl" style="margin-bottom:10px">
+      🤖 AI 인물 그림 생성!
+    </button>
+    <div id="person-gen-loading" style="display:none;text-align:center;padding:12px">
+      <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+        <span style="margin-left:6px;font-size:.82rem">AI가 인물 그림을 그리는 중...</span>
+      </div>
+    </div>
+    <div id="person-generated" style="display:none;margin-bottom:10px">
+      <img id="person-gen-img" style="width:120px;height:150px;object-fit:cover;border-radius:9px;border:2px solid var(--border);cursor:pointer" onclick="setPersonFromGenerated()" alt="생성된 인물">
+      <div style="display:flex;gap:7px;margin-top:7px">
+        <button onclick="setPersonFromGenerated()" class="btn bp bsm">✅ 적용</button>
+        <button onclick="genPersonImage()" class="btn bg2 bsm">🔄 다시</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:7px;margin-bottom:8px">
+      <button onclick="document.getElementById('img-upload').click()" class="btn bg2 bfl bsm">📁 직접 업로드</button>
     </div>
     <input type="file" id="img-upload" accept="image/*" style="display:none" onchange="uploadPersonImg(this)">
     <div id="person-imgs" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+    <div class="hint" style="margin-top:7px">💡 API 키가 있으면 AI가 역사 인물 그림을 자동 생성해요!</div>
+  </div>
+
+
+  <!-- 위키백과 이미지 & 링크 -->
+  <div class="cd" style="border-color:rgba(56,189,248,.25)">
+    <div class="ct" style="color:#1070A0">🌐 위키백과 이미지 & 링크</div>
+    <button onclick="loadWikiInfo(currentPerson?.name||'')" class="btn bsky bfl bsm" style="margin-bottom:10px">
+      🔍 위키백과에서 찾기
+    </button>
+    <div id="wiki-loading" class="ld" style="display:none">
+      <span></span><span></span><span></span>
+      <span style="margin-left:5px">위키백과 검색 중...</span>
+    </div>
+    <div id="wiki-result" style="display:none">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <img id="wiki-img" style="width:100px;height:120px;object-fit:cover;border-radius:9px;border:2px solid #D4DBEE;cursor:pointer;display:none;flex-shrink:0" title="클릭하면 인물 카드에 적용돼요!">
+        <div style="flex:1">
+          <div id="wiki-title" style="font-weight:900;font-size:.95rem;color:var(--ink);margin-bottom:6px"></div>
+          <a id="wiki-link" href="#" target="_blank"
+            style="display:inline-flex;align-items:center;gap:5px;background:var(--sky-l);border:1.5px solid rgba(56,189,248,.3);border-radius:9px;padding:8px 13px;font-size:.78rem;font-weight:700;color:#1070A0;text-decoration:none;transition:all .2s;word-break:break-all"
+            onmouseover="this.style.background='#38BDF8';this.style.color='#fff'"
+            onmouseout="this.style.background='var(--sky-l)';this.style.color='#1070A0'">
+            🌐 위키백과에서 보기 →
+          </a>
+          <div id="wiki-link-url" style="font-size:.65rem;color:var(--ink3);margin-top:5px;word-break:break-all"></div>
+          <p style="font-size:.72rem;color:var(--ink3);margin-top:7px">💡 이미지 클릭 → 인물 카드에 적용!</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 신문에 추가 버튼 -->
@@ -1374,6 +1478,201 @@ function downloadHistLyrics() {
 function copyHistSuno() {
   const text = document.getElementById('hist-suno-full').textContent;
   navigator.clipboard.writeText(text).then(() => alert('📋 복사됐어요! 수노에 붙여넣기 해보세요~ 🎵'));
+}
+
+
+// ══ Gemini 2.0 이미지 생성 ══
+async function genHistoryImage(prompt, style='watercolor') {
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if (!key) return null;
+
+  const styleMap = {
+    watercolor: '수채화 스타일, 부드러운 색감, 예술적인',
+    minhwa: '한국 전통 민화 스타일, 평면적, 동양화풍',
+    woodblock: '목판화 스타일, 흑백 또는 단색, 전통적인',
+    illustration: '역사 삽화 스타일, 교과서 그림체, 상세한',
+  };
+
+  const fullPrompt = `${prompt}, ${styleMap[style]||styleMap.watercolor}, 역사적 장면, 교육용 이미지, 폭력적이지 않은`;
+
+  try {
+    const r = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=' + key,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+        })
+      }
+    );
+    const d = await r.json();
+    const parts = d.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+    if (imgPart) {
+      return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
+    }
+    return null;
+  } catch(e) {
+    console.error('이미지 생성 오류:', e);
+    return null;
+  }
+}
+
+// ══ 이미지 생성 관련 ══
+let selBgStyle = 'watercolor';
+let selPersonStyle_val = 'watercolor';
+
+function selImgStyle(style, el) {
+  selBgStyle = style;
+  document.querySelectorAll('.img-style-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+}
+function selPersonStyle(style, el) {
+  selPersonStyle_val = style;
+  document.querySelectorAll('.person-style-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+async function genBgImage() {
+  const prompt = document.getElementById('bg-prompt').value.trim();
+  if (!prompt) {
+    // 인물 이름으로 자동 생성
+    const name = document.getElementById('person-input')?.value.trim() || '조선시대';
+    document.getElementById('bg-prompt').value = name + ' 시대 배경 장면';
+  }
+  const finalPrompt = document.getElementById('bg-prompt').value.trim();
+
+  document.getElementById('bg-gen-loading').style.display = 'block';
+  document.getElementById('bg-generated').style.display = 'none';
+  document.getElementById('bg-gen-btn').disabled = true;
+
+  const imgUrl = await genHistoryImage(finalPrompt, selBgStyle);
+
+  document.getElementById('bg-gen-loading').style.display = 'none';
+  document.getElementById('bg-gen-btn').disabled = false;
+
+  if (imgUrl) {
+    document.getElementById('bg-gen-img').src = imgUrl;
+    document.getElementById('bg-generated').style.display = 'block';
+  } else {
+    alert('이미지 생성에 실패했어요. API 키를 확인해주세요!\n또는 직접 이미지를 업로드해주세요.');
+  }
+}
+
+function setBgFromGenerated() {
+  const img = document.getElementById('bg-gen-img');
+  if (img.src) {
+    selBgImg = img.src;
+    document.getElementById('bg-image').style.backgroundImage = `url(${img.src})`;
+    alert('✅ 배경 이미지가 설정됐어요!');
+  }
+}
+
+function uploadBgImg(input) {
+  const file = input.files[0]; if (!file) return;
+  const url = URL.createObjectURL(file);
+  selBgImg = url;
+  document.getElementById('bg-image').style.backgroundImage = `url(${url})`;
+  alert('✅ 배경 이미지가 업로드됐어요!');
+}
+
+async function genPersonImage() {
+  if (!currentPerson) { alert('인물을 먼저 검색해주세요!'); return; }
+  const name = currentPerson.name;
+  const era = currentPerson.era || '';
+  const prompt = `${name} 역사 인물, ${era}, 역사적 초상화`;
+
+  document.getElementById('person-gen-loading').style.display = 'block';
+  document.getElementById('person-generated').style.display = 'none';
+  document.getElementById('person-gen-btn').disabled = true;
+
+  const imgUrl = await genHistoryImage(prompt, selPersonStyle_val);
+
+  document.getElementById('person-gen-loading').style.display = 'none';
+  document.getElementById('person-gen-btn').disabled = false;
+
+  if (imgUrl) {
+    document.getElementById('person-gen-img').src = imgUrl;
+    document.getElementById('person-generated').style.display = 'block';
+  } else {
+    alert('이미지 생성에 실패했어요. API 키를 확인하거나 직접 업로드해주세요!');
+  }
+}
+
+function setPersonFromGenerated() {
+  const img = document.getElementById('person-gen-img');
+  if (img.src) {
+    selPersonImg = img.src;
+    buildPersonCard();
+    alert('✅ 인물 이미지가 적용됐어요!');
+  }
+}
+
+
+// ══ 위키백과 이미지 + 링크 ══
+async function searchWikipedia(name) {
+  // 1. 위키백과 검색으로 정확한 페이지 제목 찾기
+  try {
+    const searchUrl = `https://ko.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(name)}&srlimit=1&format=json&origin=*`;
+    const searchRes = await fetch(searchUrl);
+    const searchData = await searchRes.json();
+    const pageTitle = searchData.query?.search?.[0]?.title;
+    if (!pageTitle) return null;
+
+    // 2. 해당 페이지의 이미지 + 링크 가져오기
+    const pageUrl = `https://ko.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages|info&piprop=thumbnail&pithumbsize=400&inprop=url&format=json&origin=*`;
+    const pageRes = await fetch(pageUrl);
+    const pageData = await pageRes.json();
+    const pages = Object.values(pageData.query?.pages || {});
+    if (!pages.length) return null;
+
+    const page = pages[0];
+    return {
+      title: page.title,
+      imgUrl: page.thumbnail?.source || null,
+      wikiUrl: page.fullurl || `https://ko.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`,
+    };
+  } catch(e) {
+    console.error('위키백과 오류:', e);
+    return null;
+  }
+}
+
+async function loadWikiInfo(name) {
+  const el = document.getElementById('wiki-result');
+  const ld = document.getElementById('wiki-loading');
+  if (!el) return;
+  ld.style.display = 'flex';
+  el.style.display = 'none';
+
+  const result = await searchWikipedia(name);
+  ld.style.display = 'none';
+
+  if (result) {
+    el.style.display = 'block';
+    // 이미지
+    const imgEl = document.getElementById('wiki-img');
+    if (result.imgUrl) {
+      imgEl.src = result.imgUrl;
+      imgEl.style.display = 'block';
+      imgEl.onclick = () => {
+        selPersonImg = result.imgUrl;
+        buildPersonCard();
+        alert('✅ 위키백과 이미지가 인물 카드에 적용됐어요!');
+      };
+    } else {
+      imgEl.style.display = 'none';
+    }
+    // 링크
+    document.getElementById('wiki-link').href = result.wikiUrl;
+    document.getElementById('wiki-title').textContent = result.title;
+    document.getElementById('wiki-link-url').textContent = result.wikiUrl;
+  } else {
+    el.innerHTML = '<p style="color:var(--ink3);font-size:.8rem">위키백과에서 찾지 못했어요.</p>';
+    el.style.display = 'block';
+  }
 }
 
 </script>
