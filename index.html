@@ -124,6 +124,11 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   .feat-strip{gap:14px}
   .card-h2{font-size:1.3rem}
 }
+
+/* ── 게임방 ── */
+.card-game .card-header{background:linear-gradient(135deg,#0A0A1A,#1A1030,#100A20)}
+.card-game .card-header::after{content:'🎮';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+
 </style>
 </head>
 <body>
@@ -147,7 +152,7 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   <div class="feat-item">🤖 Gemini AI</div>
   <div class="feat-item">📱 모바일 OK</div>
   <div class="feat-item">🆓 무료</div>
-  <div class="feat-item">🗺️ 3가지 앱</div>
+  <div class="feat-item">🗺️ 4가지 앱</div>
 </div>
 
 
@@ -260,6 +265,38 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
     </div>
   </a>
 
+
+  <!-- 사회 용어 게임방 -->
+  <a href="eaim-social-game.html" class="app-card card-game">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#F59E0B;box-shadow:0 0 6px #F59E0B"></div> 용어 게임 · 8가지 게임</div>
+      <div class="card-h2">🎮 사회 용어 게임방</div>
+      <span class="card-h2-sub">Social Studies Vocabulary Game Room</span>
+      <p class="card-desc">민주주의·인플레이션·기후변화 등 72개 용어! 8가지 게임으로 재미있게 마스터해봐요!</p>
+      <div class="feat-row">
+        <span class="feat-pill">⭕❌ OX 퀴즈</span>
+        <span class="feat-pill">⏱️ 스피드 퀴즈</span>
+        <span class="feat-pill">🃏 카드 매칭</span>
+        <span class="feat-pill">🏆 팀 대항전</span>
+        <span class="feat-pill">🎰 AI 랜덤</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot" style="background:#FFF0EE;color:#C03020">OX</div>
+        <div class="sdot" style="background:#FFFBEB;color:#B07000">⚡</div>
+        <div class="sdot" style="background:#E0F5FF;color:#1070A0">🔤</div>
+        <div class="sdot" style="background:#E0FBF2;color:#008F66">🃏</div>
+        <div class="sdot" style="background:#F0EEFF;color:#5840D0">🎯</div>
+        <div class="sdot" style="background:#FFFBEB;color:#B07000">🎰</div>
+        <div class="sdot" style="background:#E0F5FF;color:#1070A0">🏆</div>
+        <div class="sdot" style="background:#E0FBF2;color:#008F66">📖</div>
+      </div>
+      <button class="enter-btn" style="background:linear-gradient(135deg,#F59E0B,#D07800);color:#1C0A00">입장하기 →</button>
+    </div>
+  </a>
+
+
 </div>
 
 <!-- 선생님 스트립 -->
@@ -273,6 +310,7 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
       <a href="eaim-history-news.html" class="t-btn t-btn-hist">역사신문</a>
       <a href="eaim-social-dict.html" class="t-btn t-btn-soc">사회사전</a>
       <a href="eaim-world-explorer.html" class="t-btn t-btn-world">세계탐구</a>
+      <a href="eaim-social-game.html" class="t-btn" style="background:#F59E0B;color:#1C0A00">용어게임</a>
     </div>
   </div>
 </div>

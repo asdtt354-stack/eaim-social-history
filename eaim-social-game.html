@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAIM 사회 용어 게임방</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1628;--navy2:#1E3A5F;
+  --sky:#38BDF8;--sky-l:#E0F5FF;
+  --mint:#00BF8A;--mint-l:#E0FBF2;
+  --amber:#F59E0B;--amber-l:#FFFBEB;
+  --violet:#7B6CF6;--violet-l:#F0EEFF;
+  --coral:#FF6B5B;--coral-l:#FFF0EE;
+  --green:#22C55E;--green-l:#DCFCE7;
+  --red:#EF4444;--red-l:#FEE2E2;
+  --ink:#1E1E30;--ink2:#52526E;--ink3:#9898B0;
+  --bg:#0F172A;--card:#1E293B;--card2:#273549;
+  --r:1.2rem;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
+
+/* ── 파티클 배경 ── */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;border-radius:50%;animation:float linear infinite;opacity:.15}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg)}100%{transform:translateY(-100px) rotate(360deg)}}
+
+/* ── 헤더 ── */
+header{background:linear-gradient(135deg,#0A1628,#1E293B);
+  padding:14px 18px;border-bottom:2px solid rgba(56,189,248,.3);
+  position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.hi{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;color:#fff}
+.logo span{color:var(--sky)}
+.score-board{display:flex;gap:10px;align-items:center}
+.score-item{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:5px 12px;text-align:center}
+.score-val{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;color:var(--amber)}
+.score-lbl{font-size:.6rem;color:rgba(255,255,255,.5)}
+
+/* ── 메인 ── */
+main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:10}
+
+/* ── 로비 ── */
+.lobby{text-align:center;padding:20px 0}
+.lobby-title{font-family:'Nunito',sans-serif;font-size:2.2rem;font-weight:900;margin-bottom:8px;
+  background:linear-gradient(135deg,var(--sky),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lobby-sub{font-size:.88rem;color:rgba(255,255,255,.55);margin-bottom:28px}
+
+/* ── 게임 카드 그리드 ── */
+.game-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+.game-card{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);
+  padding:18px 14px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden}
+.game-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.game-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.game-card:hover::before{opacity:1}
+.game-card.gc-ox::before{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(239,68,68,.1))}
+.game-card.gc-speed::before{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(251,146,60,.1))}
+.game-card.gc-blank::before{background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(123,108,246,.1))}
+.game-card.gc-match::before{background:linear-gradient(135deg,rgba(0,191,138,.1),rgba(56,189,248,.1))}
+.game-card.gc-guess::before{background:linear-gradient(135deg,rgba(123,108,246,.1),rgba(236,72,153,.1))}
+.game-card.gc-random::before{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(234,179,8,.1))}
+.game-card.gc-team::before{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(245,158,11,.1))}
+.game-card.gc-story::before{background:linear-gradient(135deg,rgba(0,191,138,.1),rgba(123,108,246,.1))}
+.game-icon{font-size:2.4rem;margin-bottom:8px;display:block}
+.game-name{font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:900;color:#fff;margin-bottom:3px}
+.game-desc{font-size:.7rem;color:rgba(255,255,255,.5);line-height:1.4}
+.game-badge{position:absolute;top:10px;right:10px;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:99px}
+.badge-hot{background:rgba(239,68,68,.25);color:#FF8080;border:1px solid rgba(239,68,68,.3)}
+.badge-team{background:rgba(56,189,248,.2);color:var(--sky);border:1px solid rgba(56,189,248,.3)}
+.badge-ai{background:rgba(123,108,246,.2);color:#A89CF8;border:1px solid rgba(123,108,246,.3)}
+
+/* ── 용어 설정 ── */
+.term-setup{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.ts-title{font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;color:var(--sky);margin-bottom:12px}
+.term-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.term-chip{padding:5px 12px;border-radius:99px;font-size:.75rem;font-weight:700;cursor:pointer;
+  background:rgba(56,189,248,.1);border:1.5px solid rgba(56,189,248,.2);color:var(--sky);transition:all .15s}
+.term-chip.on{background:var(--sky);color:#fff;border-color:var(--sky)}
+.term-chip:hover{transform:scale(1.05)}
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.cat-tab{padding:5px 12px;border-radius:99px;font-size:.73rem;font-weight:700;cursor:pointer;
+  background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);transition:all .2s}
+.cat-tab.on{background:var(--violet);border-color:#5840D0;color:#fff}
+
+/* ── 게임 영역 ── */
+.game-area{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);
+  padding:22px;margin-bottom:14px;min-height:300px;position:relative}
+.game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.game-title-badge{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;color:var(--sky)}
+.progress-bar{height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.progress-fill{height:100%;background:linear-gradient(135deg,var(--sky),var(--mint));border-radius:99px;transition:width .3s}
+.timer-ring{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--amber)}
+.q-num{font-size:.75rem;color:rgba(255,255,255,.4)}
+
+/* ── 문제 카드 ── */
+.q-card{background:var(--card2);border-radius:12px;padding:20px;margin-bottom:16px;text-align:center}
+.q-label{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.08em;margin-bottom:8px}
+.q-text{font-size:1.1rem;font-weight:700;color:#fff;line-height:1.6}
+.q-hint{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5}
+
+/* ── 답 입력 ── */
+.ans-input{width:100%;padding:13px 16px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);
+  border-radius:11px;color:#fff;font-family:inherit;font-size:1rem;font-weight:700;outline:none;
+  text-align:center;transition:border-color .2s;margin-bottom:10px}
+.ans-input:focus{border-color:var(--sky)}
+.ans-input::placeholder{color:rgba(255,255,255,.25)}
+
+/* ── OX 버튼 ── */
+.ox-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ox-btn{padding:20px;border-radius:14px;border:none;font-family:'Nunito',sans-serif;
+  font-size:2rem;font-weight:900;cursor:pointer;transition:all .2s}
+.ox-o{background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.1));
+  border:2px solid rgba(34,197,94,.3);color:var(--green)}
+.ox-x{background:linear-gradient(135deg,rgba(239,68,68,.2),rgba(239,68,68,.1));
+  border:2px solid rgba(239,68,68,.3);color:var(--red)}
+.ox-o:hover{background:var(--green);color:#fff;transform:scale(1.05)}
+.ox-x:hover{background:var(--red);color:#fff;transform:scale(1.05)}
+
+/* ── 선택지 버튼 ── */
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice-btn{padding:13px 16px;border-radius:11px;border:2px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);color:#fff;font-family:inherit;font-size:.88rem;font-weight:700;
+  cursor:pointer;transition:all .2s;text-align:left}
+.choice-btn:hover{border-color:var(--sky);background:rgba(56,189,248,.1);transform:translateX(4px)}
+.choice-btn.correct{border-color:var(--green);background:rgba(34,197,94,.2);color:var(--green)}
+.choice-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.2);color:var(--red)}
+
+/* ── 카드 매칭 ── */
+.match-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.match-card{aspect-ratio:3/2;border-radius:10px;border:2px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;
+  text-align:center;padding:8px;line-height:1.3;color:#fff}
+.match-card:hover{border-color:var(--sky);background:rgba(56,189,248,.1)}
+.match-card.flipped{background:var(--card2);border-color:var(--violet)}
+.match-card.matched{background:rgba(34,197,94,.2);border-color:var(--green);color:var(--green);cursor:default}
+.match-card.wrong-match{background:rgba(239,68,68,.2);border-color:var(--red);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* ── 피드백 ── */
+.feedback{text-align:center;padding:16px;border-radius:12px;margin-bottom:12px;font-weight:700;font-size:.95rem;display:none}
+.fb-correct{background:rgba(34,197,94,.15);border:2px solid rgba(34,197,94,.3);color:var(--green)}
+.fb-wrong{background:rgba(239,68,68,.15);border:2px solid rgba(239,68,68,.3);color:var(--red)}
+.fb-explain{font-size:.8rem;color:rgba(255,255,255,.65);margin-top:6px;font-weight:400}
+
+/* ── 버튼 ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;
+  border-radius:11px;border:none;font-family:'Nunito',inherit;font-weight:800;font-size:.88rem;
+  cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bsky{background:linear-gradient(135deg,var(--sky),#1A90C0);color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.28)}
+.bmint{background:linear-gradient(135deg,var(--mint),#009E72);color:#fff}
+.bamb{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
+.bvio{background:linear-gradient(135deg,var(--violet),#5840D0);color:#fff}
+.bcoral{background:linear-gradient(135deg,var(--coral),#D04030);color:#fff}
+.bg2{background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.12)}
+.bfl{width:100%}
+.bsm{padding:7px 14px;font-size:.78rem;border-radius:9px}
+
+/* ── 결과 화면 ── */
+.result-card{text-align:center;padding:28px 20px}
+.result-emoji{font-size:4rem;margin-bottom:12px}
+.result-score{font-family:'Nunito',sans-serif;font-size:2.8rem;font-weight:900;
+  background:linear-gradient(135deg,var(--amber),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.result-msg{font-size:.9rem;color:rgba(255,255,255,.65);margin-bottom:20px}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat-item{background:var(--card2);border-radius:10px;padding:12px;text-align:center}
+.stat-val{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--sky)}
+.stat-lbl{font-size:.68rem;color:rgba(255,255,255,.45);margin-top:2px}
+
+/* ── 팀 대항전 ── */
+.team-scores{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.team-card{background:var(--card2);border-radius:12px;padding:14px;text-align:center;border:2px solid transparent;transition:all .3s}
+.team-card.active{border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,.2)}
+.team-name{font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;margin-bottom:4px}
+.team-score{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--amber)}
+
+/* ── 로딩 ── */
+.ld{display:flex;align-items:center;justify-content:center;gap:6px;padding:20px;color:rgba(255,255,255,.5);font-size:.84rem}
+.ld span{width:7px;height:7px;border-radius:50%;background:var(--sky);animation:bl 1.2s infinite}
+.ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* ── 빈칸 ── */
+.blank-text{font-size:1.05rem;line-height:2;color:#fff;font-weight:700}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid var(--sky);
+  padding:0 8px;color:var(--sky);font-weight:900;text-align:center}
+
+/* ── 스피드 ── */
+.speed-bar{height:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.speed-fill{height:100%;border-radius:99px;transition:width .1s linear}
+
+/* ── 랭킹 ── */
+.rank-list{display:flex;flex-direction:column;gap:8px}
+.rank-item{background:var(--card2);border-radius:10px;padding:11px 15px;display:flex;align-items:center;gap:12px}
+.rank-num{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;min-width:28px}
+.rank-name{font-weight:700;flex:1}
+.rank-score{font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:900;color:var(--amber)}
+
+/* ── 모달 ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:200;
+  display:flex;align-items:center;justify-content:center;padding:18px}
+.mb{background:var(--card);border-radius:1.5rem;padding:24px;width:100%;max-width:400px;
+  box-shadow:0 28px 56px rgba(0,0,0,.5);border:1.5px solid rgba(255,255,255,.08);text-align:center}
+
+@media(max-width:480px){
+  .game-grid{grid-template-columns:1fr 1fr}
+  .match-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- 파티클 배경 -->
+<div id="particles"></div>
+
+<!-- 이름 입력 -->
+<div id="nm" class="ov">
+  <div class="mb">
+    <div style="font-size:2.8rem;margin-bottom:10px">🎮</div>
+    <div style="font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:5px">사회 용어 게임방</div>
+    <div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:18px">재미있게 배우는 사회 용어!</div>
+    <input type="text" id="sni" placeholder="이름 입력"
+      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;
+      border:2px solid rgba(56,189,248,.3);border-radius:.9rem;padding:11px;outline:none;
+      margin-bottom:10px;background:rgba(255,255,255,.07);color:#fff;transition:border-color .2s"
+      onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='rgba(56,189,248,.3)'"
+      onkeydown="if(event.key==='Enter')sN()">
+    <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🎮 게임 시작!</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<header>
+  <div class="hi">
+    <div class="logo">🎮 EAIM <span>사회 게임방</span></div>
+    <div class="score-board">
+      <div class="score-item">
+        <div class="score-val" id="total-score">0</div>
+        <div class="score-lbl">총점</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" id="streak-count">0</div>
+        <div class="score-lbl">연속정답</div>
+      </div>
+      <button onclick="goLobby()" class="btn bg2 bsm">🏠 로비</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══ 로비 ══ -->
+<div id="lobby">
+  <div class="lobby">
+    <div class="lobby-title">🎮 사회 용어 게임방</div>
+    <div class="lobby-sub">재미있게 사회 용어를 마스터해봐요!</div>
+  </div>
+
+  <!-- 용어 카테고리 설정 -->
+  <div class="term-setup">
+    <div class="ts-title">📚 게임할 용어 선택</div>
+    <div class="cat-tabs" id="cat-tabs">
+      <button onclick="showCatTerms('전체',this)" class="cat-tab on">🌟 전체</button>
+      <button onclick="showCatTerms('정치',this)" class="cat-tab">🏛️ 정치</button>
+      <button onclick="showCatTerms('경제',this)" class="cat-tab">💰 경제</button>
+      <button onclick="showCatTerms('사회',this)" class="cat-tab">🌍 사회</button>
+      <button onclick="showCatTerms('환경',this)" class="cat-tab">🌱 환경</button>
+      <button onclick="showCatTerms('국제',this)" class="cat-tab">🌐 국제</button>
+      <button onclick="showCatTerms('문화',this)" class="cat-tab">🎨 문화</button>
+    </div>
+    <div id="term-chip-wrap" class="term-chips"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button onclick="selectAllTerms()" class="btn bg2 bsm">✅ 전체 선택</button>
+      <button onclick="clearAllTerms()" class="btn bg2 bsm">❌ 전체 해제</button>
+      <span id="sel-count" style="font-size:.78rem;color:rgba(255,255,255,.5);align-self:center">0개 선택</span>
+    </div>
+  </div>
+
+  <!-- 게임 선택 -->
+  <div class="game-grid">
+    <div class="game-card gc-ox" onclick="startGame('ox')">
+      <span class="game-badge badge-hot">HOT</span>
+      <span class="game-icon">⭕❌</span>
+      <div class="game-name">OX 퀴즈</div>
+      <div class="game-desc">설명이 맞으면 O<br>틀리면 X!</div>
+    </div>
+    <div class="game-card gc-speed" onclick="startGame('speed')">
+      <span class="game-badge badge-hot">⚡</span>
+      <span class="game-icon">⏱️</span>
+      <div class="game-name">스피드 퀴즈</div>
+      <div class="game-desc">30초 안에<br>최대한 많이!</div>
+    </div>
+    <div class="game-card gc-blank" onclick="startGame('blank')">
+      <span class="game-badge badge-ai">AI</span>
+      <span class="game-icon">🔤</span>
+      <div class="game-name">빈칸 채우기</div>
+      <div class="game-desc">문장의 빈칸에<br>용어를 입력해요</div>
+    </div>
+    <div class="game-card gc-match" onclick="startGame('match')">
+      <span class="game-icon">🃏</span>
+      <div class="game-name">카드 매칭</div>
+      <div class="game-desc">용어와 뜻을<br>짝지어봐요</div>
+    </div>
+    <div class="game-card gc-guess" onclick="startGame('guess')">
+      <span class="game-badge badge-ai">AI</span>
+      <span class="game-icon">🎯</span>
+      <div class="game-name">용어 맞추기</div>
+      <div class="game-desc">단서를 보고<br>용어를 맞춰요</div>
+    </div>
+    <div class="game-card gc-random" onclick="startGame('random')">
+      <span class="game-badge badge-ai">AI</span>
+      <span class="game-icon">🎰</span>
+      <div class="game-name">AI 랜덤 퀴즈</div>
+      <div class="game-desc">AI가 매번 다른<br>문제를 출제해요</div>
+    </div>
+    <div class="game-card gc-team" onclick="startGame('team')">
+      <span class="game-badge badge-team">팀</span>
+      <span class="game-icon">🏆</span>
+      <div class="game-name">팀 대항전</div>
+      <div class="game-desc">두 팀이 번갈아<br>대결해요!</div>
+    </div>
+    <div class="game-card gc-story" onclick="startGame('story')">
+      <span class="game-badge badge-ai">AI</span>
+      <span class="game-icon">📖</span>
+      <div class="game-name">스토리 퀴즈</div>
+      <div class="game-desc">AI 스토리 속<br>용어를 찾아요</div>
+    </div>
+  </div>
+
+  <!-- 랭킹 -->
+  <div style="background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);padding:16px">
+    <div style="font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;color:var(--amber);margin-bottom:12px">🏆 오늘의 랭킹</div>
+    <div id="rank-list" class="rank-list">
+      <div style="color:rgba(255,255,255,.35);font-size:.82rem;text-align:center;padding:10px">아직 기록이 없어요!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 게임 영역 ══ -->
+<div id="game-area" style="display:none">
+  <div class="game-area">
+    <div class="game-header">
+      <div class="game-title-badge" id="game-title">🎮 게임</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="timer-ring" id="timer-display">⏱️ -</div>
+        <div class="q-num" id="q-counter">1/10</div>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+    <div id="game-content"></div>
+    <div class="feedback" id="feedback"></div>
+    <div id="game-actions" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+</div>
+
+<!-- ══ 결과 화면 ══ -->
+<div id="result-area" style="display:none">
+  <div class="game-area">
+    <div class="result-card" id="result-content"></div>
+  </div>
+</div>
+
+</main>
+
+<div style="text-align:center;padding:12px;color:rgba(255,255,255,.2);font-size:.68rem;position:relative;z-index:10">
+  Designed by Park Seong-ae · EAIM 사회 게임방 v1
+</div>
+
+<script>
+// ══ 상태 ══
+let stuName = '';
+let apiKey = localStorage.getItem('eaim_gemini_key') || '';
+let totalScore = 0;
+let streak = 0;
+let currentGame = null;
+let gameState = {};
+let rankings = JSON.parse(localStorage.getItem('eaim_game_rankings') || '[]');
+let selectedTerms = [];
+let currentCat = '전체';
+
+// ══ 용어 데이터 ══
+const ALL_TERMS = {
+  '정치': ['민주주의','삼권분립','선거제도','헌법','국회','사법부','행정부','정당','표현의 자유','보통선거','법치주의','지방자치'],
+  '경제': ['인플레이션','공정무역','GDP','세금','중앙은행','경기침체','자유무역','환율','산업화','실업률','시장경제','수요와공급'],
+  '사회': ['인권','세계화','다문화사회','사회복지','고령화사회','저출산','양성평등','주거권','교육권','의료보험','사회적 자본','다양성'],
+  '환경': ['기후변화','지속가능발전','탄소중립','신재생에너지','해수면상승','온실가스','생물다양성','수자원','자원순환','산림파괴','에너지전환','미세먼지'],
+  '국제': ['UN','국제기구','난민','외교','국제분쟁','평화협정','국제무역','G20','경제제재','ODA','WTO','WHO'],
+  '문화': ['문화다양성','한류','대중문화','문화유산','디지털문화','예술','문해력','문화상대주의','문화교류','문화산업','전통문화','세계시민의식'],
+};
+
+const TERM_DEFS = {
+  '민주주의':'국민이 주권을 가지고 스스로 나라를 다스리는 정치 체제',
+  '삼권분립':'입법·행정·사법을 분리하여 권력 남용을 막는 제도',
+  '선거제도':'국민이 대표자를 선출하는 방법과 절차',
+  '헌법':'국가의 최고 법으로 국민의 기본권을 보장',
+  '국회':'국민이 선출한 의원들이 법률을 만드는 기관',
+  '사법부':'법을 해석하고 적용하는 법원 등 사법 기관',
+  '행정부':'법률을 집행하고 국가를 운영하는 기관',
+  '정당':'같은 정치적 견해를 가진 사람들의 단체',
+  '표현의 자유':'자신의 생각을 자유롭게 표현할 수 있는 권리',
+  '보통선거':'모든 성인 국민이 참여할 수 있는 선거',
+  '법치주의':'모든 사람이 법 앞에 평등하게 다스려지는 원칙',
+  '지방자치':'지역 주민이 스스로 지역 문제를 결정하고 운영하는 제도',
+  '인플레이션':'물가가 지속적으로 오르는 경제 현상',
+  '공정무역':'개발도상국 생산자에게 공정한 가격을 보장하는 무역',
+  'GDP':'한 나라에서 1년간 생산한 모든 재화와 서비스의 총 가치',
+  '세금':'국가가 국민으로부터 거두는 재정 수단',
+  '중앙은행':'한 나라의 화폐 발행과 통화정책을 담당하는 은행',
+  '경기침체':'경제 활동이 위축되고 성장이 둔화되는 상태',
+  '자유무역':'관세나 규제 없이 자유롭게 이루어지는 국가 간 무역',
+  '환율':'서로 다른 나라의 화폐를 교환하는 비율',
+  '산업화':'농업 중심 사회에서 공업 중심 사회로 변화하는 과정',
+  '실업률':'일할 의사가 있지만 일자리가 없는 사람의 비율',
+  '시장경제':'수요와 공급에 의해 가격이 결정되는 경제 체제',
+  '수요와공급':'소비자의 구매 의사와 생산자의 판매 의사가 만나 가격을 결정하는 원리',
+  '인권':'모든 인간이 태어나면서부터 가지는 기본적인 권리',
+  '세계화':'국가 간 교류가 활발해져 세계가 하나로 연결되는 현상',
+  '다문화사회':'다양한 문화적 배경을 가진 사람들이 함께 사는 사회',
+  '사회복지':'국가가 국민의 최소한의 생활을 보장하는 제도',
+  '고령화사회':'65세 이상 노인 인구 비율이 높아지는 사회',
+  '저출산':'출생아 수가 줄어드는 현상',
+  '양성평등':'성별에 관계없이 동등한 권리와 기회를 갖는 것',
+  '주거권':'적절한 주거환경에서 생활할 권리',
+  '교육권':'모든 사람이 교육을 받을 권리',
+  '의료보험':'의료비 부담을 줄이기 위한 사회보험',
+  '사회적 자본':'사람들 간의 신뢰와 협력 관계',
+  '다양성':'다양한 특성과 배경을 존중하고 인정하는 것',
+  '기후변화':'지구 평균 온도 변화로 나타나는 기상 패턴의 변화',
+  '지속가능발전':'미래 세대를 위해 현재의 필요를 충족시키는 발전',
+  '탄소중립':'온실가스 배출량을 줄여 순 배출량을 0으로 만드는 것',
+  '신재생에너지':'태양열·풍력 등 자연에서 얻는 친환경 에너지',
+  '해수면상승':'지구온난화로 빙하가 녹아 바닷물 높이가 올라가는 현상',
+  '온실가스':'지구 온난화를 일으키는 이산화탄소 등의 기체',
+  '생물다양성':'지구상의 다양한 생물종이 공존하는 상태',
+  '수자원':'인간이 이용할 수 있는 물',
+  '자원순환':'자원을 재사용·재활용하여 폐기물을 줄이는 것',
+  '산림파괴':'삼림이 무분별하게 훼손되는 현상',
+  '에너지전환':'화석연료에서 친환경 에너지로 바꾸는 과정',
+  '미세먼지':'지름 10마이크로미터 이하의 작은 먼지 입자',
+  'UN':'국제 평화와 안전을 위한 국제연합 기구',
+  '국제기구':'여러 나라가 공동 목적을 위해 만든 조직',
+  '난민':'전쟁·박해 등을 피해 다른 나라로 피신한 사람',
+  '외교':'국가 간의 공식적인 관계와 교류',
+  '국제분쟁':'두 나라 이상이 관련된 갈등이나 충돌',
+  '평화협정':'분쟁 당사국이 전쟁을 끝내기로 합의한 협약',
+  '국제무역':'국가 간에 이루어지는 상품과 서비스의 교환',
+  'G20':'세계 주요 20개국이 모이는 국제 협의체',
+  '경제제재':'특정 국가에 대한 경제적 압박 수단',
+  'ODA':'선진국이 개발도상국에 제공하는 공적 개발 원조',
+  'WTO':'세계 무역 규칙을 정하는 국제기구',
+  'WHO':'세계 보건 문제를 다루는 유엔 전문기구',
+  '문화다양성':'세계 여러 문화의 차이를 인정하고 존중하는 것',
+  '한류':'한국 문화가 세계로 퍼져나가는 현상',
+  '대중문화':'많은 사람들이 즐기는 문화',
+  '문화유산':'후세에 전해지는 문화적 가치를 지닌 유산',
+  '디지털문화':'디지털 기술을 기반으로 형성된 문화',
+  '예술':'인간의 감정과 생각을 표현하는 창작 활동',
+  '문해력':'글을 읽고 이해하는 능력',
+  '문화상대주의':'각 문화를 그 사회의 맥락에서 이해하는 태도',
+  '문화교류':'서로 다른 문화를 주고받는 것',
+  '문화산업':'문화 콘텐츠를 상업적으로 생산·유통하는 산업',
+  '전통문화':'오랫동안 전해 내려오는 고유한 문화',
+  '세계시민의식':'세계를 하나의 공동체로 생각하는 의식',
+};
+
+// ══ 파티클 초기화 ══
+function initParticles(){
+  const container = document.getElementById('particles');
+  const colors = ['#38BDF8','#00BF8A','#7B6CF6','#F59E0B','#FF6B5B'];
+  for(let i=0;i<15;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 4 + Math.random()*8;
+    p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${8+Math.random()*12}s;animation-delay:${-Math.random()*10}s`;
+    container.appendChild(p);
+  }
+}
+initParticles();
+
+// ══ 로그인 ══
+function sN(){
+  const n = document.getElementById('sni').value.trim();
+  if(!n){alert('이름을 입력해주세요!');return;}
+  stuName = n;
+  document.getElementById('nm').style.display = 'none';
+  initTerms();
+  loadRankings();
+}
+
+// ══ 용어 초기화 ══
+function initTerms(){
+  selectedTerms = Object.values(ALL_TERMS).flat();
+  showCatTerms('전체', document.querySelector('.cat-tab'));
+  updateSelCount();
+}
+
+function showCatTerms(cat, btn){
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const terms = cat==='전체' ? Object.values(ALL_TERMS).flat() : ALL_TERMS[cat]||[];
+  const el = document.getElementById('term-chip-wrap');
+  el.innerHTML='';
+  terms.forEach(t=>{
+    const chip = document.createElement('span');
+    chip.className = 'term-chip' + (selectedTerms.includes(t)?' on':'');
+    chip.textContent = t;
+    chip.onclick = ()=>{
+      chip.classList.toggle('on');
+      if(chip.classList.contains('on')){if(!selectedTerms.includes(t))selectedTerms.push(t);}
+      else selectedTerms = selectedTerms.filter(x=>x!==t);
+      updateSelCount();
+    };
+    el.appendChild(chip);
+  });
+}
+
+function selectAllTerms(){
+  const terms = currentCat==='전체' ? Object.values(ALL_TERMS).flat() : ALL_TERMS[currentCat]||[];
+  terms.forEach(t=>{if(!selectedTerms.includes(t))selectedTerms.push(t);});
+  showCatTerms(currentCat, document.querySelector('.cat-tab.on'));
+  updateSelCount();
+}
+function clearAllTerms(){
+  const terms = currentCat==='전체' ? Object.values(ALL_TERMS).flat() : ALL_TERMS[currentCat]||[];
+  selectedTerms = selectedTerms.filter(t=>!terms.includes(t));
+  showCatTerms(currentCat, document.querySelector('.cat-tab.on'));
+  updateSelCount();
+}
+function updateSelCount(){
+  document.getElementById('sel-count').textContent = selectedTerms.length + '개 선택';
+}
+
+// ══ Gemini 호출 ══
+async function callGemini(prompt, maxTokens=600){
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if(!key) throw new Error('NO_KEY');
+  const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8}})
+  });
+  const d = await r.json();
+  if(d.error) throw new Error(d.error.message);
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+// ══ 랜덤 용어 선택 ══
+function getRandTerms(n){
+  const pool = selectedTerms.length>0 ? selectedTerms : Object.values(ALL_TERMS).flat();
+  const shuffled = [...pool].sort(()=>Math.random()-.5);
+  return shuffled.slice(0,Math.min(n,shuffled.length));
+}
+function getRandTerm(){return getRandTerms(1)[0];}
+function getDef(term){return TERM_DEFS[term]||term+'의 정의';}
+
+// ══ 게임 시작 ══
+function startGame(type){
+  if(selectedTerms.length<2){alert('용어를 2개 이상 선택해주세요!');return;}
+  currentGame = type;
+  gameState = {type,score:0,correct:0,wrong:0,total:10,current:0,startTime:Date.now()};
+  document.getElementById('lobby').style.display='none';
+  document.getElementById('game-area').style.display='block';
+  document.getElementById('result-area').style.display='none';
+  totalScore=0;streak=0;updateHeader();
+
+  const titles = {
+    ox:'⭕❌ OX 퀴즈',speed:'⏱️ 스피드 퀴즈',blank:'🔤 빈칸 채우기',
+    match:'🃏 카드 매칭',guess:'🎯 용어 맞추기',random:'🎰 AI 랜덤 퀴즈',
+    team:'🏆 팀 대항전',story:'📖 스토리 퀴즈'
+  };
+  document.getElementById('game-title').textContent = titles[type]||'🎮 게임';
+
+  if(type==='match') startMatchGame();
+  else if(type==='speed') startSpeedGame();
+  else if(type==='team') startTeamGame();
+  else nextQuestion();
+}
+
+// ══ 다음 문제 ══
+async function nextQuestion(){
+  const gs = gameState;
+  if(gs.current >= gs.total){endGame();return;}
+  gs.current++;
+  document.getElementById('progress').style.width = (gs.current/gs.total*100)+'%';
+  document.getElementById('q-counter').textContent = gs.current+'/'+gs.total;
+  document.getElementById('feedback').style.display='none';
+  document.getElementById('game-actions').innerHTML='';
+
+  const content = document.getElementById('game-content');
+  content.innerHTML = '<div class="ld"><span></span><span></span><span></span><span style="margin-left:5px">문제 생성 중...</span></div>';
+
+  if(gs.type==='ox') await showOXQuestion();
+  else if(gs.type==='blank') await showBlankQuestion();
+  else if(gs.type==='guess') await showGuessQuestion();
+  else if(gs.type==='random') await showRandomQuestion();
+  else if(gs.type==='story') await showStoryQuestion();
+}
+
+// ══ OX 퀴즈 ══
+async function showOXQuestion(){
+  const term = getRandTerm();
+  const def = getDef(term);
+  const isCorrect = Math.random() > .45;
+  let shownDef = def;
+
+  if(!isCorrect){
+    const otherTerms = getRandTerms(5).filter(t=>t!==term);
+    const wrongDef = getDef(otherTerms[Math.floor(Math.random()*otherTerms.length)]);
+    shownDef = wrongDef;
+  }
+
+  gameState.oxAnswer = isCorrect;
+  gameState.oxTerm = term;
+
+  document.getElementById('game-content').innerHTML=`
+    <div class="q-card">
+      <div class="q-label">📝 다음 설명이 "${term}"에 대한 설명인가요?</div>
+      <div class="q-text">${shownDef}</div>
+    </div>
+    <div class="ox-btns">
+      <button class="ox-btn ox-o" onclick="answerOX(true)">⭕ 맞아요!</button>
+      <button class="ox-btn ox-x" onclick="answerOX(false)">❌ 틀려요!</button>
+    </div>`;
+  startTimer(15);
+}
+
+function answerOX(ans){
+  clearTimer();
+  const correct = ans === gameState.oxAnswer;
+  showFeedback(correct, gameState.oxTerm, getDef(gameState.oxTerm));
+  setTimeout(()=>nextQuestion(), 1800);
+}
+
+// ══ 빈칸 채우기 ══
+async function showBlankQuestion(){
+  const term = getRandTerm();
+  const def = getDef(term);
+  const sentence = `${def.replace(term,'___')}`;
+
+  gameState.blankAnswer = term;
+  document.getElementById('game-content').innerHTML=`
+    <div class="q-card">
+      <div class="q-label">🔤 빈칸에 들어갈 용어는?</div>
+      <div class="q-text blank-text">${sentence.replace('___','<span class="blank">___</span>')}</div>
+      <div class="q-hint">힌트: ${term.length}글자</div>
+    </div>
+    <input type="text" id="blank-input" class="ans-input" placeholder="용어를 입력하세요..."
+      onkeydown="if(event.key==='Enter')checkBlank()">`;
+  document.getElementById('game-actions').innerHTML=`
+    <button onclick="checkBlank()" class="btn bsky" style="flex:1">✅ 제출!</button>
+    <button onclick="skipQuestion()" class="btn bg2 bsm">⏭ 건너뛰기</button>`;
+  document.getElementById('blank-input').focus();
+  startTimer(20);
+}
+
+function checkBlank(){
+  clearTimer();
+  const input = document.getElementById('blank-input')?.value.trim()||'';
+  const correct = input === gameState.blankAnswer || input.replace(/\s/g,'') === gameState.blankAnswer.replace(/\s/g,'');
+  showFeedback(correct, gameState.blankAnswer, getDef(gameState.blankAnswer));
+  setTimeout(()=>nextQuestion(), 1800);
+}
+
+// ══ 용어 맞추기 ══
+async function showGuessQuestion(){
+  const term = getRandTerm();
+  const def = getDef(term);
+  const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
+  const choices = [term,...others].sort(()=>Math.random()-.5);
+
+  gameState.guessAnswer = term;
+  document.getElementById('game-content').innerHTML=`
+    <div class="q-card">
+      <div class="q-label">🎯 다음 설명에 해당하는 용어는?</div>
+      <div class="q-text">${def}</div>
+    </div>
+    <div class="choices">
+      ${choices.map((c,i)=>`<button class="choice-btn" onclick="checkGuess('${c}',this)">
+        ${['①','②','③','④'][i]} ${c}
+      </button>`).join('')}
+    </div>`;
+  startTimer(15);
+}
+
+function checkGuess(ans, el){
+  clearTimer();
+  const correct = ans === gameState.guessAnswer;
+  document.querySelectorAll('.choice-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.includes(gameState.guessAnswer)) b.classList.add('correct');
+  });
+  if(!correct) el.classList.add('wrong');
+  showFeedback(correct, gameState.guessAnswer, getDef(gameState.guessAnswer));
+  setTimeout(()=>nextQuestion(), 1800);
+}
+
+// ══ AI 랜덤 퀴즈 ══
+async function showRandomQuestion(){
+  const term = getRandTerm();
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+
+  if(!key){
+    // API 없으면 기본 퀴즈
+    gameState.guessAnswer = term;
+    const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
+    const choices = [term,...others].sort(()=>Math.random()-.5);
+    document.getElementById('game-content').innerHTML=`
+      <div class="q-card">
+        <div class="q-label">🎰 AI 랜덤 퀴즈</div>
+        <div class="q-text">${getDef(term)}</div>
+      </div>
+      <div class="choices">
+        ${choices.map((c,i)=>`<button class="choice-btn" onclick="checkGuess('${c}',this)">
+          ${['①','②','③','④'][i]} ${c}
+        </button>`).join('')}
+      </div>`;
+    return;
+  }
+
+  try{
+    const types = ['definition','example','related','truefalse'];
+    const qtype = types[Math.floor(Math.random()*types.length)];
+    const raw = await callGemini(`중학교 사회 용어 "${term}"에 관한 ${qtype} 유형 퀴즈를 만들어주세요.
+순수 JSON만 (백틱 없이):
+{
+  "question": "문제 (1문장)",
+  "answer": "${term}",
+  "choices": ["${term}","오답1","오답2","오답3"],
+  "hint": "힌트 1문장"
+}
+오답은 비슷한 다른 사회 용어로 해주세요.`,400);
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const q = JSON.parse(clean);
+    const shuffled = q.choices.sort(()=>Math.random()-.5);
+    gameState.guessAnswer = q.answer;
+    document.getElementById('game-content').innerHTML=`
+      <div class="q-card">
+        <div class="q-label">🎰 AI 랜덤 퀴즈</div>
+        <div class="q-text">${q.question}</div>
+        ${q.hint?`<div class="q-hint">💡 ${q.hint}</div>`:''}
+      </div>
+      <div class="choices">
+        ${shuffled.map((c,i)=>`<button class="choice-btn" onclick="checkGuess('${c}',this)">
+          ${['①','②','③','④'][i]} ${c}
+        </button>`).join('')}
+      </div>`;
+  }catch(e){
+    gameState.guessAnswer = term;
+    const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
+    const choices = [term,...others].sort(()=>Math.random()-.5);
+    document.getElementById('game-content').innerHTML=`
+      <div class="q-card">
+        <div class="q-label">🎰 AI 랜덤 퀴즈</div>
+        <div class="q-text">${getDef(term)}</div>
+      </div>
+      <div class="choices">
+        ${choices.map((c,i)=>`<button class="choice-btn" onclick="checkGuess('${c}',this)">
+          ${['①','②','③','④'][i]} ${c}
+        </button>`).join('')}
+      </div>`;
+  }
+  startTimer(20);
+}
+
+// ══ 스토리 퀴즈 ══
+async function showStoryQuestion(){
+  const term = getRandTerm();
+  const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
+  const choices = [term,...others].sort(()=>Math.random()-.5);
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+
+  let story = `오늘 수업에서 선생님이 "${getDef(term)}"에 대해 설명했어요. 이 용어는 무엇일까요?`;
+
+  if(key){
+    try{
+      const raw = await callGemini(`중학생 일상 속 짧은 이야기를 만들어주세요.
+이야기 안에 "${term}"의 개념이 자연스럽게 담겨있어야 해요.
+이야기는 3문장 이하, 마지막에 "이것을 무엇이라고 할까요?" 로 끝내세요.
+이야기만 쓰세요 (제목, 설명 없이):`,300);
+      story = raw;
+    }catch(e){}
+  }
+
+  gameState.guessAnswer = term;
+  document.getElementById('game-content').innerHTML=`
+    <div class="q-card">
+      <div class="q-label">📖 스토리 속 용어를 찾아요!</div>
+      <div class="q-text" style="font-size:.95rem;line-height:1.8">${story}</div>
+    </div>
+    <div class="choices">
+      ${choices.map((c,i)=>`<button class="choice-btn" onclick="checkGuess('${c}',this)">
+        ${['①','②','③','④'][i]} ${c}
+      </button>`).join('')}
+    </div>`;
+  startTimer(25);
+}
+
+// ══ 카드 매칭 ══
+function startMatchGame(){
+  const terms = getRandTerms(6);
+  const cards = [];
+  terms.forEach(t=>{
+    cards.push({id:t,type:'term',text:t,matched:false});
+    cards.push({id:t,type:'def',text:getDef(t).substring(0,30)+'...',matched:false});
+  });
+  cards.sort(()=>Math.random()-.5);
+
+  gameState.matchCards = cards;
+  gameState.flipped = [];
+  gameState.matchScore = 0;
+  gameState.matchTotal = terms.length;
+  gameState.matchWrong = 0;
+
+  document.getElementById('q-counter').textContent = '짝 맞추기!';
+  renderMatchCards();
+}
+
+function renderMatchCards(){
+  const cards = gameState.matchCards;
+  document.getElementById('game-content').innerHTML=`
+    <div style="margin-bottom:10px;font-size:.82rem;color:rgba(255,255,255,.5)">
+      용어와 뜻을 짝지어봐요! (${gameState.matchScore}/${gameState.matchTotal} 완료)
+    </div>
+    <div class="match-grid" id="match-grid">
+      ${cards.map((c,i)=>`
+        <div class="match-card${c.matched?' matched':''}" id="mc-${i}"
+          onclick="flipCard(${i})" style="${c.matched?'pointer-events:none':''}">
+          ${c.matched ? (c.type==='term'?'✅ '+c.text:'✅') : (c.type==='term'?'📚':'❓')}
+        </div>`).join('')}
+    </div>`;
+}
+
+function flipCard(idx){
+  const cards = gameState.matchCards;
+  const card = cards[idx];
+  if(card.matched || gameState.flipped.length===2) return;
+
+  const el = document.getElementById('mc-'+idx);
+  el.classList.add('flipped');
+  el.textContent = card.text;
+  gameState.flipped.push(idx);
+
+  if(gameState.flipped.length===2){
+    const [a,b] = gameState.flipped;
+    setTimeout(()=>{
+      if(cards[a].id===cards[b].id && cards[a].type!==cards[b].type){
+        // 매칭 성공!
+        cards[a].matched=true; cards[b].matched=true;
+        gameState.matchScore++;
+        addScore(100); streak++;
+        updateHeader();
+        if(gameState.matchScore===gameState.matchTotal){
+          setTimeout(()=>{showFeedback(true,'완벽해요!','모든 카드를 짝지었어요! 🎉');
+          setTimeout(endGame,2000);},300);
+        }
+      } else {
+        // 실패
+        gameState.matchWrong++;
+        ['mc-'+a,'mc-'+b].forEach(id=>{
+          const el2=document.getElementById(id);
+          el2.classList.remove('flipped');
+          el2.classList.add('wrong-match');
+          el2.textContent=cards[parseInt(id.replace('mc-',''))].type==='term'?'📚':'❓';
+          setTimeout(()=>el2.classList.remove('wrong-match'),400);
+        });
+      }
+      gameState.flipped=[];
+      renderMatchCards();
+    },700);
+  }
+}
+
+// ══ 스피드 퀴즈 ══
+function startSpeedGame(){
+  gameState.speedScore = 0;
+  gameState.speedTotal = 0;
+  gameState.timeLeft = 30;
+  document.getElementById('q-counter').textContent = '30초 도전!';
+  showSpeedQuestion();
+  gameState.speedTimer = setInterval(()=>{
+    gameState.timeLeft--;
+    document.getElementById('timer-display').textContent='⏱️ '+gameState.timeLeft+'s';
+    const pct = gameState.timeLeft/30*100;
+    document.getElementById('progress').style.width=pct+'%';
+    document.getElementById('progress').style.background=
+      pct>50?'linear-gradient(135deg,#38BDF8,#00BF8A)':
+      pct>25?'linear-gradient(135deg,#F59E0B,#FF8C00)':
+      'linear-gradient(135deg,#EF4444,#C03020)';
+    if(gameState.timeLeft<=0){clearInterval(gameState.speedTimer);endGame();}
+  },1000);
+}
+
+function showSpeedQuestion(){
+  const term = getRandTerm();
+  const def = getDef(term);
+  const isO = Math.random()>.4;
+  let shown = def;
+  if(!isO){
+    const wrong = getRandTerms(3).filter(t=>t!==term)[0];
+    shown = getDef(wrong);
+  }
+  gameState.speedAns = isO;
+  gameState.speedTerm = term;
+
+  document.getElementById('game-content').innerHTML=`
+    <div class="q-card">
+      <div class="q-label">⚡ "${term}" 의 설명인가요?</div>
+      <div class="q-text">${shown}</div>
+    </div>
+    <div class="ox-btns">
+      <button class="ox-btn ox-o" onclick="answerSpeed(true)">⭕</button>
+      <button class="ox-btn ox-x" onclick="answerSpeed(false)">❌</button>
+    </div>`;
+}
+
+function answerSpeed(ans){
+  gameState.speedTotal++;
+  if(ans===gameState.speedAns){
+    gameState.speedScore++;
+    addScore(50);streak++;
+  } else {streak=0;}
+  updateHeader();
+  showSpeedQuestion();
+}
+
+// ══ 팀 대항전 ══
+function startTeamGame(){
+  gameState.teams = [{name:'🔵 팀 A',score:0},{name:'🔴 팀 B',score:0}];
+  gameState.currentTeam = 0;
+  gameState.teamQ = 0;
+  gameState.teamTotal = 10;
+  showTeamQuestion();
+}
+
+function showTeamQuestion(){
+  if(gameState.teamQ >= gameState.teamTotal){endGame();return;}
+  const team = gameState.teams[gameState.currentTeam];
+  const term = getRandTerm();
+  const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
+  const choices = [term,...others].sort(()=>Math.random()-.5);
+  gameState.teamAnswer = term;
+  gameState.teamQ++;
+
+  document.getElementById('game-content').innerHTML=`
+    <div class="team-scores">
+      ${gameState.teams.map((t,i)=>`
+        <div class="team-card${i===gameState.currentTeam?' active':''}">
+          <div class="team-name">${t.name}</div>
+          <div class="team-score">${t.score}점</div>
+        </div>`).join('')}
+    </div>
+    <div class="q-card" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2)">
+      <div class="q-label" style="color:var(--amber)">${team.name} 차례! (${gameState.teamQ}/${gameState.teamTotal})</div>
+      <div class="q-text">${getDef(term)}</div>
+    </div>
+    <div class="choices">
+      ${choices.map((c,i)=>`<button class="choice-btn" onclick="answerTeam('${c}',this)">
+        ${['①','②','③','④'][i]} ${c}
+      </button>`).join('')}
+    </div>`;
+  startTimer(15);
+}
+
+function answerTeam(ans, el){
+  clearTimer();
+  const correct = ans === gameState.teamAnswer;
+  document.querySelectorAll('.choice-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.includes(gameState.teamAnswer)) b.classList.add('correct');
+  });
+  if(!correct) el.classList.add('wrong');
+  if(correct) gameState.teams[gameState.currentTeam].score+=100;
+  gameState.currentTeam = 1-gameState.currentTeam;
+  showFeedback(correct, gameState.teamAnswer, getDef(gameState.teamAnswer));
+  setTimeout(()=>showTeamQuestion(), 1800);
+}
+
+// ══ 피드백 & 점수 ══
+function showFeedback(correct, term, def){
+  const el = document.getElementById('feedback');
+  el.className = 'feedback ' + (correct?'fb-correct':'fb-wrong');
+  if(correct){
+    addScore(correct?100:0);streak++;
+    el.innerHTML = `✅ 정답! +100점 🎉<div class="fb-explain">${term}: ${def}</div>`;
+  } else {
+    streak=0;
+    el.innerHTML = `❌ 틀렸어요<div class="fb-explain">정답: ${term} — ${def}</div>`;
+  }
+  el.style.display='block';
+  updateHeader();
+  if(correct) gameState.correct++;
+  else gameState.wrong++;
+}
+
+function addScore(pts){ totalScore+=pts; gameState.score=(gameState.score||0)+pts; }
+function updateHeader(){
+  document.getElementById('total-score').textContent=totalScore;
+  document.getElementById('streak-count').textContent=streak;
+}
+
+// ══ 건너뛰기 ══
+function skipQuestion(){clearTimer();gameState.wrong++;streak=0;updateHeader();nextQuestion();}
+
+// ══ 타이머 ══
+let _timer=null;
+function startTimer(sec){
+  clearTimer();
+  let left=sec;
+  document.getElementById('timer-display').textContent='⏱️ '+left+'s';
+  _timer=setInterval(()=>{
+    left--;
+    document.getElementById('timer-display').textContent='⏱️ '+left+'s';
+    if(left<=0){clearTimer();if(gameState.type!=='speed'){streak=0;gameState.wrong++;updateHeader();nextQuestion();}}
+  },1000);
+}
+function clearTimer(){if(_timer){clearInterval(_timer);_timer=null;}}
+
+// ══ 게임 종료 ══
+function endGame(){
+  clearTimer();
+  if(gameState.speedTimer) clearInterval(gameState.speedTimer);
+  document.getElementById('game-area').style.display='none';
+  document.getElementById('result-area').style.display='block';
+
+  const sc = gameState.score||totalScore;
+  const correct = gameState.correct||gameState.speedScore||gameState.matchScore||0;
+  const total = gameState.total||gameState.speedTotal||gameState.matchTotal||10;
+  const pct = Math.round(correct/Math.max(total,1)*100);
+  const emoji = pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'💪';
+  const msg = pct>=90?'완벽해요! 사회 용어 마스터!':pct>=70?'잘했어요! 조금만 더!':pct>=50?'좋아요! 계속 연습해봐요!':'다시 도전해봐요!';
+
+  // 랭킹 저장
+  rankings.push({name:stuName,score:sc,game:currentGame,date:new Date().toLocaleTimeString('ko-KR')});
+  rankings.sort((a,b)=>b.score-a.score);
+  rankings=rankings.slice(0,10);
+  localStorage.setItem('eaim_game_rankings',JSON.stringify(rankings));
+
+  document.getElementById('result-content').innerHTML=`
+    <div class="result-emoji">${emoji}</div>
+    <div class="result-score">${sc}점</div>
+    <div class="result-msg">${msg}</div>
+    <div class="result-stats">
+      <div class="stat-item"><div class="stat-val">${correct}</div><div class="stat-lbl">정답</div></div>
+      <div class="stat-item"><div class="stat-val">${pct}%</div><div class="stat-lbl">정답률</div></div>
+      <div class="stat-item"><div class="stat-val">${streak}</div><div class="stat-lbl">최고연속</div></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="startGame('${currentGame}')" class="btn bsky" style="flex:1">🔄 다시하기</button>
+      <button onclick="goLobby()" class="btn bg2" style="flex:1">🏠 로비로</button>
+    </div>`;
+}
+
+// ══ 로비로 ══
+function goLobby(){
+  clearTimer();
+  if(gameState.speedTimer) clearInterval(gameState.speedTimer);
+  document.getElementById('lobby').style.display='block';
+  document.getElementById('game-area').style.display='none';
+  document.getElementById('result-area').style.display='none';
+  loadRankings();
+}
+
+// ══ 랭킹 ══
+function loadRankings(){
+  const el=document.getElementById('rank-list');
+  if(!rankings.length){el.innerHTML='<div style="color:rgba(255,255,255,.35);font-size:.82rem;text-align:center;padding:10px">아직 기록이 없어요!</div>';return;}
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML=rankings.slice(0,5).map((r,i)=>`
+    <div class="rank-item">
+      <div class="rank-num">${medals[i]||'  '+(i+1)}</div>
+      <div class="rank-name">${r.name}</div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-right:8px">${r.game}</div>
+      <div class="rank-score">${r.score}점</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
