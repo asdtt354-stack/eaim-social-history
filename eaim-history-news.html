@@ -1480,36 +1480,17 @@ function copyHistSuno() {
 // ══ Gemini 2.0 이미지 생성 ══
 async function genHistoryImage(prompt, style='watercolor') {
   const styleMap = {
-    watercolor: 'watercolor painting style, soft colors, artistic',
-    minhwa: 'Korean traditional minhwa folk art style, flat colors, oriental',
-    woodblock: 'woodblock print style, monochrome, traditional Korean art',
-    illustration: 'historical illustration style, educational textbook art, detailed',
+    watercolor: 'watercolor painting, soft colors, artistic, Korean history',
+    minhwa: 'Korean traditional minhwa folk art, flat colors, oriental painting',
+    woodblock: 'woodblock print, monochrome, traditional Korean art',
+    illustration: 'historical illustration, educational, detailed, textbook art',
   };
-
   const styleText = styleMap[style] || styleMap.watercolor;
-  const fullPrompt = `${prompt}, ${styleText}, Korean history, educational, child-safe, no violence`;
+  const fullPrompt = `${prompt}, ${styleText}, educational, child-safe, no violence, no people`;
 
-  try {
-    // Pollinations AI - 무료, API 키 불필요!
-    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=800&height=500&nologo=true&enhance=true`;
-    console.log('Pollinations 이미지 생성:', url.substring(0,80));
-
-    // 이미지 로드 테스트
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(url);
-      img.onerror = () => {
-        console.error('Pollinations 이미지 로드 실패');
-        resolve(null);
-      };
-      img.src = url;
-      // 10초 타임아웃
-      setTimeout(() => resolve(url), 3000); // URL은 반환하고 로드는 브라우저에 맡김
-    });
-  } catch(e) {
-    console.error('Pollinations 오류:', e.message);
-    return null;
-  }
+  // Pollinations AI - URL 바로 반환 (로드는 브라우저가 처리)
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=800&height=500&nologo=true&seed=${Math.floor(Math.random()*1000)}`;
+  return url;
 }
 
 // ══ 이미지 생성 관련 ══
@@ -1528,29 +1509,33 @@ function selPersonStyle(style, el) {
 }
 
 async function genBgImage() {
-  const prompt = document.getElementById('bg-prompt').value.trim();
-  if (!prompt) {
-    // 인물 이름으로 자동 생성
-    const name = document.getElementById('person-input')?.value.trim() || '조선시대';
-    document.getElementById('bg-prompt').value = name + ' 시대 배경 장면';
-  }
-  const finalPrompt = document.getElementById('bg-prompt').value.trim();
+  const prompt = document.getElementById('bg-prompt').value.trim() ||
+    (document.getElementById('person-input')?.value.trim() || '조선시대') + ' 시대 배경 역사 장면';
+  document.getElementById('bg-prompt').value = prompt;
 
   document.getElementById('bg-gen-loading').style.display = 'block';
   document.getElementById('bg-generated').style.display = 'none';
   document.getElementById('bg-gen-btn').disabled = true;
 
-  const imgUrl = await genHistoryImage(finalPrompt, selBgStyle);
+  const imgUrl = await genHistoryImage(prompt, selBgStyle);
 
-  document.getElementById('bg-gen-loading').style.display = 'none';
-  document.getElementById('bg-gen-btn').disabled = false;
-
-  if (imgUrl) {
-    document.getElementById('bg-gen-img').src = imgUrl;
+  const imgEl = document.getElementById('bg-gen-img');
+  imgEl.src = imgUrl;
+  imgEl.onload = () => {
+    document.getElementById('bg-gen-loading').style.display = 'none';
     document.getElementById('bg-generated').style.display = 'block';
-  } else {
-    alert('이미지 생성에 실패했어요. API 키를 확인해주세요!\n또는 직접 이미지를 업로드해주세요.');
-  }
+    document.getElementById('bg-gen-btn').disabled = false;
+  };
+  imgEl.onerror = () => {
+    document.getElementById('bg-gen-loading').innerHTML =
+      '<p style="color:var(--gold);font-size:.82rem;text-align:center;padding:8px">⏳ 이미지 생성 중... 30초 기다려주세요!<br><small>Pollinations AI가 그림을 그리고 있어요</small></p>';
+    setTimeout(() => { imgEl.src = imgUrl + '&t=' + Date.now(); }, 15000);
+  };
+  setTimeout(() => {
+    document.getElementById('bg-gen-loading').style.display = 'none';
+    document.getElementById('bg-generated').style.display = 'block';
+    document.getElementById('bg-gen-btn').disabled = false;
+  }, 35000);
 }
 
 function setBgFromGenerated() {
