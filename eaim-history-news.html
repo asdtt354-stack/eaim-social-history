@@ -386,15 +386,46 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 
   <!-- 배경 이미지 -->
   <div class="cd">
-    <div class="ct">🖼️ 시대 배경 이미지</div>
-    <div class="hint" style="margin-bottom:12px">💡 위키백과에서 역사 이미지를 검색하거나 직접 업로드해요!</div>
+    <div class="ct">🎨 시대 배경 이미지</div>
+
+    <!-- AI 그림 생성 (Pollinations - 무료!) -->
+    <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
+      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 그림 생성 (무료! API 키 불필요)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
+        <button onclick="selImgStyle('watercolor',this)" class="img-style-btn on">🖌️ 수채화</button>
+        <button onclick="selImgStyle('minhwa',this)" class="img-style-btn">🎭 민화</button>
+        <button onclick="selImgStyle('woodblock',this)" class="img-style-btn">📜 목판화</button>
+        <button onclick="selImgStyle('illustration',this)" class="img-style-btn">🖼️ 삽화</button>
+      </div>
+      <div style="display:flex;gap:7px">
+        <input type="text" id="bg-prompt" class="ni"
+          placeholder="예: 임진왜란 해전 장면, 조선시대 궁궐..."
+          style="font-size:.88rem">
+        <button onclick="genBgImage()" id="bg-gen-btn" class="btn bp bsm" style="white-space:nowrap">🤖 생성!</button>
+      </div>
+      <div id="bg-gen-loading" style="display:none;text-align:center;padding:12px">
+        <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+          <span style="margin-left:6px;font-size:.82rem">AI가 역사 그림을 그리는 중... (10~30초)</span>
+        </div>
+      </div>
+      <div id="bg-generated" style="display:none;margin-top:9px">
+        <img id="bg-gen-img" style="width:100%;border-radius:10px;margin-bottom:8px;max-height:200px;object-fit:cover;cursor:pointer;border:2px solid var(--border)" onclick="setBgFromGenerated()" alt="생성된 배경">
+        <div style="display:flex;gap:7px">
+          <button onclick="setBgFromGenerated()" class="btn bp bsm" style="flex:1">✅ 배경으로 설정</button>
+          <button onclick="genBgImage()" class="btn bg2 bsm" style="flex:1">🔄 다시 생성</button>
+        </div>
+      </div>
+    </div>
 
     <!-- 위키백과 검색 -->
-    <div style="display:flex;gap:7px;margin-bottom:10px">
-      <input type="text" id="bg-wiki-search" class="ni"
-        placeholder="예: 이순신, 임진왜란, 조선시대..."
-        style="font-size:.88rem">
-      <button onclick="searchBgWiki()" class="btn bp bsm" style="white-space:nowrap">🔍 검색!</button>
+    <div style="margin-bottom:10px">
+      <div style="font-size:.74rem;font-weight:700;color:var(--ink2);margin-bottom:7px">🔍 위키백과 이미지 검색</div>
+      <div style="display:flex;gap:7px">
+        <input type="text" id="bg-wiki-search" class="ni"
+          placeholder="예: 이순신, 임진왜란..."
+          style="font-size:.88rem">
+        <button onclick="searchBgWiki()" class="btn bg2 bsm" style="white-space:nowrap">🔍 검색</button>
+      </div>
     </div>
     <div id="bg-wiki-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">위키백과 검색 중...</span></div>
     <div id="bg-imgs" class="bg-img-grid"></div>
@@ -429,21 +460,45 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 
   <!-- 인물 이미지 -->
   <div class="cd">
-    <div class="ct">🖼️ 인물 이미지</div>
-    <div class="hint" style="margin-bottom:12px">💡 위키백과에서 인물 이미지를 검색하거나 직접 업로드해요!</div>
+    <div class="ct">🎨 인물 이미지</div>
 
-    <!-- 위키백과 자동 검색 버튼 -->
-    <button onclick="searchPersonImgWiki()" class="btn bp bfl" style="margin-bottom:10px">
-      🔍 위키백과에서 인물 이미지 검색
+    <!-- AI 인물 그림 생성 -->
+    <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
+      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성 (무료!)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
+        <button onclick="selPersonStyle('watercolor',this)" class="person-style-btn on">🖌️ 수채화</button>
+        <button onclick="selPersonStyle('minhwa',this)" class="person-style-btn">🎭 민화</button>
+        <button onclick="selPersonStyle('woodblock',this)" class="person-style-btn">📜 목판화</button>
+        <button onclick="selPersonStyle('illustration',this)" class="person-style-btn">🖼️ 삽화</button>
+      </div>
+      <button onclick="genPersonImage()" id="person-gen-btn" class="btn bp bfl" style="margin-bottom:9px">
+        🤖 AI 인물 그림 생성!
+      </button>
+      <div id="person-gen-loading" style="display:none;text-align:center;padding:10px">
+        <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+          <span style="margin-left:6px;font-size:.82rem">AI가 인물 그림을 그리는 중... (10~30초)</span>
+        </div>
+      </div>
+      <div id="person-generated" style="display:none;margin-bottom:9px">
+        <img id="person-gen-img" style="width:120px;height:150px;object-fit:cover;border-radius:9px;border:2px solid var(--border);cursor:pointer" onclick="setPersonFromGenerated()" alt="생성된 인물">
+        <div style="display:flex;gap:7px;margin-top:7px">
+          <button onclick="setPersonFromGenerated()" class="btn bp bsm">✅ 적용</button>
+          <button onclick="genPersonImage()" class="btn bg2 bsm">🔄 다시</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 위키백과 검색 -->
+    <button onclick="searchPersonImgWiki()" class="btn bg2 bfl bsm" style="margin-bottom:8px">
+      🔍 위키백과 인물 이미지 검색
     </button>
+    <div id="person-imgs" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px"></div>
 
     <!-- 직접 업로드 -->
-    <button onclick="document.getElementById('img-upload').click()" class="btn bg2 bfl bsm" style="margin-bottom:10px">
+    <button onclick="document.getElementById('img-upload').click()" class="btn bg2 bfl bsm">
       📁 이미지 직접 업로드
     </button>
     <input type="file" id="img-upload" accept="image/*" style="display:none" onchange="uploadPersonImg(this)">
-
-    <div id="person-imgs" style="display:flex;flex-wrap:wrap;gap:7px"></div>
   </div>
 
 
@@ -1424,73 +1479,37 @@ function copyHistSuno() {
 
 // ══ Gemini 2.0 이미지 생성 ══
 async function genHistoryImage(prompt, style='watercolor') {
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
-  if (!key) return null;
-
   const styleMap = {
-    watercolor: 'watercolor style, soft colors, artistic, Korean history',
-    minhwa: 'Korean traditional minhwa painting style, flat, oriental art',
+    watercolor: 'watercolor painting style, soft colors, artistic',
+    minhwa: 'Korean traditional minhwa folk art style, flat colors, oriental',
     woodblock: 'woodblock print style, monochrome, traditional Korean art',
-    illustration: 'historical illustration style, educational textbook art',
+    illustration: 'historical illustration style, educational textbook art, detailed',
   };
 
-  const fullPrompt = `${prompt}, ${styleMap[style]||styleMap.watercolor}, historical scene, educational, child-safe, no violence`;
+  const styleText = styleMap[style] || styleMap.watercolor;
+  const fullPrompt = `${prompt}, ${styleText}, Korean history, educational, child-safe, no violence`;
 
-  // Imagen 3 - v1 버전으로 시도
-  const imagenEndpoints = [
-    'https://generativelanguage.googleapis.com/v1/models/imagen-3.0-generate-002:predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict',
-    'https://us-central1-aiplatform.googleapis.com/v1/projects/auto/locations/us-central1/publishers/google/models/imagen-3.0-generate-002:predict',
-  ];
+  try {
+    // Pollinations AI - 무료, API 키 불필요!
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=800&height=500&nologo=true&enhance=true`;
+    console.log('Pollinations 이미지 생성:', url.substring(0,80));
 
-  for (const endpoint of imagenEndpoints) {
-    try {
-      console.log('Imagen 3 시도:', endpoint.substring(0,60));
-      const r = await fetch(endpoint + '?key=' + key, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          instances: [{ prompt: fullPrompt }],
-          parameters: { sampleCount: 1, aspectRatio: '4:3' }
-        })
-      });
-      const d = await r.json();
-      console.log('응답:', d.error ? d.error.message : '성공!');
-      if (!d.error && d.predictions?.[0]?.bytesBase64Encoded) {
-        return 'data:image/png;base64,' + d.predictions[0].bytesBase64Encoded;
-      }
-    } catch(e) { console.error('오류:', e.message); }
+    // 이미지 로드 테스트
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(url);
+      img.onerror = () => {
+        console.error('Pollinations 이미지 로드 실패');
+        resolve(null);
+      };
+      img.src = url;
+      // 10초 타임아웃
+      setTimeout(() => resolve(url), 3000); // URL은 반환하고 로드는 브라우저에 맡김
+    });
+  } catch(e) {
+    console.error('Pollinations 오류:', e.message);
+    return null;
   }
-
-  // Gemini 2.0 Flash - v1 버전으로 시도
-  const geminiEndpoints = [
-    'https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-preview-image-generation:generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent',
-  ];
-
-  for (const endpoint of geminiEndpoints) {
-    try {
-      console.log('Gemini 이미지 시도:', endpoint.substring(0,60));
-      const r = await fetch(endpoint + '?key=' + key, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: fullPrompt }] }],
-          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-        })
-      });
-      const d = await r.json();
-      console.log('응답:', d.error ? d.error.message : '성공!');
-      if (!d.error) {
-        const parts = d.candidates?.[0]?.content?.parts || [];
-        const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-        if (imgPart) return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
-      }
-    } catch(e) { console.error('오류:', e.message); }
-  }
-
-  console.error('모든 이미지 생성 실패 - 직접 업로드를 사용해주세요');
-  return null;
 }
 
 // ══ 이미지 생성 관련 ══
