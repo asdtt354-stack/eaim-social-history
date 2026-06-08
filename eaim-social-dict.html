@@ -523,27 +523,12 @@ async function callGemini(prompt,maxTokens=800){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
-// ══ Gemini 2.0 이미지 생성 ══
+// ══ Pollinations AI 이미지 생성 (무료! API 키 불필요) ══
 async function genAIImage(prompt) {
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
-  if (!key) return null;
   try {
-    const r = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=' + key,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-        })
-      }
-    );
-    const d = await r.json();
-    const parts = d.candidates?.[0]?.content?.parts || [];
-    const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-    if (imgPart) return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
-    return null;
+    const fullPrompt = prompt + ', educational illustration, colorful, child-safe, flat design';
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=600&height=400&nologo=true`;
+    return url;
   } catch(e) { return null; }
 }
 
