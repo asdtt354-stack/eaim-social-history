@@ -150,6 +150,37 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   <div class="feat-item">🗺️ 3가지 앱</div>
 </div>
 
+
+<!-- API 키 입력 섹션 -->
+<div style="max-width:800px;margin:20px auto 0;padding:0 16px">
+  <div style="background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:1.2rem;padding:16px 20px;border:2px solid rgba(212,168,71,.25);box-shadow:0 8px 28px rgba(0,0,0,.2)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-size:1.1rem">🔑</span>
+      <span style="font-family:'Nanum Myeongjo',serif;font-size:.9rem;font-weight:700;color:#fff">Gemini API 키</span>
+      <span id="api-status-badge" style="display:none;background:rgba(212,168,71,.2);border:1px solid rgba(212,168,71,.4);border-radius:99px;padding:2px 10px;font-size:.68rem;color:var(--gold);font-weight:700">✅ 저장됨</span>
+    </div>
+    <p style="font-size:.74rem;color:rgba(255,255,255,.45);margin-bottom:11px">한 번만 입력하면 역사·사회·세계 모든 앱에서 자동으로 사용돼요!</p>
+    <div style="display:flex;gap:8px">
+      <input type="password" id="api-key-input"
+        placeholder="AIzaSy..."
+        style="flex:1;padding:10px 13px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:inherit;font-size:.88rem;outline:none;transition:border-color .2s"
+        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"
+        onkeydown="if(event.key==='Enter')saveApiKey()">
+      <button onclick="saveApiKey()" style="background:linear-gradient(135deg,var(--gold),#A07008);border:none;border-radius:10px;padding:10px 16px;color:#1C0A00;font-family:inherit;font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap">
+        💾 저장
+      </button>
+      <button onclick="toggleShowKey()" id="show-key-btn" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 12px;color:rgba(255,255,255,.65);font-family:inherit;font-size:.8rem;cursor:pointer">
+        👁
+      </button>
+    </div>
+    <div id="api-key-msg" style="font-size:.72rem;text-align:center;margin-top:7px;min-height:16px"></div>
+    <div style="margin-top:10px;background:rgba(255,255,255,.05);border-radius:9px;padding:10px 13px;font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.8">
+      💡 <strong style="color:rgba(212,168,71,.7)">API 키 얻는 방법</strong><br>
+      <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--gold)">aistudio.google.com/apikey</a> → Get API key → 복사 → 여기에 붙여넣기
+    </div>
+  </div>
+</div>
+
 <!-- 앱 카드 -->
 <div class="cards">
 
@@ -247,6 +278,43 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
 </div>
 
 <footer>Designed by Park Seong-ae · EAIM 사회·역사 플랫폼 v1</footer>
+
+
+<script>
+const API_KEY_NAME = 'eaim_gemini_key';
+
+function loadApiKey() {
+  const key = localStorage.getItem(API_KEY_NAME) || '';
+  if (key) {
+    document.getElementById('api-key-input').value = key;
+    document.getElementById('api-status-badge').style.display = 'inline-flex';
+    document.getElementById('api-key-msg').textContent = '✅ API 키가 저장돼 있어요! 모든 앱에서 사용 가능해요.';
+    document.getElementById('api-key-msg').style.color = 'rgba(212,168,71,.8)';
+  }
+}
+
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const msg = document.getElementById('api-key-msg');
+  const badge = document.getElementById('api-status-badge');
+  if (!key) { msg.textContent = '⚠️ API 키를 입력해주세요!'; msg.style.color = 'rgba(255,107,91,.8)'; return; }
+  if (!key.startsWith('AIza')) { msg.textContent = '⚠️ AIza로 시작하는 Gemini API 키를 입력해주세요!'; msg.style.color = 'rgba(255,107,91,.8)'; return; }
+  localStorage.setItem(API_KEY_NAME, key);
+  badge.style.display = 'inline-flex';
+  msg.textContent = '✅ 저장됐어요! 역사·사회·세계 앱 모두 AI 기능 사용 가능해요 🎉';
+  msg.style.color = 'rgba(212,168,71,.8)';
+  setTimeout(() => { msg.textContent = ''; }, 4000);
+}
+
+function toggleShowKey() {
+  const input = document.getElementById('api-key-input');
+  const btn = document.getElementById('show-key-btn');
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁'; }
+}
+
+window.addEventListener('load', loadApiKey);
+</script>
 
 </body>
 </html>
