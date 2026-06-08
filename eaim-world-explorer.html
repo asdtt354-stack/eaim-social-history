@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAIM 세계 나라 탐구</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1628;--navy2:#142238;--navy3:#1E3A5F;
+  --sky:#38BDF8;--sky-l:#E0F5FF;
+  --mint:#00BF8A;--mint-l:#E0FBF2;
+  --amber:#F59E0B;--amber-l:#FFFBEB;
+  --violet:#7C6FCD;--violet-l:#F0EEFF;
+  --coral:#FF6B5B;--coral-l:#FFF0EE;
+  --gold:#F59E0B;
+  --ink:#1A1A2E;--ink2:#4A4A6A;--ink3:#9090B0;
+  --bg:#EFF6FF;--white:#FFF;--r:1.2rem;
+  --s:0 4px 20px rgba(10,22,40,.08);--sl:0 8px 36px rgba(10,22,40,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:80px}
+
+/* ── 배경 ── */
+#bg-image{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;
+  animation:kb 25s ease-in-out infinite alternate;filter:brightness(.2) saturate(.5);transition:background-image 1.5s}
+@keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.08) translateX(2%)}}
+#bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,22,40,.55) 0%,rgba(10,22,40,.75) 100%)}
+#bg-canvas{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+/* ── 모달 ── */
+.ov{position:fixed;inset:0;background:rgba(5,10,20,.75);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
+.mb{background:#fff;border-radius:2rem;padding:1.8rem;width:100%;max-width:400px;box-shadow:0 28px 56px rgba(0,0,0,.3);text-align:center}
+
+/* ── 헤더 ── */
+header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--navy3) 100%);
+  padding:14px 18px;border-bottom:3px solid var(--sky);
+  position:sticky;top:0;z-index:100;box-shadow:0 3px 18px rgba(0,0,0,.3)}
+.hi{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Nanum Myeongjo',serif;font-size:1.3rem;color:#fff;display:flex;align-items:center;gap:7px}
+.la{color:var(--sky)}
+.ls{font-size:.65rem;color:rgba(255,255,255,.4);margin-top:1px}
+.nb{background:rgba(56,189,248,.18);border:1.5px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.75rem;color:var(--sky);font-weight:700;display:none}
+.rb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:4px 10px;font-size:.7rem;color:rgba(255,255,255,.65);cursor:pointer;font-family:inherit;transition:all .2s}
+
+/* ── 스텝 네비 ── */
+.sn{background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:2px solid rgba(56,189,248,.2);
+  padding:8px 13px;display:none;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  position:sticky;top:62px;z-index:90;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.sn::-webkit-scrollbar{display:none}
+.sb{flex-shrink:0;padding:6px 12px;border-radius:11px;border:2px solid #D4DBEE;background:#fff;color:var(--ink2);
+  font-family:inherit;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;line-height:1.3;text-align:center}
+.sb.on{background:var(--sky);border-color:#1A90C0;color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.35);transform:translateY(-1px)}
+.sb.dn{background:var(--sky-l);border-color:rgba(56,189,248,.28);color:#1A70A0}
+.sb.dn::after{content:' ✓'}
+
+/* ── 메인 ── */
+main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:10}
+.tc{display:none;animation:fu .35s ease}
+.tc.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+
+/* ── 카드 ── */
+.cd{background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:var(--r);padding:18px;margin-bottom:13px;box-shadow:var(--s)}
+.ct{font-weight:900;font-size:.88rem;color:var(--ink2);margin-bottom:12px;display:flex;align-items:center;gap:7px;padding-bottom:9px;border-bottom:2px dashed rgba(0,0,0,.06)}
+
+/* ── 선택 패널 ── */
+.map-wrap{
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  border-radius:var(--r);padding:18px;
+  border:2px solid rgba(56,189,248,.2);
+  margin-bottom:14px;
+}
+
+/* ── 대륙별 빠른 선택 ── */
+.continent-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ctab{padding:6px 13px;border-radius:99px;font-size:.74rem;font-weight:700;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.75);cursor:pointer;transition:all .2s;font-family:inherit}
+.ctab:hover{background:rgba(56,189,248,.3);border-color:var(--sky);color:#fff}
+.ctab.on{background:var(--sky);border-color:#1A90C0;color:#fff}
+.country-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cchip{padding:6px 13px;border-radius:99px;font-size:.76rem;font-weight:700;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s}
+.cchip:hover{background:rgba(56,189,248,.25);border-color:var(--sky);color:#fff;transform:scale(1.05)}
+
+/* ── 나라 카드 ── */
+.country-card{
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  border-radius:var(--r);overflow:hidden;
+  border:2px solid rgba(56,189,248,.2);box-shadow:var(--sl);
+  margin-bottom:14px;
+}
+.country-card-header{
+  padding:22px 20px 16px;position:relative;overflow:hidden;
+}
+.country-flag{font-size:3rem;margin-bottom:8px;display:block}
+.country-name{font-family:'Nanum Myeongjo',serif;font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:2px}
+.country-name-ko{font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:12px}
+.country-basic{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.basic-item{background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;border:1px solid rgba(255,255,255,.1)}
+.basic-label{font-size:.65rem;color:rgba(56,189,248,.7);font-weight:700;letter-spacing:.05em;margin-bottom:3px}
+.basic-value{font-size:.82rem;color:rgba(255,255,255,.9);font-weight:700}
+
+/* ── 이미지 그리드 ── */
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px}
+.img-thumb{aspect-ratio:4/3;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .2s;background:var(--bg)}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-thumb.sel{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,189,248,.2)}
+.img-thumb:hover{transform:scale(1.03)}
+
+/* ── 탐구 섹션 ── */
+.explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
+.explore-item{background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:13px;padding:14px}
+.explore-icon{font-size:1.4rem;margin-bottom:6px}
+.explore-label{font-size:.7rem;font-weight:900;color:var(--ink3);margin-bottom:5px;letter-spacing:.04em}
+.explore-text{font-size:.82rem;color:var(--ink2);line-height:1.7}
+
+/* ── 스토리 ── */
+.story-box{background:linear-gradient(135deg,#F0F8FF,#E4F0FF);border:2px solid rgba(56,189,248,.25);border-radius:13px;padding:16px;margin-bottom:13px}
+.story-label{font-size:.72rem;font-weight:900;color:var(--sky);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.story-text{font-family:'Nanum Myeongjo',serif;font-size:.92rem;color:var(--ink);line-height:2;white-space:pre-line}
+
+/* ── 음악 섹션 ── */
+.music-card{
+  background:linear-gradient(135deg,#1A0A30,#0A1A30);
+  border-radius:var(--r);padding:20px;
+  border:2px solid rgba(124,111,205,.3);
+  box-shadow:0 8px 32px rgba(0,0,0,.2);
+  margin-bottom:13px;
+}
+.music-title{font-size:1rem;font-weight:900;color:var(--violet-l);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.music-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;margin-bottom:8px}
+.music-item-label{font-size:.65rem;font-weight:700;color:rgba(124,111,205,.8);letter-spacing:.06em;margin-bottom:4px}
+.music-item-text{font-size:.84rem;color:rgba(255,255,255,.88);line-height:1.7}
+.yt-search-chip{display:inline-block;background:rgba(255,0,0,.2);border:1px solid rgba(255,80,80,.3);border-radius:8px;padding:4px 11px;font-size:.72rem;color:#FF8080;font-weight:700;margin-top:6px;cursor:pointer;transition:all .2s}
+.yt-search-chip:hover{background:rgba(255,0,0,.35)}
+
+/* ── 수노 프롬프트 ── */
+.suno-box{background:linear-gradient(135deg,#1A0830,#0A1A2C);border-radius:var(--r);padding:20px;border:2px solid rgba(245,158,11,.25);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.suno-label{font-size:.65rem;font-weight:700;color:rgba(245,158,11,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.suno-content{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;font-family:'Nanum Myeongjo',serif;font-size:.86rem;color:rgba(255,255,255,.9);line-height:1.9;white-space:pre-line;min-height:44px;margin-bottom:10px}
+.suno-copy-btn{width:100%;padding:12px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#D07800);color:#1C0A00;font-family:inherit;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .2s}
+.suno-copy-btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(245,158,11,.4)}
+
+/* ── 버튼 ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 17px;border-radius:11px;border:none;font-family:inherit;font-weight:800;font-size:.86rem;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bsky{background:linear-gradient(135deg,var(--sky),#1A90C0);color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.28)}
+.bmint{background:linear-gradient(135deg,var(--mint),#009E72);color:#fff;box-shadow:0 4px 14px rgba(0,191,138,.28)}
+.bamb{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
+.bvio{background:linear-gradient(135deg,var(--violet),#5840D0);color:#fff}
+.bg2{background:#fff;color:var(--ink2);border:2px solid #D4DBEE}
+.bg2:hover{border-color:var(--sky);color:#1070A0}
+.bfl{width:100%}
+.bsm{padding:7px 13px;font-size:.76rem;border-radius:9px}
+
+/* ── 액션 버튼 ── */
+.act-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.act-btn{flex:1;min-width:90px;padding:10px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.ab-copy{background:var(--bg);color:var(--ink2);border:2px solid #D4DBEE}
+.ab-copy:hover{border-color:var(--sky)}
+.ab-dl{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
+.ab-print{background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:#fff}
+
+/* ── AI박스 ── */
+.ai-box{background:var(--amber-l);border:1.5px solid rgba(245,158,11,.25);border-radius:11px;padding:13px;margin-top:10px;display:none}
+.ai-label{font-size:.7rem;font-weight:900;color:var(--amber);margin-bottom:6px}
+.ai-text{font-size:.85rem;color:var(--ink2);line-height:1.8;white-space:pre-line}
+
+/* ── 로딩 ── */
+.ld{display:flex;align-items:center;gap:5px;color:var(--ink3);font-size:.8rem}
+.ld span{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:bl 1.2s infinite}
+.ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* ── 정리노트 ── */
+.ta{width:100%;padding:12px;border-radius:11px;border:2px solid #D4DBEE;font-family:inherit;font-size:.92rem;color:var(--ink);resize:vertical;outline:none;transition:border-color .2s;line-height:1.8;min-height:110px;background:var(--bg)}
+.ta:focus{border-color:var(--sky);background:#fff}
+
+@media(max-width:480px){
+  .explore-grid{grid-template-columns:1fr}
+  .img-grid{grid-template-columns:repeat(2,1fr)}
+  .country-basic{grid-template-columns:1fr}
+}
+@media print{header,.sn,.no-print{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<div id="bg-image"></div>
+<div id="bg-overlay"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- 이름 입력 -->
+<div id="nm" class="ov">
+  <div class="mb">
+    <div style="font-size:2.8rem;margin-bottom:11px">🌍</div>
+    <h2 style="font-family:'Nanum Myeongjo',serif;font-size:1.4rem;color:var(--navy);margin-bottom:6px">세계 나라 탐구</h2>
+    <p style="font-size:.84rem;color:var(--ink3);margin-bottom:18px">나라를 클릭하면 AI가 모든 걸 알려줘요!</p>
+    <input type="text" id="sni" placeholder="이름을 입력하세요"
+      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff;transition:border-color .2s"
+      onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='#D4DBEE'"
+      onkeydown="if(event.key==='Enter')sN()">
+    <select id="sclass" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:14px">
+      <option value="">반 선택</option>
+      <option>1반</option><option>2반</option><option>3반</option>
+      <option>4반</option><option>5반</option><option>6반</option>
+    </select>
+    <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🌍 세계 탐구 시작!</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<header>
+  <div class="hi">
+    <div>
+      <div class="logo">🌍 EAIM <span class="la">세계 나라 탐구</span></div>
+      <div class="ls">World Country Explorer with AI & Music</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span id="wn" class="nb"></span>
+      <button onclick="location.reload()" class="rb">↺</button>
+    </div>
+  </div>
+</header>
+
+<!-- 스텝 네비 -->
+<div class="sn" id="sNav">
+  <button class="sb on" id="sB1" onclick="sT(1)">Step 1<br><span style="font-size:.6rem;opacity:.8">🗺️지도</span></button>
+  <button class="sb" id="sB2" onclick="sT(2)">Step 2<br><span style="font-size:.6rem;opacity:.8">🌍나라카드</span></button>
+  <button class="sb" id="sB3" onclick="sT(3)">Step 3<br><span style="font-size:.6rem;opacity:.8">🎵음악</span></button>
+  <button class="sb" id="sB4" onclick="sT(4)">Step 4<br><span style="font-size:.6rem;opacity:.8">✍️정리노트</span></button>
+</div>
+
+<main>
+
+<!-- ══ STEP 1: 나라 선택 ══ -->
+<div id="tab-1" class="tc on" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:18px">
+    <span style="background:var(--sky-l);color:#1070A0;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 1</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px;color:var(--ink)">탐구할 나라를 선택해요</h3>
+  </div>
+
+  <!-- 직접 검색 -->
+  <div style="background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--r);padding:24px;border:2px solid rgba(56,189,248,.25);box-shadow:var(--sl);margin-bottom:14px;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 20%,rgba(56,189,248,.08) 0%,transparent 60%)"></div>
+    <div style="position:relative;z-index:1">
+      <div style="font-family:'Nanum Myeongjo',serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:5px;text-align:center">🌍 나라를 검색하거나 선택해요</div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.5);text-align:center;margin-bottom:16px">버튼 클릭 한 번으로 AI가 모든 정보를 찾아줘요!</div>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="country-search"
+          style="flex:1;padding:12px 15px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.2);border-radius:11px;color:#fff;font-family:inherit;font-size:.95rem;font-weight:700;outline:none;transition:border-color .2s"
+          placeholder="나라 이름 입력... (예: 브라질, 이집트)"
+          onfocus="this.style.borderColor='var(--sky)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'"
+          onkeydown="if(event.key==='Enter')searchCountry()">
+        <button onclick="searchCountry()" class="btn bsky" style="padding:12px 18px;font-size:.92rem">🔍 탐구!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 대륙별 나라 선택 -->
+  <div style="background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--r);padding:18px;border:2px solid rgba(56,189,248,.2)">
+    <!-- 대륙 탭 -->
+    <div class="continent-tabs" id="cont-tabs">
+      <button onclick="showContinent('아시아',this)" class="ctab on">🌏 아시아</button>
+      <button onclick="showContinent('유럽',this)" class="ctab">🌍 유럽</button>
+      <button onclick="showContinent('아메리카',this)" class="ctab">🌎 아메리카</button>
+      <button onclick="showContinent('아프리카',this)" class="ctab">🌍 아프리카</button>
+      <button onclick="showContinent('오세아니아',this)" class="ctab">🌏 오세아니아</button>
+      <button onclick="showContinent('중동',this)" class="ctab">🕌 중동</button>
+    </div>
+    <!-- 나라 칩 -->
+    <div id="country-chips" class="country-chips" style="margin-top:10px"></div>
+  </div>
+
+  <!-- 로딩 -->
+  <div id="country-loading" style="display:none;margin-top:13px" class="cd">
+    <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+      <span style="margin-left:6px">AI가 나라를 탐구하고 있어요...</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STEP 2: 나라 카드 ══ -->
+<div id="tab-2" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:16px">
+    <span style="background:var(--sky-l);color:#1070A0;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 2</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">나라 탐구</h3>
+  </div>
+
+  <!-- 나라 기본 카드 -->
+  <div id="country-card-wrap"></div>
+
+  <!-- 이미지 -->
+  <div class="cd">
+    <div class="ct">🖼️ 국가 이미지</div>
+    <div id="country-imgs" class="img-grid"></div>
+    <div id="img-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">이미지 검색 중...</span></div>
+  </div>
+
+  <!-- 탐구 섹션 -->
+  <div id="explore-wrap"></div>
+
+  <!-- AI 스토리 -->
+  <div class="story-box">
+    <div class="story-label">📖 이 나라 중학생의 하루 (AI 스토리)</div>
+    <div id="story-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">스토리 생성 중...</span></div>
+    <div id="story-text" class="story-text"></div>
+    <button onclick="regenStory()" class="btn bg2 bsm no-print" style="margin-top:10px">🔄 다른 스토리</button>
+  </div>
+
+  <button onclick="sT(3)" class="btn bvio bfl" style="font-size:.92rem;padding:13px">
+    🎵 음악 & 수노 프롬프트 →
+  </button>
+</div>
+
+<!-- ══ STEP 3: 음악 & 수노 ══ -->
+<div id="tab-3" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:16px">
+    <span style="background:var(--violet-l);color:var(--violet);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 3</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">🎵 음악 & 수노 프롬프트</h3>
+  </div>
+
+  <!-- 음악 카드 -->
+  <div id="music-card-wrap"></div>
+
+  <!-- 수노 프롬프트 -->
+  <div id="suno-wrap" style="display:none">
+    <div class="suno-box">
+      <div style="font-family:'Nanum Myeongjo',serif;font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:14px">
+        🎸 전통음악 스타일 수노 프롬프트
+      </div>
+      <div style="margin-bottom:12px">
+        <div class="suno-label">Style & Mood</div>
+        <div class="suno-content" id="suno-style"></div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div class="suno-label">📋 전체 프롬프트 — 수노에 붙여넣기!</div>
+        <div class="suno-content" id="suno-full"></div>
+      </div>
+      <button onclick="copySuno()" class="suno-copy-btn">📋 전체 프롬프트 복사!</button>
+      <div style="margin-top:10px;background:rgba(255,255,255,.05);border-radius:9px;padding:11px 13px;font-size:.73rem;color:rgba(255,255,255,.6);line-height:1.8">
+        🚀 <strong style="color:rgba(245,158,11,.8)">수노 사용법</strong><br>
+        1. <a href="https://suno.com" target="_blank" style="color:var(--gold)">suno.com</a> 접속 → Create → Custom mode<br>
+        2. Style 칸 + Lyrics 칸에 붙여넣기<br>
+        3. Generate! 🎵
+      </div>
+    </div>
+  </div>
+
+  <button onclick="sT(4)" class="btn bamb bfl no-print" style="margin-top:13px;font-size:.92rem;padding:13px">
+    ✍️ 정리 노트 쓰기 →
+  </button>
+</div>
+
+<!-- ══ STEP 4: 정리노트 ══ -->
+<div id="tab-4" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:16px">
+    <span style="background:var(--amber-l);color:#B07000;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 4</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">정리 노트</h3>
+  </div>
+
+  <!-- 탐구한 나라 목록 -->
+  <div class="cd">
+    <div class="ct">🌍 탐구한 나라들 <span id="explored-count" style="background:var(--sky-l);color:#1070A0;border-radius:99px;padding:2px 10px;font-size:.72rem">0개</span></div>
+    <div id="explored-list" style="display:flex;flex-wrap:wrap;gap:7px">
+      <p style="color:var(--ink3);font-size:.82rem">아직 탐구한 나라가 없어요!</p>
+    </div>
+  </div>
+
+  <div class="cd">
+    <div class="ct">✍️ 오늘의 세계 탐구 정리</div>
+    <div style="background:var(--sky-l);border:1.5px solid rgba(56,189,248,.25);border-radius:9px;padding:11px 13px;font-size:.78rem;color:var(--ink2);line-height:1.7;margin-bottom:11px">
+      💡 탐구한 나라들 중 가장 인상 깊었던 건 무엇인가요?<br>한국과 어떤 점이 비슷하고 다른가요?
+    </div>
+    <textarea id="note-text" class="ta" rows="8" placeholder="오늘 탐구한 나라는...
+가장 인상 깊었던 나라는...
+한국과 비슷한 점은...
+다른 점은...
+더 알고 싶은 것은..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button onclick="aiNoteCheck()" class="btn bamb">🤖 AI 첨삭</button>
+      <button onclick="aiNoteHelp()" class="btn bg2">💡 AI 도움</button>
+    </div>
+    <div id="note-ai" class="ai-box">
+      <div class="ai-label">🤖 AI 선생님 피드백</div>
+      <div class="ai-text" id="note-ai-text"></div>
+    </div>
+  </div>
+
+  <div class="act-row no-print">
+    <button onclick="copyNote()" class="act-btn ab-copy">📋 복사</button>
+    <button onclick="downloadNote()" class="act-btn ab-dl">💾 저장</button>
+    <button onclick="downloadAll()" class="act-btn ab-print" style="background:linear-gradient(135deg,var(--navy),var(--navy3))">📦 전체</button>
+  </div>
+</div>
+
+</main>
+
+<div style="text-align:center;padding:12px;color:var(--ink3);font-size:.68rem;position:relative;z-index:10" class="no-print">
+  Designed by Park Seong-ae · EAIM 세계 나라 탐구 v1
+</div>
+
+<script>
+// ══ 상태 ══
+let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let currentCountry=null;
+let exploredCountries=[];
+let selImgUrl='';
+let particles=[];
+
+// ══ 대륙별 나라 데이터 ══
+const CONTINENTS = {
+  '아시아': [
+    {e:'🇰🇷',n:'대한민국'},{e:'🇯🇵',n:'일본'},{e:'🇨🇳',n:'중국'},
+    {e:'🇮🇳',n:'인도'},{e:'🇻🇳',n:'베트남'},{e:'🇹🇭',n:'태국'},
+    {e:'🇮🇩',n:'인도네시아'},{e:'🇵🇭',n:'필리핀'},{e:'🇲🇾',n:'말레이시아'},
+    {e:'🇵🇰',n:'파키스탄'},{e:'🇮🇷',n:'이란'},{e:'🇸🇦',n:'사우디아라비아'},
+    {e:'🇮🇶',n:'이라크'},{e:'🇹🇷',n:'터키'},{e:'🇰🇿',n:'카자흐스탄'},
+    {e:'🇲🇳',n:'몽골'},{e:'🇳🇵',n:'네팔'},{e:'🇸🇬',n:'싱가포르'},
+  ],
+  '유럽': [
+    {e:'🇬🇧',n:'영국'},{e:'🇫🇷',n:'프랑스'},{e:'🇩🇪',n:'독일'},
+    {e:'🇮🇹',n:'이탈리아'},{e:'🇪🇸',n:'스페인'},{e:'🇷🇺',n:'러시아'},
+    {e:'🇳🇱',n:'네덜란드'},{e:'🇸🇪',n:'스웨덴'},{e:'🇳🇴',n:'노르웨이'},
+    {e:'🇫🇮',n:'핀란드'},{e:'🇵🇱',n:'폴란드'},{e:'🇺🇦',n:'우크라이나'},
+    {e:'🇬🇷',n:'그리스'},{e:'🇵🇹',n:'포르투갈'},{e:'🇨🇭',n:'스위스'},
+    {e:'🇦🇹',n:'오스트리아'},{e:'🇧🇪',n:'벨기에'},{e:'🇨🇿',n:'체코'},
+  ],
+  '아메리카': [
+    {e:'🇺🇸',n:'미국'},{e:'🇨🇦',n:'캐나다'},{e:'🇲🇽',n:'멕시코'},
+    {e:'🇧🇷',n:'브라질'},{e:'🇦🇷',n:'아르헨티나'},{e:'🇨🇱',n:'칠레'},
+    {e:'🇨🇴',n:'콜롬비아'},{e:'🇵🇪',n:'페루'},{e:'🇻🇪',n:'베네수엘라'},
+    {e:'🇨🇺',n:'쿠바'},{e:'🇯🇲',n:'자메이카'},{e:'🇪🇨',n:'에콰도르'},
+    {e:'🇧🇴',n:'볼리비아'},{e:'🇵🇾',n:'파라과이'},{e:'🇺🇾',n:'우루과이'},
+  ],
+  '아프리카': [
+    {e:'🇪🇬',n:'이집트'},{e:'🇳🇬',n:'나이지리아'},{e:'🇿🇦',n:'남아프리카공화국'},
+    {e:'🇰🇪',n:'케냐'},{e:'🇪🇹',n:'에티오피아'},{e:'🇬🇭',n:'가나'},
+    {e:'🇸🇳',n:'세네갈'},{e:'🇹🇳',n:'튀니지'},{e:'🇲🇦',n:'모로코'},
+    {e:'🇹🇿',n:'탄자니아'},{e:'🇨🇩',n:'콩고민주공화국'},{e:'🇦🇴',n:'앙골라'},
+  ],
+  '오세아니아': [
+    {e:'🇦🇺',n:'호주'},{e:'🇳🇿',n:'뉴질랜드'},{e:'🇫🇯',n:'피지'},
+    {e:'🇵🇬',n:'파푸아뉴기니'},{e:'🇼🇸',n:'사모아'},{e:'🇹🇴',n:'통가'},
+  ],
+  '중동': [
+    {e:'🇸🇦',n:'사우디아라비아'},{e:'🇮🇷',n:'이란'},{e:'🇮🇶',n:'이라크'},
+    {e:'🇦🇪',n:'아랍에미리트'},{e:'🇮🇱',n:'이스라엘'},{e:'🇯🇴',n:'요르단'},
+    {e:'🇱🇧',n:'레바논'},{e:'🇸🇾',n:'시리아'},{e:'🇾🇪',n:'예멘'},
+    {e:'🇴🇲',n:'오만'},{e:'🇶🇦',n:'카타르'},{e:'🇰🇼',n:'쿠웨이트'},
+  ],
+};
+
+// ══ 파티클 ══
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+let _kws=[];
+function initParticles(kws){_kws=kws;particles=[];for(let i=0;i<35;i++)spawnP();}
+function spawnP(){
+  if(!_kws.length)return;
+  particles.push({x:Math.random()*canvas.width,y:canvas.height+20,
+    text:_kws[Math.floor(Math.random()*_kws.length)],
+    speed:.3+Math.random()*.7,opacity:.08+Math.random()*.18,
+    size:11+Math.random()*16,drift:(Math.random()-.5)*.35});
+}
+function animP(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.y-=p.speed;p.x+=p.drift;
+    ctx.save();ctx.globalAlpha=p.opacity;
+    ctx.fillStyle='#38BDF8';
+    ctx.font=p.size+'px "Noto Sans KR",sans-serif';
+    ctx.fillText(p.text,p.x,p.y);ctx.restore();
+    if(p.y<-40){particles[i]=null;spawnP();}
+  });
+  particles=particles.filter(Boolean);
+  requestAnimationFrame(animP);
+}
+animP();
+
+// ══ 로그인 ══
+function sN(){
+  const n=document.getElementById('sni').value.trim();
+  const c=document.getElementById('sclass').value;
+  if(!n){alert('이름을 입력해주세요!');return;}
+  if(!c){alert('반을 선택해주세요!');return;}
+  stuName=n;
+  const nb=document.getElementById('wn');nb.textContent=n+' 님 🌍';nb.style.display='';
+  document.getElementById('nm').style.display='none';
+  document.getElementById('sNav').style.display='flex';
+  showContinent('아시아',document.querySelector('.ctab'));
+}
+
+// ══ Gemini ══
+async function callGemini(prompt,maxTokens=1000){
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  if(!key)throw new Error('NO_KEY');
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.7}})
+  });
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
+
+// ══ 위키미디어 이미지 ══
+async function searchWikiImgs(query,count=6){
+  const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
+  try{
+    const r=await fetch(url);
+    const d=await r.json();
+    return Object.values(d.query?.pages||{})
+      .filter(p=>p.imageinfo?.[0]?.mime?.startsWith('image/'))
+      .map(p=>p.imageinfo[0].thumburl||p.imageinfo[0].url)
+      .filter(Boolean);
+  }catch(e){return[];}
+}
+
+// ══ 대륙별 탭 ══
+function showContinent(cont,btn){
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const countries=CONTINENTS[cont]||[];
+  const el=document.getElementById('country-chips');
+  el.innerHTML='';
+  countries.forEach(c=>{
+    const chip=document.createElement('span');
+    chip.className='cchip';chip.textContent=c.e+' '+c.n;
+    chip.onclick=()=>selectCountry(c.n);
+    el.appendChild(chip);
+  });
+}
+
+// ══ SVG 지도 클릭 ══
+document.addEventListener('DOMContentLoaded',()=>{
+  showContinent('아시아',document.querySelector('.ctab'));
+});
+
+function searchCountry(){
+  const name=document.getElementById('country-search').value.trim();
+  if(!name){alert('나라 이름을 입력해주세요!');return;}
+  selectCountry(name);
+}
+
+// ══ 나라 선택 → 전체 탐구 ══
+async function selectCountry(name){
+  document.getElementById('country-loading').style.display='block';
+  initParticles([name,'문화','역사','정치','경제','음악','전통','세계']);
+  sT(2);
+
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+
+  if(key){
+    try{
+      const raw=await callGemini(`중학교 사회 교과에서 배우는 나라 "${name}"에 대해 JSON으로 정보를 주세요.
+다른 텍스트 없이 순수 JSON만:
+{
+  "name": "나라 이름",
+  "nameKo": "한국어 공식 명칭",
+  "flag": "국기 이모지",
+  "capital": "수도",
+  "population": "인구 (예: 약 5천만 명)",
+  "language": "공용어",
+  "religion": "주요 종교",
+  "area": "면적 (예: 약 10만 km²)",
+  "continent": "대륙",
+  "keywords": ["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],
+  "politics": "정치체제 설명 (2문장)",
+  "economy": "경제수준 및 특징 (2문장)",
+  "culture": "문화 특징 (2문장)",
+  "history": "역사 핵심 (2문장)",
+  "koreaRelation": "한국과의 관계 (2문장)",
+  "story": "이 나라 중학생의 하루 이야기 (5-6문장, 대화체 포함, 생동감있게)",
+  "music": {
+    "traditional": "전통 음악 장르명 및 설명",
+    "instrument": "대표 전통 악기",
+    "composer": "유명 음악가 또는 작곡가",
+    "modern": "현대 대표 음악/가수",
+    "youtubeSearch": "유튜브 검색어 (한국어, 전통음악)",
+    "sunoStyle": "수노 Style 칸 내용 (영어, 전통음악 스타일, 120자 이내)",
+    "sunoMood": "수노 분위기 (영어)",
+    "sunoPrompt": "수노 전체 프롬프트 (영어, 전통음악 기반)"
+  },
+  "wikiSearch": "위키미디어 이미지 검색어 (영어)"
+}`,1500);
+      const clean=raw.replace(/```json|```/g,'').trim();
+      currentCountry=JSON.parse(clean);
+      _kws=currentCountry.keywords||[name];
+      initParticles(_kws);
+      buildCountryCard();
+      loadCountryImgs(currentCountry.wikiSearch||name);
+      buildExplore();
+      buildStory();
+      buildMusic();
+      addExplored(name);
+    }catch(e){
+      currentCountry={name,nameKo:name,flag:'🌍',capital:'정보 없음',population:'',language:'',religion:'',area:'',continent:'',keywords:[name],politics:'API 키를 설정하면 정보를 볼 수 있어요.',economy:'',culture:'',history:'',koreaRelation:'',story:name+'의 중학생 이야기를 불러오지 못했어요.',music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, ethnic',sunoPrompt:'[Style: '+name+' traditional music]\n\n[Lyrics]\n...'},wikiSearch:name};
+      buildCountryCard();loadCountryImgs(name);buildExplore();buildStory();buildMusic();addExplored(name);
+    }
+  } else {
+    currentCountry={name,nameKo:name,flag:'🌍',capital:'API 키 필요',population:'API 키를 설정하면 볼 수 있어요.',language:'',religion:'',area:'',continent:'',keywords:[name],politics:'교사 패널에서 Gemini API 키를 설정해주세요.',economy:'',culture:'',history:'',koreaRelation:'',story:'API 키를 설정하면 AI 스토리를 볼 수 있어요.',music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, world music',sunoPrompt:'[Style: '+name+' traditional music, world music]\n\n[Lyrics]\n(API 키를 설정하면 자동 생성돼요)'},wikiSearch:name};
+    buildCountryCard();loadCountryImgs(name);buildExplore();buildStory();buildMusic();addExplored(name);
+  }
+  document.getElementById('country-loading').style.display='none';
+}
+
+// ══ 나라 기본 카드 ══
+function buildCountryCard(){
+  if(!currentCountry)return;
+  const c=currentCountry;
+  document.getElementById('country-card-wrap').innerHTML=`
+    <div class="country-card">
+      <div class="country-card-header">
+        <span class="country-flag">${c.flag||'🌍'}</span>
+        <div class="country-name">${c.name}</div>
+        <div class="country-name-ko">${c.nameKo||''} · ${c.continent||''}</div>
+        <div class="country-basic">
+          <div class="basic-item"><div class="basic-label">🏙️ 수도</div><div class="basic-value">${c.capital||'-'}</div></div>
+          <div class="basic-item"><div class="basic-label">👥 인구</div><div class="basic-value">${c.population||'-'}</div></div>
+          <div class="basic-item"><div class="basic-label">💬 언어</div><div class="basic-value">${c.language||'-'}</div></div>
+          <div class="basic-item"><div class="basic-label">🕌 종교</div><div class="basic-value">${c.religion||'-'}</div></div>
+          <div class="basic-item"><div class="basic-label">📐 면적</div><div class="basic-value">${c.area||'-'}</div></div>
+          <div class="basic-item"><div class="basic-label">✨ 키워드</div><div class="basic-value" style="font-size:.72rem">${(c.keywords||[]).slice(0,3).join(' · ')}</div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ══ 이미지 로드 ══
+async function loadCountryImgs(query){
+  const el=document.getElementById('country-imgs');
+  const ld=document.getElementById('img-loading');
+  el.innerHTML='';ld.style.display='flex';
+  const imgs=await searchWikiImgs(query+' country landmark',9);
+  ld.style.display='none';
+  if(!imgs.length){el.innerHTML='<p style="color:var(--ink3);font-size:.78rem;grid-column:span 3">이미지를 찾지 못했어요.</p>';return;}
+  imgs.forEach((url,i)=>{
+    const div=document.createElement('div');
+    div.className='img-thumb'+(i===0?' sel':'');
+    div.innerHTML=`<img src="${url}" onerror="this.parentElement.style.display='none'">`;
+    div.onclick=()=>{
+      document.querySelectorAll('.img-thumb').forEach(d=>d.classList.remove('sel'));
+      div.classList.add('sel');selImgUrl=url;
+      document.getElementById('bg-image').style.backgroundImage=`url(${url})`;
+    };
+    if(i===0){selImgUrl=url;document.getElementById('bg-image').style.backgroundImage=`url(${url})`;}
+    el.appendChild(div);
+  });
+}
+
+// ══ 탐구 섹션 ══
+function buildExplore(){
+  if(!currentCountry)return;
+  const c=currentCountry;
+  document.getElementById('explore-wrap').innerHTML=`
+    <div class="explore-grid">
+      <div class="explore-item" style="border-color:rgba(56,189,248,.2)">
+        <div class="explore-icon">🏛️</div>
+        <div class="explore-label">정치 체제</div>
+        <div class="explore-text">${c.politics||'-'}</div>
+      </div>
+      <div class="explore-item" style="border-color:rgba(0,191,138,.2)">
+        <div class="explore-icon">💰</div>
+        <div class="explore-label">경제 수준</div>
+        <div class="explore-text">${c.economy||'-'}</div>
+      </div>
+      <div class="explore-item" style="border-color:rgba(245,158,11,.2)">
+        <div class="explore-icon">🎨</div>
+        <div class="explore-label">문화 특징</div>
+        <div class="explore-text">${c.culture||'-'}</div>
+      </div>
+      <div class="explore-item" style="border-color:rgba(255,107,91,.2)">
+        <div class="explore-icon">📜</div>
+        <div class="explore-label">역사 핵심</div>
+        <div class="explore-text">${c.history||'-'}</div>
+      </div>
+    </div>
+    <div class="cd" style="border-color:rgba(124,111,205,.2);background:var(--violet-l)">
+      <div class="ct" style="color:var(--violet)">🇰🇷 한국과의 관계</div>
+      <div style="font-size:.86rem;color:var(--ink2);line-height:1.8">${c.koreaRelation||'-'}</div>
+    </div>`;
+}
+
+// ══ 스토리 ══
+function buildStory(){
+  if(!currentCountry)return;
+  document.getElementById('story-text').textContent=currentCountry.story||'';
+}
+async function regenStory(){
+  if(!currentCountry)return;
+  const el=document.getElementById('story-text');
+  const ld=document.getElementById('story-loading');
+  el.textContent='';ld.style.display='flex';
+  try{
+    const result=await callGemini(`"${currentCountry.name}" 나라의 중학생 하루 이야기를 새롭게 만들어주세요.\n조건:\n- 5-6문장\n- 대화체 포함\n- 그 나라 문화/생활방식이 자연스럽게 반영\n- 생동감 있게\n\n이야기만 써주세요:`,400);
+    el.textContent=result;currentCountry.story=result;
+  }catch(e){el.textContent='다시 시도해주세요.';}
+  ld.style.display='none';
+}
+
+// ══ 음악 ══
+function buildMusic(){
+  if(!currentCountry?.music)return;
+  const m=currentCountry.music;
+  const c=currentCountry;
+  document.getElementById('music-card-wrap').innerHTML=`
+    <div class="music-card">
+      <div class="music-title">🎵 ${c.name}의 음악과 문화</div>
+      ${m.traditional?`<div class="music-item"><div class="music-item-label">🎶 전통 음악</div><div class="music-item-text">${m.traditional}</div></div>`:''}
+      ${m.instrument?`<div class="music-item"><div class="music-item-label">🎸 대표 악기</div><div class="music-item-text">${m.instrument}</div></div>`:''}
+      ${m.composer?`<div class="music-item"><div class="music-item-label">🎼 유명 음악가</div><div class="music-item-text">${m.composer}</div></div>`:''}
+      ${m.modern?`<div class="music-item"><div class="music-item-label">🎤 현대 대표 음악</div><div class="music-item-text">${m.modern}</div></div>`:''}
+      ${m.youtubeSearch?`<div class="music-item"><div class="music-item-label">▶️ 유튜브 검색</div>
+        <div class="yt-search-chip" onclick="copyYT('${m.youtubeSearch}')">🔍 "${m.youtubeSearch}" 복사!</div>
+      </div>`:''}
+    </div>`;
+
+  // 수노 프롬프트
+  if(m.sunoPrompt){
+    document.getElementById('suno-style').textContent=
+      `Style: ${m.sunoStyle||''}\nMood: ${m.sunoMood||'cultural, ethnic, traditional'}`;
+    document.getElementById('suno-full').textContent=m.sunoPrompt;
+    document.getElementById('suno-wrap').style.display='block';
+  }
+}
+
+function copyYT(search){
+  navigator.clipboard.writeText(search).then(()=>alert('"'+search+'" 복사됐어요!\n유튜브에서 검색해보세요 🎵'));
+}
+function copySuno(){
+  const text=document.getElementById('suno-full').textContent;
+  navigator.clipboard.writeText(text).then(()=>alert('📋 복사됐어요! 수노에 붙여넣기 해보세요~ 🎵'));
+}
+
+// ══ 탐구 나라 목록 ══
+function addExplored(name){
+  if(!exploredCountries.includes(name)) exploredCountries.push(name);
+  const el=document.getElementById('explored-list');
+  const cnt=document.getElementById('explored-count');
+  cnt.textContent=exploredCountries.length+'개';
+  el.innerHTML=exploredCountries.map(n=>`
+    <span style="background:var(--sky-l);color:#1070A0;border-radius:99px;padding:5px 12px;font-size:.78rem;font-weight:700;cursor:pointer" onclick="selectCountry('${n}')">🌍 ${n}</span>`).join('');
+}
+
+// ══ 정리노트 AI ══
+async function aiNoteCheck(){
+  const text=document.getElementById('note-text').value.trim();
+  if(!text){alert('정리 노트를 먼저 써주세요!');return;}
+  const el=document.getElementById('note-ai');
+  const txt=document.getElementById('note-ai-text');
+  el.style.display='block';
+  txt.innerHTML='<div class="ld"><span></span><span></span><span></span><span style="margin-left:5px">AI가 읽는 중...</span></div>';
+  try{
+    const result=await callGemini(`중학생이 세계 나라(${exploredCountries.join(', ')})를 탐구하고 쓴 정리 노트를 첨삭해주세요.\n\n노트:\n${text}\n\n✅ 잘한 점:\n✏️ 보완할 부분:\n💡 추가하면 좋은 내용:\n⭐ 격려 한마디:\n\n짧고 따뜻하게 한국어로.`,400);
+    txt.textContent=result;
+  }catch(e){txt.textContent='API 키를 설정하면 AI 첨삭을 받을 수 있어요.';}
+}
+async function aiNoteHelp(){
+  const el=document.getElementById('note-ai');
+  const txt=document.getElementById('note-ai-text');
+  el.style.display='block';
+  txt.innerHTML='<div class="ld"><span></span><span></span><span></span><span style="margin-left:5px">생각 중...</span></div>';
+  try{
+    const result=await callGemini(`중학생이 세계 나라(${exploredCountries.join(', ')})를 탐구했습니다.\n정리 노트 쓰기 힌트:\n🌟 시작 문장 예시:\n💭 생각해볼 질문 2개:\n📝 꼭 포함하면 좋은 내용:\n\n짧고 격려하는 방식으로.`,350);
+    txt.textContent=result;
+  }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
+}
+
+// ══ 복사/저장 ══
+function copyNote(){
+  navigator.clipboard.writeText(document.getElementById('note-text').value)
+    .then(()=>alert('📋 정리 노트가 복사됐어요!'));
+}
+function downloadNote(){
+  const text=document.getElementById('note-text').value;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(`세계 탐구 정리 노트\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n탐구한 나라: ${exploredCountries.join(', ')}\n\n${text}`);
+  a.download=`${stuName}_세계탐구노트.txt`;a.click();
+}
+function downloadAll(){
+  const c=currentCountry;
+  let text=`🌍 세계 나라 탐구 보고서\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n${'='.repeat(40)}\n\n`;
+  if(c){
+    text+=`나라: ${c.name} ${c.flag||''}\n수도: ${c.capital}\n인구: ${c.population}\n\n`;
+    text+=`[정치] ${c.politics}\n[경제] ${c.economy}\n[문화] ${c.culture}\n[역사] ${c.history}\n[한국관계] ${c.koreaRelation}\n\n`;
+    text+=`[스토리]\n${c.story}\n\n`;
+    if(c.music){text+=`[음악]\n전통음악: ${c.music.traditional}\n악기: ${c.music.instrument}\n음악가: ${c.music.composer}\n\n`;}
+  }
+  const note=document.getElementById('note-text').value;
+  if(note)text+=`${'='.repeat(40)}\n정리 노트\n${'='.repeat(40)}\n${note}`;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
+  a.download=`${stuName}_세계탐구_전체.txt`;a.click();
+}
+
+// ══ 탭 전환 ══
+function sT(n){
+  for(let i=1;i<=4;i++){
+    const btn=document.getElementById('sB'+i);
+    const cont=document.getElementById('tab-'+i);
+    if(i===n){btn.classList.add('on');btn.classList.remove('dn');cont.classList.add('on');}
+    else{btn.classList.remove('on');if(i<n)btn.classList.add('dn');else btn.classList.remove('dn');cont.classList.remove('on');}
+  }
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

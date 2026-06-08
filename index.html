@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAIM 사회·역사 플랫폼</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{
+  --brown:#8B4513;--brown2:#C4722A;--gold:#D4A847;
+  --navy:#0A1628;--navy2:#1E3A5F;
+  --sky:#38BDF8;--sky-l:#E0F5FF;
+  --amber:#F59E0B;--amber-l:#FFFBEB;
+  --paper:#FDF8F0;--paper2:#F5EED8;--border:#E0CCA0;
+  --ink:#1C1208;--ink2:#5C4A2A;--ink3:#9C8060;
+  --r:1.2rem;--s:0 4px 24px rgba(139,69,19,.08);--sl:0 8px 36px rgba(139,69,19,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Noto Sans KR',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:40px}
+body::before{content:'';position:fixed;inset:0;z-index:-1;
+  background:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(139,69,19,.012) 40px,rgba(139,69,19,.012) 41px),
+             repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(139,69,19,.012) 40px,rgba(139,69,19,.012) 41px)}
+
+/* ── 헤더 ── */
+header{background:linear-gradient(135deg,#2C1810 0%,#4A2818 50%,#2C1810 100%);
+  padding:24px 20px 20px;text-align:center;position:relative;overflow:hidden;
+  border-bottom:4px solid var(--gold)}
+header::after{content:'歷史';position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-size:5rem;color:rgba(212,168,71,.1);font-family:'Nanum Myeongjo',serif;pointer-events:none}
+.logo-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,168,71,.15);
+  border:1px solid rgba(212,168,71,.3);border-radius:99px;padding:4px 14px;
+  font-size:.75rem;color:var(--gold);font-weight:700;margin-bottom:12px}
+.main-title{font-family:'Nanum Myeongjo',serif;font-size:2rem;font-weight:800;color:#fff;margin-bottom:6px}
+.main-title span{color:var(--gold)}
+.main-sub{font-size:.84rem;color:rgba(255,255,255,.55);margin-bottom:16px}
+.eaim-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{padding:5px 14px;border-radius:99px;font-size:.76rem;font-weight:700}
+.pill-e{background:rgba(212,168,71,.2);color:var(--gold);border:1px solid rgba(212,168,71,.35)}
+.pill-a{background:rgba(74,124,89,.2);color:#4A7C59;border:1px solid rgba(74,124,89,.35)}
+.pill-i{background:rgba(56,189,248,.18);color:#38BDF8;border:1px solid rgba(56,189,248,.3)}
+.pill-m{background:rgba(196,114,42,.2);color:#C4722A;border:1px solid rgba(196,114,42,.35)}
+
+/* ── 특징 배지 ── */
+.feat-strip{background:rgba(212,168,71,.06);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:12px 20px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.feat-item{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--ink2);font-weight:700}
+
+/* ── 앱 카드 ── */
+.cards{max-width:800px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:16px}
+
+.app-card{border-radius:1.4rem;overflow:hidden;box-shadow:var(--sl);transition:transform .2s;text-decoration:none;display:block;border:2px solid transparent}
+.app-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.18)}
+
+.card-header{padding:24px 22px 18px;position:relative;overflow:hidden}
+.card-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:3px 11px;
+  font-size:.68rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:10px}
+.live-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.card-h2{font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px}
+.card-h2-sub{font-family:'Noto Sans KR',sans-serif;font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:12px;display:block}
+.card-desc{font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.7;max-width:360px}
+.feat-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.feat-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:99px;padding:4px 11px;font-size:.7rem;color:rgba(255,255,255,.85);font-weight:700}
+
+.card-body{background:rgba(253,248,240,.97);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.step-dots{display:flex;gap:5px;flex-wrap:wrap}
+.sdot{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900}
+.enter-btn{background:var(--brown);color:white;border-radius:10px;padding:9px 18px;
+  font-family:'Pretendard',inherit;font-size:.84rem;font-weight:800;border:none;cursor:pointer;
+  transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.enter-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.2)}
+
+/* ── 역사신문 ── */
+.card-history .card-header{background:linear-gradient(135deg,#1A0808,#3A1010,#1A0A20)}
+.card-history .card-header::after{content:'📰';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-history .enter-btn{background:linear-gradient(135deg,var(--brown),var(--brown2))}
+.card-history .sdot:nth-child(1){background:#FEF3C7;color:#D97706}
+.card-history .sdot:nth-child(2){background:#FEE2E2;color:#DC2626}
+.card-history .sdot:nth-child(3){background:#DCFCE7;color:#15803D}
+.card-history .sdot:nth-child(4){background:#F3E8FF;color:#7E22CE}
+.card-history .sdot:nth-child(5){background:#E0F5FF;color:#1070A0}
+.card-history .sdot:nth-child(6){background:#FFF0E0;color:#B45309}
+.card-history .sdot:nth-child(7){background:#FCE7F3;color:#9D174D}
+
+/* ── 사회 용어 사전 ── */
+.card-social .card-header{background:linear-gradient(135deg,#0A1628,#1E3A5F,#0A2A40)}
+.card-social .card-header::after{content:'📚';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-social .enter-btn{background:linear-gradient(135deg,#38BDF8,#1A90C0)}
+.card-social .sdot:nth-child(1){background:#E0F5FF;color:#1070A0}
+.card-social .sdot:nth-child(2){background:#E0FBF2;color:#008F66}
+.card-social .sdot:nth-child(3){background:#F0EEFF;color:#5840D0}
+.card-social .sdot:nth-child(4){background:#FFFBEB;color:#B07000}
+.card-social .sdot:nth-child(5){background:#FFF0EE;color:#C03020}
+
+/* ── 세계 나라 탐구 ── */
+.card-world .card-header{background:linear-gradient(135deg,#0A1A2C,#1A2A40,#0A2030)}
+.card-world .card-header::after{content:'🌍';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-world .enter-btn{background:linear-gradient(135deg,#00BF8A,#008F66)}
+.card-world .sdot:nth-child(1){background:#E0F5FF;color:#1070A0}
+.card-world .sdot:nth-child(2){background:#E0FBF2;color:#008F66}
+.card-world .sdot:nth-child(3){background:#F0EEFF;color:#5840D0}
+.card-world .sdot:nth-child(4){background:#FFFBEB;color:#B07000}
+
+/* ── 선생님 스트립 ── */
+.teacher-strip{max-width:800px;margin:0 auto 24px;padding:0 16px}
+.ts-inner{background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:var(--r);
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ts-text h3{font-size:.88rem;font-weight:900;color:var(--gold);margin-bottom:3px}
+.ts-text p{font-size:.72rem;color:rgba(212,168,71,.55)}
+.ts-btns{display:flex;gap:8px;flex-wrap:wrap}
+.t-btn{padding:7px 14px;border-radius:9px;font-family:'Pretendard',inherit;font-size:.76rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center}
+.t-btn-hist{background:var(--brown);color:white}
+.t-btn-soc{background:#38BDF8;color:white}
+.t-btn-world{background:#00BF8A;color:white}
+
+/* ── 푸터 ── */
+footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
+
+@media(max-width:480px){
+  .main-title{font-size:1.6rem}
+  .feat-strip{gap:14px}
+  .card-h2{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<header>
+  <div class="logo-badge">🏛️ EAIM 교육 플랫폼</div>
+  <div class="main-title">사회 · <span>역사</span> 플랫폼</div>
+  <p class="main-sub">감성·예술·상호작용·음악화 철학으로 만든 사회·역사 탐구 공간</p>
+  <div class="eaim-pills">
+    <span class="pill pill-e">😊 Emotion</span>
+    <span class="pill pill-a">🎨 Artscape</span>
+    <span class="pill pill-i">🤝 Interactive</span>
+    <span class="pill pill-m">🎵 Musicalization</span>
+  </div>
+</header>
+
+<!-- 특징 배지 -->
+<div class="feat-strip">
+  <div class="feat-item">🏫 중학교 대상</div>
+  <div class="feat-item">🤖 Gemini AI</div>
+  <div class="feat-item">📱 모바일 OK</div>
+  <div class="feat-item">🆓 무료</div>
+  <div class="feat-item">🗺️ 3가지 앱</div>
+</div>
+
+<!-- 앱 카드 -->
+<div class="cards">
+
+  <!-- 역사신문 만들기 -->
+  <a href="eaim-history-news.html" class="app-card card-history">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#D4A847;box-shadow:0 0 6px #D4A847"></div> 역사신문 · AI 기사 자동생성</div>
+      <div class="card-h2">📰 역사신문 만들기</div>
+      <span class="card-h2-sub">History Newspaper Creator</span>
+      <p class="card-desc">역사 인물을 입력하면 AI가 배경 이미지·파티클·인물 카드·신문을 자동으로!</p>
+      <div class="feat-row">
+        <span class="feat-pill">🖼️ 위키 이미지</span>
+        <span class="feat-pill">✨ 파티클 배경</span>
+        <span class="feat-pill">🗞️ 신문 4종</span>
+        <span class="feat-pill">👥 모둠 활동</span>
+        <span class="feat-pill">🎸 수노 프롬프트</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot">S1</div><div class="sdot">S2</div><div class="sdot">S3</div>
+        <div class="sdot">S4</div><div class="sdot">S5</div><div class="sdot">S6</div>
+        <div class="sdot">S7</div>
+      </div>
+      <button class="enter-btn">입장하기 →</button>
+    </div>
+  </a>
+
+  <!-- 사회 용어 사전 -->
+  <a href="eaim-social-dict.html" class="app-card card-social">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#38BDF8;box-shadow:0 0 6px #38BDF8"></div> 사회 용어 · AI 스토리</div>
+      <div class="card-h2">📚 사회 용어 사전</div>
+      <span class="card-h2-sub">Social Studies Dictionary with AI Story</span>
+      <p class="card-desc">용어 입력 → 버튼 하나로 AI 정의·이미지·스토리 동시 생성! 6개 분야 75개 빠른 선택.</p>
+      <div class="feat-row">
+        <span class="feat-pill">🔍 버튼 하나로</span>
+        <span class="feat-pill">📖 AI 스토리 4종</span>
+        <span class="feat-pill">🔗 관련 용어 연결</span>
+        <span class="feat-pill">📚 75개 내장 용어</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot" style="background:#E0F5FF;color:#1070A0">S1</div>
+        <div class="sdot" style="background:#E0FBF2;color:#008F66">S2</div>
+        <div class="sdot" style="background:#F0EEFF;color:#5840D0">S3</div>
+        <div class="sdot" style="background:#FFFBEB;color:#B07000">S4</div>
+        <div class="sdot" style="background:#FFF0EE;color:#C03020">S5</div>
+      </div>
+      <button class="enter-btn" style="background:linear-gradient(135deg,#38BDF8,#1A90C0)">입장하기 →</button>
+    </div>
+  </a>
+
+  <!-- 세계 나라 탐구 -->
+  <a href="eaim-world-explorer.html" class="app-card card-world">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#00BF8A;box-shadow:0 0 6px #00BF8A"></div> 세계 탐구 · 음악 & 수노</div>
+      <div class="card-h2">🌍 세계 나라 탐구</div>
+      <span class="card-h2-sub">World Country Explorer with AI & Music</span>
+      <p class="card-desc">나라 클릭 한 번으로 정치·경제·문화·역사·한국관계·AI스토리·전통음악·수노 프롬프트 자동!</p>
+      <div class="feat-row">
+        <span class="feat-pill">🌏 대륙별 6탭</span>
+        <span class="feat-pill">🏛️ 정치·경제·문화</span>
+        <span class="feat-pill">🎵 전통음악 탐구</span>
+        <span class="feat-pill">🎸 수노 프롬프트</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot" style="background:#E0F5FF;color:#1070A0">S1</div>
+        <div class="sdot" style="background:#E0FBF2;color:#008F66">S2</div>
+        <div class="sdot" style="background:#F0EEFF;color:#5840D0">S3</div>
+        <div class="sdot" style="background:#FFFBEB;color:#B07000">S4</div>
+      </div>
+      <button class="enter-btn" style="background:linear-gradient(135deg,#00BF8A,#008F66)">입장하기 →</button>
+    </div>
+  </a>
+
+</div>
+
+<!-- 선생님 스트립 -->
+<div class="teacher-strip">
+  <div class="ts-inner">
+    <div class="ts-text">
+      <h3>👩‍🏫 선생님 전용</h3>
+      <p>각 앱에서 교사 버튼 클릭 → 비밀번호 입력 (기본: 1234)</p>
+    </div>
+    <div class="ts-btns">
+      <a href="eaim-history-news.html" class="t-btn t-btn-hist">역사신문</a>
+      <a href="eaim-social-dict.html" class="t-btn t-btn-soc">사회사전</a>
+      <a href="eaim-world-explorer.html" class="t-btn t-btn-world">세계탐구</a>
+    </div>
+  </div>
+</div>
+
+<footer>Designed by Park Seong-ae · EAIM 사회·역사 플랫폼 v1</footer>
+
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAIM 사회 용어 사전</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1628;--navy2:#142238;--navy3:#1E3050;
+  --sky:#38BDF8;--sky-l:#E0F5FF;
+  --mint:#00BF8A;--mint-l:#E0FBF2;
+  --amber:#F59E0B;--amber-l:#FFFBEB;
+  --violet:#7C6FCD;--violet-l:#F0EEFF;
+  --coral:#FF6B5B;--coral-l:#FFF0EE;
+  --ink:#1A1A2E;--ink2:#4A4A6A;--ink3:#9090B0;
+  --bg:#F0F6FF;--white:#FFF;--r:1.2rem;
+  --s:0 4px 20px rgba(10,22,40,.08);--sl:0 8px 36px rgba(10,22,40,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:80px}
+body::before{content:'';position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(ellipse 70% 50% at 10% 0%,rgba(56,189,248,.08) 0%,transparent 55%),
+             radial-gradient(ellipse 60% 60% at 95% 100%,rgba(124,111,205,.09) 0%,transparent 55%)}
+
+/* ── 배경 ── */
+#bg-image{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;
+  animation:kb 20s ease-in-out infinite alternate;filter:brightness(.25) saturate(.6);transition:background-image 1s}
+@keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.1) translateX(2%)}}
+#bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,22,40,.6) 0%,rgba(10,22,40,.8) 100%)}
+#bg-canvas{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+/* ── 모달 ── */
+.ov{position:fixed;inset:0;background:rgba(5,10,20,.7);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
+.mb{background:#fff;border-radius:2rem;padding:1.8rem;width:100%;max-width:400px;box-shadow:0 28px 56px rgba(0,0,0,.3);text-align:center}
+.mb h2{font-family:'Nanum Myeongjo',serif;font-size:1.4rem;color:var(--navy);margin-bottom:6px}
+.mb p{font-size:.84rem;color:var(--ink3);margin-bottom:18px}
+
+/* ── 헤더 ── */
+header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--navy3) 100%);
+  padding:14px 18px;border-bottom:3px solid var(--sky);
+  position:sticky;top:0;z-index:100;box-shadow:0 3px 18px rgba(0,0,0,.3)}
+.hi{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Nanum Myeongjo',serif;font-size:1.3rem;color:#fff;display:flex;align-items:center;gap:7px}
+.la{color:var(--sky)}
+.ls{font-size:.65rem;color:rgba(255,255,255,.4);margin-top:1px}
+.nb{background:rgba(56,189,248,.18);border:1.5px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.75rem;color:var(--sky);font-weight:700;display:none}
+.rb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:4px 10px;font-size:.7rem;color:rgba(255,255,255,.65);cursor:pointer;font-family:inherit;transition:all .2s}
+
+/* ── 스텝 네비 ── */
+.sn{background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:2px solid rgba(56,189,248,.2);
+  padding:8px 13px;display:flex;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  position:sticky;top:62px;z-index:90;box-shadow:0 2px 10px rgba(0,0,0,.05);display:none}
+.sn::-webkit-scrollbar{display:none}
+.sb{flex-shrink:0;padding:6px 12px;border-radius:11px;border:2px solid #D4DBEE;background:#fff;color:var(--ink2);
+  font-family:inherit;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;line-height:1.3;text-align:center}
+.sb.on{background:var(--sky);border-color:#1A90C0;color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.35);transform:translateY(-1px)}
+.sb.dn{background:var(--sky-l);border-color:rgba(56,189,248,.28);color:#1A70A0}
+.sb.dn::after{content:' ✓'}
+
+/* ── 메인 ── */
+main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:10}
+.tc{display:none;animation:fu .35s ease}
+.tc.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── 카드 ── */
+.cd{background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:var(--r);padding:18px;margin-bottom:13px;box-shadow:var(--s)}
+.ct{font-weight:900;font-size:.88rem;color:var(--ink2);margin-bottom:12px;display:flex;align-items:center;gap:7px;padding-bottom:9px;border-bottom:2px dashed rgba(0,0,0,.06)}
+
+/* ── 검색 박스 (메인) ── */
+.search-hero{
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  border-radius:1.5rem;padding:32px 24px;
+  border:2px solid rgba(56,189,248,.25);
+  box-shadow:0 8px 36px rgba(0,0,0,.25);
+  margin-bottom:16px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.search-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 80% 20%,rgba(56,189,248,.08) 0%,transparent 60%);
+}
+.search-title{font-family:'Nanum Myeongjo',serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px;position:relative;z-index:1}
+.search-sub{font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:20px;position:relative;z-index:1}
+.search-row{display:flex;gap:8px;position:relative;z-index:1}
+.search-input{
+  flex:1;padding:13px 16px;
+  background:rgba(255,255,255,.12);
+  border:2px solid rgba(255,255,255,.2);
+  border-radius:12px;color:#fff;
+  font-family:'Noto Sans KR',inherit;font-size:1rem;font-weight:700;
+  outline:none;transition:border-color .2s;
+}
+.search-input::placeholder{color:rgba(255,255,255,.35)}
+.search-input:focus{border-color:var(--sky);background:rgba(255,255,255,.18)}
+.search-btn{
+  background:linear-gradient(135deg,var(--sky),#1A90C0);
+  border:none;border-radius:12px;padding:13px 20px;
+  color:#fff;font-family:inherit;font-weight:900;font-size:.95rem;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.search-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(56,189,248,.4)}
+.search-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── 빠른 선택 ── */
+.quick-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:16px;position:relative;z-index:1}
+.qchip{padding:6px 14px;border-radius:99px;font-size:.76rem;font-weight:700;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s}
+.qchip:hover{background:rgba(56,189,248,.25);border-color:var(--sky);color:#fff;transform:scale(1.05)}
+
+/* ── 용어 결과 카드 ── */
+.term-card{
+  background:#fff;border-radius:1.4rem;overflow:hidden;
+  box-shadow:var(--sl);border:2px solid rgba(56,189,248,.15);
+  margin-bottom:14px;
+}
+.term-card-header{
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  padding:20px 20px 16px;position:relative;overflow:hidden;
+}
+.term-card-header::after{content:'📚';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:4rem;opacity:.08}
+.term-name{font-family:'Nanum Myeongjo',serif;font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:3px}
+.term-category{display:inline-block;background:rgba(56,189,248,.25);border:1px solid rgba(56,189,248,.4);
+  border-radius:99px;padding:3px 11px;font-size:.7rem;color:var(--sky);font-weight:700;margin-bottom:8px}
+.term-def{font-size:.88rem;color:rgba(255,255,255,.82);line-height:1.8}
+.term-card-body{padding:18px}
+
+/* ── 이미지 그리드 ── */
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.img-thumb{aspect-ratio:4/3;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .2s;background:var(--bg)}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-thumb.sel{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,189,248,.2)}
+.img-thumb:hover{transform:scale(1.03)}
+
+/* ── 스토리 박스 ── */
+.story-box{
+  background:linear-gradient(135deg,#F0F8FF,#E8F4FF);
+  border:2px solid rgba(56,189,248,.25);
+  border-radius:13px;padding:16px;margin-bottom:13px;
+}
+.story-label{font-size:.72rem;font-weight:900;color:var(--sky);letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.story-type-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.stype-btn{padding:5px 12px;border-radius:99px;font-size:.74rem;font-weight:700;cursor:pointer;
+  border:2px solid #D4DBEE;background:#fff;color:var(--ink2);transition:all .2s}
+.stype-btn.on{background:var(--violet);border-color:#5840D0;color:#fff}
+.story-text{font-family:'Nanum Myeongjo',serif;font-size:.92rem;color:var(--ink);line-height:2;white-space:pre-line}
+
+/* ── 관련 용어 ── */
+.related-chips{display:flex;flex-wrap:wrap;gap:7px}
+.rchip{padding:6px 13px;border-radius:99px;font-size:.78rem;font-weight:700;
+  background:var(--mint-l);color:var(--mint);border:2px solid rgba(0,191,138,.25);
+  cursor:pointer;transition:all .15s}
+.rchip:hover{background:var(--mint);color:#fff;transform:scale(1.05)}
+
+/* ── 사전 아이템 ── */
+.dict-item{
+  background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:13px;
+  padding:14px 16px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;
+}
+.dict-thumb{width:64px;height:64px;border-radius:8px;overflow:hidden;flex-shrink:0;
+  background:var(--bg);border:1.5px solid #E0E8F8;display:flex;align-items:center;justify-content:center}
+.dict-thumb img{width:100%;height:100%;object-fit:cover}
+.dict-del{background:none;border:none;cursor:pointer;color:var(--ink3);flex-shrink:0;padding:4px;transition:color .2s}
+.dict-del:hover{color:var(--coral)}
+
+/* ── 완성 사전 ── */
+.dict-book{
+  background:#fff;border:2px solid #D4DBEE;border-radius:1.4rem;
+  overflow:hidden;box-shadow:var(--sl);
+}
+.dict-book-header{
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  padding:20px 24px;text-align:center;border-bottom:3px solid var(--sky);
+}
+.dict-book-title{font-family:'Nanum Myeongjo',serif;font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:4px}
+.dict-book-meta{font-size:.74rem;color:rgba(255,255,255,.5);display:flex;justify-content:center;gap:14px}
+.dict-entry{padding:18px 22px;border-bottom:1.5px dashed #E4EAF4}
+.dict-entry:last-child{border-bottom:none}
+.dict-entry-name{font-family:'Nanum Myeongjo',serif;font-size:1.1rem;font-weight:800;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.dict-entry-cat{font-size:.65rem;background:var(--sky-l);color:#1070A0;padding:2px 8px;border-radius:5px;font-weight:700}
+.dict-entry-def{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:8px}
+.dict-entry-story{background:var(--bg);border-radius:9px;padding:11px 14px;font-family:'Nanum Myeongjo',serif;font-size:.82rem;color:var(--ink);line-height:1.9;white-space:pre-line;border-left:3px solid var(--sky)}
+.dict-entry-img{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-bottom:9px}
+
+/* ── 버튼 ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 17px;border-radius:11px;border:none;font-family:inherit;font-weight:800;font-size:.86rem;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bsky{background:linear-gradient(135deg,var(--sky),#1A90C0);color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.28)}
+.bsky:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(56,189,248,.42)}
+.bmint{background:linear-gradient(135deg,var(--mint),#009E72);color:#fff;box-shadow:0 4px 14px rgba(0,191,138,.28)}
+.bamb{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff;box-shadow:0 4px 14px rgba(245,158,11,.28)}
+.bvio{background:linear-gradient(135deg,var(--violet),#5840D0);color:#fff;box-shadow:0 4px 14px rgba(124,111,205,.28)}
+.bg2{background:#fff;color:var(--ink2);border:2px solid #D4DBEE}
+.bg2:hover{border-color:var(--sky);color:#1070A0}
+.bfl{width:100%}
+.bsm{padding:7px 13px;font-size:.76rem;border-radius:9px}
+
+/* ── 액션 버튼 ── */
+.act-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.act-btn{flex:1;min-width:90px;padding:10px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.act-btn:active{transform:scale(.96)}
+.ab-copy{background:var(--bg);color:var(--ink2);border:2px solid #D4DBEE}
+.ab-copy:hover{border-color:var(--sky);color:#1070A0}
+.ab-dl{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
+.ab-print{background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:#fff}
+
+/* ── AI 박스 ── */
+.ai-box{background:var(--amber-l);border:1.5px solid rgba(245,158,11,.25);border-radius:11px;padding:13px;margin-top:10px;display:none}
+.ai-label{font-size:.7rem;font-weight:900;color:var(--amber);margin-bottom:6px}
+.ai-text{font-size:.85rem;color:var(--ink2);line-height:1.8;white-space:pre-line}
+
+/* ── 로딩 ── */
+.ld{display:flex;align-items:center;gap:5px;color:var(--ink3);font-size:.8rem}
+.ld span{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:bl 1.2s infinite}
+.ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* ── 정리노트 ── */
+.ta{width:100%;padding:12px;border-radius:11px;border:2px solid #D4DBEE;font-family:inherit;font-size:.92rem;color:var(--ink);resize:vertical;outline:none;transition:border-color .2s;line-height:1.8;min-height:110px;background:var(--bg)}
+.ta:focus{border-color:var(--sky);background:#fff}
+
+@media(max-width:480px){.img-grid{grid-template-columns:repeat(2,1fr)}}
+@media print{header,.sn,.no-print{display:none!important}body{background:#fff}.dict-book{box-shadow:none}}
+
+/* ── 분야별 탭 ── */
+.cat-tab{
+  padding:6px 14px;border-radius:99px;font-size:.76rem;font-weight:700;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;font-family:inherit;
+}
+.cat-tab:hover{background:rgba(56,189,248,.25);border-color:var(--sky);color:#fff}
+.cat-tab.on{background:var(--sky);border-color:#1A90C0;color:#fff;box-shadow:0 3px 12px rgba(56,189,248,.35)}
+
+</style>
+</head>
+<body>
+
+<div id="bg-image"></div>
+<div id="bg-overlay"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- 이름 입력 -->
+<div id="nm" class="ov">
+  <div class="mb">
+    <div style="font-size:2.8rem;margin-bottom:11px">📚</div>
+    <h2>사회 용어 사전</h2>
+    <p>용어를 입력하면 AI가 뜻·이미지·스토리를 찾아줘요!</p>
+    <input type="text" id="sni" placeholder="이름을 입력하세요"
+      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff;transition:border-color .2s"
+      onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='#D4DBEE'"
+      onkeydown="if(event.key==='Enter')sN()">
+    <select id="sclass" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:14px">
+      <option value="">반 선택</option>
+      <option>1반</option><option>2반</option><option>3반</option>
+      <option>4반</option><option>5반</option><option>6반</option>
+    </select>
+    <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">📚 사전 만들기 시작!</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<header>
+  <div class="hi">
+    <div>
+      <div class="logo">📚 EAIM <span class="la">사회 용어 사전</span></div>
+      <div class="ls">Social Studies Dictionary with AI Story</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span id="wn" class="nb"></span>
+      <button onclick="location.reload()" class="rb">↺</button>
+    </div>
+  </div>
+</header>
+
+<!-- 스텝 네비 -->
+<div class="sn" id="sNav">
+  <button class="sb on" id="sB1" onclick="sT(1)">Step 1<br><span style="font-size:.6rem;opacity:.8">용어검색</span></button>
+  <button class="sb" id="sB2" onclick="sT(2)">Step 2<br><span style="font-size:.6rem;opacity:.8">용어카드</span></button>
+  <button class="sb" id="sB3" onclick="sT(3)">Step 3<br><span style="font-size:.6rem;opacity:.8">사전모음</span></button>
+  <button class="sb" id="sB4" onclick="sT(4)">Step 4<br><span style="font-size:.6rem;opacity:.8">완성사전</span></button>
+  <button class="sb" id="sB5" onclick="sT(5)">Step 5<br><span style="font-size:.6rem;opacity:.8">정리노트</span></button>
+</div>
+
+<main>
+
+<!-- ══ STEP 1: 용어 검색 ══ -->
+<div id="tab-1" class="tc on" style="margin-top:16px">
+
+  <div class="search-hero">
+    <div class="search-title">🔍 용어를 입력하세요</div>
+    <div class="search-sub">버튼 하나로 AI가 뜻·이미지·스토리를 찾아줘요!</div>
+    <div class="search-row">
+      <input type="text" id="term-input" class="search-input"
+        placeholder="예: 민주주의, 인플레이션, 기후변화..."
+        onkeydown="if(event.key==='Enter')searchTerm()">
+      <button onclick="searchTerm()" id="search-btn" class="search-btn">🔍 검색!</button>
+    </div>
+    <!-- 분야별 탭 -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:16px;position:relative;z-index:1" id="cat-tabs">
+      <button onclick="showCat('정치',this)" class="cat-tab on">🏛️ 정치</button>
+      <button onclick="showCat('경제',this)" class="cat-tab">💰 경제</button>
+      <button onclick="showCat('사회',this)" class="cat-tab">🌍 사회</button>
+      <button onclick="showCat('환경',this)" class="cat-tab">🌱 환경</button>
+      <button onclick="showCat('국제',this)" class="cat-tab">🌐 국제</button>
+      <button onclick="showCat('문화',this)" class="cat-tab">🎨 문화</button>
+    </div>
+    <!-- 분야별 용어 칩 -->
+    <div id="cat-chips" class="quick-chips" style="margin-top:10px"></div>
+  </div>
+
+  <!-- 검색 결과 미리보기 -->
+  <div id="search-loading" style="display:none" class="cd" style="text-align:center;padding:30px">
+    <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+      <span style="margin-left:6px;font-size:.88rem">AI가 용어를 분석하고 이미지를 찾는 중...</span>
+    </div>
+  </div>
+
+  <div id="search-preview" style="display:none">
+    <div class="cd" style="border-color:rgba(56,189,248,.3);background:var(--sky-l);padding:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:1.1rem;font-weight:900;color:var(--navy)" id="preview-name"></span>
+        <span id="preview-cat" style="font-size:.68rem;background:var(--sky);color:#fff;padding:2px 8px;border-radius:5px;font-weight:700"></span>
+      </div>
+      <p id="preview-def" style="font-size:.82rem;color:var(--ink2);line-height:1.7"></p>
+    </div>
+    <button onclick="sT(2)" class="btn bsky bfl" style="font-size:.95rem;padding:13px">
+      📖 용어 카드 자세히 보기 →
+    </button>
+  </div>
+</div>
+
+<!-- ══ STEP 2: 용어 카드 ══ -->
+<div id="tab-2" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:18px">
+    <span style="background:var(--sky-l);color:#1070A0;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 2</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">용어 카드</h3>
+  </div>
+
+  <div id="term-card-wrap"></div>
+
+  <!-- 이미지 선택 -->
+  <div class="cd">
+    <div class="ct">🖼️ 관련 이미지 선택</div>
+    <div id="term-imgs" class="img-grid"></div>
+    <div id="img-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">이미지 검색 중...</span></div>
+    <button onclick="document.getElementById('custom-img').click()" class="btn bg2 bsm" style="margin-top:8px">📁 직접 업로드</button>
+    <input type="file" id="custom-img" accept="image/*" style="display:none" onchange="uploadCustomImg(this)">
+  </div>
+
+  <!-- AI 스토리 -->
+  <div class="story-box">
+    <div class="story-label">📖 AI 스토리로 이해하기</div>
+    <div class="story-type-row">
+      <button class="stype-btn on" onclick="changeStory(this,'생활')">🏠 생활 속</button>
+      <button class="stype-btn" onclick="changeStory(this,'역사')">🏛️ 역사 속</button>
+      <button class="stype-btn" onclick="changeStory(this,'세계')">🌍 세계 속</button>
+      <button class="stype-btn" onclick="changeStory(this,'가상')">🎭 가상 시나리오</button>
+    </div>
+    <div id="story-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">스토리 생성 중...</span></div>
+    <div id="story-text" class="story-text"></div>
+    <button onclick="regenStory()" class="btn bg2 bsm no-print" style="margin-top:10px">🔄 다른 스토리</button>
+  </div>
+
+  <!-- 관련 용어 -->
+  <div class="cd">
+    <div class="ct">🔗 관련 용어</div>
+    <div id="related-chips" class="related-chips"></div>
+    <p style="font-size:.72rem;color:var(--ink3);margin-top:8px">클릭하면 해당 용어를 검색해요!</p>
+  </div>
+
+  <div style="display:flex;gap:8px">
+    <button onclick="addToDict()" class="btn bmint" style="flex:2;font-size:.92rem;padding:13px">📚 사전에 추가!</button>
+    <button onclick="sT(1)" class="btn bg2" style="flex:1">← 다른 용어</button>
+  </div>
+</div>
+
+<!-- ══ STEP 3: 사전 모음 ══ -->
+<div id="tab-3" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:18px">
+    <span style="background:var(--mint-l);color:var(--mint);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 3</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">사전 모음</h3>
+  </div>
+  <div class="cd">
+    <div class="ct">📚 추가된 용어 <span id="dict-count" style="background:var(--sky-l);color:#1070A0;border-radius:99px;padding:2px 10px;font-size:.72rem">0개</span></div>
+    <div id="dict-list">
+      <p style="color:var(--ink3);font-size:.82rem;text-align:center;padding:20px">아직 추가된 용어가 없어요!<br>Step 2에서 용어를 추가해주세요.</p>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="sT(1)" class="btn bg2" style="flex:1">➕ 용어 더 추가</button>
+    <button onclick="sT(4)" class="btn bsky" style="flex:2;font-size:.92rem;padding:13px">📖 사전 완성하기 →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 4: 완성 사전 ══ -->
+<div id="tab-4" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:18px">
+    <span style="background:var(--violet-l);color:var(--violet);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 4</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">완성된 사전</h3>
+  </div>
+
+  <!-- 사전 제목 -->
+  <div class="cd no-print">
+    <div class="ct">📖 사전 제목</div>
+    <input type="text" id="dict-title" style="width:100%;padding:10px 13px;background:var(--bg);border:2px solid #D4DBEE;border-radius:9px;font-family:inherit;font-size:.95rem;font-weight:700;outline:none" value="나의 사회 용어 사전">
+  </div>
+
+  <div id="dict-book-wrap"></div>
+
+  <div class="act-row no-print">
+    <button onclick="copyDict()" class="act-btn ab-copy">📋 복사</button>
+    <button onclick="downloadDict()" class="act-btn ab-dl">💾 저장</button>
+    <button onclick="window.print()" class="act-btn ab-print">🖨️ 인쇄</button>
+  </div>
+  <button onclick="sT(5)" class="btn bamb bfl no-print" style="margin-top:10px;font-size:.92rem;padding:13px">✍️ 정리 노트 쓰기 →</button>
+</div>
+
+<!-- ══ STEP 5: 정리 노트 ══ -->
+<div id="tab-5" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:18px">
+    <span style="background:var(--amber-l);color:#B07000;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 5</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">정리 노트</h3>
+  </div>
+  <div class="cd">
+    <div class="ct">✍️ 오늘 배운 내용 정리</div>
+    <div style="background:var(--amber-l);border:1.5px solid rgba(245,158,11,.25);border-radius:9px;padding:11px 13px;font-size:.78rem;color:var(--ink2);line-height:1.7;margin-bottom:11px">
+      💡 오늘 조사한 용어들 중 가장 인상 깊었던 건 무엇인가요?<br>일상생활과 어떻게 연결될까요?
+    </div>
+    <textarea id="note-text" class="ta" rows="8" placeholder="오늘 조사한 용어 중...
+가장 인상 깊었던 용어는...
+이 용어들이 일상에서 나타나는 예는...
+더 알고 싶은 것은..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button onclick="aiNoteCheck()" class="btn bamb">🤖 AI 첨삭</button>
+      <button onclick="aiNoteHelp()" class="btn bg2">💡 AI 도움</button>
+    </div>
+    <div id="note-ai" class="ai-box">
+      <div class="ai-label">🤖 AI 선생님 피드백</div>
+      <div class="ai-text" id="note-ai-text"></div>
+    </div>
+  </div>
+  <div class="act-row no-print">
+    <button onclick="copyNote()" class="act-btn ab-copy">📋 노트 복사</button>
+    <button onclick="downloadNote()" class="act-btn ab-dl">💾 노트 저장</button>
+    <button onclick="downloadAll()" class="act-btn ab-print" style="background:linear-gradient(135deg,var(--navy),var(--navy3))">📦 전체 저장</button>
+  </div>
+</div>
+
+</main>
+
+<div style="text-align:center;padding:12px;color:var(--ink3);font-size:.68rem;position:relative;z-index:10" class="no-print">
+  Designed by Park Seong-ae · EAIM 사회 용어 사전 v1
+</div>
+
+<script>
+// ══ 상태 ══
+let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let currentTerm=null;   // {name, category, definition, keywords, story, related, imgUrl}
+let dictEntries=[];     // 사전 항목들
+let selImgUrl='';
+let selStoryType='생활';
+let particles=[];
+
+// ══ 파티클 ══
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+
+function initParticles(kws){
+  particles=[];
+  for(let i=0;i<35;i++) spawnP(kws);
+}
+function spawnP(kws){
+  if(!kws||!kws.length)return;
+  particles.push({x:Math.random()*canvas.width,y:canvas.height+20,
+    text:kws[Math.floor(Math.random()*kws.length)],
+    speed:0.3+Math.random()*0.7,opacity:0.1+Math.random()*0.2,
+    size:11+Math.random()*16,drift:(Math.random()-.5)*.35});
+}
+let _kws=[];
+function animP(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.y-=p.speed;p.x+=p.drift;
+    ctx.save();ctx.globalAlpha=p.opacity;
+    ctx.fillStyle='#38BDF8';
+    ctx.font=p.size+'px "Noto Sans KR",sans-serif';
+    ctx.fillText(p.text,p.x,p.y);ctx.restore();
+    if(p.y<-40){particles[i]=null;spawnP(_kws);}
+  });
+  particles=particles.filter(Boolean);
+  requestAnimationFrame(animP);
+}
+animP();
+
+// ══ 로그인 ══
+function sN(){
+  const n=document.getElementById('sni').value.trim();
+  const c=document.getElementById('sclass').value;
+  if(!n){alert('이름을 입력해주세요!');return;}
+  if(!c){alert('반을 선택해주세요!');return;}
+  stuName=n;
+  const nb=document.getElementById('wn');
+  nb.textContent=n+' 님 📚';nb.style.display='';
+  document.getElementById('nm').style.display='none';
+  document.getElementById('sNav').style.display='flex';
+}
+
+// ══ Gemini 호출 ══
+async function callGemini(prompt,maxTokens=800){
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  if(!key)throw new Error('NO_KEY');
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8}})
+  });
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
+
+// ══ 위키미디어 이미지 검색 ══
+async function searchWikiImgs(query,count=6){
+  const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
+  try{
+    const r=await fetch(url);
+    const d=await r.json();
+    return Object.values(d.query?.pages||{})
+      .filter(p=>p.imageinfo?.[0]?.mime?.startsWith('image/'))
+      .map(p=>p.imageinfo[0].thumburl||p.imageinfo[0].url)
+      .filter(Boolean);
+  }catch(e){return[];}
+}
+
+// ══ STEP 1: 용어 검색 ══
+function quickTerm(term){
+  document.getElementById('term-input').value=term;
+  searchTerm();
+}
+
+async function searchTerm(){
+  const term=document.getElementById('term-input').value.trim();
+  if(!term){alert('용어를 입력해주세요!');return;}
+
+  const btn=document.getElementById('search-btn');
+  btn.disabled=true;btn.textContent='🔍 검색 중...';
+  document.getElementById('search-loading').style.display='block';
+  document.getElementById('search-preview').style.display='none';
+
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+
+  // 기본 파티클 시작
+  _kws=[term,'사회','개념','용어','학습','이해'];
+  initParticles(_kws);
+
+  if(key){
+    try{
+      const raw=await callGemini(`중학교 사회 교과 용어 "${term}"에 대해 JSON으로 주세요.
+다른 텍스트 없이 순수 JSON만:
+{
+  "name": "용어명",
+  "category": "분야 (예: 경제, 정치, 사회, 문화, 환경)",
+  "definition": "정의 (중학생 눈높이, 2-3문장)",
+  "keywords": ["관련키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],
+  "related": ["관련용어1","관련용어2","관련용어3","관련용어4"],
+  "wikiSearch": "위키미디어 이미지 검색어 (영어, 간단히)"
+}`,600);
+      const clean=raw.replace(/```json|```/g,'').trim();
+      const info=JSON.parse(clean);
+      currentTerm={...info,story:'',imgUrl:''};
+      _kws=info.keywords||_kws;
+      initParticles(_kws);
+
+      // 미리보기
+      document.getElementById('preview-name').textContent=info.name;
+      document.getElementById('preview-cat').textContent=info.category||'사회';
+      document.getElementById('preview-def').textContent=info.definition||'';
+      document.getElementById('search-loading').style.display='none';
+      document.getElementById('search-preview').style.display='block';
+
+      // 배경 이미지 + 카드 미리 준비
+      buildTermCard();
+      loadTermImages(info.wikiSearch||term);
+      genStory('생활');
+
+    }catch(e){
+      currentTerm={name:term,category:'사회',definition:term+'에 대한 정의입니다.',keywords:_kws,related:[],wikiSearch:term,story:'',imgUrl:''};
+      document.getElementById('preview-name').textContent=term;
+      document.getElementById('preview-cat').textContent='사회';
+      document.getElementById('preview-def').textContent='API 키를 설정하면 AI가 자세한 설명을 제공해요.';
+      document.getElementById('search-loading').style.display='none';
+      document.getElementById('search-preview').style.display='block';
+      buildTermCard();
+      loadTermImages(term);
+    }
+  } else {
+    currentTerm={name:term,category:'사회',definition:term+'에 대한 용어예요. API 키를 설정하면 자세한 설명을 볼 수 있어요.',keywords:_kws,related:[],wikiSearch:term,story:'',imgUrl:''};
+    document.getElementById('preview-name').textContent=term;
+    document.getElementById('preview-cat').textContent='사회';
+    document.getElementById('preview-def').textContent=currentTerm.definition;
+    document.getElementById('search-loading').style.display='none';
+    document.getElementById('search-preview').style.display='block';
+    buildTermCard();
+    loadTermImages(term);
+  }
+
+  btn.disabled=false;btn.textContent='🔍 검색!';
+}
+
+// ══ STEP 2: 용어 카드 ══
+function buildTermCard(){
+  if(!currentTerm)return;
+  const p=currentTerm;
+  const wrap=document.getElementById('term-card-wrap');
+  wrap.innerHTML=`
+    <div class="term-card">
+      <div class="term-card-header">
+        <span class="term-category">${p.category||'사회'}</span>
+        <div class="term-name">${p.name}</div>
+        <div class="term-def">${p.definition||''}</div>
+      </div>
+      <div class="term-card-body">
+        ${selImgUrl?`<img src="${selImgUrl}" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-bottom:12px">`:''}
+        <div style="font-size:.72rem;font-weight:700;color:var(--ink3);margin-bottom:6px">✨ 핵심 키워드</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${(p.keywords||[]).map(k=>`<span style="background:var(--sky-l);color:#1070A0;border-radius:99px;padding:4px 11px;font-size:.76rem;font-weight:700">${k}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  // 배경 이미지
+  if(selImgUrl) document.getElementById('bg-image').style.backgroundImage=`url(${selImgUrl})`;
+}
+
+async function loadTermImages(query){
+  const el=document.getElementById('term-imgs');
+  const ld=document.getElementById('img-loading');
+  el.innerHTML='';ld.style.display='flex';
+  const imgs=await searchWikiImgs(query+' 개념 사회',9);
+  ld.style.display='none';
+  if(!imgs.length){el.innerHTML='<p style="color:var(--ink3);font-size:.78rem;grid-column:span 3">이미지를 찾지 못했어요.</p>';return;}
+  imgs.forEach((url,i)=>{
+    const div=document.createElement('div');
+    div.className='img-thumb'+(i===0?' sel':'');
+    div.innerHTML=`<img src="${url}" onerror="this.parentElement.style.display='none'">`;
+    div.onclick=()=>{
+      document.querySelectorAll('.img-thumb').forEach(d=>d.classList.remove('sel'));
+      div.classList.add('sel');selImgUrl=url;
+      if(currentTerm)currentTerm.imgUrl=url;
+      document.getElementById('bg-image').style.backgroundImage=`url(${url})`;
+      buildTermCard();
+    };
+    if(i===0){selImgUrl=url;if(currentTerm)currentTerm.imgUrl=url;document.getElementById('bg-image').style.backgroundImage=`url(${url})`;}
+    el.appendChild(div);
+  });
+  buildTermCard();
+}
+
+function uploadCustomImg(input){
+  const file=input.files[0];if(!file)return;
+  const url=URL.createObjectURL(file);
+  selImgUrl=url;if(currentTerm)currentTerm.imgUrl=url;
+  document.getElementById('bg-image').style.backgroundImage=`url(${url})`;
+  buildTermCard();
+}
+
+// ══ AI 스토리 ══
+async function genStory(type){
+  if(!currentTerm)return;
+  selStoryType=type;
+  const el=document.getElementById('story-text');
+  const ld=document.getElementById('story-loading');
+  el.textContent='';ld.style.display='flex';
+
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  if(!key){
+    el.textContent=`📖 "${currentTerm.name}" 이야기\n\nAPI 키를 설정하면 AI가 재미있는 스토리를 만들어줘요!\n교사 패널에서 Gemini API 키를 입력해주세요.`;
+    ld.style.display='none';return;
+  }
+
+  const typeMap={
+    '생활':'중학생의 일상생활 속 상황 (학교, 가정, 마트 등)',
+    '역사':'실제 역사적 사건이나 인물과 연결',
+    '세계':'다른 나라의 실제 사례나 상황',
+    '가상':'미래 또는 가상의 흥미로운 시나리오'
+  };
+
+  try{
+    const result=await callGemini(`중학교 사회 용어 "${currentTerm.name}"을 스토리로 설명해주세요.
+
+스토리 유형: ${typeMap[type]||'일상 생활'}
+용어 정의: ${currentTerm.definition}
+
+조건:
+- 중학생이 공감할 수 있는 이야기
+- 스토리 안에 "${currentTerm.name}"의 개념이 자연스럽게 녹아있어야 함
+- 4-6문장 분량
+- 대화체 포함 (더 생동감 있게)
+- 마지막에 한 줄 정리
+
+스토리만 써주세요 (제목, 설명 없이):`,500);
+    currentTerm.story=result;
+    el.textContent=result;
+  }catch(e){
+    el.textContent='스토리를 불러오지 못했어요. 다시 시도해주세요.';
+  }
+  ld.style.display='none';
+
+  // 관련 용어 렌더링
+  renderRelated();
+}
+
+function changeStory(btn,type){
+  document.querySelectorAll('.stype-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  genStory(type);
+}
+
+function regenStory(){genStory(selStoryType);}
+
+function renderRelated(){
+  if(!currentTerm?.related?.length)return;
+  const el=document.getElementById('related-chips');
+  el.innerHTML='';
+  currentTerm.related.forEach(r=>{
+    const chip=document.createElement('span');
+    chip.className='rchip';chip.textContent=r;
+    chip.onclick=()=>{
+      document.getElementById('term-input').value=r;
+      sT(1);searchTerm();
+    };
+    el.appendChild(chip);
+  });
+}
+
+// ══ 사전에 추가 ══
+function addToDict(){
+  if(!currentTerm){alert('용어를 먼저 검색해주세요!');return;}
+  const entry={
+    name:currentTerm.name,
+    category:currentTerm.category||'사회',
+    definition:currentTerm.definition||'',
+    story:currentTerm.story||'',
+    keywords:currentTerm.keywords||[],
+    related:currentTerm.related||[],
+    imgUrl:selImgUrl||'',
+  };
+  // 중복 체크
+  if(dictEntries.find(e=>e.name===entry.name)){
+    alert(`"${entry.name}"은 이미 사전에 있어요!`);return;
+  }
+  dictEntries.push(entry);
+  renderDictList();
+  alert(`"${entry.name}"이(가) 사전에 추가됐어요! 📚\n총 ${dictEntries.length}개의 용어가 있어요.`);
+  // 초기화 후 검색으로
+  selImgUrl='';currentTerm=null;
+  document.getElementById('term-input').value='';
+  sT(3);
+}
+
+function renderDictList(){
+  const el=document.getElementById('dict-list');
+  document.getElementById('dict-count').textContent=dictEntries.length+'개';
+  if(!dictEntries.length){
+    el.innerHTML='<p style="color:var(--ink3);font-size:.82rem;text-align:center;padding:20px">아직 추가된 용어가 없어요!</p>';
+    return;
+  }
+  el.innerHTML='';
+  dictEntries.forEach((e,i)=>{
+    const div=document.createElement('div');
+    div.className='dict-item';
+    div.innerHTML=`
+      <div class="dict-thumb">
+        ${e.imgUrl?`<img src="${e.imgUrl}">`:`<span style="font-size:1.4rem">📖</span>`}
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          <span style="font-weight:900;font-size:.92rem;color:var(--ink)">${e.name}</span>
+          <span style="font-size:.65rem;background:var(--sky-l);color:#1070A0;padding:1px 7px;border-radius:4px;font-weight:700">${e.category}</span>
+        </div>
+        <div style="font-size:.78rem;color:var(--ink2);line-height:1.5">${e.definition.substring(0,60)}...</div>
+      </div>
+      <button class="dict-del" onclick="removeEntry(${i})">🗑️</button>`;
+    el.appendChild(div);
+  });
+}
+
+function removeEntry(i){dictEntries.splice(i,1);renderDictList();}
+
+// ══ STEP 4: 완성 사전 ══
+function buildDictBook(){
+  const title=document.getElementById('dict-title').value||'나의 사회 용어 사전';
+  const wrap=document.getElementById('dict-book-wrap');
+  if(!dictEntries.length){
+    wrap.innerHTML='<div class="cd" style="text-align:center"><p style="color:var(--ink3)">용어가 없어요. Step 3에서 추가해주세요!</p></div>';
+    return;
+  }
+  wrap.innerHTML=`
+    <div class="dict-book">
+      <div class="dict-book-header">
+        <div class="dict-book-title">📚 ${title}</div>
+        <div class="dict-book-meta">
+          <span>✍️ ${stuName}</span>
+          <span>📅 ${new Date().toLocaleDateString('ko-KR')}</span>
+          <span>📖 ${dictEntries.length}개 용어</span>
+        </div>
+      </div>
+      ${dictEntries.map((e,i)=>`
+        <div class="dict-entry">
+          <div class="dict-entry-name">
+            <span style="background:var(--navy);color:#fff;border-radius:5px;padding:2px 8px;font-size:.72rem;font-weight:700">${String(i+1).padStart(2,'0')}</span>
+            ${e.name}
+            <span class="dict-entry-cat">${e.category}</span>
+          </div>
+          ${e.imgUrl?`<img class="dict-entry-img" src="${e.imgUrl}" alt="${e.name}">`:''}
+          <div class="dict-entry-def">${e.definition}</div>
+          ${e.story?`
+          <div style="font-size:.72rem;font-weight:700;color:var(--sky);margin-bottom:5px;margin-top:8px">📖 스토리로 이해하기</div>
+          <div class="dict-entry-story">${e.story}</div>`:''}
+          ${e.related?.length?`
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            ${e.related.map(r=>`<span style="background:var(--mint-l);color:var(--mint);border-radius:99px;padding:3px 9px;font-size:.68rem;font-weight:700">🔗 ${r}</span>`).join('')}
+          </div>`:''}
+        </div>`).join('')}
+    </div>`;
+}
+
+// ══ 복사 / 다운로드 ══
+function copyDict(){
+  const title=document.getElementById('dict-title').value||'나의 사회 용어 사전';
+  let text=`📚 ${title}\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n${'='.repeat(40)}\n\n`;
+  dictEntries.forEach((e,i)=>{
+    text+=`[${String(i+1).padStart(2,'0')}] ${e.name} (${e.category})\n`;
+    text+=e.definition+'\n';
+    if(e.story)text+='\n📖 스토리:\n'+e.story+'\n';
+    if(e.related?.length)text+='\n🔗 관련 용어: '+e.related.join(', ')+'\n';
+    text+='\n'+'-'.repeat(30)+'\n\n';
+  });
+  navigator.clipboard.writeText(text).then(()=>alert('📋 사전 내용이 복사됐어요!'));
+}
+
+function downloadDict(){
+  const title=document.getElementById('dict-title').value||'나의 사회 용어 사전';
+  let text=`📚 ${title}\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n${'='.repeat(40)}\n\n`;
+  dictEntries.forEach((e,i)=>{
+    text+=`[${String(i+1).padStart(2,'0')}] ${e.name} (${e.category})\n`;
+    text+=e.definition+'\n';
+    if(e.story)text+='\n📖 스토리:\n'+e.story+'\n';
+    if(e.related?.length)text+='\n🔗 관련 용어: '+e.related.join(', ')+'\n';
+    text+='\n'+'-'.repeat(30)+'\n\n';
+  });
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
+  a.download=`${stuName}_사회용어사전.txt`;a.click();
+}
+
+function copyNote(){
+  navigator.clipboard.writeText(document.getElementById('note-text').value)
+    .then(()=>alert('📋 정리 노트가 복사됐어요!'));
+}
+
+function downloadNote(){
+  const text=document.getElementById('note-text').value;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(`정리 노트\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n\n${text}`);
+  a.download=`${stuName}_정리노트.txt`;a.click();
+}
+
+function downloadAll(){
+  const title=document.getElementById('dict-title').value||'나의 사회 용어 사전';
+  let text=`📚 ${title}\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n${'='.repeat(40)}\n\n`;
+  dictEntries.forEach((e,i)=>{
+    text+=`[${String(i+1).padStart(2,'0')}] ${e.name} (${e.category})\n${e.definition}\n`;
+    if(e.story)text+='\n📖 스토리:\n'+e.story+'\n';
+    text+='\n'+'-'.repeat(30)+'\n\n';
+  });
+  const note=document.getElementById('note-text').value;
+  if(note)text+=`\n${'='.repeat(40)}\n✍️ 정리 노트\n${'='.repeat(40)}\n\n${note}`;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
+  a.download=`${stuName}_사회용어사전_전체.txt`;a.click();
+}
+
+// ══ 정리노트 AI ══
+async function aiNoteCheck(){
+  const text=document.getElementById('note-text').value.trim();
+  if(!text){alert('정리 노트를 먼저 써주세요!');return;}
+  const el=document.getElementById('note-ai');
+  const txt=document.getElementById('note-ai-text');
+  el.style.display='block';
+  txt.innerHTML='<div class="ld"><span></span><span></span><span></span><span style="margin-left:5px">AI가 읽는 중...</span></div>';
+  try{
+    const terms=dictEntries.map(e=>e.name).join(', ');
+    const result=await callGemini(`중학생이 사회 용어(${terms})를 공부하고 쓴 정리 노트를 첨삭해주세요.\n\n노트:\n${text}\n\n✅ 잘한 점:\n✏️ 보완할 부분:\n💡 추가하면 좋은 내용:\n⭐ 격려 한마디:\n\n짧고 따뜻하게 한국어로 피드백해주세요.`,400);
+    txt.textContent=result;
+  }catch(e){txt.textContent='API 키를 설정하면 AI 첨삭을 받을 수 있어요.';}
+}
+
+async function aiNoteHelp(){
+  const el=document.getElementById('note-ai');
+  const txt=document.getElementById('note-ai-text');
+  el.style.display='block';
+  txt.innerHTML='<div class="ld"><span></span><span></span><span></span><span style="margin-left:5px">생각 중...</span></div>';
+  try{
+    const terms=dictEntries.map(e=>e.name).join(', ');
+    const result=await callGemini(`중학생이 사회 용어(${terms})에 대한 정리 노트를 쓰려고 합니다.\n도움이 될 힌트를 주세요:\n🌟 시작 문장 예시:\n💭 생각해볼 질문 2개:\n📝 꼭 포함하면 좋은 내용:\n\n짧고 격려하는 방식으로 한국어로 답해주세요.`,350);
+    txt.textContent=result;
+  }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
+}
+
+// ══ 탭 전환 ══
+function sT(n){
+  if(n===4)buildDictBook();
+  for(let i=1;i<=5;i++){
+    const btn=document.getElementById('sB'+i);
+    const cont=document.getElementById('tab-'+i);
+    if(i===n){btn.classList.add('on');btn.classList.remove('dn');cont.classList.add('on');}
+    else{btn.classList.remove('on');if(i<n)btn.classList.add('dn');else btn.classList.remove('dn');cont.classList.remove('on');}
+  }
+  window.scrollTo(0,0);
+}
+
+// ══ 분야별 용어 데이터 ══
+const CAT_TERMS = {
+  '정치': [
+    {emoji:'🏛️',name:'민주주의'},{emoji:'⚖️',name:'삼권분립'},
+    {emoji:'🗳️',name:'선거제도'},{emoji:'📜',name:'헌법'},
+    {emoji:'🏢',name:'국회'},{emoji:'👨‍⚖️',name:'사법부'},
+    {emoji:'🏛️',name:'행정부'},{emoji:'🤝',name:'정당'},
+    {emoji:'📢',name:'표현의 자유'},{emoji:'🗳️',name:'보통선거'},
+    {emoji:'⚖️',name:'법치주의'},{emoji:'🏛️',name:'지방자치'},
+  ],
+  '경제': [
+    {emoji:'💹',name:'인플레이션'},{emoji:'⚖️',name:'공정무역'},
+    {emoji:'📈',name:'GDP'},{emoji:'💰',name:'세금'},
+    {emoji:'🏦',name:'중앙은행'},{emoji:'📉',name:'경기침체'},
+    {emoji:'🌐',name:'자유무역'},{emoji:'💸',name:'환율'},
+    {emoji:'🏭',name:'산업화'},{emoji:'👥',name:'실업률'},
+    {emoji:'💳',name:'신용경제'},{emoji:'📊',name:'시장경제'},
+  ],
+  '사회': [
+    {emoji:'✊',name:'인권'},{emoji:'🌐',name:'세계화'},
+    {emoji:'🌍',name:'다문화사회'},{emoji:'🤝',name:'사회복지'},
+    {emoji:'👴',name:'고령화사회'},{emoji:'👨‍👩‍👧',name:'저출산'},
+    {emoji:'⚖️',name:'양성평등'},{emoji:'🏠',name:'주거권'},
+    {emoji:'📚',name:'교육권'},{emoji:'🩺',name:'의료보험'},
+    {emoji:'🧑‍🤝‍🧑',name:'사회적 자본'},{emoji:'🌈',name:'다양성'},
+  ],
+  '환경': [
+    {emoji:'🌍',name:'기후변화'},{emoji:'♻️',name:'지속가능발전'},
+    {emoji:'🌱',name:'탄소중립'},{emoji:'☀️',name:'신재생에너지'},
+    {emoji:'🌊',name:'해수면상승'},{emoji:'🏭',name:'온실가스'},
+    {emoji:'🌿',name:'생물다양성'},{emoji:'💧',name:'수자원'},
+    {emoji:'🗑️',name:'자원순환'},{emoji:'🌲',name:'산림파괴'},
+    {emoji:'⚡',name:'에너지전환'},{emoji:'🌬️',name:'미세먼지'},
+  ],
+  '국제': [
+    {emoji:'🌐',name:'UN'},{emoji:'🤝',name:'국제기구'},
+    {emoji:'🌍',name:'난민'},{emoji:'✈️',name:'외교'},
+    {emoji:'⚔️',name:'국제분쟁'},{emoji:'🕊️',name:'평화협정'},
+    {emoji:'💱',name:'국제무역'},{emoji:'🌏',name:'G20'},
+    {emoji:'🚫',name:'경제제재'},{emoji:'🤝',name:'ODA(공적개발원조)'},
+    {emoji:'🌐',name:'WTO'},{emoji:'🩺',name:'WHO'},
+  ],
+  '문화': [
+    {emoji:'🎨',name:'문화다양성'},{emoji:'🌐',name:'한류'},
+    {emoji:'📺',name:'대중문화'},{emoji:'🏛️',name:'문화유산'},
+    {emoji:'📱',name:'디지털문화'},{emoji:'🎭',name:'예술'},
+    {emoji:'📚',name:'문해력'},{emoji:'🌍',name:'문화상대주의'},
+    {emoji:'🤝',name:'문화교류'},{emoji:'🎵',name:'문화산업'},
+    {emoji:'🖼️',name:'전통문화'},{emoji:'🌐',name:'세계시민의식'},
+  ],
+};
+
+function showCat(cat, btn) {
+  // 탭 스타일
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+
+  // 칩 렌더링
+  const terms = CAT_TERMS[cat] || [];
+  const el = document.getElementById('cat-chips');
+  el.innerHTML = '';
+  terms.forEach(t => {
+    const chip = document.createElement('span');
+    chip.className = 'qchip';
+    chip.textContent = t.emoji + ' ' + t.name;
+    chip.onclick = () => quickTerm(t.name);
+    el.appendChild(chip);
+  });
+}
+
+// 초기 로딩 시 정치 탭 표시
+window.addEventListener('load', () => {
+  const firstTab = document.querySelector('.cat-tab');
+  if (firstTab) showCat('정치', firstTab);
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAIM 역사신문 만들기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1A1008;--ink2:#4A3010;--ink3:#9A8060;
+  --paper:#FDF8F0;--paper2:#F5EED8;--paper3:#EDE0C0;
+  --accent:#8B2010;--gold:#C8940A;--border:#D0B880;
+  --r:1rem;--s:0 4px 20px rgba(26,16,8,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:80px}
+
+/* ── 배경 파티클 캔버스 ── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── 배경 이미지 레이어 ── */
+#bg-image{
+  position:fixed;inset:0;z-index:0;
+  background-size:cover;background-position:center;
+  animation:kenBurns 20s ease-in-out infinite alternate;
+  filter:brightness(.35) sepia(.4);
+  transition:background-image 1s ease;
+}
+@keyframes kenBurns{
+  0%{transform:scale(1) translateX(0)}
+  50%{transform:scale(1.08) translateX(-2%)}
+  100%{transform:scale(1.12) translateX(2%)}
+}
+#bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,6,2,.5) 0%,rgba(20,12,4,.7) 100%)}
+
+/* ── 헤더 ── */
+header{
+  position:relative;z-index:10;
+  background:linear-gradient(135deg,#1A0808,#3A1010,#1A0808);
+  padding:16px 20px;border-bottom:3px solid var(--gold);
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.hi{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Nanum Myeongjo',serif;font-size:1.3rem;color:var(--gold);display:flex;align-items:center;gap:8px}
+.logo-sub{font-size:.65rem;color:rgba(200,148,10,.5);margin-top:2px}
+.rb{background:rgba(200,148,10,.15);border:1px solid rgba(200,148,10,.3);border-radius:8px;padding:5px 11px;font-size:.7rem;color:var(--gold);cursor:pointer;font-family:inherit;transition:all .2s}
+
+/* ── 스텝 네비 ── */
+.sn{
+  position:sticky;top:0;z-index:50;
+  background:rgba(253,248,240,.96);backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--border);
+  padding:8px 14px;display:flex;gap:5px;overflow-x:auto;
+}
+.sn::-webkit-scrollbar{display:none}
+.sb{flex-shrink:0;padding:6px 12px;border-radius:9px;border:2px solid var(--border);
+  background:white;color:var(--ink3);font-family:inherit;
+  font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;line-height:1.3;text-align:center}
+.sb.on{background:var(--accent);border-color:#6A1008;color:white;box-shadow:0 4px 12px rgba(139,32,16,.3);transform:translateY(-1px)}
+.sb.dn{background:var(--paper2);border-color:var(--border);color:var(--ink2)}
+.sb.dn::after{content:' ✓'}
+
+/* ── 메인 ── */
+main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:10}
+.tc{display:none;animation:fu .4s ease}
+.tc.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── 카드 ── */
+.cd{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:var(--s)}
+.ct{font-family:'Nanum Myeongjo',serif;font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+
+/* ── 입력 ── */
+.ni{width:100%;padding:10px 13px;background:var(--paper);border:2px solid var(--border);border-radius:9px;color:var(--ink);font-family:inherit;font-size:.95rem;font-weight:700;outline:none;transition:border-color .2s}
+.ni:focus{border-color:var(--accent);background:white}
+.ta{width:100%;padding:11px 13px;background:var(--paper);border:2px solid var(--border);border-radius:9px;color:var(--ink);font-family:'Nanum Myeongjo',serif;font-size:.92rem;resize:vertical;outline:none;transition:border-color .2s;line-height:1.9;min-height:110px}
+.ta:focus{border-color:var(--accent);background:white}
+
+/* ── 버튼 ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:.86rem;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.bp{background:linear-gradient(135deg,var(--accent),#C03020);color:white;box-shadow:0 4px 14px rgba(139,32,16,.28)}
+.bp:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(139,32,16,.4)}
+.bg2{background:white;color:var(--ink2);border:2px solid var(--border)}
+.bg2:hover{border-color:var(--accent);color:var(--accent)}
+.bgold{background:linear-gradient(135deg,var(--gold),#A07008);color:white;box-shadow:0 4px 14px rgba(200,148,10,.28)}
+.bfl{width:100%}
+.bsm{padding:7px 13px;font-size:.76rem;border-radius:8px}
+
+/* ── 힌트 ── */
+.hint{background:rgba(200,148,10,.08);border:1.5px solid rgba(200,148,10,.25);border-radius:9px;padding:10px 13px;font-size:.78rem;color:var(--ink2);line-height:1.7;margin-top:10px}
+
+/* ── 인물 카드 ── */
+.person-card{
+  background:linear-gradient(135deg,#1A0808,#3A1010);
+  border-radius:var(--r);padding:24px;margin-bottom:14px;
+  border:2px solid rgba(200,148,10,.3);
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+  color:white;position:relative;overflow:hidden;
+}
+.person-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(200,148,10,.08) 0%,transparent 60%);
+}
+.person-img-wrap{
+  width:120px;height:150px;border-radius:8px;overflow:hidden;
+  border:3px solid rgba(200,148,10,.4);flex-shrink:0;
+  background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.person-img-wrap img{width:100%;height:100%;object-fit:cover}
+.person-img-placeholder{font-size:3rem;color:rgba(200,148,10,.4)}
+.person-name{font-family:'Nanum Myeongjo',serif;font-size:1.6rem;font-weight:800;color:var(--gold);margin-bottom:4px}
+.person-era{font-size:.78rem;color:rgba(200,148,10,.7);margin-bottom:12px}
+.person-desc{font-size:.86rem;color:rgba(255,255,255,.85);line-height:1.85;white-space:pre-line}
+
+/* ── 배경 이미지 그리드 ── */
+.bg-img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.bg-img-thumb{
+  aspect-ratio:16/9;border-radius:8px;overflow:hidden;
+  border:2px solid transparent;cursor:pointer;transition:all .2s;
+  background:var(--paper2);
+}
+.bg-img-thumb img{width:100%;height:100%;object-fit:cover}
+.bg-img-thumb.sel{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,32,16,.2)}
+.bg-img-thumb:hover{transform:scale(1.03)}
+
+/* ── 기사 아이템 ── */
+.article-item{
+  background:var(--paper);border:1.5px solid var(--border);
+  border-radius:9px;padding:14px;margin-bottom:10px;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.article-thumb{
+  width:70px;height:70px;border-radius:6px;overflow:hidden;
+  flex-shrink:0;background:var(--paper2);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);
+}
+.article-thumb img{width:100%;height:100%;object-fit:cover}
+.article-del{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:.9rem;padding:3px;transition:color .2s;flex-shrink:0}
+.article-del:hover{color:var(--accent)}
+
+/* ── 신문 포맷 선택 ── */
+.fmt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.fmt-card{
+  border:3px solid var(--border);border-radius:10px;
+  padding:14px;cursor:pointer;transition:all .2s;
+  background:white;text-align:center;
+}
+.fmt-card:hover{transform:translateY(-2px);box-shadow:var(--s)}
+.fmt-card.sel{border-color:var(--accent);background:rgba(139,32,16,.05);box-shadow:0 0 0 3px rgba(139,32,16,.15)}
+.fmt-icon{font-size:2rem;margin-bottom:6px}
+.fmt-name{font-family:'Nanum Myeongjo',serif;font-size:.9rem;font-weight:700;color:var(--ink)}
+.fmt-desc{font-size:.7rem;color:var(--ink3);margin-top:3px}
+
+/* ══ 신문 레이아웃들 ══ */
+
+/* 공통 신문 래퍼 */
+.newspaper{
+  background:var(--paper);
+  border:2px solid var(--ink2);
+  font-family:'Nanum Myeongjo',serif;
+  padding:0;overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.15);
+}
+.np-header{
+  border-bottom:3px double var(--ink2);
+  padding:16px 20px 12px;text-align:center;
+  background:var(--paper2);
+}
+.np-title{font-size:2rem;font-weight:800;letter-spacing:.1em;color:var(--ink)}
+.np-meta{font-size:.72rem;color:var(--ink3);margin-top:4px;display:flex;justify-content:center;gap:16px}
+.np-divider{height:1px;background:var(--ink2);margin:0 16px}
+.np-body{padding:16px}
+
+/* 타입1: 조선일보형 3단 */
+.np-type1 .np-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink2)}
+.np-type1 .np-col{padding:14px;border-right:1px solid var(--border)}
+.np-type1 .np-col:last-child{border-right:none}
+.np-type1 .np-col.wide{grid-column:span 2}
+.np-type1 .np-col.lead{background:rgba(139,32,16,.03)}
+
+/* 타입2: 타임즈형 2단 */
+.np-type2 .np-cols{display:grid;grid-template-columns:2fr 1fr;gap:0;border-top:2px solid var(--ink2)}
+.np-type2 .np-col{padding:16px;border-right:1px solid var(--border)}
+.np-type2 .np-col:last-child{border-right:none}
+
+/* 타입3: 고신문형 */
+.np-type3{background:linear-gradient(135deg,#FDF4DC,#F5E8C0)}
+.np-type3 .np-header{background:linear-gradient(135deg,#1A0808,#3A1010);color:var(--gold)}
+.np-type3 .np-title{color:var(--gold);font-size:1.8rem}
+.np-type3 .np-body{padding:20px;border:3px double var(--ink2);margin:10px;border-radius:4px}
+.np-type3 .np-cols{display:flex;flex-direction:column;gap:14px}
+.np-type3 .np-col{border-bottom:1px dashed var(--border);padding-bottom:14px}
+
+/* 타입4: 타블로이드 */
+.np-type4{background:white}
+.np-type4 .np-header{background:var(--accent);border-bottom:4px solid var(--gold)}
+.np-type4 .np-title{color:white;font-size:2.2rem}
+.np-type4 .np-meta{color:rgba(255,255,255,.7)}
+.np-type4 .np-cols{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:4px solid var(--gold)}
+.np-type4 .np-col{padding:14px;border-right:2px solid var(--accent)}
+.np-type4 .np-col:last-child{border-right:none}
+.np-type4 .np-col.full{grid-column:span 2;border-right:none;border-bottom:2px solid var(--accent)}
+
+/* 신문 기사 공통 */
+.np-art-title{font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:6px;line-height:1.3;border-bottom:1px solid var(--border);padding-bottom:5px}
+.np-art-byline{font-size:.65rem;color:var(--ink3);margin-bottom:8px}
+.np-art-img{width:100%;border-radius:4px;margin-bottom:8px;object-fit:cover;max-height:140px}
+.np-art-body{font-size:.78rem;color:var(--ink2);line-height:1.85;white-space:pre-line}
+.np-art-era{display:inline-block;background:var(--accent);color:white;font-size:.62rem;padding:2px 7px;border-radius:3px;margin-bottom:6px;font-weight:700}
+
+/* ── 감상문 ── */
+.essay-result{
+  background:var(--paper);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:20px;margin-top:12px;
+}
+.essay-title{font-family:'Nanum Myeongjo',serif;font-size:1.1rem;color:var(--accent);margin-bottom:8px;font-weight:800}
+.essay-body{font-size:.88rem;color:var(--ink2);line-height:1.9;white-space:pre-line}
+
+/* ── AI 결과 ── */
+.ai-box{background:rgba(200,148,10,.07);border:1.5px solid rgba(200,148,10,.25);border-radius:9px;padding:14px;margin-top:10px;display:none}
+.ai-label{font-size:.72rem;font-weight:700;color:var(--gold);margin-bottom:7px}
+.ai-text{font-size:.86rem;color:var(--ink2);line-height:1.8;white-space:pre-line}
+
+/* ── 로딩 ── */
+.ld{display:flex;align-items:center;gap:6px;color:var(--ink3);font-size:.82rem}
+.ld span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:bl 1.2s infinite}
+.ld span:nth-child(2){animation-delay:.2s}
+.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* ── 다운로드/복사 버튼 ── */
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.act-btn{
+  flex:1;min-width:100px;padding:10px;border-radius:9px;border:none;
+  font-family:inherit;font-weight:700;font-size:.82rem;cursor:pointer;
+  transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.act-btn:active{transform:scale(.96)}
+.ab-copy{background:var(--paper2);color:var(--ink2);border:2px solid var(--border)}
+.ab-copy:hover{border-color:var(--accent);color:var(--accent)}
+.ab-dl{background:linear-gradient(135deg,var(--gold),#A07008);color:white}
+.ab-print{background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:white}
+
+/* ── 모달 ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
+.mb{background:var(--paper);border-radius:1.5rem;padding:28px;width:100%;max-width:400px;box-shadow:0 24px 56px rgba(0,0,0,.3);border:1.5px solid var(--border);text-align:center}
+.mb h2{font-family:'Nanum Myeongjo',serif;font-size:1.4rem;color:var(--accent);margin-bottom:6px}
+.mb p{font-size:.84rem;color:var(--ink3);margin-bottom:18px}
+
+@media(max-width:480px){
+  .fmt-grid{grid-template-columns:1fr 1fr}
+  .bg-img-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media print{
+  header,.sn,#step1,#step2,#step3,.no-print{display:none!important}
+  #step4,#step5{display:block!important}
+  body{background:white;padding:0}
+  .newspaper{box-shadow:none;border:1px solid #999}
+}
+
+/* ── 역사 장르/분위기 칩 ── */
+.hist-genre-chip,.hist-mood-chip{
+  padding:8px 14px;border-radius:99px;font-size:.8rem;font-weight:700;
+  cursor:pointer;border:2px solid var(--border);background:white;
+  color:var(--ink2);transition:all .2s;user-select:none;display:inline-block;
+}
+.hist-genre-chip:hover,.hist-mood-chip:hover{transform:scale(1.05)}
+.hist-genre-chip.on{background:var(--accent);border-color:#6A1008;color:white;box-shadow:0 3px 10px rgba(139,32,16,.3)}
+.hist-mood-chip.on{background:var(--gold);border-color:#A07008;color:#1C0A00;box-shadow:0 3px 10px rgba(200,148,10,.3)}
+
+</style>
+</head>
+<body>
+
+<!-- 배경 이미지 레이어 -->
+<div id="bg-image"></div>
+<div id="bg-overlay"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- 이름 입력 모달 -->
+<div id="nm" class="ov">
+  <div class="mb">
+    <div style="font-size:2.8rem;margin-bottom:11px">📰</div>
+    <h2>역사신문 만들기</h2>
+    <p>역사 인물을 조사하고 나만의 신문을 만들어봐요!</p>
+    <input type="text" id="sni" placeholder="이름을 입력하세요"
+      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid var(--border);border-radius:.8rem;padding:10px;outline:none;margin-bottom:10px;background:white;transition:border-color .2s"
+      onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+      onkeydown="if(event.key==='Enter')sN()">
+    <select id="sclass" style="width:100%;padding:9px;border:2px solid var(--border);border-radius:.8rem;font-family:inherit;font-weight:700;background:white;outline:none;margin-bottom:14px">
+      <option value="">반 선택</option>
+      <option>1반</option><option>2반</option><option>3반</option>
+      <option>4반</option><option>5반</option><option>6반</option>
+    </select>
+    <button onclick="sN()" class="btn bp bfl" style="font-size:.95rem;padding:12px">📰 신문 만들기 시작!</button>
+    <button onclick="showTL()" style="margin-top:9px;background:none;border:none;font-size:.7rem;color:var(--ink3);cursor:pointer;font-family:inherit">선생님이신가요?</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<header>
+  <div class="hi">
+    <div>
+      <div class="logo">📰 EAIM <span style="color:white">역사신문</span></div>
+      <div class="logo-sub">History Newspaper Creator</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span id="wn" style="display:none;background:rgba(200,148,10,.18);border:1px solid rgba(200,148,10,.3);border-radius:99px;padding:4px 12px;font-size:.76rem;color:var(--gold);font-weight:700"></span>
+      <button onclick="location.reload()" class="rb">↺</button>
+    </div>
+  </div>
+</header>
+
+<!-- 스텝 네비 -->
+<div class="sn" id="sNav" style="display:none">
+  <button class="sb on" id="sB1" onclick="sT(1)">Step 1<br><span style="font-size:.6rem;opacity:.8">인물입력</span></button>
+  <button class="sb" id="sB2" onclick="sT(2)">Step 2<br><span style="font-size:.6rem;opacity:.8">배경탐색</span></button>
+  <button class="sb" id="sB3" onclick="sT(3)">Step 3<br><span style="font-size:.6rem;opacity:.8">인물카드</span></button>
+  <button class="sb" id="sB4" onclick="sT(4)">Step 4<br><span style="font-size:.6rem;opacity:.8">신문제작</span></button>
+  <button class="sb" id="sB5" onclick="sT(5)">Step 5<br><span style="font-size:.6rem;opacity:.8">완성신문</span></button>
+  <button class="sb" id="sB6" onclick="sT(6)">Step 6<br><span style="font-size:.6rem;opacity:.8">감상문</span></button>
+  <button class="sb" id="sB7" onclick="sT(7)">Step 7<br><span style="font-size:.6rem;opacity:.8">🎸수노</span></button>
+</div>
+
+<main>
+
+<!-- ══ STEP 1 ══ -->
+<div id="tab-1" class="tc on" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 1</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px;color:var(--ink)">역사 인물 또는 사건을 입력해요</h3>
+  </div>
+
+  <div class="cd">
+    <div class="ct">🏛️ 인물 / 사건 입력</div>
+    <input type="text" id="person-input" class="ni" placeholder="예: 이순신, 세종대왕, 임진왜란, 3.1운동..." style="margin-bottom:10px" onkeydown="if(event.key==='Enter')searchPerson()">
+    <div class="hint">💡 인물 이름이나 역사적 사건을 입력하면 AI가 설명하고 관련 이미지를 찾아드려요!</div>
+  </div>
+
+  <div class="cd">
+    <div class="ct">⚡ 빠른 선택</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px">
+      <button onclick="quickSelect('이순신')" class="btn bg2 bsm">⚓ 이순신</button>
+      <button onclick="quickSelect('세종대왕')" class="btn bg2 bsm">📖 세종대왕</button>
+      <button onclick="quickSelect('유관순')" class="btn bg2 bsm">🌸 유관순</button>
+      <button onclick="quickSelect('광개토대왕')" class="btn bg2 bsm">🏰 광개토대왕</button>
+      <button onclick="quickSelect('신사임당')" class="btn bg2 bsm">🎨 신사임당</button>
+      <button onclick="quickSelect('안중근')" class="btn bg2 bsm">✊ 안중근</button>
+      <button onclick="quickSelect('장영실')" class="btn bg2 bsm">⚙️ 장영실</button>
+      <button onclick="quickSelect('김구')" class="btn bg2 bsm">🇰🇷 김구</button>
+    </div>
+  </div>
+
+  <button onclick="searchPerson()" class="btn bp bfl" style="font-size:.95rem;padding:13px">
+    🔍 인물 탐색 시작!
+  </button>
+</div>
+
+<!-- ══ STEP 2 ══ -->
+<div id="tab-2" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 2</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">역사 배경 탐색</h3>
+  </div>
+
+  <!-- 배경 이미지 선택 -->
+  <div class="cd">
+    <div class="ct">🖼️ 시대 배경 이미지 선택</div>
+    <p style="font-size:.78rem;color:var(--ink3);margin-bottom:10px">클릭하면 배경으로 설정돼요!</p>
+    <div id="bg-imgs" class="bg-img-grid"></div>
+    <div id="bg-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:4px">이미지 검색 중...</span></div>
+    <div class="hint" style="margin-top:8px">💡 위키미디어에서 저작권 없는 역사 이미지를 검색해요. 배경으로 쓸 이미지를 골라주세요!</div>
+  </div>
+
+  <!-- 시대 키워드 -->
+  <div class="cd">
+    <div class="ct">✨ 시대 키워드 (배경에 흐름)</div>
+    <div id="era-keywords" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+  </div>
+
+  <button onclick="sT(3)" class="btn bp bfl" style="font-size:.95rem;padding:13px">
+    인물 카드 보러 가기 →
+  </button>
+</div>
+
+<!-- ══ STEP 3 ══ -->
+<div id="tab-3" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 3</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">인물 카드</h3>
+  </div>
+
+  <!-- 인물 카드 -->
+  <div id="person-card-wrap"></div>
+
+  <!-- 인물 이미지 교체 -->
+  <div class="cd">
+    <div class="ct">📷 인물 이미지</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <button onclick="searchPersonImg()" class="btn bg2">🔍 위키 자동 검색</button>
+      <button onclick="document.getElementById('img-upload').click()" class="btn bg2">📁 직접 업로드</button>
+    </div>
+    <input type="file" id="img-upload" accept="image/*" style="display:none" onchange="uploadPersonImg(this)">
+    <div id="person-imgs" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+  </div>
+
+  <!-- 신문에 추가 버튼 -->
+  <button onclick="addToNewspaper()" class="btn bgold bfl" style="font-size:.95rem;padding:13px;margin-bottom:8px">
+    📰 이 인물을 신문에 추가!
+  </button>
+  <button onclick="addAnotherPerson()" class="btn bg2 bfl" style="font-size:.88rem;padding:11px">
+    ➕ 다른 인물도 추가하기
+  </button>
+</div>
+
+<!-- ══ STEP 4 ══ -->
+<div id="tab-4" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 4</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">신문 포맷 선택</h3>
+  </div>
+
+  <!-- 신문 제목 -->
+  <div class="cd">
+    <div class="ct">📰 신문 제목</div>
+    <input type="text" id="np-title" class="ni" placeholder="예: 조선역사신문, 한국역사타임즈..." value="역사신문">
+    <input type="text" id="np-date" class="ni" placeholder="발행일 (예: 2024년 6월 8일)" style="margin-top:8px" id="np-date">
+  </div>
+
+  <!-- 포맷 선택 -->
+  <div class="cd">
+    <div class="ct">🗞️ 신문 스타일 선택</div>
+    <div class="fmt-grid">
+      <div class="fmt-card sel" onclick="selFmt(1,this)" id="fmt1">
+        <div class="fmt-icon">📰</div>
+        <div class="fmt-name">조선일보형</div>
+        <div class="fmt-desc">클래식 3단 구성</div>
+      </div>
+      <div class="fmt-card" onclick="selFmt(2,this)" id="fmt2">
+        <div class="fmt-icon">📋</div>
+        <div class="fmt-name">타임즈형</div>
+        <div class="fmt-desc">메인+사이드 2단</div>
+      </div>
+      <div class="fmt-card" onclick="selFmt(3,this)" id="fmt3">
+        <div class="fmt-icon">📜</div>
+        <div class="fmt-name">고신문형</div>
+        <div class="fmt-desc">복고풍 세로 구성</div>
+      </div>
+      <div class="fmt-card" onclick="selFmt(4,this)" id="fmt4">
+        <div class="fmt-icon">🗞️</div>
+        <div class="fmt-name">타블로이드형</div>
+        <div class="fmt-desc">임팩트 2단 구성</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 직접 입력 섹션 -->
+  <div class="cd" style="border-color:rgba(200,148,10,.3)">
+    <div class="ct">✏️ 모둠원 내용 직접 추가
+      <span style="font-size:.68rem;color:var(--ink3);font-weight:400">모둠원이 조사한 내용을 직접 입력하거나 붙여넣어요</span>
+    </div>
+
+    <!-- 탭 -->
+    <div style="display:flex;gap:6px;margin-bottom:14px">
+      <button onclick="switchInputTab('ai')" id="itab-ai" class="btn bp bsm">🤖 AI 자동</button>
+      <button onclick="switchInputTab('manual')" id="itab-manual" class="btn bg2 bsm">✏️ 직접 입력</button>
+    </div>
+
+    <!-- AI 자동 탭 -->
+    <div id="input-ai" style="display:block">
+      <div class="hint">💡 Step 1~3을 거쳐서 AI가 자동으로 인물 정보를 가져와요. 모둠장이 대표로 진행해요!</div>
+      <button onclick="sT(1)" class="btn bp bfl" style="margin-top:10px">← Step 1로 가서 인물 추가</button>
+    </div>
+
+    <!-- 직접 입력 탭 -->
+    <div id="input-manual" style="display:none">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--ink3);display:block;margin-bottom:4px">인물/사건명 *</label>
+          <input type="text" id="manual-name" class="ni" placeholder="예: 이순신, 임진왜란...">
+        </div>
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--ink3);display:block;margin-bottom:4px">시대</label>
+          <input type="text" id="manual-era" class="ni" placeholder="예: 조선시대, 1592년...">
+        </div>
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--ink3);display:block;margin-bottom:4px">기사 내용 *</label>
+          <textarea id="manual-desc" class="ta" rows="5" placeholder="모둠원이 조사한 내용을 여기에 붙여넣거나 직접 입력해요..."></textarea>
+        </div>
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--ink3);display:block;margin-bottom:4px">업적 (줄바꿈으로 구분)</label>
+          <textarea id="manual-achievements" class="ta" rows="3" placeholder="첫 번째 업적&#10;두 번째 업적&#10;세 번째 업적"></textarea>
+        </div>
+        <div>
+          <label style="font-size:.72rem;font-weight:700;color:var(--ink3);display:block;margin-bottom:4px">인물 이미지 (선택)</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button onclick="document.getElementById('manual-img-upload').click()" class="btn bg2 bsm">📁 이미지 업로드</button>
+            <span id="manual-img-name" style="font-size:.75rem;color:var(--ink3)">선택 없음</span>
+          </div>
+          <input type="file" id="manual-img-upload" accept="image/*" style="display:none" onchange="setManualImg(this)">
+          <img id="manual-img-preview" style="display:none;width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--border);margin-top:8px">
+        </div>
+      </div>
+      <button onclick="addManualArticle()" class="btn bgold bfl" style="margin-top:14px;font-size:.92rem;padding:12px">
+        📰 신문에 추가!
+      </button>
+    </div>
+  </div>
+
+  <!-- 추가된 기사 목록 -->
+  <div class="cd">
+    <div class="ct">📝 추가된 기사 <span id="art-count" style="background:var(--paper2);color:var(--ink2);border-radius:99px;padding:2px 10px;font-size:.72rem">0개</span></div>
+    <div id="article-list">
+      <p style="color:var(--ink3);font-size:.82rem;text-align:center;padding:16px">아직 추가된 기사가 없어요.<br>Step 3에서 인물을 추가해주세요!</p>
+    </div>
+  </div>
+
+  <button onclick="sT(5)" class="btn bp bfl" style="font-size:.95rem;padding:13px">
+    📰 신문 완성하기 →
+  </button>
+</div>
+
+<!-- ══ STEP 5 ══ -->
+<div id="tab-5" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 5</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">완성된 역사신문</h3>
+  </div>
+
+  <!-- 신문 미리보기 -->
+  <div id="newspaper-preview" style="margin-bottom:14px"></div>
+
+  <!-- 액션 버튼 -->
+  <div class="action-row no-print">
+    <button onclick="copyNewspaper()" class="act-btn ab-copy">📋 텍스트 복사</button>
+    <button onclick="downloadNewspaper()" class="act-btn ab-dl">💾 다운로드</button>
+    <button onclick="window.print()" class="act-btn ab-print">🖨️ 인쇄</button>
+  </div>
+
+  <button onclick="sT(6)" class="btn bgold bfl no-print" style="margin-top:10px;font-size:.95rem;padding:13px">
+    ✍️ 역사 감상문 쓰기 →
+  </button>
+</div>
+
+<!-- ══ STEP 6 ══ -->
+<div id="tab-6" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 6</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">역사 감상문</h3>
+  </div>
+
+  <div class="cd">
+    <div class="ct">✍️ 나의 역사 감상문</div>
+    <div class="hint" style="margin-bottom:10px">💡 조사한 역사 인물을 통해 무엇을 느꼈나요? 오늘날에 주는 교훈은 무엇일까요?</div>
+    <textarea id="essay-text" class="ta" rows="8" placeholder="이번 역사 신문을 만들면서...
+(인물 이름)에 대해 알게 된 것은...
+가장 인상 깊었던 점은...
+오늘날 우리에게 주는 교훈은..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button onclick="aiEssayCheck()" class="btn bgold">🤖 AI 첨삭받기</button>
+      <button onclick="aiEssayInspire()" class="btn bg2">💡 AI 도움받기</button>
+    </div>
+    <div id="essay-ai" class="ai-box">
+      <div class="ai-label">🤖 AI 선생님 피드백</div>
+      <div class="ai-text" id="essay-ai-text"></div>
+    </div>
+  </div>
+
+  <!-- 감상문 완성본 -->
+  <div id="essay-final" style="display:none" class="essay-result">
+    <div class="essay-title" id="essay-final-title"></div>
+    <div class="essay-body" id="essay-final-body"></div>
+  </div>
+
+  <!-- 액션 버튼 -->
+  <div class="action-row no-print" style="margin-top:12px">
+    <button onclick="copyEssay()" class="act-btn ab-copy">📋 감상문 복사</button>
+    <button onclick="downloadEssay()" class="act-btn ab-dl">💾 감상문 저장</button>
+    <button onclick="downloadAll()" class="act-btn ab-print" style="background:linear-gradient(135deg,var(--accent),#C03020)">📦 전체 저장</button>
+  </div>
+  <button onclick="sT(7)" class="btn bgold bfl no-print" style="margin-top:10px;font-size:.95rem;padding:13px">
+    🎸 역사 노래 만들기 →
+  </button>
+</div>
+
+
+<!-- ══ STEP 7 ══ -->
+<div id="tab-7" class="tc" style="margin-top:16px">
+  <div style="text-align:center;margin-bottom:20px">
+    <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 7</span>
+    <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">🎸 역사를 노래로!</h3>
+    <p style="font-size:.82rem;color:var(--ink3);margin-top:5px">신문 속 역사 인물이 노래가 돼요</p>
+  </div>
+
+  <!-- 신문 내용 미리보기 -->
+  <div class="cd" style="border-color:rgba(200,148,10,.35);background:linear-gradient(135deg,#FFFEF5,#FFF8E0)">
+    <div class="ct" style="color:var(--gold)">📰 신문 속 역사 인물</div>
+    <div id="suno-articles-preview" style="display:flex;flex-wrap:wrap;gap:7px">
+      <p style="color:var(--ink3);font-size:.82rem">Step 4에서 기사를 추가해주세요!</p>
+    </div>
+  </div>
+
+  <!-- 장르 선택 -->
+  <div class="cd">
+    <div class="ct">🎵 음악 스타일 선택</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px">
+      <span class="hist-genre-chip on" onclick="toggleHistGenre(this,'웅장한 오케스트라')">🎻 웅장한 오케스트라</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'발라드')">🎶 발라드</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'K-Pop')">✨ K-Pop</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'국악풍')">🥁 국악풍</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'힙합')">🎤 힙합</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'포크')">🍂 포크</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'OST풍')">🎬 OST풍</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'어쿠스틱')">🎸 어쿠스틱</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'팝록')">🔥 팝록</span>
+      <span class="hist-genre-chip" onclick="toggleHistGenre(this,'재즈')">🎷 재즈</span>
+    </div>
+    <p style="font-size:.72rem;color:var(--ink3);margin-top:7px">여러 개 선택 가능해요!</p>
+  </div>
+
+  <!-- 분위기 선택 -->
+  <div class="cd">
+    <div class="ct">🌊 가사 분위기</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px">
+      <span class="hist-mood-chip on" onclick="toggleHistMood(this,'웅장하고 감동적인')">💪 웅장·감동</span>
+      <span class="hist-mood-chip" onclick="toggleHistMood(this,'슬프고 애절한')">😢 슬프고 애절</span>
+      <span class="hist-mood-chip" onclick="toggleHistMood(this,'희망차고 밝은')">🌱 희망·밝음</span>
+      <span class="hist-mood-chip" onclick="toggleHistMood(this,'비장하고 결연한')">⚔️ 비장·결연</span>
+      <span class="hist-mood-chip" onclick="toggleHistMood(this,'따뜻하고 서정적인')">🌸 따뜻·서정</span>
+    </div>
+  </div>
+
+  <!-- 생성 버튼 -->
+  <button onclick="genHistSuno()" id="hist-suno-btn" class="btn bgold bfl" style="font-size:.95rem;padding:14px;margin-bottom:14px">
+    🤖 역사 가사 & 수노 프롬프트 생성!
+  </button>
+
+  <!-- 결과 -->
+  <div id="hist-suno-result" style="display:none">
+    <!-- 가사 -->
+    <div class="cd" style="border-color:rgba(200,148,10,.3)">
+      <div class="ct" style="color:var(--gold)">🎵 AI가 만든 역사 가사</div>
+      <div id="hist-lyrics-text" style="font-family:'Nanum Myeongjo',serif;font-size:.95rem;color:var(--ink);line-height:2.1;white-space:pre-line;background:var(--paper2);border-radius:9px;padding:16px;border:1px dashed var(--border)"></div>
+      <div class="action-row" style="margin-top:10px">
+        <button onclick="copyHistLyrics()" class="act-btn ab-copy">📋 가사 복사</button>
+        <button onclick="downloadHistLyrics()" class="act-btn ab-dl">💾 가사 저장</button>
+      </div>
+    </div>
+
+    <!-- 수노 프롬프트 -->
+    <div style="background:linear-gradient(135deg,#1A0808,#0A1A20);border-radius:var(--r);padding:22px;border:2px solid rgba(200,148,10,.28);box-shadow:0 8px 32px rgba(0,0,0,.2)">
+      <div style="font-family:'Nanum Myeongjo',serif;font-size:1.05rem;font-weight:800;color:var(--gold);margin-bottom:16px">🎸 수노 프롬프트 완성!</div>
+
+      <div style="margin-bottom:12px">
+        <div style="font-size:.68rem;font-weight:700;color:rgba(200,148,10,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Style & Mood</div>
+        <div id="hist-suno-style" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;font-size:.85rem;color:rgba(255,255,255,.9);line-height:1.8"></div>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <div style="font-size:.68rem;font-weight:700;color:rgba(200,148,10,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Lyrics</div>
+        <div id="hist-suno-lyrics" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;font-size:.85rem;color:rgba(255,255,255,.9);line-height:1.9;white-space:pre-line"></div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:.68rem;font-weight:700;color:rgba(200,148,10,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">📋 전체 프롬프트 — 수노에 바로 붙여넣기!</div>
+        <div id="hist-suno-full" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;font-size:.82rem;color:rgba(255,255,255,.9);line-height:1.9;white-space:pre-line"></div>
+      </div>
+
+      <button onclick="copyHistSuno()" style="width:100%;padding:13px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#A07008);color:#1C0A00;font-family:inherit;font-weight:900;font-size:.92rem;cursor:pointer;transition:all .2s">
+        📋 전체 프롬프트 복사!
+      </button>
+
+      <div style="margin-top:12px;background:rgba(255,255,255,.05);border-radius:9px;padding:12px 14px;font-size:.75rem;color:rgba(255,255,255,.65);line-height:1.8">
+        🚀 <strong style="color:rgba(200,148,10,.8)">수노 사용법</strong><br>
+        1. <a href="https://suno.com" target="_blank" style="color:var(--gold)">suno.com</a> 접속<br>
+        2. Create → Custom mode 켜기<br>
+        3. Lyrics 칸에 가사 붙여넣기<br>
+        4. Style of Music 칸에 스타일 입력<br>
+        5. Generate! 🎵
+      </div>
+    </div>
+
+    <button onclick="genHistSuno()" class="btn bg2 bfl" style="margin-top:10px">🔄 다시 생성하기</button>
+  </div>
+</div>
+
+</main>
+
+<div style="text-align:center;padding:12px;color:var(--ink3);font-size:.68rem;position:relative;z-index:10" class="no-print">Designed by Park Seong-ae · EAIM 역사신문 v1</div>
+
+<script>
+// ══ 상태 ══
+let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let currentPerson=null;   // {name, era, desc, keywords, imgUrl}
+let articles=[];          // 신문 기사 배열
+let selBgImg='';          // 선택된 배경 이미지
+let selPersonImg='';      // 선택된 인물 이미지
+let selFmtNum=1;          // 신문 포맷 번호
+let particles=[];         // 파티클 배열
+
+// ══ 파티클 시스템 ══
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+let keywords=[];
+
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+
+function initParticles(kws){
+  keywords=kws;particles=[];
+  for(let i=0;i<40;i++) spawnParticle();
+}
+function spawnParticle(){
+  if(!keywords.length)return;
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:canvas.height+20,
+    text:keywords[Math.floor(Math.random()*keywords.length)],
+    speed:0.4+Math.random()*0.8,
+    opacity:0.12+Math.random()*0.25,
+    size:12+Math.random()*18,
+    drift:(Math.random()-0.5)*0.4,
+  });
+}
+function animParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.y-=p.speed; p.x+=p.drift;
+    ctx.save();
+    ctx.globalAlpha=p.opacity;
+    ctx.fillStyle='#C8940A';
+    ctx.font=`${p.size}px 'Nanum Myeongjo',serif`;
+    ctx.fillText(p.text,p.x,p.y);
+    ctx.restore();
+    if(p.y<-40){particles[i]=null;spawnParticle();}
+  });
+  particles=particles.filter(Boolean);
+  requestAnimationFrame(animParticles);
+}
+animParticles();
+
+// ══ 로그인 ══
+function sN(){
+  const n=document.getElementById('sni').value.trim();
+  const c=document.getElementById('sclass').value;
+  if(!n){alert('이름을 입력해주세요!');return;}
+  if(!c){alert('반을 선택해주세요!');return;}
+  stuName=n;
+  document.getElementById('wn').textContent=n+' 님 📰';
+  document.getElementById('wn').style.display='';
+  document.getElementById('nm').style.display='none';
+  document.getElementById('sNav').style.display='flex';
+  // 오늘 날짜 자동 입력
+  document.getElementById('np-date').value=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+}
+function showTL(){document.getElementById('nm').style.display='none';}
+
+// ══ Gemini 호출 ══
+async function callGemini(prompt,maxTokens=1000){
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  if(!key)throw new Error('NO_KEY');
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.7}})
+  });
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
+
+// ══ 위키미디어 이미지 검색 ══
+async function searchWikiImages(query,count=6){
+  const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
+  try{
+    const r=await fetch(url);
+    const d=await r.json();
+    const pages=Object.values(d.query?.pages||{});
+    return pages
+      .filter(p=>p.imageinfo?.[0]?.mime?.startsWith('image/'))
+      .map(p=>p.imageinfo[0].thumburl||p.imageinfo[0].url)
+      .filter(Boolean);
+  }catch(e){return[];}
+}
+
+// ══ STEP 1 → 2 ══
+function quickSelect(name){
+  document.getElementById('person-input').value=name;
+  searchPerson();
+}
+
+async function searchPerson(){
+  const name=document.getElementById('person-input').value.trim();
+  if(!name){alert('인물이나 사건을 입력해주세요!');return;}
+  sT(2);
+
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+
+  // 배경 이미지 검색 (위키미디어)
+  const bgLoad=document.getElementById('bg-loading');
+  bgLoad.style.display='flex';
+  const bgImgsEl=document.getElementById('bg-imgs');
+  bgImgsEl.innerHTML='';
+
+  // 키워드 파티클 시작 (일단 기본)
+  const defaultKws=[name,'역사','조선','한국','전통','문화','역사적','인물'];
+  initParticles(defaultKws);
+
+  // 위키미디어 배경 이미지 검색
+  const bgImgs=await searchWikiImages(name+' 한국 역사',9);
+  bgLoad.style.display='none';
+
+  if(bgImgs.length){
+    bgImgs.forEach((url,i)=>{
+      const div=document.createElement('div');
+      div.className='bg-img-thumb'+(i===0?' sel':'');
+      div.innerHTML=`<img src="${url}" onerror="this.parentElement.style.display='none'">`;
+      div.onclick=()=>{
+        document.querySelectorAll('.bg-img-thumb').forEach(d=>d.classList.remove('sel'));
+        div.classList.add('sel');
+        selBgImg=url;
+        document.getElementById('bg-image').style.backgroundImage=`url(${url})`;
+      };
+      if(i===0){selBgImg=url;document.getElementById('bg-image').style.backgroundImage=`url(${url})`;}
+      bgImgsEl.appendChild(div);
+    });
+  } else {
+    bgImgsEl.innerHTML='<p style="color:var(--ink3);font-size:.8rem;grid-column:span 3;text-align:center;padding:12px">이미지를 찾지 못했어요. 다른 검색어를 시도해보세요.</p>';
+  }
+
+  // AI로 인물 정보 가져오기
+  if(key){
+    try{
+      const raw=await callGemini(`한국 역사 인물/사건 "${name}"에 대해 중학생을 위한 정보를 JSON으로 주세요.
+다른 텍스트 없이 순수 JSON만:
+{
+  "name": "인물/사건명",
+  "era": "시대 (예: 조선시대 중기, 1392-1910)",
+  "birth": "생몰년 또는 발생 연도",
+  "title": "직책/별칭",
+  "desc": "인물/사건 설명 (3-4문장, 중학생 눈높이)",
+  "achievements": ["업적1","업적2","업적3"],
+  "keywords": ["시대키워드1","키워드2","키워드3","키워드4","키워드5","키워드6","키워드7","키워드8"],
+  "article": "신문 기사 형식 본문 (3-4문장, 격식체)"
+}`,800);
+      const clean=raw.replace(/```json|```/g,'').trim();
+      currentPerson=JSON.parse(clean);
+      initParticles(currentPerson.keywords||defaultKws);
+      renderEraKeywords(currentPerson.keywords||defaultKws);
+      buildPersonCard();
+    }catch(e){
+      currentPerson={name,era:'',birth:'',title:'',desc:name+'에 대한 정보를 불러오지 못했어요.',achievements:[],keywords:defaultKws,article:''};
+      renderEraKeywords(defaultKws);
+      buildPersonCard();
+    }
+  } else {
+    currentPerson={name,era:'시대 미상',birth:'',title:'',desc:'API 키를 설정하면 AI가 자세한 설명을 제공해요.',achievements:[],keywords:defaultKws,article:''};
+    renderEraKeywords(defaultKws);
+    buildPersonCard();
+  }
+}
+
+function renderEraKeywords(kws){
+  const el=document.getElementById('era-keywords');
+  el.innerHTML='';
+  kws.forEach(kw=>{
+    const span=document.createElement('span');
+    span.style.cssText='background:rgba(200,148,10,.12);border:1.5px solid rgba(200,148,10,.25);border-radius:99px;padding:6px 13px;font-size:.78rem;font-weight:700;color:var(--ink2)';
+    span.textContent=kw;
+    el.appendChild(span);
+  });
+}
+
+// ══ STEP 3: 인물 카드 ══
+function buildPersonCard(){
+  if(!currentPerson)return;
+  const p=currentPerson;
+  const wrap=document.getElementById('person-card-wrap');
+  wrap.innerHTML=`
+    <div class="person-card">
+      <div style="display:flex;gap:16px;align-items:flex-start;position:relative;z-index:1">
+        <div class="person-img-wrap" id="pimg-wrap">
+          ${selPersonImg?`<img src="${selPersonImg}" alt="${p.name}">`:`<div class="person-img-placeholder">👤</div>`}
+        </div>
+        <div style="flex:1">
+          <div class="person-name">${p.name}</div>
+          <div class="person-era">${p.era||''} ${p.birth?'· '+p.birth:''}</div>
+          ${p.title?`<div style="background:rgba(200,148,10,.2);color:var(--gold);border-radius:99px;padding:3px 11px;font-size:.72rem;font-weight:700;display:inline-block;margin-bottom:10px">${p.title}</div>`:''}
+          <div class="person-desc">${p.desc||''}</div>
+        </div>
+      </div>
+      ${p.achievements?.length?`
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);position:relative;z-index:1">
+        <div style="font-size:.7rem;color:rgba(200,148,10,.7);font-weight:700;margin-bottom:7px;letter-spacing:.08em">주요 업적</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${p.achievements.map(a=>`<span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:4px 10px;font-size:.75rem;color:rgba(255,255,255,.85)">${a}</span>`).join('')}
+        </div>
+      </div>`:''}
+    </div>`;
+}
+
+async function searchPersonImg(){
+  if(!currentPerson)return;
+  const imgs=await searchWikiImages(currentPerson.name+' 초상화 인물',6);
+  const el=document.getElementById('person-imgs');
+  el.innerHTML='';
+  if(!imgs.length){el.innerHTML='<p style="color:var(--ink3);font-size:.78rem">이미지를 찾지 못했어요.</p>';return;}
+  imgs.forEach((url,i)=>{
+    const div=document.createElement('div');
+    div.style.cssText='width:80px;height:80px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid var(--border);transition:all .2s;flex-shrink:0';
+    div.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.style.display='none'">`;
+    div.onclick=()=>{
+      selPersonImg=url;
+      document.querySelectorAll('#person-imgs div').forEach(d=>d.style.borderColor='var(--border)');
+      div.style.borderColor='var(--accent)';
+      buildPersonCard();
+    };
+    el.appendChild(div);
+  });
+}
+
+function uploadPersonImg(input){
+  const file=input.files[0];if(!file)return;
+  const url=URL.createObjectURL(file);
+  selPersonImg=url;
+  buildPersonCard();
+}
+
+// ══ 신문에 추가 ══
+function addToNewspaper(){
+  if(!currentPerson){alert('인물 정보가 없어요!');return;}
+  const art={
+    name:currentPerson.name,
+    era:currentPerson.era||'',
+    desc:currentPerson.desc||'',
+    article:currentPerson.article||currentPerson.desc||'',
+    achievements:currentPerson.achievements||[],
+    imgUrl:selPersonImg||'',
+  };
+  articles.push(art);
+  renderArticleList();
+  alert(`"${art.name}"이(가) 신문에 추가됐어요! 📰`);
+  sT(4);
+}
+
+function addAnotherPerson(){
+  selPersonImg='';
+  currentPerson=null;
+  document.getElementById('person-input').value='';
+  sT(1);
+}
+
+function renderArticleList(){
+  const el=document.getElementById('article-list');
+  document.getElementById('art-count').textContent=articles.length+'개';
+  if(!articles.length){
+    el.innerHTML='<p style="color:var(--ink3);font-size:.82rem;text-align:center;padding:16px">아직 추가된 기사가 없어요.</p>';
+    return;
+  }
+  el.innerHTML='';
+  articles.forEach((art,i)=>{
+    const div=document.createElement('div');
+    div.className='article-item';
+    div.innerHTML=`
+      <div class="article-thumb">
+        ${art.imgUrl?`<img src="${art.imgUrl}" style="width:100%;height:100%;object-fit:cover">`:`<span style="font-size:1.5rem">👤</span>`}
+      </div>
+      <div style="flex:1">
+        <div style="font-weight:900;font-size:.9rem;color:var(--ink);margin-bottom:2px">${art.name}</div>
+        <div style="font-size:.72rem;color:var(--ink3)">${art.era}</div>
+        <div style="font-size:.78rem;color:var(--ink2);margin-top:4px;line-height:1.5">${art.desc.substring(0,60)}...</div>
+      </div>
+      <button class="article-del" onclick="removeArticle(${i})">🗑️</button>`;
+    el.appendChild(div);
+  });
+}
+
+function removeArticle(i){
+  articles.splice(i,1);
+  renderArticleList();
+  buildNewspaper();
+}
+
+// ══ 포맷 선택 ══
+function selFmt(n,el){
+  selFmtNum=n;
+  document.querySelectorAll('.fmt-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ══ STEP 5: 신문 생성 ══
+function buildNewspaper(){
+  const title=document.getElementById('np-title').value||'역사신문';
+  const date=document.getElementById('np-date').value||new Date().toLocaleDateString('ko-KR');
+  const preview=document.getElementById('newspaper-preview');
+
+  if(!articles.length){
+    preview.innerHTML='<div class="cd" style="text-align:center"><p style="color:var(--ink3)">기사가 없어요. Step 3에서 인물을 추가해주세요!</p></div>';
+    return;
+  }
+
+  let html='';
+  const headerHtml=`
+    <div class="np-header">
+      <div class="np-title">${title}</div>
+      <div class="np-meta">
+        <span>📅 ${date}</span>
+        <span>✍️ ${stuName}</span>
+        <span>📰 역사 특집호</span>
+      </div>
+    </div>`;
+
+  const artHtml=(art,showImg=true)=>`
+    <div>
+      <div class="np-art-era">${art.era||'역사'}</div>
+      <div class="np-art-title">${art.name} — 역사의 현장</div>
+      <div class="np-art-byline">특집 기자 ${stuName} | 역사 탐방팀</div>
+      ${showImg&&art.imgUrl?`<img class="np-art-img" src="${art.imgUrl}" alt="${art.name}">`:''}
+      <div class="np-art-body">${art.article||art.desc}</div>
+      ${art.achievements?.length?`<div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)"><div style="font-size:.68rem;font-weight:700;color:var(--ink3);margin-bottom:4px">■ 주요 업적</div>${art.achievements.map(a=>`<div style="font-size:.73rem;color:var(--ink2)">· ${a}</div>`).join('')}</div>`:''}
+    </div>`;
+
+  if(selFmtNum===1){
+    // 조선일보형 3단
+    html=`<div class="newspaper np-type1">
+      ${headerHtml}
+      <div class="np-divider"></div>
+      <div class="np-body">
+        <div class="np-cols">
+          ${articles.map((art,i)=>`<div class="np-col${i===0?' lead':''}">${artHtml(art,i===0)}</div>`).join('')}
+          ${articles.length===1?'<div class="np-col"><div style="font-size:.78rem;color:var(--ink3);text-align:center;padding:20px">더 많은 인물을 추가해보세요!</div></div><div class="np-col"></div>':''}
+          ${articles.length===2?'<div class="np-col"><div style="font-size:.78rem;color:var(--ink3);text-align:center;padding:20px">더 많은 인물을 추가해보세요!</div></div>':''}
+        </div>
+      </div>
+    </div>`;
+  } else if(selFmtNum===2){
+    // 타임즈형 2단
+    html=`<div class="newspaper np-type2">
+      ${headerHtml}
+      <div class="np-divider"></div>
+      <div class="np-body">
+        <div class="np-cols">
+          <div class="np-col">${articles.map((art,i)=>artHtml(art,i===0)).join('<hr style="border:none;border-top:1px dashed var(--border);margin:14px 0">')}</div>
+          <div class="np-col" style="background:var(--paper2)">
+            <div style="font-size:.8rem;font-weight:700;color:var(--ink2);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--border)">📌 역사 연표</div>
+            ${articles.map(art=>`<div style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border)">
+              <div style="font-size:.72rem;font-weight:700;color:var(--accent)">${art.era}</div>
+              <div style="font-size:.82rem;font-weight:700;color:var(--ink)">${art.name}</div>
+              ${art.achievements?.[0]?`<div style="font-size:.72rem;color:var(--ink3)">· ${art.achievements[0]}</div>`:''}
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  } else if(selFmtNum===3){
+    // 고신문형
+    html=`<div class="newspaper np-type3">
+      <div class="np-header">
+        <div class="np-title" style="color:var(--gold);font-family:'Nanum Myeongjo',serif">◈ ${title} ◈</div>
+        <div class="np-meta" style="color:rgba(200,148,10,.6)">${date} | ${stuName} 편찬</div>
+      </div>
+      <div class="np-body">
+        <div style="text-align:center;margin-bottom:16px;font-size:.8rem;color:var(--ink3);letter-spacing:.15em">— 역사의 한 페이지를 기록하다 —</div>
+        <div class="np-cols">
+          ${articles.map(art=>`
+            <div class="np-col">
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                ${art.imgUrl?`<img src="${art.imgUrl}" style="width:80px;height:100px;object-fit:cover;border-radius:4px;border:2px solid var(--border);flex-shrink:0">`:''}
+                <div>
+                  <div style="font-size:1.1rem;font-weight:800;color:var(--ink);font-family:'Nanum Myeongjo',serif;margin-bottom:3px">▶ ${art.name}</div>
+                  <div style="font-size:.72rem;color:var(--ink3);margin-bottom:8px">${art.era}</div>
+                  <div style="font-size:.82rem;color:var(--ink2);line-height:1.9">${art.article||art.desc}</div>
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>
+        <div style="text-align:center;margin-top:16px;font-size:.72rem;color:var(--ink3);letter-spacing:.1em">— 끝 —</div>
+      </div>
+    </div>`;
+  } else {
+    // 타블로이드형
+    html=`<div class="newspaper np-type4">
+      <div class="np-header">
+        <div class="np-title">${title}</div>
+        <div class="np-meta">${date} | ${stuName}</div>
+      </div>
+      <div class="np-body" style="padding:0">
+        <div class="np-cols">
+          ${articles.length>0?`
+          <div class="np-col full" style="border-bottom:3px solid var(--accent)">
+            ${artHtml(articles[0],true)}
+          </div>`:''}
+          ${articles.slice(1).map(art=>`<div class="np-col">${artHtml(art,false)}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  preview.innerHTML=html;
+}
+
+// ══ 복사 / 다운로드 ══
+function copyNewspaper(){
+  const title=document.getElementById('np-title').value||'역사신문';
+  const date=document.getElementById('np-date').value||'';
+  let text=`📰 ${title}\n${date} | ${stuName}\n${'='.repeat(40)}\n\n`;
+  articles.forEach(art=>{
+    text+=`【 ${art.name} 】 (${art.era})\n\n`;
+    text+=art.article||art.desc;
+    text+='\n';
+    if(art.achievements?.length) text+='\n▪ 주요 업적:\n'+art.achievements.map(a=>'· '+a).join('\n');
+    text+='\n\n'+'-'.repeat(30)+'\n\n';
+  });
+  navigator.clipboard.writeText(text).then(()=>alert('📋 신문 내용이 복사됐어요!'));
+}
+
+function downloadNewspaper(){
+  const title=document.getElementById('np-title').value||'역사신문';
+  const date=document.getElementById('np-date').value||'';
+  let text=`📰 ${title}\n${date} | ${stuName}\n${'='.repeat(40)}\n\n`;
+  articles.forEach(art=>{
+    text+=`【 ${art.name} 】 (${art.era})\n\n`;
+    text+=art.article||art.desc;
+    text+='\n';
+    if(art.achievements?.length) text+='\n▪ 주요 업적:\n'+art.achievements.map(a=>'· '+a).join('\n');
+    text+='\n\n'+'-'.repeat(30)+'\n\n';
+  });
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
+  a.download=`${stuName}_역사신문.txt`;a.click();
+}
+
+function copyEssay(){
+  const text=document.getElementById('essay-text').value;
+  navigator.clipboard.writeText(text).then(()=>alert('📋 감상문이 복사됐어요!'));
+}
+
+function downloadEssay(){
+  const text=document.getElementById('essay-text').value;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(`역사 감상문\n작성: ${stuName}\n\n${text}`);
+  a.download=`${stuName}_역사감상문.txt`;a.click();
+}
+
+function downloadAll(){
+  const npTitle=document.getElementById('np-title').value||'역사신문';
+  const date=document.getElementById('np-date').value||'';
+  const essay=document.getElementById('essay-text').value||'';
+  let text=`📰 ${npTitle}\n${date} | ${stuName}\n${'='.repeat(40)}\n\n`;
+  articles.forEach(art=>{
+    text+=`【 ${art.name} 】 (${art.era})\n\n${art.article||art.desc}\n`;
+    if(art.achievements?.length) text+='\n▪ 주요 업적:\n'+art.achievements.map(a=>'· '+a).join('\n');
+    text+='\n\n'+'-'.repeat(30)+'\n\n';
+  });
+  if(essay) text+=`\n\n${'='.repeat(40)}\n✍️ 역사 감상문\n${'='.repeat(40)}\n\n${essay}`;
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
+  a.download=`${stuName}_역사신문_전체.txt`;a.click();
+}
+
+// ══ 감상문 AI ══
+async function aiEssayCheck(){
+  const text=document.getElementById('essay-text').value.trim();
+  if(!text){alert('감상문을 먼저 써주세요!');return;}
+  const el=document.getElementById('essay-ai');
+  const txt=document.getElementById('essay-ai-text');
+  el.style.display='block';
+  txt.innerHTML='<div class="ld"><span></span><span></span><span></span><span style="margin-left:4px">AI가 읽는 중...</span></div>';
+  try{
+    const names=articles.map(a=>a.name).join(', ');
+    const result=await callGemini(`중학생이 역사 인물(${names})에 대해 쓴 감상문을 첨삭해주세요.\n\n감상문:\n${text}\n\n✅ 잘한 점:\n✏️ 더 풍부하게 쓸 수 있는 부분:\n💡 추천 표현:\n⭐ 격려 한마디:\n\n짧고 따뜻하게 한국어로 피드백해주세요.`,500);
+    txt.textContent=result;
+  }catch(e){txt.textContent='API 키를 설정하면 AI 첨삭을 받을 수 있어요.';}
+}
+
+async function aiEssayInspire(){
+  const el=document.getElementById('essay-ai');
+  const txt=document.getElementById('essay-ai-text');
+  el.style.display='block';
+  txt.innerHTML='<div class="ld"><span></span><span></span><span></span><span style="margin-left:4px">AI가 생각 중...</span></div>';
+  try{
+    const names=articles.map(a=>a.name).join(', ');
+    const result=await callGemini(`중학생이 역사 인물(${names})에 대한 감상문을 쓰려고 합니다.\n도움이 될 글쓰기 힌트를 주세요:\n🌟 시작 문장 예시 2개:\n💭 생각해볼 질문 3개:\n📝 꼭 포함하면 좋을 내용:\n\n짧고 격려하는 방식으로 한국어로 답해주세요.`,400);
+    txt.textContent=result;
+  }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
+}
+
+// ══ 탭 전환 ══
+function sT(n){
+  if(n===5) buildNewspaper();
+  for(let i=1;i<=7;i++){
+    const btn=document.getElementById('sB'+i);
+    const cont=document.getElementById('tab-'+i);
+    if(i===n){btn.classList.add('on');btn.classList.remove('dn');cont.classList.add('on');}
+    else{btn.classList.remove('on');if(i<n)btn.classList.add('dn');else btn.classList.remove('dn');cont.classList.remove('on');}
+  }
+  if(n===7) buildStep7();
+  window.scrollTo(0,0);
+}
+
+// ══ 직접 입력 탭 ══
+let manualImgUrl = '';
+
+function switchInputTab(tab) {
+  document.getElementById('input-ai').style.display = tab==='ai' ? 'block' : 'none';
+  document.getElementById('input-manual').style.display = tab==='manual' ? 'block' : 'none';
+  document.getElementById('itab-ai').className = 'btn bsm ' + (tab==='ai' ? 'bp' : 'bg2');
+  document.getElementById('itab-manual').className = 'btn bsm ' + (tab==='manual' ? 'bp' : 'bg2');
+}
+
+function setManualImg(input) {
+  const file = input.files[0]; if(!file) return;
+  manualImgUrl = URL.createObjectURL(file);
+  document.getElementById('manual-img-name').textContent = file.name;
+  const prev = document.getElementById('manual-img-preview');
+  prev.src = manualImgUrl; prev.style.display = 'block';
+}
+
+function addManualArticle() {
+  const name = document.getElementById('manual-name').value.trim();
+  const era  = document.getElementById('manual-era').value.trim();
+  const desc = document.getElementById('manual-desc').value.trim();
+  const achRaw = document.getElementById('manual-achievements').value.trim();
+
+  if (!name) { alert('인물/사건명을 입력해주세요!'); return; }
+  if (!desc) { alert('기사 내용을 입력해주세요!'); return; }
+
+  const achievements = achRaw ? achRaw.split('\n').map(s=>s.trim()).filter(Boolean) : [];
+
+  articles.push({
+    name, era, desc,
+    article: desc,
+    achievements,
+    imgUrl: manualImgUrl || '',
+  });
+
+  renderArticleList();
+
+  // 입력 초기화
+  ['manual-name','manual-era','manual-desc','manual-achievements'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  manualImgUrl = '';
+  document.getElementById('manual-img-name').textContent = '선택 없음';
+  document.getElementById('manual-img-preview').style.display = 'none';
+
+  alert(`"${name}"이(가) 신문에 추가됐어요! 📰\n총 ${articles.length}개의 기사가 있어요.`);
+}
+
+
+// ══ Step 7: 역사 수노 ══
+let histGenres = ['웅장한 오케스트라'];
+let histMoods  = ['웅장하고 감동적인'];
+
+function toggleHistGenre(el, genre) {
+  el.classList.toggle('on');
+  if (el.classList.contains('on')) {
+    if (!histGenres.includes(genre)) histGenres.push(genre);
+  } else histGenres = histGenres.filter(g => g !== genre);
+}
+function toggleHistMood(el, mood) {
+  // 분위기는 하나만 선택
+  document.querySelectorAll('.hist-mood-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  histMoods = [mood];
+}
+
+function buildStep7() {
+  const prev = document.getElementById('suno-articles-preview');
+  if (!articles.length) {
+    prev.innerHTML = '<p style="color:var(--ink3);font-size:.82rem">Step 4에서 기사를 추가해주세요!</p>';
+    return;
+  }
+  prev.innerHTML = articles.map(a =>
+    `<span style="background:rgba(139,32,16,.1);border:1.5px solid rgba(139,32,16,.2);border-radius:99px;padding:5px 13px;font-size:.78rem;font-weight:700;color:var(--accent)">${a.name}</span>`
+  ).join('');
+}
+
+async function genHistSuno() {
+  if (!articles.length) { alert('먼저 Step 4에서 역사 인물을 추가해주세요!'); sT(4); return; }
+
+  const btn = document.getElementById('hist-suno-btn');
+  btn.disabled = true; btn.textContent = '🤖 가사 생성 중...';
+
+  const genres = histGenres.length ? histGenres.join(', ') : '웅장한 오케스트라, 발라드';
+  const mood   = histMoods[0] || '웅장하고 감동적인';
+  const names  = articles.map(a => a.name).join(', ');
+  const descs  = articles.map(a => `[${a.name}] ${a.era ? '('+a.era+')' : ''}: ${(a.desc||'').substring(0,100)}`).join('\n');
+
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+
+  if (!key) {
+    // API 없으면 기본 가사 생성
+    const basicLyrics = articles.map(a =>
+      `[Verse]\n${a.name}의 이름은 역사에 빛나고\n${a.era || '그 시절'} 이 땅에서 꽃을 피웠네\n${a.achievements?.[0] ? a.achievements[0]+'\n' : ''}용기와 지혜로 세상을 바꿔\n\n`
+    ).join('') + `[Chorus]\n역사의 강은 흘러흘러\n우리에게 교훈을 남기고\n${names}의 정신\n오늘도 우리 마음속에`;
+
+    const style = `${genres}, ${mood}, Korean historical, epic`;
+    document.getElementById('hist-lyrics-text').textContent = basicLyrics;
+    document.getElementById('hist-suno-style').textContent = `Style: ${style}\nMood: ${mood}\nTempo: slow to mid`;
+    document.getElementById('hist-suno-lyrics').textContent = basicLyrics;
+    document.getElementById('hist-suno-full').textContent = `[Style: ${style}]\n[Mood: ${mood}]\n\n[Lyrics]\n${basicLyrics}`;
+    document.getElementById('hist-suno-result').style.display = 'block';
+    btn.disabled = false; btn.textContent = '🤖 역사 가사 & 수노 프롬프트 생성!';
+    return;
+  }
+
+  const prompt = `중학생이 만든 역사신문의 인물들을 주제로 노래 가사를 만들어주세요.
+
+역사 인물/사건:
+${descs}
+
+조건:
+- 분위기: ${mood}
+- 장르: ${genres}
+- 중학생이 부르기 좋은 가사
+- [Verse 1], [Chorus], [Verse 2], [Bridge] 구조
+- 한국어 가사 (역사적 사실 반영)
+- 감동적이고 교육적인 내용
+
+아래 JSON 형식으로만 응답 (백틱 없이 순수 JSON):
+{
+  "lyrics": "완성된 가사 (구조 포함)",
+  "style": "수노 Style 칸 내용 (영어, 120자 이내)",
+  "mood": "분위기 (영어)",
+  "tempo": "빠르기 (영어)",
+  "fullPrompt": "수노에 바로 붙여넣을 완성 프롬프트"
+}`;
+
+  try {
+    const raw = await callGemini(prompt, 1000);
+    const clean = raw.replace(/\`\`\`json|\`\`\`/g,'').trim();
+    const result = JSON.parse(clean);
+
+    document.getElementById('hist-lyrics-text').textContent = result.lyrics || '';
+    document.getElementById('hist-suno-style').textContent =
+      `Style: ${result.style}\nMood: ${result.mood}\nTempo: ${result.tempo}`;
+    document.getElementById('hist-suno-lyrics').textContent = result.lyrics || '';
+    document.getElementById('hist-suno-full').textContent = result.fullPrompt ||
+      `[Style: ${result.style}]\n[Mood: ${result.mood}]\n\n[Lyrics]\n${result.lyrics}`;
+    document.getElementById('hist-suno-result').style.display = 'block';
+  } catch(e) {
+    // 파싱 실패시 기본 생성
+    const style = genres + ', Korean historical, epic, emotional';
+    const basicLyrics = articles.map(a =>
+      `[Verse]\n${a.name}의 이름은 역사에 빛나고\n${a.era||'그 시절'} 이 땅을 밝혔네\n`
+    ).join('') + `[Chorus]\n역사는 흘러도 정신은 남아\n${names} 우리 가슴속에`;
+    document.getElementById('hist-lyrics-text').textContent = basicLyrics;
+    document.getElementById('hist-suno-style').textContent = 'Style: ' + style;
+    document.getElementById('hist-suno-lyrics').textContent = basicLyrics;
+    document.getElementById('hist-suno-full').textContent = `[Style: ${style}]\n\n[Lyrics]\n${basicLyrics}`;
+    document.getElementById('hist-suno-result').style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = '🤖 역사 가사 & 수노 프롬프트 생성!';
+}
+
+function copyHistLyrics() {
+  const text = document.getElementById('hist-lyrics-text').textContent;
+  navigator.clipboard.writeText(text).then(() => alert('📋 가사가 복사됐어요!'));
+}
+
+function downloadHistLyrics() {
+  const text = document.getElementById('hist-lyrics-text').textContent;
+  const names = articles.map(a=>a.name).join('_');
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,\uFEFF' + encodeURIComponent(`역사 가사\n작성: ${stuName}\n인물: ${names}\n\n${text}`);
+  a.download = `${stuName}_역사가사.txt`; a.click();
+}
+
+function copyHistSuno() {
+  const text = document.getElementById('hist-suno-full').textContent;
+  navigator.clipboard.writeText(text).then(() => alert('📋 복사됐어요! 수노에 붙여넣기 해보세요~ 🎵'));
+}
+
+</script>
+</body>
+</html>
