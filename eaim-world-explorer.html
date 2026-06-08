@@ -634,11 +634,56 @@ function buildCountryCard(){
     </div>`;
 }
 
-// ══ 이미지 로드 ══
+
+// ══ Gemini 2.0 이미지 생성 ══
+async function genAIImage(prompt) {
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if (!key) return null;
+  try {
+    const r = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=' + key,
+      { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents:[{parts:[{text:prompt}]}],
+          generationConfig:{responseModalities:['IMAGE','TEXT']}
+        })
+      }
+    );
+    const d = await r.json();
+    const parts = d.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+    if(imgPart) return 'data:' + imgPart.inlineData.mimeType + ';base64,' + imgPart.inlineData.data;
+    return null;
+  } catch(e) { return null; }
+}
+
+// 세계 나라 이미지 로드 (AI 우선 → 위키 폴백)
 async function loadCountryImgs(query){
   const el=document.getElementById('country-imgs');
   const ld=document.getElementById('img-loading');
   el.innerHTML='';ld.style.display='flex';
+
+  // AI 이미지 생성 우선
+  const aiUrl = await genAIImage(query + ' 나라 풍경 랜드마크 수채화 일러스트 교육용');
+  if(aiUrl){
+    ld.style.display='none';
+    selImgUrl=aiUrl;
+    document.getElementById('bg-image').style.backgroundImage=`url(${aiUrl})`;
+    const d1=document.createElement('div');
+    d1.className='img-thumb sel';d1.style.gridColumn='span 2';
+    d1.innerHTML=`<img src="${aiUrl}" style="width:100%;height:100%;object-fit:cover">`;
+    d1.onclick=()=>{selImgUrl=aiUrl;document.getElementById('bg-image').style.backgroundImage=`url(${aiUrl})`;};
+    el.appendChild(d1);
+    const d2=document.createElement('div');
+    d2.className='img-thumb';
+    d2.style.cssText='display:flex;align-items:center;justify-content:center;background:rgba(56,189,248,.08);border:2px dashed rgba(56,189,248,.25)';
+    d2.innerHTML='<span style="font-size:.72rem;color:var(--sky);font-weight:700;text-align:center">🔄 다시<br>생성</span>';
+    d2.onclick=()=>loadCountryImgs(query);
+    el.appendChild(d2);
+    return;
+  }
+
+  // 위키미디어 폴백
   const imgs=await searchWikiImgs(query+' country landmark',9);
   ld.style.display='none';
   if(!imgs.length){el.innerHTML='<p style="color:var(--ink3);font-size:.78rem;grid-column:span 3">이미지를 찾지 못했어요.</p>';return;}
@@ -655,6 +700,7 @@ async function loadCountryImgs(query){
     el.appendChild(div);
   });
 }
+
 
 // ══ 탐구 섹션 ══
 function buildExplore(){
