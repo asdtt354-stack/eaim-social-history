@@ -142,7 +142,7 @@ const CATS = {
 };
 CATS['전체'] = Object.values(CATS).flat();
 
-let rooms = [], selectedRoom = null, quizQuestions = [], curIndex = -1, unsubAnswers = null;
+let rooms = [], selectedRoom = null, quizQuestions = [], curIndex = -1, unsubAnswers = null, liveSessionId = null;
 
 window.doLogin = () => teacherLogin().catch(e => alert('로그인 실패: ' + e.message));
 
@@ -173,7 +173,8 @@ window.makeQuiz = async () => {
   const cat = document.getElementById('cat-select').value;
   const count = Number(document.getElementById('q-count').value) || 10;
   quizQuestions = buildQuestions(cat, count);
-  await createLiveQuiz({ teacherUid: auth.currentUser.uid, roomId, questions: quizQuestions });
+  await createLiveQuiz({ teacherUid: auth.currentUser.uid, roomId, questions: quizQuestions })
+    .then(({ sessionId }) => { liveSessionId = sessionId; });
   document.getElementById('setup-view').classList.add('hidden');
   document.getElementById('lobby-view').classList.remove('hidden');
 };
@@ -199,7 +200,7 @@ function showQuestion() {
   advanceLiveQuiz(auth.currentUser.uid, selectedRoom.id, curIndex);
 
   if (unsubAnswers) unsubAnswers();
-  unsubAnswers = listenLiveAnswers(auth.currentUser.uid, selectedRoom.id, curIndex, (answers) => {
+  unsubAnswers = listenLiveAnswers(auth.currentUser.uid, selectedRoom.id, liveSessionId, curIndex, (answers) => {
     document.getElementById('live-count').textContent = `응답 ${answers.length}명`;
     const counts = [0, 0, 0, 0];
     answers.forEach(a => { if (a.choiceIndex != null) counts[a.choiceIndex]++; });
@@ -227,7 +228,7 @@ window.nextQuestion = () => { curIndex++; showQuestion(); };
 window.finish = async () => {
   if (unsubAnswers) unsubAnswers();
   await endLiveQuiz(auth.currentUser.uid, selectedRoom.id);
-  const board = await getLiveLeaderboard(auth.currentUser.uid, selectedRoom.id);
+  const board = await getLiveLeaderboard(auth.currentUser.uid, selectedRoom.id, liveSessionId);
   document.getElementById('reveal-view').classList.add('hidden');
   document.getElementById('question-view').classList.add('hidden');
   document.getElementById('final-view').classList.remove('hidden');

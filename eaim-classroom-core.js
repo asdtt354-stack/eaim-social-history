@@ -185,19 +185,28 @@ export async function listGameResults(roomId) {
 }
 
 /* ════════ 실시간 퀴즈 (카훗 스타일) ════════
+   ⚠️ 경로를 얕게 유지합니다 — teachers/{uid}/rooms/{roomId}/{subcollection}/{docId}
+   (딱 2단계)까지만 기존 Firestore 규칙의 "if true" 와일드카드가 적용되기 때문에,
+   liveQuiz/current/answers 처럼 더 깊이 중첩하면 규칙을 추가로 안 걸어준 한
+   막힙니다. 그래서 답안은 별도 규칙 없이도 통과하도록 liveQuizAnswers를
+   rooms/{roomId} 바로 아래 평평한 컬렉션으로 둡니다.
+
    teachers/{uid}/rooms/{roomId}/liveQuiz/current
-     { questions:[{term,question,choices,correctIndex}], currentIndex:-1,
-       status:'lobby'|'question'|'reveal'|'ended', questionStartedAt }
-   teachers/{uid}/rooms/{roomId}/liveQuiz/current/answers/{studentId}_{qIndex}
-     { studentId, ...studentMeta, qIndex, choiceIndex, correct, msTaken, points }  */
+     { questions, currentIndex:-1, status:'lobby'|'question'|'reveal'|'ended',
+       sessionId, questionStartedAt }
+   teachers/{uid}/rooms/{roomId}/liveQuizAnswers/{sessionId}_{studentId}_{qIndex}
+     { sessionId, studentId, ...studentMeta, qIndex, choiceIndex, correct, msTaken, points }
+   (sessionId를 넣는 이유: 같은 방에서 퀴즈를 다시 만들어도 지난 회차 답안이
+    새 순위에 안 섞이도록 하기 위함)                                        */
 
 export async function createLiveQuiz({ teacherUid, roomId, questions }) {
+  const sessionId = String(Date.now());
   const ref = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current`);
   await setDoc(ref, {
-    questions, currentIndex: -1, status: 'lobby',
+    questions, currentIndex: -1, status: 'lobby', sessionId,
     questionStartedAt: null, createdAt: serverTimestamp(),
   });
-  return ref;
+  return { ref, sessionId };
 }
 
 export function listenLiveQuiz(teacherUid, roomId, cb) {
@@ -221,30 +230,34 @@ export async function endLiveQuiz(teacherUid, roomId) {
 }
 
 /** 학생이 답을 제출. 문항당 한 번만 기록되도록 결정론적 문서ID 사용(재제출 방지는 클라이언트에서 버튼 비활성화로 처리). */
-export async function submitLiveAnswer({ teacherUid, roomId, qIndex, choiceIndex, correct, msTaken, studentMeta }) {
+export async function submitLiveAnswer({ teacherUid, roomId, sessionId, qIndex, choiceIndex, correct, msTaken, studentMeta }) {
   const studentId = auth.currentUser?.uid;
   if (!studentId) return;
   const points = correct ? Math.max(50, 1000 - Math.round(msTaken / 20)) : 0; // 빠를수록 높은 점수(카훗 방식)
-  const ansRef = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current/answers/${studentId}_${qIndex}`);
+  const ansRef = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuizAnswers/${sessionId}_${studentId}_${qIndex}`);
   await setDoc(ansRef, {
-    studentId, ...studentMeta, qIndex, choiceIndex, correct, msTaken, points,
+    sessionId, studentId, ...studentMeta, qIndex, choiceIndex, correct, msTaken, points,
     createdAt: serverTimestamp(),
   });
   return points;
 }
 
 /** 특정 문항의 실시간 응답 스트림 (호스트가 응답 수/정답률 표시할 때) */
-export function listenLiveAnswers(teacherUid, roomId, qIndex, cb) {
+export function listenLiveAnswers(teacherUid, roomId, sessionId, qIndex, cb) {
   const q = query(
-    collection(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current/answers`),
-    where('qIndex', '==', qIndex)
+    collection(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuizAnswers`),
+    where('sessionId', '==', sessionId), where('qIndex', '==', qIndex)
   );
   return onSnapshot(q, (snap) => cb(snap.docs.map(d => d.data())));
 }
 
 /** 전체 문항 누적 순위 (한 번 읽기 — 최종 순위 화면용) */
-export async function getLiveLeaderboard(teacherUid, roomId) {
-  const snap = await getDocs(collection(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current/answers`));
+export async function getLiveLeaderboard(teacherUid, roomId, sessionId) {
+  const q = query(
+    collection(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuizAnswers`),
+    where('sessionId', '==', sessionId)
+  );
+  const snap = await getDocs(q);
   const byStudent = {};
   snap.docs.forEach(d => {
     const a = d.data();

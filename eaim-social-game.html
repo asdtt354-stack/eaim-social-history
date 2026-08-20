@@ -221,6 +221,7 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
         onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='rgba(56,189,248,.3)'"
         onkeydown="if(event.key==='Enter')sN()">
       <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🎮 게임 시작!</button>
+      <button onclick="skipPreview()" class="btn bg2 bfl" style="font-size:.8rem;padding:9px;margin-top:8px">👀 그냥 둘러보기 (선생님 미리보기)</button>
     </div>
   </div>
 </div>
@@ -564,6 +565,15 @@ async function sN(){
   loadRankings();
 }
 
+// ── 선생님 미리보기: 이름 입력 없이 바로 앱 둘러보기 ──
+function skipPreview(){
+  stuName = '미리보기';
+  window.EAIM_STUDENT_META = { preview: true };
+  document.getElementById('nm').style.display = 'none';
+  initTerms();
+  loadRankings();
+}
+
 // ══ 실시간 퀴즈 (카훗 스타일) - 학생 측 ══
 let liveUnsub = null, liveShownAt = 0, liveSubmitted = false, liveMyTotal = 0, liveLastIndex = -1;
 
@@ -580,6 +590,7 @@ function enterLiveQuiz(){
   liveUnsub = window.EAIM.listenLiveQuiz(room.teacherUid, room.roomId, (data)=>{
     if(!data) return;
     window.EAIM_LIVE_LAST_QUESTIONS = data.questions || [];
+    window.EAIM_LIVE_SESSION_ID = data.sessionId || null;
     if(data.status === 'lobby'){
       document.getElementById('live-quiz-content').innerHTML =
         '<div class="ld" style="justify-content:center"><span></span><span></span><span></span><span style="margin-left:6px">선생님이 시작하기를 기다리는 중...</span></div>';
@@ -630,7 +641,7 @@ async function submitLiveChoice(choiceIndex){
   const correct = q ? choiceIndex === q.correctIndex : false;
 
   const points = await window.EAIM.submitLiveAnswer({
-    teacherUid: room.teacherUid, roomId: room.roomId,
+    teacherUid: room.teacherUid, roomId: room.roomId, sessionId: window.EAIM_LIVE_SESSION_ID,
     qIndex: liveLastIndex, choiceIndex, correct, msTaken,
     studentMeta: window.EAIM_STUDENT_META || {},
   });
