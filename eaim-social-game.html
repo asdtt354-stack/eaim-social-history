@@ -22,12 +22,10 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
 
-/* ── 파티클 배경 ── */
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .particle{position:absolute;border-radius:50%;animation:float linear infinite;opacity:.15}
 @keyframes float{0%{transform:translateY(100vh) rotate(0deg)}100%{transform:translateY(-100px) rotate(360deg)}}
 
-/* ── 헤더 ── */
 header{background:linear-gradient(135deg,#0A1628,#1E293B);
   padding:14px 18px;border-bottom:2px solid rgba(56,189,248,.3);
   position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.4)}
@@ -38,17 +36,15 @@ header{background:linear-gradient(135deg,#0A1628,#1E293B);
 .score-item{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:5px 12px;text-align:center}
 .score-val{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;color:var(--amber)}
 .score-lbl{font-size:.6rem;color:rgba(255,255,255,.5)}
+.class-badge{background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 10px;font-size:.68rem;color:var(--sky);font-weight:700;display:none}
 
-/* ── 메인 ── */
 main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:10}
 
-/* ── 로비 ── */
 .lobby{text-align:center;padding:20px 0}
 .lobby-title{font-family:'Nunito',sans-serif;font-size:2.2rem;font-weight:900;margin-bottom:8px;
   background:linear-gradient(135deg,var(--sky),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .lobby-sub{font-size:.88rem;color:rgba(255,255,255,.55);margin-bottom:28px}
 
-/* ── 게임 카드 그리드 ── */
 .game-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
 .game-card{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);
   padding:18px 14px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden}
@@ -71,7 +67,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .badge-team{background:rgba(56,189,248,.2);color:var(--sky);border:1px solid rgba(56,189,248,.3)}
 .badge-ai{background:rgba(123,108,246,.2);color:#A89CF8;border:1px solid rgba(123,108,246,.3)}
 
-/* ── 용어 설정 ── */
 .term-setup{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);padding:18px;margin-bottom:14px}
 .ts-title{font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;color:var(--sky);margin-bottom:12px}
 .term-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
@@ -84,7 +79,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);transition:all .2s}
 .cat-tab.on{background:var(--violet);border-color:#5840D0;color:#fff}
 
-/* ── 게임 영역 ── */
 .game-area{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);
   padding:22px;margin-bottom:14px;min-height:300px;position:relative}
 .game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:8px}
@@ -94,20 +88,17 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .timer-ring{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--amber)}
 .q-num{font-size:.75rem;color:rgba(255,255,255,.4)}
 
-/* ── 문제 카드 ── */
 .q-card{background:var(--card2);border-radius:12px;padding:20px;margin-bottom:16px;text-align:center}
 .q-label{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.08em;margin-bottom:8px}
 .q-text{font-size:1.1rem;font-weight:700;color:#fff;line-height:1.6}
 .q-hint{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5}
 
-/* ── 답 입력 ── */
 .ans-input{width:100%;padding:13px 16px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);
   border-radius:11px;color:#fff;font-family:inherit;font-size:1rem;font-weight:700;outline:none;
   text-align:center;transition:border-color .2s;margin-bottom:10px}
 .ans-input:focus{border-color:var(--sky)}
 .ans-input::placeholder{color:rgba(255,255,255,.25)}
 
-/* ── OX 버튼 ── */
 .ox-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .ox-btn{padding:20px;border-radius:14px;border:none;font-family:'Nunito',sans-serif;
   font-size:2rem;font-weight:900;cursor:pointer;transition:all .2s}
@@ -118,7 +109,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .ox-o:hover{background:var(--green);color:#fff;transform:scale(1.05)}
 .ox-x:hover{background:var(--red);color:#fff;transform:scale(1.05)}
 
-/* ── 선택지 버튼 ── */
 .choices{display:flex;flex-direction:column;gap:8px}
 .choice-btn{padding:13px 16px;border-radius:11px;border:2px solid rgba(255,255,255,.1);
   background:rgba(255,255,255,.05);color:#fff;font-family:inherit;font-size:.88rem;font-weight:700;
@@ -127,7 +117,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .choice-btn.correct{border-color:var(--green);background:rgba(34,197,94,.2);color:var(--green)}
 .choice-btn.wrong{border-color:var(--red);background:rgba(239,68,68,.2);color:var(--red)}
 
-/* ── 카드 매칭 ── */
 .match-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .match-card{aspect-ratio:3/2;border-radius:10px;border:2px solid rgba(255,255,255,.1);
   background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;
@@ -139,13 +128,11 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .match-card.wrong-match{background:rgba(239,68,68,.2);border-color:var(--red);animation:shake .3s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
-/* ── 피드백 ── */
 .feedback{text-align:center;padding:16px;border-radius:12px;margin-bottom:12px;font-weight:700;font-size:.95rem;display:none}
 .fb-correct{background:rgba(34,197,94,.15);border:2px solid rgba(34,197,94,.3);color:var(--green)}
 .fb-wrong{background:rgba(239,68,68,.15);border:2px solid rgba(239,68,68,.3);color:var(--red)}
 .fb-explain{font-size:.8rem;color:rgba(255,255,255,.65);margin-top:6px;font-weight:400}
 
-/* ── 버튼 ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;
   border-radius:11px;border:none;font-family:'Nunito',inherit;font-weight:800;font-size:.88rem;
   cursor:pointer;transition:all .15s}
@@ -160,7 +147,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .bfl{width:100%}
 .bsm{padding:7px 14px;font-size:.78rem;border-radius:9px}
 
-/* ── 결과 화면 ── */
 .result-card{text-align:center;padding:28px 20px}
 .result-emoji{font-size:4rem;margin-bottom:12px}
 .result-score{font-family:'Nunito',sans-serif;font-size:2.8rem;font-weight:900;
@@ -171,36 +157,30 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .stat-val{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--sky)}
 .stat-lbl{font-size:.68rem;color:rgba(255,255,255,.45);margin-top:2px}
 
-/* ── 팀 대항전 ── */
 .team-scores{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .team-card{background:var(--card2);border-radius:12px;padding:14px;text-align:center;border:2px solid transparent;transition:all .3s}
 .team-card.active{border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,.2)}
 .team-name{font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;margin-bottom:4px}
 .team-score{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--amber)}
 
-/* ── 로딩 ── */
 .ld{display:flex;align-items:center;justify-content:center;gap:6px;padding:20px;color:rgba(255,255,255,.5);font-size:.84rem}
 .ld span{width:7px;height:7px;border-radius:50%;background:var(--sky);animation:bl 1.2s infinite}
 .ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
 @keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-/* ── 빈칸 ── */
 .blank-text{font-size:1.05rem;line-height:2;color:#fff;font-weight:700}
 .blank{display:inline-block;min-width:80px;border-bottom:3px solid var(--sky);
   padding:0 8px;color:var(--sky);font-weight:900;text-align:center}
 
-/* ── 스피드 ── */
 .speed-bar{height:10px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-bottom:14px}
 .speed-fill{height:100%;border-radius:99px;transition:width .1s linear}
 
-/* ── 랭킹 ── */
 .rank-list{display:flex;flex-direction:column;gap:8px}
 .rank-item{background:var(--card2);border-radius:10px;padding:11px 15px;display:flex;align-items:center;gap:12px}
 .rank-num{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;min-width:28px}
 .rank-name{font-weight:700;flex:1}
 .rank-score{font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:900;color:var(--amber)}
 
-/* ── 모달 ── */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:200;
   display:flex;align-items:center;justify-content:center;padding:18px}
 .mb{background:var(--card);border-radius:1.5rem;padding:24px;width:100%;max-width:400px;
@@ -214,7 +194,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 </head>
 <body>
 
-<!-- 파티클 배경 -->
 <div id="particles"></div>
 
 <!-- 이름 입력 -->
@@ -222,22 +201,35 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   <div class="mb">
     <div style="font-size:2.8rem;margin-bottom:10px">🎮</div>
     <div style="font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:5px">사회 용어 게임방</div>
-    <div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:18px">재미있게 배우는 사회 용어!</div>
-    <input type="text" id="sni" placeholder="이름 입력"
-      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;
-      border:2px solid rgba(56,189,248,.3);border-radius:.9rem;padding:11px;outline:none;
-      margin-bottom:10px;background:rgba(255,255,255,.07);color:#fff;transition:border-color .2s"
-      onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='rgba(56,189,248,.3)'"
-      onkeydown="if(event.key==='Enter')sN()">
-    <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🎮 게임 시작!</button>
+    <div id="nm-desc" style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:18px">재미있게 배우는 사회 용어!</div>
+
+    <!-- 코드로 연결된 경우: 반/번호만 입력 -->
+    <div id="join-by-code" style="display:none">
+      <select id="join-class" style="width:100%;padding:9px;border:2px solid rgba(56,189,248,.3);border-radius:.9rem;font-family:inherit;font-weight:700;background:rgba(255,255,255,.07);color:#fff;outline:none;margin-bottom:10px"></select>
+      <input type="number" id="join-number" placeholder="번호를 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid rgba(56,189,248,.3);border-radius:.9rem;padding:11px;outline:none;margin-bottom:10px;background:rgba(255,255,255,.07);color:#fff"
+        onkeydown="if(event.key==='Enter')sN()">
+      <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🎮 게임 시작!</button>
+    </div>
+
+    <!-- 코드 없이 접속한 경우: 기존 방식 -->
+    <div id="join-manual">
+      <input type="text" id="sni" placeholder="이름 입력"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;
+        border:2px solid rgba(56,189,248,.3);border-radius:.9rem;padding:11px;outline:none;
+        margin-bottom:10px;background:rgba(255,255,255,.07);color:#fff;transition:border-color .2s"
+        onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='rgba(56,189,248,.3)'"
+        onkeydown="if(event.key==='Enter')sN()">
+      <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🎮 게임 시작!</button>
+    </div>
   </div>
 </div>
 
-<!-- 헤더 -->
 <header>
   <div class="hi">
     <div class="logo">🎮 EAIM <span>사회 게임방</span></div>
     <div class="score-board">
+      <span id="class-badge" class="class-badge"></span>
       <div class="score-item">
         <div class="score-val" id="total-score">0</div>
         <div class="score-lbl">총점</div>
@@ -253,14 +245,12 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 
 <main>
 
-<!-- ══ 로비 ══ -->
 <div id="lobby">
   <div class="lobby">
     <div class="lobby-title">🎮 사회 용어 게임방</div>
     <div class="lobby-sub">재미있게 사회 용어를 마스터해봐요!</div>
   </div>
 
-  <!-- 용어 카테고리 설정 -->
   <div class="term-setup">
     <div class="ts-title">📚 게임할 용어 선택</div>
     <div class="cat-tabs" id="cat-tabs">
@@ -280,7 +270,14 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 게임 선택 -->
+  <!-- 실시간 퀴즈 (카훗 스타일) - 교실에 연결됐을 때만 보임 -->
+  <div id="live-quiz-card" class="game-card gc-team" style="display:none;margin-bottom:14px;grid-column:1/-1" onclick="enterLiveQuiz()">
+    <span class="game-badge badge-hot">LIVE</span>
+    <span class="game-icon">🏆</span>
+    <div class="game-name">실시간 퀴즈 (다같이!)</div>
+    <div class="game-desc">선생님 화면과 동시에 진행돼요. 빠르게 맞힐수록 점수↑</div>
+  </div>
+
   <div class="game-grid">
     <div class="game-card gc-ox" onclick="startGame('ox')">
       <span class="game-badge badge-hot">HOT</span>
@@ -331,7 +328,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 랭킹 -->
   <div style="background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:var(--r);padding:16px">
     <div style="font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;color:var(--amber);margin-bottom:12px">🏆 오늘의 랭킹</div>
     <div id="rank-list" class="rank-list">
@@ -340,7 +336,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
-<!-- ══ 게임 영역 ══ -->
 <div id="game-area" style="display:none">
   <div class="game-area">
     <div class="game-header">
@@ -357,10 +352,21 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
-<!-- ══ 결과 화면 ══ -->
 <div id="result-area" style="display:none">
   <div class="game-area">
     <div class="result-card" id="result-content"></div>
+  </div>
+</div>
+
+<!-- 실시간 퀴즈 화면 (학생) -->
+<div id="live-quiz-area" style="display:none">
+  <div class="game-area">
+    <div class="game-title-badge" style="margin-bottom:14px">🏆 실시간 퀴즈</div>
+    <div id="live-quiz-content" class="result-card">
+      <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+        <span style="margin-left:6px">선생님이 시작하기를 기다리는 중...</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -370,8 +376,46 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   Designed by Park Seong-ae · EAIM 사회 게임방 v1
 </div>
 
+<!-- ══ 교실 연동 모듈 (Firebase) — 점수/오답 확인만, 세특에는 연결하지 않음 ══ -->
+<script type="module">
+window.EAIM_APP_TYPE = 'game';
+import {
+  resolveRoomByCode, joinRoom, saveGameResult, studentEnter,
+  listenLiveQuiz, submitLiveAnswer
+} from './eaim-classroom-core.js';
+
+window.EAIM = { resolveRoomByCode, joinRoom, saveGameResult, studentEnter, listenLiveQuiz, submitLiveAnswer };
+
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  if (!code) return;
+
+  const room = await resolveRoomByCode(code);
+  const nmDesc = document.getElementById('nm-desc');
+  if (!room) {
+    nmDesc.textContent = '⚠️ 수업이 아직 열리지 않았거나 잘못된 링크예요. 선생님께 문의해주세요.';
+    return;
+  }
+
+  window.EAIM_ROOM = room;
+
+  document.getElementById('join-manual').style.display = 'none';
+  document.getElementById('join-by-code').style.display = 'block';
+  document.getElementById('nm-desc').textContent = `"${room.title}" 수업방이에요. 정보를 입력하고 시작해요!`;
+
+  const classSel = document.getElementById('join-class');
+  if (room.mode === 'individual') {
+    classSel.style.display = 'none';
+  } else if (room.classes && room.classes.length) {
+    classSel.innerHTML = room.classes.map(c => `<option>${c.name}</option>`).join('');
+  } else {
+    classSel.style.display = 'none';
+  }
+})();
+</script>
+
 <script>
-// ══ 상태 ══
 let stuName = '';
 let apiKey = localStorage.getItem('eaim_gemini_key') || '';
 let totalScore = 0;
@@ -381,8 +425,8 @@ let gameState = {};
 let rankings = JSON.parse(localStorage.getItem('eaim_game_rankings') || '[]');
 let selectedTerms = [];
 let currentCat = '전체';
+let wrongLog = []; // 이번 판에서 틀린 문제들 (교사 확인용, 세특엔 안 씀)
 
-// ══ 용어 데이터 ══
 const ALL_TERMS = {
   '정치': ['민주주의','삼권분립','선거제도','헌법','국회','사법부','행정부','정당','표현의 자유','보통선거','법치주의','지방자치'],
   '경제': ['인플레이션','공정무역','GDP','세금','중앙은행','경기침체','자유무역','환율','산업화','실업률','시장경제','수요와공급'],
@@ -467,7 +511,6 @@ const TERM_DEFS = {
   '세계시민의식':'세계를 하나의 공동체로 생각하는 의식',
 };
 
-// ══ 파티클 초기화 ══
 function initParticles(){
   const container = document.getElementById('particles');
   const colors = ['#38BDF8','#00BF8A','#7B6CF6','#F59E0B','#FF6B5B'];
@@ -483,17 +526,134 @@ function initParticles(){
 }
 initParticles();
 
-// ══ 로그인 ══
-function sN(){
-  const n = document.getElementById('sni').value.trim();
-  if(!n){alert('이름을 입력해주세요!');return;}
-  stuName = n;
+// ══ 로그인 (코드 입장 / 수동 입장 모두 처리) ══
+async function sN(){
+  const room = window.EAIM_ROOM;
+
+  if (room) {
+    const number = document.getElementById('join-number').value.trim();
+    if(!number){alert('번호를 입력해주세요!');return;}
+    const className = room.mode !== 'individual' ? document.getElementById('join-class').value : null;
+
+    try{
+      const { group } = await window.EAIM.joinRoom({
+        teacherUid: room.teacherUid, roomId: room.roomId,
+        className, number,
+      });
+      stuName = (className ? className+' ' : '') + number + '번' + (group ? ` (모둠 ${group})` : '');
+      window.EAIM_STUDENT_META = { className, number, group };
+    }catch(e){
+      alert('입장에 실패했어요. 다시 시도해주세요.');return;
+    }
+  } else {
+    const n = document.getElementById('sni').value.trim();
+    if(!n){alert('이름을 입력해주세요!');return;}
+    stuName = n;
+    window.EAIM_STUDENT_META = { name: n };
+    try{ await window.EAIM.studentEnter(); }catch(e){}
+  }
+
   document.getElementById('nm').style.display = 'none';
+  if (room) {
+    const badge = document.getElementById('class-badge');
+    badge.textContent = '🔗 ' + room.title;
+    badge.style.display = '';
+    document.getElementById('live-quiz-card').style.display = 'block';
+  }
   initTerms();
   loadRankings();
 }
 
-// ══ 용어 초기화 ══
+// ══ 실시간 퀴즈 (카훗 스타일) - 학생 측 ══
+let liveUnsub = null, liveShownAt = 0, liveSubmitted = false, liveMyTotal = 0, liveLastIndex = -1;
+
+function enterLiveQuiz(){
+  const room = window.EAIM_ROOM;
+  if(!room){alert('교실 링크로 입장한 경우에만 실시간 퀴즈를 할 수 있어요!');return;}
+  document.getElementById('lobby').style.display='none';
+  document.getElementById('game-area').style.display='none';
+  document.getElementById('result-area').style.display='none';
+  document.getElementById('live-quiz-area').style.display='block';
+  liveMyTotal = 0; liveLastIndex = -1;
+
+  if(liveUnsub) liveUnsub();
+  liveUnsub = window.EAIM.listenLiveQuiz(room.teacherUid, room.roomId, (data)=>{
+    if(!data) return;
+    window.EAIM_LIVE_LAST_QUESTIONS = data.questions || [];
+    if(data.status === 'lobby'){
+      document.getElementById('live-quiz-content').innerHTML =
+        '<div class="ld" style="justify-content:center"><span></span><span></span><span></span><span style="margin-left:6px">선생님이 시작하기를 기다리는 중...</span></div>';
+    } else if(data.status === 'question'){
+      if(data.currentIndex !== liveLastIndex){
+        liveLastIndex = data.currentIndex;
+        liveSubmitted = false;
+        liveShownAt = Date.now();
+        const q = data.questions[data.currentIndex];
+        document.getElementById('live-quiz-content').innerHTML = `
+          <div class="q-label" style="margin-bottom:8px">문제 ${data.currentIndex+1} / ${data.questions.length}</div>
+          <div class="q-text" style="margin-bottom:16px">${q.question}</div>
+          <div class="choices">
+            ${q.choices.map((c,i)=>`<button class="choice-btn" onclick="submitLiveChoice(${i})">${['①','②','③','④'][i]} ${c}</button>`).join('')}
+          </div>`;
+      }
+    } else if(data.status === 'reveal'){
+      const q = data.questions[data.currentIndex];
+      document.getElementById('live-quiz-content').innerHTML = `
+        <div class="result-emoji">${liveSubmitted ? '✅' : '⏭️'}</div>
+        <div class="q-text" style="margin-bottom:6px">정답: ${q.choices[q.correctIndex]}</div>
+        <div class="fb-explain" style="margin-bottom:10px">${q.question}</div>
+        <div class="stat-item" style="display:inline-block;padding:12px 20px">
+          <div class="stat-val">${liveMyTotal}점</div>
+          <div class="stat-lbl">누적 점수</div>
+        </div>`;
+    } else if(data.status === 'ended'){
+      if(liveUnsub){liveUnsub();liveUnsub=null;}
+      document.getElementById('live-quiz-content').innerHTML = `
+        <div class="result-emoji">🏁</div>
+        <div class="result-score">${liveMyTotal}점</div>
+        <div class="result-msg">수고했어요! 전체 순위는 선생님 화면에서 확인해요.</div>
+        <button onclick="goLobby()" class="btn bg2 bfl">🏠 로비로</button>`;
+    }
+  });
+}
+
+async function submitLiveChoice(choiceIndex){
+  if(liveSubmitted) return;
+  liveSubmitted = true;
+  const room = window.EAIM_ROOM;
+  const msTaken = Date.now() - liveShownAt;
+  document.querySelectorAll('#live-quiz-content .choice-btn').forEach(b=>b.disabled=true);
+
+  // 정답 여부는 서버(호스트) 문제 데이터를 다시 안 받아도, 마지막으로 받은 status='question' 스냅샷의 questions를 재사용해야 하므로
+  // listenLiveQuiz 콜백 안에서 저장해둔 최신 데이터가 필요 — 간단히 마지막 질문 데이터를 클로저에 보관
+  const q = window.EAIM_LIVE_LAST_QUESTIONS?.[liveLastIndex];
+  const correct = q ? choiceIndex === q.correctIndex : false;
+
+  const points = await window.EAIM.submitLiveAnswer({
+    teacherUid: room.teacherUid, roomId: room.roomId,
+    qIndex: liveLastIndex, choiceIndex, correct, msTaken,
+    studentMeta: window.EAIM_STUDENT_META || {},
+  });
+  liveMyTotal += points || 0;
+  document.getElementById('live-quiz-content').innerHTML = `
+    <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
+      <span style="margin-left:6px">제출 완료! 다른 친구들 기다리는 중...</span>
+    </div>`;
+}
+
+// ── 게임 결과를 교실 서버로 저장 (submissions가 아닌 별도 gameResults — 세특에 안 들어감) ──
+async function pushGameResult(game, score, correct, total){
+  const room = window.EAIM_ROOM;
+  if(!room || !window.EAIM) return;
+  try{
+    await window.EAIM.saveGameResult({
+      teacherUid: room.teacherUid, roomId: room.roomId,
+      studentMeta: window.EAIM_STUDENT_META || {},
+      game, score, correct, total, wrongLog: wrongLog.slice(0, 30),
+    });
+  }catch(e){ console.warn('게임 결과 저장 실패(무시 가능):', e); }
+}
+
 function initTerms(){
   selectedTerms = Object.values(ALL_TERMS).flat();
   showCatTerms('전체', document.querySelector('.cat-tab'));
@@ -537,7 +697,6 @@ function updateSelCount(){
   document.getElementById('sel-count').textContent = selectedTerms.length + '개 선택';
 }
 
-// ══ Gemini 호출 ══
 async function callGemini(prompt, maxTokens=600){
   const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
   if(!key) throw new Error('NO_KEY');
@@ -550,7 +709,6 @@ async function callGemini(prompt, maxTokens=600){
   return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
-// ══ 랜덤 용어 선택 ══
 function getRandTerms(n){
   const pool = selectedTerms.length>0 ? selectedTerms : Object.values(ALL_TERMS).flat();
   const shuffled = [...pool].sort(()=>Math.random()-.5);
@@ -559,11 +717,11 @@ function getRandTerms(n){
 function getRandTerm(){return getRandTerms(1)[0];}
 function getDef(term){return TERM_DEFS[term]||term+'의 정의';}
 
-// ══ 게임 시작 ══
 function startGame(type){
   if(selectedTerms.length<2){alert('용어를 2개 이상 선택해주세요!');return;}
   currentGame = type;
   gameState = {type,score:0,correct:0,wrong:0,total:10,current:0,startTime:Date.now()};
+  wrongLog = [];
   document.getElementById('lobby').style.display='none';
   document.getElementById('game-area').style.display='block';
   document.getElementById('result-area').style.display='none';
@@ -582,7 +740,6 @@ function startGame(type){
   else nextQuestion();
 }
 
-// ══ 다음 문제 ══
 async function nextQuestion(){
   const gs = gameState;
   if(gs.current >= gs.total){endGame();return;}
@@ -602,7 +759,6 @@ async function nextQuestion(){
   else if(gs.type==='story') await showStoryQuestion();
 }
 
-// ══ OX 퀴즈 ══
 async function showOXQuestion(){
   const term = getRandTerm();
   const def = getDef(term);
@@ -633,11 +789,13 @@ async function showOXQuestion(){
 function answerOX(ans){
   clearTimer();
   const correct = ans === gameState.oxAnswer;
+  if(!correct){
+    wrongLog.push({term: gameState.oxTerm, yourAnswer: ans?'⭕':'❌', correctAnswer: gameState.oxAnswer?'⭕':'❌'});
+  }
   showFeedback(correct, gameState.oxTerm, getDef(gameState.oxTerm));
   setTimeout(()=>nextQuestion(), 1800);
 }
 
-// ══ 빈칸 채우기 ══
 async function showBlankQuestion(){
   const term = getRandTerm();
   const def = getDef(term);
@@ -663,11 +821,13 @@ function checkBlank(){
   clearTimer();
   const input = document.getElementById('blank-input')?.value.trim()||'';
   const correct = input === gameState.blankAnswer || input.replace(/\s/g,'') === gameState.blankAnswer.replace(/\s/g,'');
+  if(!correct){
+    wrongLog.push({term: gameState.blankAnswer, yourAnswer: input || '(빈칸)', correctAnswer: gameState.blankAnswer});
+  }
   showFeedback(correct, gameState.blankAnswer, getDef(gameState.blankAnswer));
   setTimeout(()=>nextQuestion(), 1800);
 }
 
-// ══ 용어 맞추기 ══
 async function showGuessQuestion(){
   const term = getRandTerm();
   const def = getDef(term);
@@ -695,18 +855,19 @@ function checkGuess(ans, el){
     b.disabled=true;
     if(b.textContent.includes(gameState.guessAnswer)) b.classList.add('correct');
   });
-  if(!correct) el.classList.add('wrong');
+  if(!correct){
+    el.classList.add('wrong');
+    wrongLog.push({term: gameState.guessAnswer, yourAnswer: ans, correctAnswer: gameState.guessAnswer});
+  }
   showFeedback(correct, gameState.guessAnswer, getDef(gameState.guessAnswer));
   setTimeout(()=>nextQuestion(), 1800);
 }
 
-// ══ AI 랜덤 퀴즈 ══
 async function showRandomQuestion(){
   const term = getRandTerm();
   const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
 
   if(!key){
-    // API 없으면 기본 퀴즈
     gameState.guessAnswer = term;
     const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
     const choices = [term,...others].sort(()=>Math.random()-.5);
@@ -768,7 +929,6 @@ async function showRandomQuestion(){
   startTimer(20);
 }
 
-// ══ 스토리 퀴즈 ══
 async function showStoryQuestion(){
   const term = getRandTerm();
   const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
@@ -801,7 +961,6 @@ async function showStoryQuestion(){
   startTimer(25);
 }
 
-// ══ 카드 매칭 ══
 function startMatchGame(){
   const terms = getRandTerms(6);
   const cards = [];
@@ -850,7 +1009,6 @@ function flipCard(idx){
     const [a,b] = gameState.flipped;
     setTimeout(()=>{
       if(cards[a].id===cards[b].id && cards[a].type!==cards[b].type){
-        // 매칭 성공!
         cards[a].matched=true; cards[b].matched=true;
         gameState.matchScore++;
         addScore(100); streak++;
@@ -860,8 +1018,8 @@ function flipCard(idx){
           setTimeout(endGame,2000);},300);
         }
       } else {
-        // 실패
         gameState.matchWrong++;
+        wrongLog.push({term: cards[a].id, yourAnswer: cards[a].type==='term'?cards[a].text:cards[b].text, correctAnswer: '짝 불일치'});
         ['mc-'+a,'mc-'+b].forEach(id=>{
           const el2=document.getElementById(id);
           el2.classList.remove('flipped');
@@ -876,7 +1034,6 @@ function flipCard(idx){
   }
 }
 
-// ══ 스피드 퀴즈 ══
 function startSpeedGame(){
   gameState.speedScore = 0;
   gameState.speedTotal = 0;
@@ -924,12 +1081,14 @@ function answerSpeed(ans){
   if(ans===gameState.speedAns){
     gameState.speedScore++;
     addScore(50);streak++;
-  } else {streak=0;}
+  } else {
+    streak=0;
+    wrongLog.push({term: gameState.speedTerm, yourAnswer: ans?'⭕':'❌', correctAnswer: gameState.speedAns?'⭕':'❌'});
+  }
   updateHeader();
   showSpeedQuestion();
 }
 
-// ══ 팀 대항전 ══
 function startTeamGame(){
   gameState.teams = [{name:'🔵 팀 A',score:0},{name:'🔴 팀 B',score:0}];
   gameState.currentTeam = 0;
@@ -974,14 +1133,17 @@ function answerTeam(ans, el){
     b.disabled=true;
     if(b.textContent.includes(gameState.teamAnswer)) b.classList.add('correct');
   });
-  if(!correct) el.classList.add('wrong');
-  if(correct) gameState.teams[gameState.currentTeam].score+=100;
+  if(!correct){
+    el.classList.add('wrong');
+    wrongLog.push({term: gameState.teamAnswer, yourAnswer: ans, correctAnswer: gameState.teamAnswer});
+  } else {
+    gameState.teams[gameState.currentTeam].score+=100;
+  }
   gameState.currentTeam = 1-gameState.currentTeam;
   showFeedback(correct, gameState.teamAnswer, getDef(gameState.teamAnswer));
   setTimeout(()=>showTeamQuestion(), 1800);
 }
 
-// ══ 피드백 & 점수 ══
 function showFeedback(correct, term, def){
   const el = document.getElementById('feedback');
   el.className = 'feedback ' + (correct?'fb-correct':'fb-wrong');
@@ -1004,10 +1166,12 @@ function updateHeader(){
   document.getElementById('streak-count').textContent=streak;
 }
 
-// ══ 건너뛰기 ══
-function skipQuestion(){clearTimer();gameState.wrong++;streak=0;updateHeader();nextQuestion();}
+function skipQuestion(){
+  clearTimer();gameState.wrong++;streak=0;updateHeader();
+  wrongLog.push({term: gameState.blankAnswer || '', yourAnswer:'건너뜀', correctAnswer: gameState.blankAnswer || ''});
+  nextQuestion();
+}
 
-// ══ 타이머 ══
 let _timer=null;
 function startTimer(sec){
   clearTimer();
@@ -1021,7 +1185,6 @@ function startTimer(sec){
 }
 function clearTimer(){if(_timer){clearInterval(_timer);_timer=null;}}
 
-// ══ 게임 종료 ══
 function endGame(){
   clearTimer();
   if(gameState.speedTimer) clearInterval(gameState.speedTimer);
@@ -1035,11 +1198,13 @@ function endGame(){
   const emoji = pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'💪';
   const msg = pct>=90?'완벽해요! 사회 용어 마스터!':pct>=70?'잘했어요! 조금만 더!':pct>=50?'좋아요! 계속 연습해봐요!':'다시 도전해봐요!';
 
-  // 랭킹 저장
   rankings.push({name:stuName,score:sc,game:currentGame,date:new Date().toLocaleTimeString('ko-KR')});
   rankings.sort((a,b)=>b.score-a.score);
   rankings=rankings.slice(0,10);
   localStorage.setItem('eaim_game_rankings',JSON.stringify(rankings));
+
+  // 교실에 연결되어 있으면 점수/오답만 저장 (세특에는 안 들어감)
+  pushGameResult(currentGame, sc, correct, total);
 
   document.getElementById('result-content').innerHTML=`
     <div class="result-emoji">${emoji}</div>
@@ -1056,17 +1221,17 @@ function endGame(){
     </div>`;
 }
 
-// ══ 로비로 ══
 function goLobby(){
   clearTimer();
   if(gameState.speedTimer) clearInterval(gameState.speedTimer);
+  if(liveUnsub){liveUnsub();liveUnsub=null;}
   document.getElementById('lobby').style.display='block';
   document.getElementById('game-area').style.display='none';
   document.getElementById('result-area').style.display='none';
+  document.getElementById('live-quiz-area').style.display='none';
   loadRankings();
 }
 
-// ══ 랭킹 ══
 function loadRankings(){
   const el=document.getElementById('rank-list');
   if(!rankings.length){el.innerHTML='<div style="color:rgba(255,255,255,.35);font-size:.82rem;text-align:center;padding:10px">아직 기록이 없어요!</div>';return;}

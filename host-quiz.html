@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAIM 실시간 퀴즈 - 진행 화면</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A1628;--navy2:#1E3A5F;--sky:#38BDF8;--amber:#F59E0B;--green:#22C55E;--red:#EF4444;--violet:#7B6CF6;--card:#1E293B;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--navy);color:#fff;min-height:100vh}
+header{padding:16px 20px;text-align:center;border-bottom:2px solid rgba(56,189,248,.25)}
+header h1{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900}
+main{max-width:900px;margin:0 auto;padding:24px 16px}
+.cd{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:1.2rem;padding:20px;margin-bottom:16px}
+select,input{width:100%;padding:10px 13px;border-radius:9px;border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:.9rem;outline:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:11px;border:none;font-weight:900;font-size:.92rem;cursor:pointer;font-family:'Nunito',inherit}
+.bsky{background:linear-gradient(135deg,var(--sky),#1A90C0);color:#fff}
+.bamb{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
+.bg2{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.14)}
+.bfl{width:100%}
+.q-display{text-align:center;padding:30px 20px}
+.q-num{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:10px}
+.q-text{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;margin-bottom:20px}
+.choice-bars{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice-bar{background:var(--card);border:2px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;position:relative;overflow:hidden}
+.choice-bar.correct{border-color:var(--green);background:rgba(34,197,94,.15)}
+.choice-bar-fill{position:absolute;inset:0;background:rgba(56,189,248,.15);width:0%;transition:width .5s}
+.choice-bar-text{position:relative;font-weight:700;font-size:.95rem}
+.choice-bar-count{position:relative;font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--sky);margin-top:4px}
+.live-count{font-family:'Nunito',sans-serif;font-size:1.1rem;color:var(--amber);text-align:center;margin-bottom:14px}
+.rank-row{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:10px;padding:12px 16px;margin-bottom:8px}
+.rank-num{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;min-width:34px}
+.rank-name{flex:1;font-weight:700}
+.rank-pts{font-family:'Nunito',sans-serif;font-weight:900;color:var(--amber)}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<header><h1>🏆 실시간 퀴즈 진행 화면</h1></header>
+
+<main>
+
+<!-- 로그인 필요 -->
+<div id="login-view" class="cd" style="text-align:center;padding:40px 20px">
+  <p style="margin-bottom:16px">구글 로그인 후 진행할 수 있어요.</p>
+  <button onclick="doLogin()" class="btn bsky">구글로 로그인</button>
+</div>
+
+<div id="app-view" style="display:none">
+
+  <!-- 1) 방 선택 & 퀴즈 만들기 -->
+  <div id="setup-view" class="cd">
+    <div style="font-weight:900;margin-bottom:10px">1. 게임방을 선택하세요</div>
+    <select id="room-select" style="margin-bottom:12px"></select>
+    <div style="font-weight:900;margin-bottom:10px">2. 출제할 분야</div>
+    <select id="cat-select" style="margin-bottom:12px">
+      <option value="전체">🌟 전체</option>
+      <option value="정치">🏛️ 정치</option>
+      <option value="경제">💰 경제</option>
+      <option value="사회">🌍 사회</option>
+      <option value="환경">🌱 환경</option>
+      <option value="국제">🌐 국제</option>
+      <option value="문화">🎨 문화</option>
+    </select>
+    <div style="font-weight:900;margin-bottom:10px">3. 문제 수</div>
+    <input type="number" id="q-count" value="10" min="3" max="20" style="margin-bottom:14px">
+    <button class="btn bamb bfl" onclick="makeQuiz()">🎲 퀴즈 만들기 & 대기실 열기</button>
+  </div>
+
+  <!-- 2) 대기실 -->
+  <div id="lobby-view" class="cd hidden" style="text-align:center;padding:36px 20px">
+    <div style="font-size:2.4rem;margin-bottom:10px">📱</div>
+    <div style="font-weight:900;font-size:1.1rem;margin-bottom:6px">학생들에게 QR/링크로 입장하게 하세요</div>
+    <p style="color:rgba(255,255,255,.5);font-size:.85rem;margin-bottom:20px">교사 허브에서 이 방의 QR을 다시 띄워도 되고, 이미 입장한 학생은 게임방 로비에서 "🏆 실시간 퀴즈" 카드를 누르면 자동으로 대기실로 들어와요.</p>
+    <button class="btn bsky bfl" onclick="startQuiz()">▶ 퀴즈 시작!</button>
+  </div>
+
+  <!-- 3) 문제 진행 -->
+  <div id="question-view" class="cd hidden">
+    <div class="live-count" id="live-count">응답 0명</div>
+    <div class="q-display">
+      <div class="q-num" id="q-num-label"></div>
+      <div class="q-text" id="q-text-label"></div>
+      <div class="choice-bars" id="choice-bars"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bamb bfl" onclick="reveal()">✅ 정답 공개</button>
+    </div>
+  </div>
+
+  <!-- 4) 정답 공개 후 -->
+  <div id="reveal-view" class="cd hidden">
+    <div style="display:flex;gap:8px">
+      <button class="btn bsky bfl" id="next-btn" onclick="nextQuestion()">▶ 다음 문제</button>
+      <button class="btn bg2 bfl" onclick="finish()">🏁 여기서 종료 & 최종 순위</button>
+    </div>
+  </div>
+
+  <!-- 5) 최종 순위 -->
+  <div id="final-view" class="cd hidden">
+    <div style="font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;text-align:center;margin-bottom:16px">🏆 최종 순위</div>
+    <div id="final-rank-list"></div>
+    <button class="btn bg2 bfl" style="margin-top:14px" onclick="location.reload()">🔄 새 퀴즈 만들기</button>
+  </div>
+
+</div>
+
+</main>
+
+<script type="module">
+import {
+  auth, teacherLogin, onTeacherAuthChange, listMyRooms,
+  createLiveQuiz, advanceLiveQuiz, revealLiveQuiz, endLiveQuiz,
+  listenLiveAnswers, getLiveLeaderboard
+} from './eaim-classroom-core.js';
+
+window.EAIM_APP_TYPE = 'game';
+
+const TERM_DEFS = {
+  '민주주의':'국민이 주권을 가지고 스스로 나라를 다스리는 정치 체제','삼권분립':'입법·행정·사법을 분리하여 권력 남용을 막는 제도',
+  '선거제도':'국민이 대표자를 선출하는 방법과 절차','헌법':'국가의 최고 법으로 국민의 기본권을 보장',
+  '인플레이션':'물가가 지속적으로 오르는 경제 현상','GDP':'한 나라에서 1년간 생산한 모든 재화와 서비스의 총 가치',
+  '세금':'국가가 국민으로부터 거두는 재정 수단','환율':'서로 다른 나라의 화폐를 교환하는 비율',
+  '인권':'모든 인간이 태어나면서부터 가지는 기본적인 권리','세계화':'국가 간 교류가 활발해져 세계가 하나로 연결되는 현상',
+  '다문화사회':'다양한 문화적 배경을 가진 사람들이 함께 사는 사회','고령화사회':'65세 이상 노인 인구 비율이 높아지는 사회',
+  '기후변화':'지구 평균 온도 변화로 나타나는 기상 패턴의 변화','탄소중립':'온실가스 배출량을 줄여 순 배출량을 0으로 만드는 것',
+  '신재생에너지':'태양열·풍력 등 자연에서 얻는 친환경 에너지','미세먼지':'지름 10마이크로미터 이하의 작은 먼지 입자',
+  'UN':'국제 평화와 안전을 위한 국제연합 기구','난민':'전쟁·박해 등을 피해 다른 나라로 피신한 사람',
+  '외교':'국가 간의 공식적인 관계와 교류','WTO':'세계 무역 규칙을 정하는 국제기구',
+  '한류':'한국 문화가 세계로 퍼져나가는 현상','문화유산':'후세에 전해지는 문화적 가치를 지닌 유산',
+  '전통문화':'오랫동안 전해 내려오는 고유한 문화','세계시민의식':'세계를 하나의 공동체로 생각하는 의식',
+};
+const CATS = {
+  '정치':['민주주의','삼권분립','선거제도','헌법'],
+  '경제':['인플레이션','GDP','세금','환율'],
+  '사회':['인권','세계화','다문화사회','고령화사회'],
+  '환경':['기후변화','탄소중립','신재생에너지','미세먼지'],
+  '국제':['UN','난민','외교','WTO'],
+  '문화':['한류','문화유산','전통문화','세계시민의식'],
+};
+CATS['전체'] = Object.values(CATS).flat();
+
+let rooms = [], selectedRoom = null, quizQuestions = [], curIndex = -1, unsubAnswers = null;
+
+window.doLogin = () => teacherLogin().catch(e => alert('로그인 실패: ' + e.message));
+
+onTeacherAuthChange(async user => {
+  document.getElementById('login-view').style.display = user ? 'none' : 'block';
+  document.getElementById('app-view').style.display = user ? 'block' : 'none';
+  if (!user) return;
+  rooms = (await listMyRooms()).filter(r => r.app === 'game');
+  const sel = document.getElementById('room-select');
+  if (!rooms.length) { sel.innerHTML = '<option>먼저 교사 허브에서 게임방 수업을 열어주세요</option>'; return; }
+  sel.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
+});
+
+function buildQuestions(cat, count) {
+  const pool = CATS[cat] || CATS['전체'];
+  const terms = [...pool].sort(() => Math.random() - .5).slice(0, count);
+  return terms.map(term => {
+    const others = pool.filter(t => t !== term).sort(() => Math.random() - .5).slice(0, 3);
+    const choices = [term, ...others].sort(() => Math.random() - .5);
+    return { term, question: TERM_DEFS[term], choices, correctIndex: choices.indexOf(term) };
+  });
+}
+
+window.makeQuiz = async () => {
+  const roomId = document.getElementById('room-select').value;
+  selectedRoom = rooms.find(r => r.id === roomId);
+  if (!selectedRoom) { alert('게임방을 선택해주세요!'); return; }
+  const cat = document.getElementById('cat-select').value;
+  const count = Number(document.getElementById('q-count').value) || 10;
+  quizQuestions = buildQuestions(cat, count);
+  await createLiveQuiz({ teacherUid: auth.currentUser.uid, roomId, questions: quizQuestions });
+  document.getElementById('setup-view').classList.add('hidden');
+  document.getElementById('lobby-view').classList.remove('hidden');
+};
+
+window.startQuiz = () => { curIndex = 0; showQuestion(); };
+
+function showQuestion() {
+  document.getElementById('lobby-view').classList.add('hidden');
+  document.getElementById('reveal-view').classList.add('hidden');
+  document.getElementById('final-view').classList.add('hidden');
+  document.getElementById('question-view').classList.remove('hidden');
+
+  const q = quizQuestions[curIndex];
+  document.getElementById('q-num-label').textContent = `문제 ${curIndex + 1} / ${quizQuestions.length}`;
+  document.getElementById('q-text-label').textContent = q.question;
+  document.getElementById('choice-bars').innerHTML = q.choices.map((c, i) => `
+    <div class="choice-bar" id="cbar-${i}">
+      <div class="choice-bar-fill" id="cfill-${i}"></div>
+      <div class="choice-bar-text">${['①','②','③','④'][i]} ${c}</div>
+      <div class="choice-bar-count" id="ccount-${i}">0명</div>
+    </div>`).join('');
+
+  advanceLiveQuiz(auth.currentUser.uid, selectedRoom.id, curIndex);
+
+  if (unsubAnswers) unsubAnswers();
+  unsubAnswers = listenLiveAnswers(auth.currentUser.uid, selectedRoom.id, curIndex, (answers) => {
+    document.getElementById('live-count').textContent = `응답 ${answers.length}명`;
+    const counts = [0, 0, 0, 0];
+    answers.forEach(a => { if (a.choiceIndex != null) counts[a.choiceIndex]++; });
+    const max = Math.max(1, ...counts);
+    counts.forEach((c, i) => {
+      const fill = document.getElementById(`cfill-${i}`);
+      const cnt = document.getElementById(`ccount-${i}`);
+      if (fill) fill.style.width = (c / max * 100) + '%';
+      if (cnt) cnt.textContent = c + '명';
+    });
+  });
+}
+
+window.reveal = async () => {
+  await revealLiveQuiz(auth.currentUser.uid, selectedRoom.id);
+  const q = quizQuestions[curIndex];
+  document.getElementById(`cbar-${q.correctIndex}`).classList.add('correct');
+  document.getElementById('question-view').classList.add('hidden');
+  document.getElementById('reveal-view').classList.remove('hidden');
+  document.getElementById('next-btn').style.display = curIndex >= quizQuestions.length - 1 ? 'none' : 'flex';
+};
+
+window.nextQuestion = () => { curIndex++; showQuestion(); };
+
+window.finish = async () => {
+  if (unsubAnswers) unsubAnswers();
+  await endLiveQuiz(auth.currentUser.uid, selectedRoom.id);
+  const board = await getLiveLeaderboard(auth.currentUser.uid, selectedRoom.id);
+  document.getElementById('reveal-view').classList.add('hidden');
+  document.getElementById('question-view').classList.add('hidden');
+  document.getElementById('final-view').classList.remove('hidden');
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('final-rank-list').innerHTML = board.map((s, i) => `
+    <div class="rank-row">
+      <div class="rank-num">${medals[i] || (i + 1)}</div>
+      <div class="rank-name">${s.className ? s.className + ' ' + s.number + '번' : '학생'} (${s.correct}/${s.total})</div>
+      <div class="rank-pts">${s.totalPoints}점</div>
+    </div>`).join('') || '<p style="color:rgba(255,255,255,.5);text-align:center">참여 기록이 없어요.</p>';
+};
+</script>
+</body>
+</html>

@@ -184,6 +184,79 @@ export async function listGameResults(roomId) {
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
+/* ════════ 실시간 퀴즈 (카훗 스타일) ════════
+   teachers/{uid}/rooms/{roomId}/liveQuiz/current
+     { questions:[{term,question,choices,correctIndex}], currentIndex:-1,
+       status:'lobby'|'question'|'reveal'|'ended', questionStartedAt }
+   teachers/{uid}/rooms/{roomId}/liveQuiz/current/answers/{studentId}_{qIndex}
+     { studentId, ...studentMeta, qIndex, choiceIndex, correct, msTaken, points }  */
+
+export async function createLiveQuiz({ teacherUid, roomId, questions }) {
+  const ref = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current`);
+  await setDoc(ref, {
+    questions, currentIndex: -1, status: 'lobby',
+    questionStartedAt: null, createdAt: serverTimestamp(),
+  });
+  return ref;
+}
+
+export function listenLiveQuiz(teacherUid, roomId, cb) {
+  const ref = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current`);
+  return onSnapshot(ref, (snap) => cb(snap.exists() ? snap.data() : null));
+}
+
+export async function advanceLiveQuiz(teacherUid, roomId, index) {
+  const ref = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current`);
+  await updateDoc(ref, { currentIndex: index, status: 'question', questionStartedAt: serverTimestamp() });
+}
+
+export async function revealLiveQuiz(teacherUid, roomId) {
+  const ref = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current`);
+  await updateDoc(ref, { status: 'reveal' });
+}
+
+export async function endLiveQuiz(teacherUid, roomId) {
+  const ref = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current`);
+  await updateDoc(ref, { status: 'ended' });
+}
+
+/** 학생이 답을 제출. 문항당 한 번만 기록되도록 결정론적 문서ID 사용(재제출 방지는 클라이언트에서 버튼 비활성화로 처리). */
+export async function submitLiveAnswer({ teacherUid, roomId, qIndex, choiceIndex, correct, msTaken, studentMeta }) {
+  const studentId = auth.currentUser?.uid;
+  if (!studentId) return;
+  const points = correct ? Math.max(50, 1000 - Math.round(msTaken / 20)) : 0; // 빠를수록 높은 점수(카훗 방식)
+  const ansRef = doc(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current/answers/${studentId}_${qIndex}`);
+  await setDoc(ansRef, {
+    studentId, ...studentMeta, qIndex, choiceIndex, correct, msTaken, points,
+    createdAt: serverTimestamp(),
+  });
+  return points;
+}
+
+/** 특정 문항의 실시간 응답 스트림 (호스트가 응답 수/정답률 표시할 때) */
+export function listenLiveAnswers(teacherUid, roomId, qIndex, cb) {
+  const q = query(
+    collection(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current/answers`),
+    where('qIndex', '==', qIndex)
+  );
+  return onSnapshot(q, (snap) => cb(snap.docs.map(d => d.data())));
+}
+
+/** 전체 문항 누적 순위 (한 번 읽기 — 최종 순위 화면용) */
+export async function getLiveLeaderboard(teacherUid, roomId) {
+  const snap = await getDocs(collection(db, `teachers/${teacherUid}/rooms/${roomId}/liveQuiz/current/answers`));
+  const byStudent = {};
+  snap.docs.forEach(d => {
+    const a = d.data();
+    const key = a.studentId;
+    if (!byStudent[key]) byStudent[key] = { studentId: key, className: a.className, number: a.number, totalPoints: 0, correct: 0, total: 0 };
+    byStudent[key].totalPoints += a.points || 0;
+    byStudent[key].total += 1;
+    if (a.correct) byStudent[key].correct += 1;
+  });
+  return Object.values(byStudent).sort((a, b) => b.totalPoints - a.totalPoints);
+}
+
 /* ════════ QR 코드 렌더 (외부 라이브러리 없이, 이미지 API 사용) ════════ */
 export function qrImageUrl(link, size = 260) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(link)}`;

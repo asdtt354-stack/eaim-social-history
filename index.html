@@ -14,6 +14,7 @@
   --amber:#F59E0B;--amber-l:#FFFBEB;
   --paper:#FDF8F0;--paper2:#F5EED8;--border:#E0CCA0;
   --ink:#1C1208;--ink2:#5C4A2A;--ink3:#9C8060;
+  --green:#16A34A;--red:#DC2626;
   --r:1.2rem;--s:0 4px 24px rgba(139,69,19,.08);--sl:0 8px 36px rgba(139,69,19,.14);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -22,7 +23,6 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
   background:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(139,69,19,.012) 40px,rgba(139,69,19,.012) 41px),
              repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(139,69,19,.012) 40px,rgba(139,69,19,.012) 41px)}
 
-/* ── 헤더 ── */
 header{background:linear-gradient(135deg,#2C1810 0%,#4A2818 50%,#2C1810 100%);
   padding:24px 20px 20px;text-align:center;position:relative;overflow:hidden;
   border-bottom:4px solid var(--gold)}
@@ -41,30 +41,58 @@ header::after{content:'歷史';position:absolute;right:20px;top:50%;transform:tr
 .pill-i{background:rgba(56,189,248,.18);color:#38BDF8;border:1px solid rgba(56,189,248,.3)}
 .pill-m{background:rgba(196,114,42,.2);color:#C4722A;border:1px solid rgba(196,114,42,.35)}
 
-/* ── 특징 배지 ── */
 .feat-strip{background:rgba(212,168,71,.06);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   padding:12px 20px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
 .feat-item{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--ink2);font-weight:700}
 
+.wrap{max-width:800px;margin:0 auto;padding:0 16px}
+
+/* ── 교사 패널 ── */
+.teacher-panel{background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:1.2rem;
+  padding:18px 20px;border:2px solid rgba(212,168,71,.25);box-shadow:0 8px 28px rgba(0,0,0,.2);
+  margin:20px auto 0;color:#fff}
+.tp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tp-title{font-family:'Nanum Myeongjo',serif;font-size:1rem;font-weight:700;display:flex;align-items:center;gap:7px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:10px;border:none;font-weight:800;font-size:.84rem;cursor:pointer;font-family:inherit;text-decoration:none}
+.bp{background:linear-gradient(135deg,var(--brown),var(--brown2));color:#fff}
+.bamb{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
+.bg2{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.15)}
+.bfl{width:100%;padding:12px}
+.bsm{padding:6px 12px;font-size:.76rem}
+select,input[type=text],input[type=number],input[type=password]{width:100%;padding:9px 12px;border:2px solid rgba(255,255,255,.15);
+  border-radius:9px;font-family:inherit;font-size:.88rem;outline:none;background:rgba(255,255,255,.08);color:#fff}
+select option{color:#000}
+.tp-body{margin-top:14px;display:none}
+.tp-body.on{display:block}
+.hint{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.6;margin-top:6px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill2{background:rgba(255,255,255,.1);border-radius:99px;padding:3px 10px;font-size:.72rem;font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.dot-on{background:var(--green)}.dot-off{background:rgba(255,255,255,.3)}
+.room-item{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 12px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,.04)}
+.tp-sub{background:rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-top:10px}
+.class-row{display:flex;gap:6px;margin-bottom:6px}
+textarea{width:100%;min-height:110px;border:2px solid rgba(255,255,255,.15);border-radius:9px;padding:10px;font-family:inherit;font-size:.84rem;line-height:1.7;background:rgba(255,255,255,.08);color:#fff}
+
+#qr-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;overflow:auto}
+#qr-modal .box{background:#fff;border-radius:1.2rem;padding:24px;max-width:340px;margin:60px auto;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);color:#1C0A00}
+
 /* ── 앱 카드 ── */
 .cards{max-width:800px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:16px}
-
 .app-card{border-radius:1.4rem;overflow:hidden;box-shadow:var(--sl);transition:transform .2s;text-decoration:none;display:block;border:2px solid transparent}
 .app-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.18)}
-
 .card-header{padding:24px 22px 18px;position:relative;overflow:hidden}
 .card-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);
   border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:3px 11px;
   font-size:.68rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:10px}
 .live-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.card-h2{font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px}
-.card-h2-sub{font-family:'Noto Sans KR',sans-serif;font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:12px;display:block}
+.card-h2{font-size:1.6rem;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px}
+.card-h2-sub{font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:12px;display:block}
 .card-desc{font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.7;max-width:360px}
 .feat-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .feat-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
   border-radius:99px;padding:4px 11px;font-size:.7rem;color:rgba(255,255,255,.85);font-weight:700}
-
 .card-body{background:rgba(253,248,240,.97);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
 .step-dots{display:flex;gap:5px;flex-wrap:wrap}
 .sdot{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:900}
@@ -73,50 +101,22 @@ header::after{content:'歷史';position:absolute;right:20px;top:50%;transform:tr
   transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:6px}
 .enter-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.2)}
 
-/* ── 역사신문 ── */
 .card-history .card-header{background:linear-gradient(135deg,#1A0808,#3A1010,#1A0A20)}
 .card-history .card-header::after{content:'📰';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
 .card-history .enter-btn{background:linear-gradient(135deg,var(--brown),var(--brown2))}
-.card-history .sdot:nth-child(1){background:#FEF3C7;color:#D97706}
-.card-history .sdot:nth-child(2){background:#FEE2E2;color:#DC2626}
-.card-history .sdot:nth-child(3){background:#DCFCE7;color:#15803D}
-.card-history .sdot:nth-child(4){background:#F3E8FF;color:#7E22CE}
-.card-history .sdot:nth-child(5){background:#E0F5FF;color:#1070A0}
-.card-history .sdot:nth-child(6){background:#FFF0E0;color:#B45309}
-.card-history .sdot:nth-child(7){background:#FCE7F3;color:#9D174D}
-
-/* ── 사회 용어 사전 ── */
 .card-social .card-header{background:linear-gradient(135deg,#0A1628,#1E3A5F,#0A2A40)}
 .card-social .card-header::after{content:'📚';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
 .card-social .enter-btn{background:linear-gradient(135deg,#38BDF8,#1A90C0)}
-.card-social .sdot:nth-child(1){background:#E0F5FF;color:#1070A0}
-.card-social .sdot:nth-child(2){background:#E0FBF2;color:#008F66}
-.card-social .sdot:nth-child(3){background:#F0EEFF;color:#5840D0}
-.card-social .sdot:nth-child(4){background:#FFFBEB;color:#B07000}
-.card-social .sdot:nth-child(5){background:#FFF0EE;color:#C03020}
-
-/* ── 세계 나라 탐구 ── */
 .card-world .card-header{background:linear-gradient(135deg,#0A1A2C,#1A2A40,#0A2030)}
 .card-world .card-header::after{content:'🌍';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
 .card-world .enter-btn{background:linear-gradient(135deg,#00BF8A,#008F66)}
-.card-world .sdot:nth-child(1){background:#E0F5FF;color:#1070A0}
-.card-world .sdot:nth-child(2){background:#E0FBF2;color:#008F66}
-.card-world .sdot:nth-child(3){background:#F0EEFF;color:#5840D0}
-.card-world .sdot:nth-child(4){background:#FFFBEB;color:#B07000}
+.card-game .card-header{background:linear-gradient(135deg,#0A0A1A,#1A1030,#100A20)}
+.card-game .card-header::after{content:'🎮';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-game .enter-btn{background:linear-gradient(135deg,#F59E0B,#D07800);color:#1C0A00}
 
-/* ── 선생님 스트립 ── */
-.teacher-strip{max-width:800px;margin:0 auto 24px;padding:0 16px}
-.ts-inner{background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:var(--r);
-  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.ts-text h3{font-size:.88rem;font-weight:900;color:var(--gold);margin-bottom:3px}
-.ts-text p{font-size:.72rem;color:rgba(212,168,71,.55)}
-.ts-btns{display:flex;gap:8px;flex-wrap:wrap}
-.t-btn{padding:7px 14px;border-radius:9px;font-family:'Pretendard',inherit;font-size:.76rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center}
-.t-btn-hist{background:var(--brown);color:white}
-.t-btn-soc{background:#38BDF8;color:white}
-.t-btn-world{background:#00BF8A;color:white}
+/* ── AI 키(학생 기기용) ── */
+.ai-key-box{background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:1.2rem;padding:16px 20px;border:2px solid rgba(212,168,71,.25);box-shadow:0 8px 28px rgba(0,0,0,.2);color:#fff;margin-top:16px}
 
-/* ── 푸터 ── */
 footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
 
 @media(max-width:480px){
@@ -124,16 +124,10 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   .feat-strip{gap:14px}
   .card-h2{font-size:1.3rem}
 }
-
-/* ── 게임방 ── */
-.card-game .card-header{background:linear-gradient(135deg,#0A0A1A,#1A1030,#100A20)}
-.card-game .card-header::after{content:'🎮';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
-
 </style>
 </head>
 <body>
 
-<!-- 헤더 -->
 <header>
   <div class="logo-badge">🏛️ EAIM 교육 플랫폼</div>
   <div class="main-title">사회 · <span>역사</span> 플랫폼</div>
@@ -146,7 +140,6 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   </div>
 </header>
 
-<!-- 특징 배지 -->
 <div class="feat-strip">
   <div class="feat-item">🏫 중학교 대상</div>
   <div class="feat-item">🤖 Gemini AI</div>
@@ -155,41 +148,122 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   <div class="feat-item">🗺️ 4가지 앱</div>
 </div>
 
+<div class="wrap">
 
-<!-- API 키 입력 섹션 -->
-<div style="max-width:800px;margin:20px auto 0;padding:0 16px">
-  <div style="background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:1.2rem;padding:16px 20px;border:2px solid rgba(212,168,71,.25);box-shadow:0 8px 28px rgba(0,0,0,.2)">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-      <span style="font-size:1.1rem">🔑</span>
-      <span style="font-family:'Nanum Myeongjo',serif;font-size:.9rem;font-weight:700;color:#fff">Gemini API 키</span>
-      <span id="api-status-badge" style="display:none;background:rgba(212,168,71,.2);border:1px solid rgba(212,168,71,.4);border-radius:99px;padding:2px 10px;font-size:.68rem;color:var(--gold);font-weight:700">✅ 저장됨</span>
+<!-- ══════════ 교사 패널 (구글 로그인 + 수업방 관리) ══════════ -->
+<div class="teacher-panel">
+  <div class="tp-head">
+    <div class="tp-title">👩‍🏫 선생님이신가요?</div>
+    <div id="tp-login-area">
+      <button onclick="doLogin()" class="btn bp bsm">구글로 로그인</button>
     </div>
-    <p style="font-size:.74rem;color:rgba(255,255,255,.45);margin-bottom:11px">한 번만 입력하면 역사·사회·세계 모든 앱에서 자동으로 사용돼요!</p>
-    <div style="display:flex;gap:8px">
-      <input type="password" id="api-key-input"
-        placeholder="AIzaSy..."
-        style="flex:1;padding:10px 13px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:inherit;font-size:.88rem;outline:none;transition:border-color .2s"
-        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'"
-        onkeydown="if(event.key==='Enter')saveApiKey()">
-      <button onclick="saveApiKey()" style="background:linear-gradient(135deg,var(--gold),#A07008);border:none;border-radius:10px;padding:10px 16px;color:#1C0A00;font-family:inherit;font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap">
-        💾 저장
-      </button>
-      <button onclick="toggleShowKey()" id="show-key-btn" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 12px;color:rgba(255,255,255,.65);font-family:inherit;font-size:.8rem;cursor:pointer">
-        👁
-      </button>
-    </div>
-    <div id="api-key-msg" style="font-size:.72rem;text-align:center;margin-top:7px;min-height:16px"></div>
-    <div style="margin-top:10px;background:rgba(255,255,255,.05);border-radius:9px;padding:10px 13px;font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.8">
-      💡 <strong style="color:rgba(212,168,71,.7)">API 키 얻는 방법</strong><br>
-      <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--gold)">aistudio.google.com/apikey</a> → Get API key → 복사 → 여기에 붙여넣기
+    <div id="tp-user-area" style="display:none" class="row">
+      <span id="tp-email" class="pill2"></span>
+      <button onclick="doLogout()" class="btn bg2 bsm">로그아웃</button>
     </div>
   </div>
+  <p class="hint" id="tp-lead">로그인하면 반/모둠/개인별 수업방을 만들고 QR로 학생을 입장시킬 수 있어요. 학생은 로그인 없이 QR/링크로 바로 들어와요.</p>
+
+  <div id="tp-body" class="tp-body">
+    <!-- 앱 선택 -->
+    <div class="row" id="app-tabs" style="margin-bottom:10px">
+      <button class="btn bg2 bsm app-tab" data-app="history" onclick="selectApp('history',this)">📰 역사신문</button>
+      <button class="btn bg2 bsm app-tab" data-app="dict" onclick="selectApp('dict',this)">📚 사회용어사전</button>
+      <button class="btn bg2 bsm app-tab" data-app="world" onclick="selectApp('world',this)">🌍 세계탐구</button>
+      <button class="btn bg2 bsm app-tab" data-app="game" onclick="selectApp('game',this)">🎮 게임방</button>
+    </div>
+
+    <!-- 새 수업방 -->
+    <div class="tp-sub">
+      <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">➕ 새 수업방 열기</div>
+      <input type="text" id="room-title" placeholder="예: 3학년 1학기 - 역사인물조사" style="margin-bottom:8px">
+      <div class="row" style="margin-bottom:8px">
+        <label style="font-size:.8rem"><input type="radio" name="mode" value="class" checked onclick="onModeChange()"> 반 전체</label>
+        <label style="font-size:.8rem"><input type="radio" name="mode" value="group" onclick="onModeChange()"> 모둠별</label>
+        <label style="font-size:.8rem"><input type="radio" name="mode" value="individual" onclick="onModeChange()"> 개인별</label>
+      </div>
+      <div id="class-block">
+        <div id="class-rows"></div>
+        <button class="btn bg2 bsm" onclick="addClassRow()">+ 반 추가</button>
+      </div>
+      <div id="group-block" style="display:none;margin-top:8px">
+        <label class="hint">모둠당 인원수</label>
+        <input type="number" id="group-size" value="4" min="2" max="8">
+      </div>
+      <button class="btn bamb bfl" style="margin-top:12px" onclick="handleCreateRoom()">🚪 수업 열기 (QR 생성)</button>
+    </div>
+
+    <!-- 내 수업방 -->
+    <div class="tp-sub">
+      <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">🗂️ 내 수업방 목록</div>
+      <div id="room-list"><p class="hint">아직 만든 수업방이 없어요.</p></div>
+    </div>
+
+    <!-- 게임방 전용: 실시간 퀴즈 & 결과 -->
+    <div class="tp-sub" id="live-quiz-launch-card" style="display:none">
+      <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">🏆 실시간 퀴즈 (다같이, 카훗 스타일)</div>
+      <p class="hint" style="margin-bottom:8px">교실 화면에 이 진행 화면을 띄우세요. 학생은 게임방 로비의 "🏆 실시간 퀴즈" 카드로 참여해요.</p>
+      <a href="host-quiz.html" target="_blank" class="btn bamb bfl" style="text-decoration:none">🏆 진행 화면 열기 →</a>
+    </div>
+    <div class="tp-sub" id="game-result-card" style="display:none">
+      <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">🎮 게임 결과 보기 (점수·오답만, 세특과 무관)</div>
+      <select id="game-result-room" style="margin-bottom:8px"></select>
+      <button class="btn bg2 bsm" onclick="loadGameResults()">📥 결과 불러오기</button>
+      <div id="game-result-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- 세특 생성: 게임방 이외 3개 앱 -->
+    <div class="tp-sub" id="saenteuk-card">
+      <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">✍️ 교과세특 생성</div>
+      <select id="saenteuk-room" style="margin-bottom:8px"></select>
+      <button class="btn bg2 bsm" onclick="loadSubmissionsForSaenteuk()">📥 학생 결과물 불러오기</button>
+      <div id="saenteuk-students" style="margin-top:8px"></div>
+      <textarea id="saenteuk-output" placeholder="학생을 선택하면 AI가 만든 세특 초안이 여기 나와요. 반드시 검토·수정 후 사용하세요." style="margin-top:8px"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="btn bg2 bsm" onclick="copySaenteuk()">📋 복사</button>
+        <button class="btn bg2 bsm" onclick="exportToSheet()">📊 시트로 내보내기</button>
+      </div>
+      <div class="hint">⚠️ AI 초안은 반드시 검토·수정 후 나이스에 입력하세요.</div>
+    </div>
+
+    <!-- 연동 설정 -->
+    <div class="tp-sub">
+      <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">⚙️ 연동 설정</div>
+      <label class="hint">Gemini API 키 (세특 생성용)</label>
+      <input type="password" id="gemini-key-teacher" placeholder="AIzaSy..." style="margin-bottom:8px">
+      <label class="hint">구글시트 Apps Script 웹훅 URL</label>
+      <input type="text" id="sheet-webhook" placeholder="https://script.google.com/macros/s/.../exec">
+      <button class="btn bg2 bsm" style="margin-top:8px" onclick="saveTeacherSettings()">💾 저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- API 키 입력 섹션 (학생 기기 브라우저용 — 앱들이 AI 그림/설명 생성에 씀) -->
+<div class="ai-key-box">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+    <span style="font-size:1.1rem">🔑</span>
+    <span style="font-family:'Nanum Myeongjo',serif;font-size:.9rem;font-weight:700">Gemini API 키 (이 기기용)</span>
+    <span id="api-status-badge" style="display:none;background:rgba(212,168,71,.2);border:1px solid rgba(212,168,71,.4);border-radius:99px;padding:2px 10px;font-size:.68rem;color:var(--gold);font-weight:700">✅ 저장됨</span>
+  </div>
+  <p style="font-size:.74rem;color:rgba(255,255,255,.45);margin-bottom:11px">이 브라우저에서 역사·사회·세계 앱을 열 때 AI 기능(인물설명·이미지·용어정의)에 쓰여요. 교사 로그인/수업방 관리와는 별개예요.</p>
+  <div style="display:flex;gap:8px">
+    <input type="password" id="api-key-input" placeholder="AIzaSy..."
+      style="flex:1;padding:10px 13px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;font-family:inherit;font-size:.88rem;outline:none">
+    <button onclick="saveApiKey()" style="background:linear-gradient(135deg,var(--gold),#A07008);border:none;border-radius:10px;padding:10px 16px;color:#1C0A00;font-family:inherit;font-weight:800;font-size:.84rem;cursor:pointer;white-space:nowrap">💾 저장</button>
+    <button onclick="toggleShowKey()" id="show-key-btn" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 12px;color:rgba(255,255,255,.65);font-family:inherit;font-size:.8rem;cursor:pointer">👁</button>
+  </div>
+  <div id="api-key-msg" style="font-size:.72rem;text-align:center;margin-top:7px;min-height:16px"></div>
+  <div style="margin-top:10px;background:rgba(255,255,255,.05);border-radius:9px;padding:10px 13px;font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.8">
+    💡 <strong style="color:rgba(212,168,71,.7)">API 키 얻는 방법</strong><br>
+    <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--gold)">aistudio.google.com/apikey</a> → Get API key → 복사 → 여기에 붙여넣기
+  </div>
+</div>
+
 </div>
 
 <!-- 앱 카드 -->
 <div class="cards">
 
-  <!-- 역사신문 만들기 -->
   <a href="eaim-history-news.html" class="app-card card-history">
     <div class="card-header">
       <div class="card-tag"><div class="live-dot" style="background:#D4A847;box-shadow:0 0 6px #D4A847"></div> 역사신문 · AI 기사 자동생성</div>
@@ -206,15 +280,14 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
     </div>
     <div class="card-body">
       <div class="step-dots">
-        <div class="sdot">S1</div><div class="sdot">S2</div><div class="sdot">S3</div>
-        <div class="sdot">S4</div><div class="sdot">S5</div><div class="sdot">S6</div>
-        <div class="sdot">S7</div>
+        <div class="sdot" style="background:#FEF3C7;color:#D97706">S1</div><div class="sdot" style="background:#FEE2E2;color:#DC2626">S2</div><div class="sdot" style="background:#DCFCE7;color:#15803D">S3</div>
+        <div class="sdot" style="background:#F3E8FF;color:#7E22CE">S4</div><div class="sdot" style="background:#E0F5FF;color:#1070A0">S5</div><div class="sdot" style="background:#FFF0E0;color:#B45309">S6</div>
+        <div class="sdot" style="background:#FCE7F3;color:#9D174D">S7</div>
       </div>
       <button class="enter-btn">입장하기 →</button>
     </div>
   </a>
 
-  <!-- 사회 용어 사전 -->
   <a href="eaim-social-dict.html" class="app-card card-social">
     <div class="card-header">
       <div class="card-tag"><div class="live-dot" style="background:#38BDF8;box-shadow:0 0 6px #38BDF8"></div> 사회 용어 · AI 스토리</div>
@@ -240,7 +313,6 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
     </div>
   </a>
 
-  <!-- 세계 나라 탐구 -->
   <a href="eaim-world-explorer.html" class="app-card card-world">
     <div class="card-header">
       <div class="card-tag"><div class="live-dot" style="background:#00BF8A;box-shadow:0 0 6px #00BF8A"></div> 세계 탐구 · 음악 & 수노</div>
@@ -265,19 +337,16 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
     </div>
   </a>
 
-
-  <!-- 사회 용어 게임방 -->
   <a href="eaim-social-game.html" class="app-card card-game">
     <div class="card-header">
-      <div class="card-tag"><div class="live-dot" style="background:#F59E0B;box-shadow:0 0 6px #F59E0B"></div> 용어 게임 · 8가지 게임</div>
+      <div class="card-tag"><div class="live-dot" style="background:#F59E0B;box-shadow:0 0 6px #F59E0B"></div> 용어 게임 · 실시간 퀴즈 포함</div>
       <div class="card-h2">🎮 사회 용어 게임방</div>
       <span class="card-h2-sub">Social Studies Vocabulary Game Room</span>
-      <p class="card-desc">민주주의·인플레이션·기후변화 등 72개 용어! 8가지 게임으로 재미있게 마스터해봐요!</p>
+      <p class="card-desc">민주주의·인플레이션·기후변화 등 72개 용어! 혼자 하는 8가지 게임 + 다같이 하는 실시간 퀴즈.</p>
       <div class="feat-row">
+        <span class="feat-pill">🏆 실시간 퀴즈</span>
         <span class="feat-pill">⭕❌ OX 퀴즈</span>
-        <span class="feat-pill">⏱️ 스피드 퀴즈</span>
         <span class="feat-pill">🃏 카드 매칭</span>
-        <span class="feat-pill">🏆 팀 대항전</span>
         <span class="feat-pill">🎰 AI 랜덤</span>
       </div>
     </div>
@@ -287,38 +356,230 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
         <div class="sdot" style="background:#FFFBEB;color:#B07000">⚡</div>
         <div class="sdot" style="background:#E0F5FF;color:#1070A0">🔤</div>
         <div class="sdot" style="background:#E0FBF2;color:#008F66">🃏</div>
-        <div class="sdot" style="background:#F0EEFF;color:#5840D0">🎯</div>
-        <div class="sdot" style="background:#FFFBEB;color:#B07000">🎰</div>
-        <div class="sdot" style="background:#E0F5FF;color:#1070A0">🏆</div>
-        <div class="sdot" style="background:#E0FBF2;color:#008F66">📖</div>
+        <div class="sdot" style="background:#F0EEFF;color:#5840D0">🏆</div>
       </div>
-      <button class="enter-btn" style="background:linear-gradient(135deg,#F59E0B,#D07800);color:#1C0A00">입장하기 →</button>
+      <button class="enter-btn">입장하기 →</button>
     </div>
   </a>
 
-
 </div>
 
-<!-- 선생님 스트립 -->
-<div class="teacher-strip">
-  <div class="ts-inner">
-    <div class="ts-text">
-      <h3>👩‍🏫 선생님 전용</h3>
-      <p>각 앱에서 교사 버튼 클릭 → 비밀번호 입력 (기본: 1234)</p>
-    </div>
-    <div class="ts-btns">
-      <a href="eaim-history-news.html" class="t-btn t-btn-hist">역사신문</a>
-      <a href="eaim-social-dict.html" class="t-btn t-btn-soc">사회사전</a>
-      <a href="eaim-world-explorer.html" class="t-btn t-btn-world">세계탐구</a>
-      <a href="eaim-social-game.html" class="t-btn" style="background:#F59E0B;color:#1C0A00">용어게임</a>
-    </div>
+<footer>Designed by Park Seong-ae · EAIM 사회·역사 플랫폼 v2</footer>
+
+<!-- QR 모달 -->
+<div id="qr-modal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="box">
+    <div id="qr-img"></div>
+    <p style="font-weight:800;margin:10px 0 4px" id="qr-code-text"></p>
+    <input type="text" id="qr-link" readonly style="text-align:center;font-size:.75rem;border:1px solid #ccc;border-radius:8px;padding:8px;width:100%" onclick="this.select()">
+    <button class="btn bg2 bfl" style="margin-top:10px" onclick="document.getElementById('qr-modal').style.display='none'">닫기</button>
   </div>
 </div>
 
-<footer>Designed by Park Seong-ae · EAIM 사회·역사 플랫폼 v1</footer>
+<script type="module">
+import {
+  auth, teacherLogin, teacherLogout, onTeacherAuthChange,
+  createRoom, toggleRoomOpen, listMyRooms, listSubmissions,
+  listGameResults, qrImageUrl, studentLink
+} from './eaim-classroom-core.js';
 
+let currentApp = 'history';
+let rooms = [];
+
+window.doLogin = () => teacherLogin().catch(e => alert('로그인 실패: ' + e.message));
+window.doLogout = () => teacherLogout();
+
+onTeacherAuthChange(user => {
+  document.getElementById('tp-login-area').style.display = user ? 'none' : 'block';
+  document.getElementById('tp-user-area').style.display = user ? 'flex' : 'none';
+  document.getElementById('tp-body').classList.toggle('on', !!user);
+  document.getElementById('tp-lead').style.display = user ? 'none' : 'block';
+  if (user) {
+    document.getElementById('tp-email').textContent = user.email || '로그인됨';
+    document.querySelector('.app-tab').click();
+    loadTeacherSettings();
+  }
+});
+
+window.selectApp = (app, btn) => {
+  currentApp = app;
+  document.querySelectorAll('.app-tab').forEach(b => b.classList.remove('bp'));
+  btn.classList.add('bp');
+  document.getElementById('game-result-card').style.display = app === 'game' ? 'block' : 'none';
+  document.getElementById('live-quiz-launch-card').style.display = app === 'game' ? 'block' : 'none';
+  document.getElementById('saenteuk-card').style.display = app === 'game' ? 'none' : 'block';
+  refreshRooms();
+};
+
+window.addClassRow = () => {
+  const wrap = document.getElementById('class-rows');
+  const row = document.createElement('div');
+  row.className = 'class-row';
+  row.innerHTML = `<input type="text" placeholder="예: 1반" class="cls-name">
+    <input type="number" placeholder="인원" class="cls-count" style="max-width:80px">
+    <button class="btn bg2 bsm" onclick="this.parentElement.remove()">✕</button>`;
+  wrap.appendChild(row);
+};
+window.addClassRow();
+
+window.onModeChange = () => {
+  const mode = document.querySelector('input[name=mode]:checked').value;
+  document.getElementById('group-block').style.display = mode === 'group' ? 'block' : 'none';
+};
+
+window.handleCreateRoom = async () => {
+  const title = document.getElementById('room-title').value.trim();
+  if (!title) { alert('수업방 제목을 입력해주세요!'); return; }
+  const mode = document.querySelector('input[name=mode]:checked').value;
+  const classes = Array.from(document.querySelectorAll('.cls-name')).map((el, i) => ({
+    name: el.value.trim(),
+    count: Number(document.querySelectorAll('.cls-count')[i].value) || 0,
+  })).filter(c => c.name);
+  const groupSize = Number(document.getElementById('group-size').value) || 4;
+
+  const { code } = await createRoom({ title, mode, classes, groupSize });
+  const link = studentLink(code);
+  document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" style="border-radius:10px">`;
+  document.getElementById('qr-code-text').textContent = '입장 코드: ' + code;
+  document.getElementById('qr-link').value = link;
+  document.getElementById('qr-modal').style.display = 'block';
+  refreshRooms();
+};
+
+async function refreshRooms() {
+  rooms = await listMyRooms();
+  const el = document.getElementById('room-list');
+  const selEl = document.getElementById('saenteuk-room');
+  const gameSelEl = document.getElementById('game-result-room');
+  if (!rooms.length) {
+    el.innerHTML = '<p class="hint">아직 만든 수업방이 없어요.</p>';
+    selEl.innerHTML = ''; gameSelEl.innerHTML = '';
+    return;
+  }
+  el.innerHTML = rooms.map(r => `
+    <div class="room-item">
+      <div>
+        <span class="dot ${r.isOpen ? 'dot-on' : 'dot-off'}"></span>
+        <strong>${r.title}</strong>
+        <span class="pill2">${r.mode === 'class' ? '반전체' : r.mode === 'group' ? '모둠별' : '개인별'}</span>
+        <span class="pill2">코드 ${r.code}</span>
+      </div>
+      <div class="row">
+        <button class="btn bg2 bsm" onclick="showQR('${r.code}')">📱 QR</button>
+        <button class="btn bg2 bsm" onclick="toggleOpen('${r.id}', ${!r.isOpen})">${r.isOpen ? '🔒 닫기' : '🔓 열기'}</button>
+      </div>
+    </div>`).join('');
+  selEl.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
+  gameSelEl.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
+}
+
+window.showQR = (code) => {
+  const link = studentLink(code);
+  document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" style="border-radius:10px">`;
+  document.getElementById('qr-code-text').textContent = '입장 코드: ' + code;
+  document.getElementById('qr-link').value = link;
+  document.getElementById('qr-modal').style.display = 'block';
+};
+window.toggleOpen = async (roomId, val) => { await toggleRoomOpen(roomId, val); refreshRooms(); };
+
+let subsByStudent = {};
+window.loadSubmissionsForSaenteuk = async () => {
+  const roomId = document.getElementById('saenteuk-room').value;
+  if (!roomId) { alert('수업방을 먼저 만들어주세요!'); return; }
+  const subs = await listSubmissions(roomId);
+  subsByStudent = {};
+  subs.forEach(s => {
+    const key = s.className && s.number ? `${s.className} ${s.number}번` : s.studentId;
+    (subsByStudent[key] ||= []).push(s);
+  });
+  const el = document.getElementById('saenteuk-students');
+  const keys = Object.keys(subsByStudent);
+  if (!keys.length) { el.innerHTML = '<p class="hint">아직 제출된 결과물이 없어요.</p>'; return; }
+  el.innerHTML = keys.map(k =>
+    `<button class="btn bg2 bsm" style="margin:3px" onclick="genSaenteuk('${k.replace(/'/g,"\\'")}')">${k} (${subsByStudent[k].length})</button>`
+  ).join('');
+};
+
+window.genSaenteuk = async (studentKey) => {
+  const key = localStorage.getItem('eaim_gemini_key_teacher') || document.getElementById('gemini-key-teacher').value;
+  const out = document.getElementById('saenteuk-output');
+  if (!key) { alert('Gemini API 키를 먼저 저장해주세요!'); return; }
+  const items = subsByStudent[studentKey] || [];
+  const summary = items.map(i => `- [${i.app}/${i.kind}] ${i.title}: ${String(i.content).slice(0, 200)}`).join('\n');
+  out.value = '생성 중...';
+  try {
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + key, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text:
+          `다음은 한 중학생이 사회/역사 교과 수업에서 만든 결과물 목록입니다.\n${summary}\n\n` +
+          `이 자료를 바탕으로 나이스(NEIS) 교과세특에 쓸 수 있는 문구를 작성해주세요.\n` +
+          `조건: 관찰 가능한 사실 중심, 능동태 서술어(~함, ~수행함), 과장된 평가어 지양, 500자 내외, 학생 성명은 쓰지 않음.` }]}],
+        generationConfig: { maxOutputTokens: 700, temperature: 0.6 }
+      })
+    });
+    const d = await r.json();
+    out.value = d.candidates?.[0]?.content?.parts?.[0]?.text || '생성 실패. 다시 시도해주세요.';
+  } catch (e) { out.value = '오류: ' + e.message; }
+};
+
+window.copySaenteuk = () => {
+  navigator.clipboard.writeText(document.getElementById('saenteuk-output').value)
+    .then(() => alert('복사됐어요!'));
+};
+
+window.exportToSheet = async () => {
+  const url = localStorage.getItem('eaim_sheet_webhook') || document.getElementById('sheet-webhook').value;
+  if (!url) { alert('구글시트 웹훅 URL을 먼저 저장해주세요!'); return; }
+  const text = document.getElementById('saenteuk-output').value;
+  if (!text) { alert('먼저 세특을 생성해주세요!'); return; }
+  try {
+    await fetch(url, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: new Date().toISOString(), content: text })
+    });
+    alert('시트로 전송했어요! (구글 시트에서 확인해주세요)');
+  } catch (e) { alert('전송 실패: ' + e.message); }
+};
+
+window.loadGameResults = async () => {
+  const roomId = document.getElementById('game-result-room').value;
+  if (!roomId) { alert('수업방을 먼저 만들어주세요!'); return; }
+  const results = await listGameResults(roomId);
+  const el = document.getElementById('game-result-list');
+  if (!results.length) { el.innerHTML = '<p class="hint">아직 게임 결과가 없어요.</p>'; return; }
+  el.innerHTML = results.map(r => {
+    const who = r.className && r.number ? `${r.className} ${r.number}번` : (r.studentId || '학생');
+    const wrongHtml = (r.wrongLog || []).map(w =>
+      `<div style="font-size:.74rem;color:#FF8080;padding:2px 0">✗ ${w.term || w.correctAnswer} — 제출: ${w.yourAnswer ?? '-'} / 정답: ${w.correctAnswer ?? '-'}</div>`
+    ).join('') || '<div class="hint">틀린 문제 없음 🎉</div>';
+    return `
+      <div class="room-item" style="flex-direction:column;align-items:stretch">
+        <div class="row" style="justify-content:space-between">
+          <strong>${who}</strong>
+          <span class="pill2">${r.game || ''}</span>
+          <span class="pill2">${r.score ?? 0}점</span>
+          <span class="pill2">${r.correct ?? 0}/${r.total ?? 0} 정답</span>
+        </div>
+        <div style="margin-top:6px">${wrongHtml}</div>
+      </div>`;
+  }).join('');
+};
+
+window.saveTeacherSettings = () => {
+  localStorage.setItem('eaim_gemini_key_teacher', document.getElementById('gemini-key-teacher').value.trim());
+  localStorage.setItem('eaim_sheet_webhook', document.getElementById('sheet-webhook').value.trim());
+  alert('저장됐어요!');
+};
+function loadTeacherSettings() {
+  document.getElementById('gemini-key-teacher').value = localStorage.getItem('eaim_gemini_key_teacher') || '';
+  document.getElementById('sheet-webhook').value = localStorage.getItem('eaim_sheet_webhook') || '';
+}
+</script>
 
 <script>
+// ── 학생 기기용 Gemini API 키 (기존 방식 그대로 — 교사 로그인과 무관) ──
 const API_KEY_NAME = 'eaim_gemini_key';
 
 function loadApiKey() {
@@ -330,7 +591,6 @@ function loadApiKey() {
     document.getElementById('api-key-msg').style.color = 'rgba(212,168,71,.8)';
   }
 }
-
 function saveApiKey() {
   const key = document.getElementById('api-key-input').value.trim();
   const msg = document.getElementById('api-key-msg');
@@ -339,18 +599,16 @@ function saveApiKey() {
   if (!key.startsWith('AIza')) { msg.textContent = '⚠️ AIza로 시작하는 Gemini API 키를 입력해주세요!'; msg.style.color = 'rgba(255,107,91,.8)'; return; }
   localStorage.setItem(API_KEY_NAME, key);
   badge.style.display = 'inline-flex';
-  msg.textContent = '✅ 저장됐어요! 역사·사회·세계 앱 모두 AI 기능 사용 가능해요 🎉';
+  msg.textContent = '✅ 저장됐어요! 역사·사회·세계·게임 앱 모두 AI 기능 사용 가능해요 🎉';
   msg.style.color = 'rgba(212,168,71,.8)';
   setTimeout(() => { msg.textContent = ''; }, 4000);
 }
-
 function toggleShowKey() {
   const input = document.getElementById('api-key-input');
   const btn = document.getElementById('show-key-btn');
   if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
   else { input.type = 'password'; btn.textContent = '👁'; }
 }
-
 window.addEventListener('load', loadApiKey);
 </script>
 
