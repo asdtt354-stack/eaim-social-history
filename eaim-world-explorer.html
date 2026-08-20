@@ -205,6 +205,7 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
         <option>4반</option><option>5반</option><option>6반</option>
       </select>
       <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🌍 세계 탐구 시작!</button>
+      <button onclick="skipPreview()" class="btn bg2 bfl" style="font-size:.8rem;padding:9px;margin-top:8px">👀 그냥 둘러보기 (선생님 미리보기)</button>
     </div>
   </div>
 </div>
@@ -538,6 +539,16 @@ async function sN(){
   showContinent('아시아',document.querySelector('.ctab'));
 }
 
+// ── 선생님 미리보기: 이름/반 입력 없이 바로 앱 둘러보기 ──
+function skipPreview(){
+  stuName = '미리보기';
+  window.EAIM_STUDENT_META = { preview: true };
+  const nb=document.getElementById('wn');nb.textContent='👀 미리보기 모드';nb.style.display='';
+  document.getElementById('nm').style.display='none';
+  document.getElementById('sNav').style.display='flex';
+  showContinent('아시아',document.querySelector('.ctab'));
+}
+
 // ── 결과물을 교실 서버로 저장 (있을 때만) ──
 async function pushSubmission(kind, title, content){
   const room = window.EAIM_ROOM;
@@ -682,11 +693,21 @@ function buildCountryCard(){
 }
 
 async function genAIImage(prompt) {
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if (!key) return null;
   try {
-    const fullPrompt = prompt + ', beautiful landscape, travel photo style, colorful, educational';
-    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=600&height=400&nologo=true`;
-    return url;
-  } catch(e) { return null; }
+    const fullPrompt = `아름다운 풍경 사진 스타일, 컬러풀, 교육용. ${prompt}. 텍스트나 글자는 넣지 마세요.`;
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=' + key, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
+    });
+    const d = await r.json();
+    const parts = d.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData || p.inline_data);
+    const inline = imgPart?.inlineData || imgPart?.inline_data;
+    if (!inline) return null;
+    return `data:${inline.mimeType || inline.mime_type || 'image/png'};base64,${inline.data}`;
+  } catch (e) { return null; }
 }
 
 async function loadCountryImgs(query){

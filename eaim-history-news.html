@@ -296,6 +296,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
         <option>4반</option><option>5반</option><option>6반</option>
       </select>
       <button onclick="sN()" class="btn bp bfl" style="font-size:.95rem;padding:12px">📰 신문 만들기 시작!</button>
+      <button onclick="skipPreview()" class="btn bg2 bfl" style="font-size:.8rem;padding:9px;margin-top:8px">👀 그냥 둘러보기 (선생님 미리보기)</button>
     </div>
   </div>
 </div>
@@ -522,8 +523,8 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div class="fmt-grid">
       <div class="fmt-card sel" onclick="selFmt(1,this)" id="fmt1">
         <div class="fmt-icon">📰</div>
-        <div class="fmt-name">조선일보형</div>
-        <div class="fmt-desc">클래식 3단 구성</div>
+        <div class="fmt-name">클래식 3단형</div>
+        <div class="fmt-desc">정통 신문 3단 구성</div>
       </div>
       <div class="fmt-card" onclick="selFmt(2,this)" id="fmt2">
         <div class="fmt-icon">📋</div>
@@ -891,6 +892,17 @@ async function sN(){
   document.getElementById('np-date').value=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
 }
 function showTL(){document.getElementById('nm').style.display='none';}
+
+// ── 선생님 미리보기: 이름/반 입력 없이 바로 앱 둘러보기 ──
+function skipPreview(){
+  stuName = '미리보기';
+  window.EAIM_STUDENT_META = { preview: true };
+  document.getElementById('wn').textContent='👀 미리보기 모드';
+  document.getElementById('wn').style.display='';
+  document.getElementById('nm').style.display='none';
+  document.getElementById('sNav').style.display='flex';
+  document.getElementById('np-date').value=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+}
 
 // ── 결과물을 교실 서버로 저장 (있을 때만) ──
 async function pushSubmission(kind, title, content){
@@ -1488,16 +1500,35 @@ function copyHistSuno() {
 
 async function genHistoryImage(prompt, style='watercolor') {
   const styleMap = {
-    watercolor: 'watercolor painting soft colors artistic Korean history scene',
-    minhwa: 'Korean minhwa folk art flat colors traditional oriental',
-    woodblock: 'woodblock print monochrome traditional Korean art',
-    illustration: 'historical illustration educational textbook detailed',
+    watercolor: '수채화 스타일, 부드러운 색감의 한국 역사 장면',
+    minhwa: '한국 전통 민화 스타일, 평면적 색감, 동양화 느낌',
+    woodblock: '목판화 스타일, 흑백 위주의 한국 전통 판화',
+    illustration: '교과서 삽화 스타일, 상세하고 교육적인 역사 일러스트',
   };
   const styleText = styleMap[style] || styleMap.watercolor;
-  const engPrompt = styleText + ' ' + prompt.replace(/[^\w\s가-힣]/g, ' ');
-  const seed = Math.floor(Math.random() * 9999);
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(engPrompt)}?width=800&height=450&model=flux&seed=${seed}&nologo=true`;
-  return url;
+  const fullPrompt = `${styleText}. ${prompt}. 어린이/청소년 교육용으로 안전하고 적절한 내용, 텍스트나 글자는 넣지 마세요.`;
+  return await callGeminiImage(fullPrompt);
+}
+
+/** Gemini 2.5 Flash Image로 이미지 생성 → data URL 반환 (실패 시 null) */
+async function callGeminiImage(prompt) {
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if (!key) return null;
+  try {
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=' + key, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
+    const d = await r.json();
+    const parts = d.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData || p.inline_data);
+    const inline = imgPart?.inlineData || imgPart?.inline_data;
+    if (!inline) return null;
+    return `data:${inline.mimeType || inline.mime_type || 'image/png'};base64,${inline.data}`;
+  } catch (e) {
+    console.warn('Gemini 이미지 생성 실패:', e);
+    return null;
+  }
 }
 
 let selBgStyle = 'watercolor';
@@ -1525,23 +1556,15 @@ async function genBgImage() {
 
   const imgUrl = await genHistoryImage(prompt, selBgStyle);
 
-  const imgEl = document.getElementById('bg-gen-img');
-  imgEl.src = imgUrl;
-  imgEl.onload = () => {
-    document.getElementById('bg-gen-loading').style.display = 'none';
+  document.getElementById('bg-gen-loading').style.display = 'none';
+  document.getElementById('bg-gen-btn').disabled = false;
+
+  if (imgUrl) {
+    document.getElementById('bg-gen-img').src = imgUrl;
     document.getElementById('bg-generated').style.display = 'block';
-    document.getElementById('bg-gen-btn').disabled = false;
-  };
-  imgEl.onerror = () => {
-    document.getElementById('bg-gen-loading').innerHTML =
-      '<p style="color:var(--gold);font-size:.82rem;text-align:center;padding:8px">⏳ 이미지 생성 중... 30초 기다려주세요!<br><small>Pollinations AI가 그림을 그리고 있어요</small></p>';
-    setTimeout(() => { imgEl.src = imgUrl + '&t=' + Date.now(); }, 15000);
-  };
-  setTimeout(() => {
-    document.getElementById('bg-gen-loading').style.display = 'none';
-    document.getElementById('bg-generated').style.display = 'block';
-    document.getElementById('bg-gen-btn').disabled = false;
-  }, 35000);
+  } else {
+    alert('이미지 생성에 실패했어요. API 키를 확인하거나 직접 업로드해주세요!');
+  }
 }
 
 function setBgFromGenerated() {
