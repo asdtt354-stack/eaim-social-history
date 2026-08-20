@@ -159,6 +159,31 @@ export async function listSubmissions(roomId) {
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
+/* ════════ 게임 결과 저장/조회 (세특용 submissions와는 별도 컬렉션) ════════
+   ⚠️ 의도적으로 saveSubmission()과 분리했습니다.
+   listSubmissions()가 읽는 `submissions` 컬렉션에는 절대 쓰지 않으므로,
+   세특 생성 화면(genSaenteuk)에는 게임 결과가 절대 나타나지 않습니다.
+   교사가 "몇 점인지 / 뭘 틀렸는지"만 확인하는 용도로만 씁니다.       */
+export async function saveGameResult({ teacherUid, roomId, studentMeta, game, score, correct, total, wrongLog = [] }) {
+  const studentId = auth.currentUser?.uid;
+  if (!studentId) return;
+  await addDoc(collection(db, `teachers/${teacherUid}/rooms/${roomId}/gameResults`), {
+    studentId, ...studentMeta,
+    game, score, correct, total, wrongLog,
+    createdAt: serverTimestamp(),
+  });
+}
+
+export async function listGameResults(roomId) {
+  const uid = auth.currentUser.uid;
+  const q = query(
+    collection(db, `teachers/${uid}/rooms/${roomId}/gameResults`),
+    orderBy('createdAt', 'desc')
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
 /* ════════ QR 코드 렌더 (외부 라이브러리 없이, 이미지 API 사용) ════════ */
 export function qrImageUrl(link, size = 260) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(link)}`;

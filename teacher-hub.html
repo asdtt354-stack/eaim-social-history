@@ -103,8 +103,17 @@ textarea{width:100%;min-height:140px;border:2px solid var(--border);border-radiu
     <div id="room-list"><p class="hint">아직 만든 수업방이 없어요.</p></div>
   </div>
 
+  <!-- 게임 결과 보기 (세특과 무관, 게임방 전용) -->
+  <div class="cd" id="game-result-card" style="display:none">
+    <div class="ct">🎮 게임 결과 보기</div>
+    <div class="hint" style="margin-bottom:8px">점수·정답률·틀린 문제만 확인하는 용도예요. 이 결과는 세특 생성에 들어가지 않아요.</div>
+    <select id="game-result-room" style="margin-bottom:8px"></select>
+    <button class="btn bsky" onclick="loadGameResults()">📥 결과 불러오기</button>
+    <div id="game-result-list" style="margin-top:10px"></div>
+  </div>
+
   <!-- 세특 생성 -->
-  <div class="cd">
+  <div class="cd" id="saenteuk-card">
     <div class="ct">✍️ 교과세특 생성</div>
     <select id="saenteuk-room" style="margin-bottom:8px"></select>
     <button class="btn bsky" onclick="loadSubmissionsForSaenteuk()">📥 학생 결과물 불러오기</button>
@@ -144,7 +153,7 @@ textarea{width:100%;min-height:140px;border:2px solid var(--border);border-radiu
 import {
   auth, teacherLogin, teacherLogout, onTeacherAuthChange,
   createRoom, toggleRoomOpen, listMyRooms, listSubmissions,
-  qrImageUrl, studentLink
+  listGameResults, qrImageUrl, studentLink
 } from './eaim-classroom-core.js';
 
 let currentApp = 'history';
@@ -154,6 +163,9 @@ window.selectApp = (app, btn) => {
   currentApp = app;
   document.querySelectorAll('.app-tab').forEach(b => b.classList.remove('bp'));
   btn.classList.add('bp');
+  // 게임방은 점수 확인만, 세특 생성은 나머지 3개 앱에서만
+  document.getElementById('game-result-card').style.display = app === 'game' ? 'block' : 'none';
+  document.getElementById('saenteuk-card').style.display = app === 'game' ? 'none' : 'block';
   refreshRooms();
 };
 
@@ -210,7 +222,12 @@ async function refreshRooms() {
   rooms = await listMyRooms();
   const el = document.getElementById('room-list');
   const selEl = document.getElementById('saenteuk-room');
-  if (!rooms.length) { el.innerHTML = '<p class="hint">아직 만든 수업방이 없어요.</p>'; selEl.innerHTML = ''; return; }
+  const gameSelEl = document.getElementById('game-result-room');
+  if (!rooms.length) {
+    el.innerHTML = '<p class="hint">아직 만든 수업방이 없어요.</p>';
+    selEl.innerHTML = ''; gameSelEl.innerHTML = '';
+    return;
+  }
   el.innerHTML = rooms.map(r => `
     <div class="room-item">
       <div>
@@ -225,7 +242,33 @@ async function refreshRooms() {
       </div>
     </div>`).join('');
   selEl.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
+  gameSelEl.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
 }
+
+/* ══ 게임 결과 보기 (점수/오답만 — 세특과 무관) ══ */
+window.loadGameResults = async () => {
+  const roomId = document.getElementById('game-result-room').value;
+  if (!roomId) { alert('수업방을 먼저 만들어주세요!'); return; }
+  const results = await listGameResults(roomId);
+  const el = document.getElementById('game-result-list');
+  if (!results.length) { el.innerHTML = '<p class="hint">아직 게임 결과가 없어요.</p>'; return; }
+  el.innerHTML = results.map(r => {
+    const who = r.className && r.number ? `${r.className} ${r.number}번` : (r.studentId || '학생');
+    const wrongHtml = (r.wrongLog || []).map(w =>
+      `<div style="font-size:.76rem;color:var(--red);padding:2px 0">✗ ${w.term || w.correctAnswer} — 제출: ${w.yourAnswer ?? '-'} / 정답: ${w.correctAnswer ?? '-'}</div>`
+    ).join('') || '<div class="hint">틀린 문제 없음 🎉</div>';
+    return `
+      <div class="room-item" style="flex-direction:column;align-items:stretch">
+        <div class="row" style="justify-content:space-between">
+          <strong>${who}</strong>
+          <span class="pill">${r.game || ''}</span>
+          <span class="pill">${r.score ?? 0}점</span>
+          <span class="pill">${r.correct ?? 0}/${r.total ?? 0} 정답</span>
+        </div>
+        <div style="margin-top:6px">${wrongHtml}</div>
+      </div>`;
+  }).join('');
+};
 
 window.showQR = (code) => {
   const link = studentLink(code);
