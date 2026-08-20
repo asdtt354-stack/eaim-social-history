@@ -445,7 +445,7 @@ window.handleCreateRoom = async () => {
   const groupSize = Number(document.getElementById('group-size').value) || 4;
 
   const { code } = await createRoom({ title, mode, classes, groupSize });
-  const link = studentLink(code);
+  const link = studentLink(code, currentApp);
   document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" style="border-radius:10px">`;
   document.getElementById('qr-code-text').textContent = '입장 코드: ' + code;
   document.getElementById('qr-link').value = link;
@@ -472,7 +472,7 @@ async function refreshRooms() {
         <span class="pill2">코드 ${r.code}</span>
       </div>
       <div class="row">
-        <button class="btn bg2 bsm" onclick="showQR('${r.code}')">📱 QR</button>
+        <button class="btn bg2 bsm" onclick="showQR('${r.code}','${r.app}')">📱 QR</button>
         <button class="btn bg2 bsm" onclick="toggleOpen('${r.id}', ${!r.isOpen})">${r.isOpen ? '🔒 닫기' : '🔓 열기'}</button>
       </div>
     </div>`).join('');
@@ -480,8 +480,8 @@ async function refreshRooms() {
   gameSelEl.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
 }
 
-window.showQR = (code) => {
-  const link = studentLink(code);
+window.showQR = (code, app) => {
+  const link = studentLink(code, app);
   document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" style="border-radius:10px">`;
   document.getElementById('qr-code-text').textContent = '입장 코드: ' + code;
   document.getElementById('qr-link').value = link;
