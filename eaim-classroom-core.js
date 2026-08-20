@@ -23,13 +23,14 @@ import {
 
 // ⚠️ 기존 eaim-classroom 프로젝트의 값을 그대로 넣으세요 (다른 앱들과 동일한 값)
 const firebaseConfig = {
-  apiKey: "AIzaSyBalg0f5x0ydfHxn_nzgZ1pAELvJw6PzoY",
+  apiKey: "YOUR_API_KEY",
   authDomain: "eaim-classroom.firebaseapp.com",
   projectId: "eaim-classroom",
-  storageBucket: "eaim-classroom.firebasestorage.app",
-  messagingSenderId: "294479576192",
-  appId: "1:294479576192:web:c60e994e319dbd2f11ba65",
+  storageBucket: "eaim-classroom.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID",
 };
+
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
@@ -273,6 +274,15 @@ export async function getLiveLeaderboard(teacherUid, roomId, sessionId) {
 export function qrImageUrl(link, size = 260) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(link)}`;
 }
-export function studentLink(code, baseUrl = location.origin + location.pathname.replace(/[^/]+$/, '')) {
-  return `${baseUrl}student.html?code=${code}`;
+/** 방이 속한 앱(app)에 맞는 실제 파일로 학생 입장 링크를 만듭니다.
+ *  ⚠️ 'student.html' 같은 공용 페이지는 존재하지 않으므로, 반드시 app별 실제 파일명으로 매핑합니다. */
+const APP_FILE = {
+  history: 'eaim-history-news.html',
+  dict: 'eaim-social-dict.html',
+  world: 'eaim-world-explorer.html',
+  game: 'eaim-social-game.html',
+};
+export function studentLink(code, app, baseUrl = location.origin + location.pathname.replace(/[^/]+$/, '')) {
+  const file = APP_FILE[app] || 'eaim-history-news.html';
+  return `${baseUrl}${file}?code=${code}`;
 }
