@@ -574,6 +574,14 @@ async function callGemini(prompt,maxTokens=1000){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
+/** Gemini 응답에서 순수 JSON만 관대하게 추출 (앞뒤에 설명 텍스트가 섞여 와도 파싱되도록) */
+function parseJsonLoose(raw){
+  let clean = raw.replace(/```json|```/g,'').trim();
+  const s = clean.indexOf('{'), e = clean.lastIndexOf('}');
+  if (s !== -1 && e !== -1 && e > s) clean = clean.slice(s, e + 1);
+  return JSON.parse(clean);
+}
+
 async function searchWikiImgs(query,count=6){
   const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
   try{
@@ -650,8 +658,7 @@ async function selectCountry(name){
   },
   "wikiSearch": "위키미디어 이미지 검색어 (영어)"
 }`,1500);
-      const clean=raw.replace(/```json|```/g,'').trim();
-      currentCountry=JSON.parse(clean);
+      currentCountry=parseJsonLoose(raw);
       _kws=currentCountry.keywords||[name];
       initParticles(_kws);
       buildCountryCard();
@@ -661,6 +668,7 @@ async function selectCountry(name){
       buildMusic();
       addExplored(name);
     }catch(e){
+      console.warn('나라 정보 파싱 실패:', e);
       currentCountry={name,nameKo:name,flag:'🌍',capital:'정보 없음',population:'',language:'',religion:'',area:'',continent:'',keywords:[name],politics:'API 키를 설정하면 정보를 볼 수 있어요.',economy:'',culture:'',history:'',koreaRelation:'',story:name+'의 중학생 이야기를 불러오지 못했어요.',music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, ethnic',sunoPrompt:'[Style: '+name+' traditional music]\n\n[Lyrics]\n...'},wikiSearch:name};
       buildCountryCard();loadCountryImgs(name);buildExplore();buildStory();buildMusic();addExplored(name);
     }

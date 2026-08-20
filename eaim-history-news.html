@@ -929,6 +929,14 @@ async function callGemini(prompt,maxTokens=1000){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
+/** Gemini 응답에서 순수 JSON만 관대하게 추출 (앞뒤에 설명 텍스트가 섞여 와도 파싱되도록) */
+function parseJsonLoose(raw){
+  let clean = raw.replace(/```json|```/g,'').trim();
+  const s = clean.indexOf('{'), e = clean.lastIndexOf('}');
+  if (s !== -1 && e !== -1 && e > s) clean = clean.slice(s, e + 1);
+  return JSON.parse(clean);
+}
+
 async function searchWikiImages(query,count=6){
   const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
   try{
@@ -976,12 +984,12 @@ async function searchPerson(){
   "keywords": ["시대키워드1","키워드2","키워드3","키워드4","키워드5","키워드6","키워드7","키워드8"],
   "article": "신문 기사 형식 본문 (3-4문장, 격식체)"
 }`,800);
-      const clean=raw.replace(/```json|```/g,'').trim();
-      currentPerson=JSON.parse(clean);
+      currentPerson=parseJsonLoose(raw);
       initParticles(currentPerson.keywords||defaultKws);
       renderEraKeywords(currentPerson.keywords||defaultKws);
       buildPersonCard();
     }catch(e){
+      console.warn('인물 정보 파싱 실패:', e);
       currentPerson={name,era:'',birth:'',title:'',desc:name+'에 대한 정보를 불러오지 못했어요.',achievements:[],keywords:defaultKws,article:''};
       renderEraKeywords(defaultKws);
       buildPersonCard();
