@@ -579,7 +579,30 @@ function parseJsonLoose(raw){
   let clean = raw.replace(/```json|```/g,'').trim();
   const s = clean.indexOf('{'), e = clean.lastIndexOf('}');
   if (s !== -1 && e !== -1 && e > s) clean = clean.slice(s, e + 1);
+  clean = sanitizeJsonStrings(clean);
   return JSON.parse(clean);
+}
+
+/** JSON 문자열 리터럴 안에 섞여 들어온 실제 줄바꿈/탭 등을 이스케이프 처리
+ *  (Gemini가 긴 설명 텍스트를 JSON 문자열 안에 그대로 줄바꿈해서 넣어버리는 경우 대응) */
+function sanitizeJsonStrings(s){
+  let out = '', inString = false, escape = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (inString) {
+      if (escape) { out += ch; escape = false; }
+      else if (ch === '\\') { out += ch; escape = true; }
+      else if (ch === '"') { out += ch; inString = false; }
+      else if (ch === '\n') out += '\\n';
+      else if (ch === '\r') out += '\\r';
+      else if (ch === '\t') out += '\\t';
+      else out += ch;
+    } else {
+      if (ch === '"') inString = true;
+      out += ch;
+    }
+  }
+  return out;
 }
 
 async function searchWikiImgs(query,count=6){
