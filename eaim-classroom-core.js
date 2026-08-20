@@ -1,0 +1,168 @@
+/* ══════════════════════════════════════════════════════════
+   EAIM Classroom Core
+   - 기존 eaim-classroom Firebase 프로젝트를 그대로 재사용합니다.
+   - 국어 플레이(eaim-korean-play) / 과학 3종과 동일한 구조:
+       teachers/{uid}/rooms/{roomId}
+       roomCodes/{code} → {teacherUid, roomId}   (학생 공개 조회용)
+       teachers/{uid}/rooms/{roomId}/students/{studentId}
+       teachers/{uid}/rooms/{roomId}/submissions/{subId}
+   - 이 파일 하나를 4개 앱(역사신문/사회사전/게임방/세계탐구)에서
+     동일하게 <script type="module" src="eaim-classroom-core.js"> 로 불러옵니다.
+   ══════════════════════════════════════════════════════════ */
+
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
+  signInAnonymously, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
+  collection, addDoc, query, where, orderBy, getDocs,
+  onSnapshot, serverTimestamp, runTransaction
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ⚠️ 기존 eaim-classroom 프로젝트의 값을 그대로 넣으세요 (다른 앱들과 동일한 값)
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "eaim-classroom.firebaseapp.com",
+  projectId: "eaim-classroom",
+  storageBucket: "eaim-classroom.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID",
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+/* ── 이 파일을 쓰는 앱의 이름을 각 HTML에서 지정 ──
+   예) window.EAIM_APP_TYPE = 'history' | 'dict' | 'game' | 'world'; */
+const APP_TYPE = () => window.EAIM_APP_TYPE || 'unknown';
+
+/* ════════ 교사 인증 ════════ */
+export function teacherLogin() {
+  return signInWithPopup(auth, new GoogleAuthProvider());
+}
+export function teacherLogout() {
+  return signOut(auth);
+}
+export function onTeacherAuthChange(cb) {
+  return onAuthStateChanged(auth, cb);
+}
+
+/* ════════ 학생 익명 입장 ════════ */
+export async function studentEnter() {
+  if (!auth.currentUser) await signInAnonymously(auth);
+  return auth.currentUser;
+}
+
+/* ════════ 방(수업) 코드 생성 ════════ */
+function genCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 헷갈리는 문자 제외
+  let s = '';
+  for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
+
+/**
+ * 교사: 새 수업방 생성
+ * mode: 'class' (반 전체) | 'group' (모둠별, groupSize 필요) | 'individual' (개인별)
+ * classes: [{name:'1반', count:24}, ...]  — 반 일괄 생성 시
+ */
+export async function createRoom({ title, mode, classes = [], groupSize = 4 }) {
+  const uid = auth.currentUser.uid;
+  const roomsCol = collection(db, `teachers/${uid}/rooms`);
+  const roomRef = await addDoc(roomsCol, {
+    app: APP_TYPE(),
+    title, mode, classes, groupSize,
+    isOpen: true,
+    createdAt: serverTimestamp(),
+  });
+
+  // 코드 충돌 방지 트랜잭션
+  let code = genCode();
+  const codeRef0 = doc(db, 'roomCodes', code);
+  await runTransaction(db, async (tx) => {
+    let ref = codeRef0, snap = await tx.get(ref), tries = 0;
+    while (snap.exists() && tries < 5) {
+      code = genCode();
+      ref = doc(db, 'roomCodes', code);
+      snap = await tx.get(ref);
+      tries++;
+    }
+    tx.set(ref, { teacherUid: uid, roomId: roomRef.id, app: APP_TYPE() });
+  });
+
+  await updateDoc(roomRef, { code });
+  return { roomId: roomRef.id, code };
+}
+
+export async function toggleRoomOpen(roomId, isOpen) {
+  const uid = auth.currentUser.uid;
+  await updateDoc(doc(db, `teachers/${uid}/rooms/${roomId}`), { isOpen });
+}
+
+export async function listMyRooms() {
+  const uid = auth.currentUser.uid;
+  const q = query(collection(db, `teachers/${uid}/rooms`), where('app', '==', APP_TYPE()));
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+/* ════════ 학생: 코드로 방 찾기 (URL의 ?code=XXXXXX 로 들어옴) ════════ */
+export async function resolveRoomByCode(code) {
+  const snap = await getDoc(doc(db, 'roomCodes', code.toUpperCase()));
+  if (!snap.exists()) return null;
+  const { teacherUid, roomId } = snap.data();
+  const roomSnap = await getDoc(doc(db, `teachers/${teacherUid}/rooms/${roomId}`));
+  if (!roomSnap.exists() || !roomSnap.data().isOpen) return null;
+  return { teacherUid, roomId, ...roomSnap.data() };
+}
+
+/**
+ * 학생 입장 기록 (번호 입력 → 모둠은 인원수 기준 자동 계산)
+ */
+export async function joinRoom({ teacherUid, roomId, className, number, name }) {
+  await studentEnter();
+  const room = (await getDoc(doc(db, `teachers/${teacherUid}/rooms/${roomId}`))).data();
+  let group = null;
+  if (room.mode === 'group' && room.groupSize) {
+    group = Math.ceil(Number(number) / room.groupSize);
+  }
+  const studentId = auth.currentUser.uid;
+  await setDoc(doc(db, `teachers/${teacherUid}/rooms/${roomId}/students/${studentId}`), {
+    className: className || null, number: number || null, group,
+    name: name || null, joinedAt: serverTimestamp(),
+  }, { merge: true });
+  return { studentId, group };
+}
+
+/* ════════ 학생 결과물 저장 (세특 생성 원료) ════════ */
+export async function saveSubmission({ teacherUid, roomId, studentMeta, kind, title, content }) {
+  const studentId = auth.currentUser?.uid;
+  if (!studentId) return;
+  await addDoc(collection(db, `teachers/${teacherUid}/rooms/${roomId}/submissions`), {
+    studentId, ...studentMeta,
+    app: APP_TYPE(), kind, title, content,
+    createdAt: serverTimestamp(),
+  });
+}
+
+/* ════════ 교사: 방의 모든 결과물 가져오기 (세특/시트 내보내기용) ════════ */
+export async function listSubmissions(roomId) {
+  const uid = auth.currentUser.uid;
+  const q = query(
+    collection(db, `teachers/${uid}/rooms/${roomId}/submissions`),
+    orderBy('createdAt', 'asc')
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+/* ════════ QR 코드 렌더 (외부 라이브러리 없이, 이미지 API 사용) ════════ */
+export function qrImageUrl(link, size = 260) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(link)}`;
+}
+export function studentLink(code, baseUrl = location.origin + location.pathname.replace(/[^/]+$/, '')) {
+  return `${baseUrl}student.html?code=${code}`;
+}
