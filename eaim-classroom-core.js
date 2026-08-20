@@ -23,14 +23,13 @@ import {
 
 // ⚠️ 기존 eaim-classroom 프로젝트의 값을 그대로 넣으세요 (다른 앱들과 동일한 값)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyBalg0f5x0ydfHxn_nzgZ1pAELvJw6PzoY",
   authDomain: "eaim-classroom.firebaseapp.com",
   projectId: "eaim-classroom",
-  storageBucket: "eaim-classroom.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  storageBucket: "eaim-classroom.firebasestorage.app",
+  messagingSenderId: "294479576192",
+  appId: "1:294479576192:web:c60e994e319dbd2f11ba65",
 };
-
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
