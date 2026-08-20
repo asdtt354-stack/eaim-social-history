@@ -371,7 +371,14 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
   <div class="box">
     <div id="qr-img"></div>
     <p style="font-weight:800;margin:10px 0 4px" id="qr-code-text"></p>
-    <input type="text" id="qr-link" readonly style="text-align:center;font-size:.75rem;border:1px solid #ccc;border-radius:8px;padding:8px;width:100%" onclick="this.select()">
+    <div style="margin-top:8px;text-align:left">
+      <label style="font-size:.72rem;font-weight:700;color:#5C4A2A;display:block;margin-bottom:4px">🔗 학생 입장 링크</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="qr-link" readonly style="flex:1;text-align:left;font-size:.75rem;border:1px solid #ccc;border-radius:8px;padding:8px;color:#1C0A00;background:#FDF8F0" onclick="this.select()">
+        <button class="btn bamb" style="white-space:nowrap;padding:8px 12px;font-size:.78rem" onclick="copyQrLink()">📋 복사</button>
+      </div>
+      <div id="qr-copy-msg" style="font-size:.72rem;color:#16A34A;margin-top:4px;min-height:16px"></div>
+    </div>
     <button class="btn bg2 bfl" style="margin-top:10px" onclick="document.getElementById('qr-modal').style.display='none'">닫기</button>
   </div>
 </div>
@@ -481,6 +488,18 @@ window.showQR = (code) => {
   document.getElementById('qr-modal').style.display = 'block';
 };
 window.toggleOpen = async (roomId, val) => { await toggleRoomOpen(roomId, val); refreshRooms(); };
+
+window.copyQrLink = () => {
+  const link = document.getElementById('qr-link').value;
+  navigator.clipboard.writeText(link).then(() => {
+    const msg = document.getElementById('qr-copy-msg');
+    msg.textContent = '✅ 복사됐어요!';
+    setTimeout(() => { msg.textContent = ''; }, 2500);
+  }).catch(() => {
+    document.getElementById('qr-link').select();
+    document.execCommand('copy');
+  });
+};
 
 let subsByStudent = {};
 window.loadSubmissionsForSaenteuk = async () => {
