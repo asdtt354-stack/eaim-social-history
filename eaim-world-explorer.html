@@ -21,18 +21,15 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:80px}
 
-/* ── 배경 ── */
 #bg-image{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;
   animation:kb 25s ease-in-out infinite alternate;filter:brightness(.2) saturate(.5);transition:background-image 1.5s}
 @keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.08) translateX(2%)}}
 #bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,22,40,.55) 0%,rgba(10,22,40,.75) 100%)}
 #bg-canvas{position:fixed;inset:0;z-index:2;pointer-events:none}
 
-/* ── 모달 ── */
 .ov{position:fixed;inset:0;background:rgba(5,10,20,.75);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
 .mb{background:#fff;border-radius:2rem;padding:1.8rem;width:100%;max-width:400px;box-shadow:0 28px 56px rgba(0,0,0,.3);text-align:center}
 
-/* ── 헤더 ── */
 header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--navy3) 100%);
   padding:14px 18px;border-bottom:3px solid var(--sky);
   position:sticky;top:0;z-index:100;box-shadow:0 3px 18px rgba(0,0,0,.3)}
@@ -42,8 +39,8 @@ header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--n
 .ls{font-size:.65rem;color:rgba(255,255,255,.4);margin-top:1px}
 .nb{background:rgba(56,189,248,.18);border:1.5px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.75rem;color:var(--sky);font-weight:700;display:none}
 .rb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:4px 10px;font-size:.7rem;color:rgba(255,255,255,.65);cursor:pointer;font-family:inherit;transition:all .2s}
+.class-badge{background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.72rem;color:var(--sky);font-weight:700;display:none}
 
-/* ── 스텝 네비 ── */
 .sn{background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:2px solid rgba(56,189,248,.2);
   padding:8px 13px;display:none;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   position:sticky;top:62px;z-index:90;box-shadow:0 2px 10px rgba(0,0,0,.05)}
@@ -54,18 +51,15 @@ header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--n
 .sb.dn{background:var(--sky-l);border-color:rgba(56,189,248,.28);color:#1A70A0}
 .sb.dn::after{content:' ✓'}
 
-/* ── 메인 ── */
 main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:10}
 .tc{display:none;animation:fu .35s ease}
 .tc.on{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fi{from{opacity:0}to{opacity:1}}
 
-/* ── 카드 ── */
 .cd{background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:var(--r);padding:18px;margin-bottom:13px;box-shadow:var(--s)}
 .ct{font-weight:900;font-size:.88rem;color:var(--ink2);margin-bottom:12px;display:flex;align-items:center;gap:7px;padding-bottom:9px;border-bottom:2px dashed rgba(0,0,0,.06)}
 
-/* ── 선택 패널 ── */
 .map-wrap{
   background:linear-gradient(135deg,var(--navy),var(--navy3));
   border-radius:var(--r);padding:18px;
@@ -73,7 +67,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   margin-bottom:14px;
 }
 
-/* ── 대륙별 빠른 선택 ── */
 .continent-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .ctab{padding:6px 13px;border-radius:99px;font-size:.74rem;font-weight:700;
   background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
@@ -86,7 +79,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s}
 .cchip:hover{background:rgba(56,189,248,.25);border-color:var(--sky);color:#fff;transform:scale(1.05)}
 
-/* ── 나라 카드 ── */
 .country-card{
   background:linear-gradient(135deg,var(--navy),var(--navy3));
   border-radius:var(--r);overflow:hidden;
@@ -104,26 +96,22 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .basic-label{font-size:.65rem;color:rgba(56,189,248,.7);font-weight:700;letter-spacing:.05em;margin-bottom:3px}
 .basic-value{font-size:.82rem;color:rgba(255,255,255,.9);font-weight:700}
 
-/* ── 이미지 그리드 ── */
 .img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px}
 .img-thumb{aspect-ratio:4/3;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .2s;background:var(--bg)}
 .img-thumb img{width:100%;height:100%;object-fit:cover}
 .img-thumb.sel{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,189,248,.2)}
 .img-thumb:hover{transform:scale(1.03)}
 
-/* ── 탐구 섹션 ── */
 .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
 .explore-item{background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:13px;padding:14px}
 .explore-icon{font-size:1.4rem;margin-bottom:6px}
 .explore-label{font-size:.7rem;font-weight:900;color:var(--ink3);margin-bottom:5px;letter-spacing:.04em}
 .explore-text{font-size:.82rem;color:var(--ink2);line-height:1.7}
 
-/* ── 스토리 ── */
 .story-box{background:linear-gradient(135deg,#F0F8FF,#E4F0FF);border:2px solid rgba(56,189,248,.25);border-radius:13px;padding:16px;margin-bottom:13px}
 .story-label{font-size:.72rem;font-weight:900;color:var(--sky);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .story-text{font-family:'Nanum Myeongjo',serif;font-size:.92rem;color:var(--ink);line-height:2;white-space:pre-line}
 
-/* ── 음악 섹션 ── */
 .music-card{
   background:linear-gradient(135deg,#1A0A30,#0A1A30);
   border-radius:var(--r);padding:20px;
@@ -138,14 +126,12 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .yt-search-chip{display:inline-block;background:rgba(255,0,0,.2);border:1px solid rgba(255,80,80,.3);border-radius:8px;padding:4px 11px;font-size:.72rem;color:#FF8080;font-weight:700;margin-top:6px;cursor:pointer;transition:all .2s}
 .yt-search-chip:hover{background:rgba(255,0,0,.35)}
 
-/* ── 수노 프롬프트 ── */
 .suno-box{background:linear-gradient(135deg,#1A0830,#0A1A2C);border-radius:var(--r);padding:20px;border:2px solid rgba(245,158,11,.25);box-shadow:0 8px 28px rgba(0,0,0,.2)}
 .suno-label{font-size:.65rem;font-weight:700;color:rgba(245,158,11,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
 .suno-content{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;font-family:'Nanum Myeongjo',serif;font-size:.86rem;color:rgba(255,255,255,.9);line-height:1.9;white-space:pre-line;min-height:44px;margin-bottom:10px}
 .suno-copy-btn{width:100%;padding:12px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#D07800);color:#1C0A00;font-family:inherit;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .2s}
 .suno-copy-btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(245,158,11,.4)}
 
-/* ── 버튼 ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 17px;border-radius:11px;border:none;font-family:inherit;font-weight:800;font-size:.86rem;cursor:pointer;transition:all .15s}
 .btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
@@ -158,7 +144,6 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .bfl{width:100%}
 .bsm{padding:7px 13px;font-size:.76rem;border-radius:9px}
 
-/* ── 액션 버튼 ── */
 .act-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
 .act-btn{flex:1;min-width:90px;padding:10px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
 .ab-copy{background:var(--bg);color:var(--ink2);border:2px solid #D4DBEE}
@@ -166,18 +151,15 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .ab-dl{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
 .ab-print{background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:#fff}
 
-/* ── AI박스 ── */
 .ai-box{background:var(--amber-l);border:1.5px solid rgba(245,158,11,.25);border-radius:11px;padding:13px;margin-top:10px;display:none}
 .ai-label{font-size:.7rem;font-weight:900;color:var(--amber);margin-bottom:6px}
 .ai-text{font-size:.85rem;color:var(--ink2);line-height:1.8;white-space:pre-line}
 
-/* ── 로딩 ── */
 .ld{display:flex;align-items:center;gap:5px;color:var(--ink3);font-size:.8rem}
 .ld span{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:bl 1.2s infinite}
 .ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
 @keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-/* ── 정리노트 ── */
 .ta{width:100%;padding:12px;border-radius:11px;border:2px solid #D4DBEE;font-family:inherit;font-size:.92rem;color:var(--ink);resize:vertical;outline:none;transition:border-color .2s;line-height:1.8;min-height:110px;background:var(--bg)}
 .ta:focus{border-color:var(--sky);background:#fff}
 
@@ -200,21 +182,33 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   <div class="mb">
     <div style="font-size:2.8rem;margin-bottom:11px">🌍</div>
     <h2 style="font-family:'Nanum Myeongjo',serif;font-size:1.4rem;color:var(--navy);margin-bottom:6px">세계 나라 탐구</h2>
-    <p style="font-size:.84rem;color:var(--ink3);margin-bottom:18px">나라를 클릭하면 AI가 모든 걸 알려줘요!</p>
-    <input type="text" id="sni" placeholder="이름을 입력하세요"
-      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff;transition:border-color .2s"
-      onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='#D4DBEE'"
-      onkeydown="if(event.key==='Enter')sN()">
-    <select id="sclass" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:14px">
-      <option value="">반 선택</option>
-      <option>1반</option><option>2반</option><option>3반</option>
-      <option>4반</option><option>5반</option><option>6반</option>
-    </select>
-    <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🌍 세계 탐구 시작!</button>
+    <p id="nm-desc" style="font-size:.84rem;color:var(--ink3);margin-bottom:18px">나라를 클릭하면 AI가 모든 걸 알려줘요!</p>
+
+    <!-- 코드로 연결된 경우: 반/번호만 입력 -->
+    <div id="join-by-code" style="display:none">
+      <select id="join-class" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:10px"></select>
+      <input type="number" id="join-number" placeholder="번호를 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff"
+        onkeydown="if(event.key==='Enter')sN()">
+      <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🌍 세계 탐구 시작!</button>
+    </div>
+
+    <!-- 코드 없이 접속한 경우: 기존 방식 -->
+    <div id="join-manual">
+      <input type="text" id="sni" placeholder="이름을 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff;transition:border-color .2s"
+        onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='#D4DBEE'"
+        onkeydown="if(event.key==='Enter')sN()">
+      <select id="sclass" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:14px">
+        <option value="">반 선택</option>
+        <option>1반</option><option>2반</option><option>3반</option>
+        <option>4반</option><option>5반</option><option>6반</option>
+      </select>
+      <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">🌍 세계 탐구 시작!</button>
+    </div>
   </div>
 </div>
 
-<!-- 헤더 -->
 <header>
   <div class="hi">
     <div>
@@ -222,13 +216,13 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
       <div class="ls">World Country Explorer with AI & Music</div>
     </div>
     <div style="display:flex;gap:6px;align-items:center">
+      <span id="class-badge" class="class-badge"></span>
       <span id="wn" class="nb"></span>
       <button onclick="location.reload()" class="rb">↺</button>
     </div>
   </div>
 </header>
 
-<!-- 스텝 네비 -->
 <div class="sn" id="sNav">
   <button class="sb on" id="sB1" onclick="sT(1)">Step 1<br><span style="font-size:.6rem;opacity:.8">🗺️지도</span></button>
   <button class="sb" id="sB2" onclick="sT(2)">Step 2<br><span style="font-size:.6rem;opacity:.8">🌍나라카드</span></button>
@@ -238,14 +232,12 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 
 <main>
 
-<!-- ══ STEP 1: 나라 선택 ══ -->
 <div id="tab-1" class="tc on" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:18px">
     <span style="background:var(--sky-l);color:#1070A0;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 1</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px;color:var(--ink)">탐구할 나라를 선택해요</h3>
   </div>
 
-  <!-- 직접 검색 -->
   <div style="background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--r);padding:24px;border:2px solid rgba(56,189,248,.25);box-shadow:var(--sl);margin-bottom:14px;position:relative;overflow:hidden">
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 20%,rgba(56,189,248,.08) 0%,transparent 60%)"></div>
     <div style="position:relative;z-index:1">
@@ -262,9 +254,7 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 대륙별 나라 선택 -->
   <div style="background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--r);padding:18px;border:2px solid rgba(56,189,248,.2)">
-    <!-- 대륙 탭 -->
     <div class="continent-tabs" id="cont-tabs">
       <button onclick="showContinent('아시아',this)" class="ctab on">🌏 아시아</button>
       <button onclick="showContinent('유럽',this)" class="ctab">🌍 유럽</button>
@@ -273,11 +263,9 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
       <button onclick="showContinent('오세아니아',this)" class="ctab">🌏 오세아니아</button>
       <button onclick="showContinent('중동',this)" class="ctab">🕌 중동</button>
     </div>
-    <!-- 나라 칩 -->
     <div id="country-chips" class="country-chips" style="margin-top:10px"></div>
   </div>
 
-  <!-- 로딩 -->
   <div id="country-loading" style="display:none;margin-top:13px" class="cd">
     <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
       <span style="margin-left:6px">AI가 나라를 탐구하고 있어요...</span>
@@ -285,27 +273,22 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
-<!-- ══ STEP 2: 나라 카드 ══ -->
 <div id="tab-2" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:16px">
     <span style="background:var(--sky-l);color:#1070A0;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 2</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">나라 탐구</h3>
   </div>
 
-  <!-- 나라 기본 카드 -->
   <div id="country-card-wrap"></div>
 
-  <!-- 이미지 -->
   <div class="cd">
     <div class="ct">🖼️ 국가 이미지</div>
     <div id="country-imgs" class="img-grid"></div>
     <div id="img-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">이미지 검색 중...</span></div>
   </div>
 
-  <!-- 탐구 섹션 -->
   <div id="explore-wrap"></div>
 
-  <!-- AI 스토리 -->
   <div class="story-box">
     <div class="story-label">📖 이 나라 중학생의 하루 (AI 스토리)</div>
     <div id="story-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">스토리 생성 중...</span></div>
@@ -318,17 +301,14 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 3: 음악 & 수노 ══ -->
 <div id="tab-3" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:16px">
     <span style="background:var(--violet-l);color:var(--violet);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 3</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">🎵 음악 & 수노 프롬프트</h3>
   </div>
 
-  <!-- 음악 카드 -->
   <div id="music-card-wrap"></div>
 
-  <!-- 수노 프롬프트 -->
   <div id="suno-wrap" style="display:none">
     <div class="suno-box">
       <div style="font-family:'Nanum Myeongjo',serif;font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:14px">
@@ -357,14 +337,12 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 4: 정리노트 ══ -->
 <div id="tab-4" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:16px">
     <span style="background:var(--amber-l);color:#B07000;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 4</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">정리 노트</h3>
   </div>
 
-  <!-- 탐구한 나라 목록 -->
   <div class="cd">
     <div class="ct">🌍 탐구한 나라들 <span id="explored-count" style="background:var(--sky-l);color:#1070A0;border-radius:99px;padding:2px 10px;font-size:.72rem">0개</span></div>
     <div id="explored-list" style="display:flex;flex-wrap:wrap;gap:7px">
@@ -405,15 +383,51 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   Designed by Park Seong-ae · EAIM 세계 나라 탐구 v1
 </div>
 
+<!-- ══ 교실 연동 모듈 (Firebase) ══ -->
+<script type="module">
+window.EAIM_APP_TYPE = 'world';
+import {
+  resolveRoomByCode, joinRoom, saveSubmission, studentEnter
+} from './eaim-classroom-core.js';
+
+window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
+
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  if (!code) return;
+
+  const room = await resolveRoomByCode(code);
+  const nmDesc = document.getElementById('nm-desc');
+  if (!room) {
+    nmDesc.textContent = '⚠️ 수업이 아직 열리지 않았거나 잘못된 링크예요. 선생님께 문의해주세요.';
+    return;
+  }
+
+  window.EAIM_ROOM = room;
+
+  document.getElementById('join-manual').style.display = 'none';
+  document.getElementById('join-by-code').style.display = 'block';
+  document.getElementById('nm-desc').textContent = `"${room.title}" 수업방이에요. 정보를 입력하고 시작해요!`;
+
+  const classSel = document.getElementById('join-class');
+  if (room.mode === 'individual') {
+    classSel.style.display = 'none';
+  } else if (room.classes && room.classes.length) {
+    classSel.innerHTML = room.classes.map(c => `<option>${c.name}</option>`).join('');
+  } else {
+    classSel.style.display = 'none';
+  }
+})();
+</script>
+
 <script>
-// ══ 상태 ══
 let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
 let currentCountry=null;
 let exploredCountries=[];
 let selImgUrl='';
 let particles=[];
 
-// ══ 대륙별 나라 데이터 ══
 const CONTINENTS = {
   '아시아': [
     {e:'🇰🇷',n:'대한민국'},{e:'🇯🇵',n:'일본'},{e:'🇨🇳',n:'중국'},
@@ -456,7 +470,6 @@ const CONTINENTS = {
   ],
 };
 
-// ══ 파티클 ══
 const canvas=document.getElementById('bg-canvas');
 const ctx=canvas.getContext('2d');
 function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
@@ -485,20 +498,59 @@ function animP(){
 }
 animP();
 
-// ══ 로그인 ══
-function sN(){
-  const n=document.getElementById('sni').value.trim();
-  const c=document.getElementById('sclass').value;
-  if(!n){alert('이름을 입력해주세요!');return;}
-  if(!c){alert('반을 선택해주세요!');return;}
-  stuName=n;
-  const nb=document.getElementById('wn');nb.textContent=n+' 님 🌍';nb.style.display='';
+// ══ 로그인 (코드 입장 / 수동 입장 모두 처리) ══
+async function sN(){
+  const room = window.EAIM_ROOM;
+
+  if (room) {
+    const number = document.getElementById('join-number').value.trim();
+    if(!number){alert('번호를 입력해주세요!');return;}
+    const className = room.mode !== 'individual' ? document.getElementById('join-class').value : null;
+
+    try{
+      const { group } = await window.EAIM.joinRoom({
+        teacherUid: room.teacherUid, roomId: room.roomId,
+        className, number,
+      });
+      stuName = (className ? className+' ' : '') + number + '번' + (group ? ` (모둠 ${group})` : '');
+      window.EAIM_STUDENT_META = { className, number, group };
+    }catch(e){
+      alert('입장에 실패했어요. 다시 시도해주세요.');return;
+    }
+  } else {
+    const n=document.getElementById('sni').value.trim();
+    const c=document.getElementById('sclass').value;
+    if(!n){alert('이름을 입력해주세요!');return;}
+    if(!c){alert('반을 선택해주세요!');return;}
+    stuName=n;
+    window.EAIM_STUDENT_META = { className: c, name: n };
+    try{ await window.EAIM.studentEnter(); }catch(e){}
+  }
+
+  const nb=document.getElementById('wn');nb.textContent=stuName+' 님 🌍';nb.style.display='';
+  if (room) {
+    const badge = document.getElementById('class-badge');
+    badge.textContent = '🔗 ' + room.title;
+    badge.style.display = '';
+  }
   document.getElementById('nm').style.display='none';
   document.getElementById('sNav').style.display='flex';
   showContinent('아시아',document.querySelector('.ctab'));
 }
 
-// ══ Gemini ══
+// ── 결과물을 교실 서버로 저장 (있을 때만) ──
+async function pushSubmission(kind, title, content){
+  const room = window.EAIM_ROOM;
+  if(!room || !window.EAIM) return;
+  try{
+    await window.EAIM.saveSubmission({
+      teacherUid: room.teacherUid, roomId: room.roomId,
+      studentMeta: window.EAIM_STUDENT_META || {},
+      kind, title, content,
+    });
+  }catch(e){ console.warn('제출 저장 실패(무시 가능):', e); }
+}
+
 async function callGemini(prompt,maxTokens=1000){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
@@ -511,7 +563,6 @@ async function callGemini(prompt,maxTokens=1000){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
-// ══ 위키미디어 이미지 ══
 async function searchWikiImgs(query,count=6){
   const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
   try{
@@ -524,7 +575,6 @@ async function searchWikiImgs(query,count=6){
   }catch(e){return[];}
 }
 
-// ══ 대륙별 탭 ══
 function showContinent(cont,btn){
   document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
@@ -539,7 +589,6 @@ function showContinent(cont,btn){
   });
 }
 
-// ══ SVG 지도 클릭 ══
 document.addEventListener('DOMContentLoaded',()=>{
   showContinent('아시아',document.querySelector('.ctab'));
 });
@@ -550,7 +599,6 @@ function searchCountry(){
   selectCountry(name);
 }
 
-// ══ 나라 선택 → 전체 탐구 ══
 async function selectCountry(name){
   document.getElementById('country-loading').style.display='block';
   initParticles([name,'문화','역사','정치','경제','음악','전통','세계']);
@@ -612,7 +660,6 @@ async function selectCountry(name){
   document.getElementById('country-loading').style.display='none';
 }
 
-// ══ 나라 기본 카드 ══
 function buildCountryCard(){
   if(!currentCountry)return;
   const c=currentCountry;
@@ -634,8 +681,6 @@ function buildCountryCard(){
     </div>`;
 }
 
-
-// ══ Pollinations AI 이미지 생성 (무료! API 키 불필요) ══
 async function genAIImage(prompt) {
   try {
     const fullPrompt = prompt + ', beautiful landscape, travel photo style, colorful, educational';
@@ -644,13 +689,11 @@ async function genAIImage(prompt) {
   } catch(e) { return null; }
 }
 
-// 세계 나라 이미지 로드 (AI 우선 → 위키 폴백)
 async function loadCountryImgs(query){
   const el=document.getElementById('country-imgs');
   const ld=document.getElementById('img-loading');
   el.innerHTML='';ld.style.display='flex';
 
-  // AI 이미지 생성 우선
   const aiUrl = await genAIImage(query + ' 나라 풍경 랜드마크 수채화 일러스트 교육용');
   if(aiUrl){
     ld.style.display='none';
@@ -670,7 +713,6 @@ async function loadCountryImgs(query){
     return;
   }
 
-  // 위키미디어 폴백
   const imgs=await searchWikiImgs(query+' country landmark',9);
   ld.style.display='none';
   if(!imgs.length){el.innerHTML='<p style="color:var(--ink3);font-size:.78rem;grid-column:span 3">이미지를 찾지 못했어요.</p>';return;}
@@ -688,8 +730,6 @@ async function loadCountryImgs(query){
   });
 }
 
-
-// ══ 탐구 섹션 ══
 function buildExplore(){
   if(!currentCountry)return;
   const c=currentCountry;
@@ -722,7 +762,6 @@ function buildExplore(){
     </div>`;
 }
 
-// ══ 스토리 ══
 function buildStory(){
   if(!currentCountry)return;
   document.getElementById('story-text').textContent=currentCountry.story||'';
@@ -739,7 +778,6 @@ async function regenStory(){
   ld.style.display='none';
 }
 
-// ══ 음악 ══
 function buildMusic(){
   if(!currentCountry?.music)return;
   const m=currentCountry.music;
@@ -756,7 +794,6 @@ function buildMusic(){
       </div>`:''}
     </div>`;
 
-  // 수노 프롬프트
   if(m.sunoPrompt){
     document.getElementById('suno-style').textContent=
       `Style: ${m.sunoStyle||''}\nMood: ${m.sunoMood||'cultural, ethnic, traditional'}`;
@@ -773,9 +810,19 @@ function copySuno(){
   navigator.clipboard.writeText(text).then(()=>alert('📋 복사됐어요! 수노에 붙여넣기 해보세요~ 🎵'));
 }
 
-// ══ 탐구 나라 목록 ══
+// ══ 탐구 나라 목록 (+ 나라 탐구 완료를 제출로 저장) ══
 function addExplored(name){
-  if(!exploredCountries.includes(name)) exploredCountries.push(name);
+  if(!exploredCountries.includes(name)){
+    exploredCountries.push(name);
+    // 나라 탐구가 완료될 때마다 세특 원료로 저장
+    if(currentCountry){
+      const summary =
+        `[정치] ${currentCountry.politics||''}\n[경제] ${currentCountry.economy||''}\n` +
+        `[문화] ${currentCountry.culture||''}\n[역사] ${currentCountry.history||''}\n` +
+        `[한국과의 관계] ${currentCountry.koreaRelation||''}`;
+      pushSubmission('세계나라탐구', name, summary);
+    }
+  }
   const el=document.getElementById('explored-list');
   const cnt=document.getElementById('explored-count');
   cnt.textContent=exploredCountries.length+'개';
@@ -783,7 +830,6 @@ function addExplored(name){
     <span style="background:var(--sky-l);color:#1070A0;border-radius:99px;padding:5px 12px;font-size:.78rem;font-weight:700;cursor:pointer" onclick="selectCountry('${n}')">🌍 ${n}</span>`).join('');
 }
 
-// ══ 정리노트 AI ══
 async function aiNoteCheck(){
   const text=document.getElementById('note-text').value.trim();
   if(!text){alert('정리 노트를 먼저 써주세요!');return;}
@@ -807,13 +853,14 @@ async function aiNoteHelp(){
   }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
 }
 
-// ══ 복사/저장 ══
 function copyNote(){
   navigator.clipboard.writeText(document.getElementById('note-text').value)
     .then(()=>alert('📋 정리 노트가 복사됐어요!'));
 }
+// ══ 정리노트 저장 시 교실 서버로도 제출 ══
 function downloadNote(){
   const text=document.getElementById('note-text').value;
+  if(text.trim()) pushSubmission('세계탐구정리노트', '정리노트', text);
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(`세계 탐구 정리 노트\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n탐구한 나라: ${exploredCountries.join(', ')}\n\n${text}`);
   a.download=`${stuName}_세계탐구노트.txt`;a.click();
@@ -828,13 +875,15 @@ function downloadAll(){
     if(c.music){text+=`[음악]\n전통음악: ${c.music.traditional}\n악기: ${c.music.instrument}\n음악가: ${c.music.composer}\n\n`;}
   }
   const note=document.getElementById('note-text').value;
-  if(note)text+=`${'='.repeat(40)}\n정리 노트\n${'='.repeat(40)}\n${note}`;
+  if(note){
+    text+=`${'='.repeat(40)}\n정리 노트\n${'='.repeat(40)}\n${note}`;
+    pushSubmission('세계탐구정리노트', '정리노트', note);
+  }
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
   a.download=`${stuName}_세계탐구_전체.txt`;a.click();
 }
 
-// ══ 탭 전환 ══
 function sT(n){
   for(let i=1;i<=4;i++){
     const btn=document.getElementById('sB'+i);

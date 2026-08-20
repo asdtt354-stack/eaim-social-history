@@ -23,20 +23,17 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
   background:radial-gradient(ellipse 70% 50% at 10% 0%,rgba(56,189,248,.08) 0%,transparent 55%),
              radial-gradient(ellipse 60% 60% at 95% 100%,rgba(124,111,205,.09) 0%,transparent 55%)}
 
-/* ── 배경 ── */
 #bg-image{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;
   animation:kb 20s ease-in-out infinite alternate;filter:brightness(.25) saturate(.6);transition:background-image 1s}
 @keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.1) translateX(2%)}}
 #bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,22,40,.6) 0%,rgba(10,22,40,.8) 100%)}
 #bg-canvas{position:fixed;inset:0;z-index:2;pointer-events:none}
 
-/* ── 모달 ── */
 .ov{position:fixed;inset:0;background:rgba(5,10,20,.7);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
 .mb{background:#fff;border-radius:2rem;padding:1.8rem;width:100%;max-width:400px;box-shadow:0 28px 56px rgba(0,0,0,.3);text-align:center}
 .mb h2{font-family:'Nanum Myeongjo',serif;font-size:1.4rem;color:var(--navy);margin-bottom:6px}
 .mb p{font-size:.84rem;color:var(--ink3);margin-bottom:18px}
 
-/* ── 헤더 ── */
 header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--navy3) 100%);
   padding:14px 18px;border-bottom:3px solid var(--sky);
   position:sticky;top:0;z-index:100;box-shadow:0 3px 18px rgba(0,0,0,.3)}
@@ -46,8 +43,8 @@ header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--n
 .ls{font-size:.65rem;color:rgba(255,255,255,.4);margin-top:1px}
 .nb{background:rgba(56,189,248,.18);border:1.5px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.75rem;color:var(--sky);font-weight:700;display:none}
 .rb{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:4px 10px;font-size:.7rem;color:rgba(255,255,255,.65);cursor:pointer;font-family:inherit;transition:all .2s}
+.class-badge{background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.72rem;color:var(--sky);font-weight:700;display:none}
 
-/* ── 스텝 네비 ── */
 .sn{background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:2px solid rgba(56,189,248,.2);
   padding:8px 13px;display:flex;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   position:sticky;top:62px;z-index:90;box-shadow:0 2px 10px rgba(0,0,0,.05);display:none}
@@ -58,17 +55,14 @@ header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--n
 .sb.dn{background:var(--sky-l);border-color:rgba(56,189,248,.28);color:#1A70A0}
 .sb.dn::after{content:' ✓'}
 
-/* ── 메인 ── */
 main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:10}
 .tc{display:none;animation:fu .35s ease}
 .tc.on{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── 카드 ── */
 .cd{background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:var(--r);padding:18px;margin-bottom:13px;box-shadow:var(--s)}
 .ct{font-weight:900;font-size:.88rem;color:var(--ink2);margin-bottom:12px;display:flex;align-items:center;gap:7px;padding-bottom:9px;border-bottom:2px dashed rgba(0,0,0,.06)}
 
-/* ── 검색 박스 (메인) ── */
 .search-hero{
   background:linear-gradient(135deg,var(--navy),var(--navy3));
   border-radius:1.5rem;padding:32px 24px;
@@ -103,14 +97,12 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .search-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(56,189,248,.4)}
 .search-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* ── 빠른 선택 ── */
 .quick-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:16px;position:relative;z-index:1}
 .qchip{padding:6px 14px;border-radius:99px;font-size:.76rem;font-weight:700;
   background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
   color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s}
 .qchip:hover{background:rgba(56,189,248,.25);border-color:var(--sky);color:#fff;transform:scale(1.05)}
 
-/* ── 용어 결과 카드 ── */
 .term-card{
   background:#fff;border-radius:1.4rem;overflow:hidden;
   box-shadow:var(--sl);border:2px solid rgba(56,189,248,.15);
@@ -127,14 +119,12 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .term-def{font-size:.88rem;color:rgba(255,255,255,.82);line-height:1.8}
 .term-card-body{padding:18px}
 
-/* ── 이미지 그리드 ── */
 .img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
 .img-thumb{aspect-ratio:4/3;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .2s;background:var(--bg)}
 .img-thumb img{width:100%;height:100%;object-fit:cover}
 .img-thumb.sel{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,189,248,.2)}
 .img-thumb:hover{transform:scale(1.03)}
 
-/* ── 스토리 박스 ── */
 .story-box{
   background:linear-gradient(135deg,#F0F8FF,#E8F4FF);
   border:2px solid rgba(56,189,248,.25);
@@ -147,14 +137,12 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .stype-btn.on{background:var(--violet);border-color:#5840D0;color:#fff}
 .story-text{font-family:'Nanum Myeongjo',serif;font-size:.92rem;color:var(--ink);line-height:2;white-space:pre-line}
 
-/* ── 관련 용어 ── */
 .related-chips{display:flex;flex-wrap:wrap;gap:7px}
 .rchip{padding:6px 13px;border-radius:99px;font-size:.78rem;font-weight:700;
   background:var(--mint-l);color:var(--mint);border:2px solid rgba(0,191,138,.25);
   cursor:pointer;transition:all .15s}
 .rchip:hover{background:var(--mint);color:#fff;transform:scale(1.05)}
 
-/* ── 사전 아이템 ── */
 .dict-item{
   background:#fff;border:2px solid rgba(0,0,0,.06);border-radius:13px;
   padding:14px 16px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;
@@ -165,7 +153,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .dict-del{background:none;border:none;cursor:pointer;color:var(--ink3);flex-shrink:0;padding:4px;transition:color .2s}
 .dict-del:hover{color:var(--coral)}
 
-/* ── 완성 사전 ── */
 .dict-book{
   background:#fff;border:2px solid #D4DBEE;border-radius:1.4rem;
   overflow:hidden;box-shadow:var(--sl);
@@ -184,7 +171,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .dict-entry-story{background:var(--bg);border-radius:9px;padding:11px 14px;font-family:'Nanum Myeongjo',serif;font-size:.82rem;color:var(--ink);line-height:1.9;white-space:pre-line;border-left:3px solid var(--sky)}
 .dict-entry-img{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-bottom:9px}
 
-/* ── 버튼 ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 17px;border-radius:11px;border:none;font-family:inherit;font-weight:800;font-size:.86rem;cursor:pointer;transition:all .15s}
 .btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
@@ -198,7 +184,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .bfl{width:100%}
 .bsm{padding:7px 13px;font-size:.76rem;border-radius:9px}
 
-/* ── 액션 버튼 ── */
 .act-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
 .act-btn{flex:1;min-width:90px;padding:10px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
 .act-btn:active{transform:scale(.96)}
@@ -207,25 +192,21 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .ab-dl{background:linear-gradient(135deg,var(--amber),#D07800);color:#fff}
 .ab-print{background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:#fff}
 
-/* ── AI 박스 ── */
 .ai-box{background:var(--amber-l);border:1.5px solid rgba(245,158,11,.25);border-radius:11px;padding:13px;margin-top:10px;display:none}
 .ai-label{font-size:.7rem;font-weight:900;color:var(--amber);margin-bottom:6px}
 .ai-text{font-size:.85rem;color:var(--ink2);line-height:1.8;white-space:pre-line}
 
-/* ── 로딩 ── */
 .ld{display:flex;align-items:center;gap:5px;color:var(--ink3);font-size:.8rem}
 .ld span{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:bl 1.2s infinite}
 .ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
 @keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-/* ── 정리노트 ── */
 .ta{width:100%;padding:12px;border-radius:11px;border:2px solid #D4DBEE;font-family:inherit;font-size:.92rem;color:var(--ink);resize:vertical;outline:none;transition:border-color .2s;line-height:1.8;min-height:110px;background:var(--bg)}
 .ta:focus{border-color:var(--sky);background:#fff}
 
 @media(max-width:480px){.img-grid{grid-template-columns:repeat(2,1fr)}}
 @media print{header,.sn,.no-print{display:none!important}body{background:#fff}.dict-book{box-shadow:none}}
 
-/* ── 분야별 탭 ── */
 .cat-tab{
   padding:6px 14px;border-radius:99px;font-size:.76rem;font-weight:700;
   background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);
@@ -247,21 +228,33 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   <div class="mb">
     <div style="font-size:2.8rem;margin-bottom:11px">📚</div>
     <h2>사회 용어 사전</h2>
-    <p>용어를 입력하면 AI가 뜻·이미지·스토리를 찾아줘요!</p>
-    <input type="text" id="sni" placeholder="이름을 입력하세요"
-      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff;transition:border-color .2s"
-      onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='#D4DBEE'"
-      onkeydown="if(event.key==='Enter')sN()">
-    <select id="sclass" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:14px">
-      <option value="">반 선택</option>
-      <option>1반</option><option>2반</option><option>3반</option>
-      <option>4반</option><option>5반</option><option>6반</option>
-    </select>
-    <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">📚 사전 만들기 시작!</button>
+    <p id="nm-desc">용어를 입력하면 AI가 뜻·이미지·스토리를 찾아줘요!</p>
+
+    <!-- 코드로 연결된 경우: 반/번호만 입력 -->
+    <div id="join-by-code" style="display:none">
+      <select id="join-class" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:10px"></select>
+      <input type="number" id="join-number" placeholder="번호를 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff"
+        onkeydown="if(event.key==='Enter')sN()">
+      <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">📚 사전 만들기 시작!</button>
+    </div>
+
+    <!-- 코드 없이 접속한 경우: 기존 방식 -->
+    <div id="join-manual">
+      <input type="text" id="sni" placeholder="이름을 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid #D4DBEE;border-radius:.9rem;padding:10px;outline:none;margin-bottom:10px;background:#fff;transition:border-color .2s"
+        onfocus="this.style.borderColor='#38BDF8'" onblur="this.style.borderColor='#D4DBEE'"
+        onkeydown="if(event.key==='Enter')sN()">
+      <select id="sclass" style="width:100%;padding:9px;border:2px solid #D4DBEE;border-radius:.9rem;font-family:inherit;font-weight:700;background:#fff;outline:none;margin-bottom:14px">
+        <option value="">반 선택</option>
+        <option>1반</option><option>2반</option><option>3반</option>
+        <option>4반</option><option>5반</option><option>6반</option>
+      </select>
+      <button onclick="sN()" class="btn bsky bfl" style="font-size:.95rem;padding:12px">📚 사전 만들기 시작!</button>
+    </div>
   </div>
 </div>
 
-<!-- 헤더 -->
 <header>
   <div class="hi">
     <div>
@@ -269,13 +262,13 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
       <div class="ls">Social Studies Dictionary with AI Story</div>
     </div>
     <div style="display:flex;gap:6px;align-items:center">
+      <span id="class-badge" class="class-badge"></span>
       <span id="wn" class="nb"></span>
       <button onclick="location.reload()" class="rb">↺</button>
     </div>
   </div>
 </header>
 
-<!-- 스텝 네비 -->
 <div class="sn" id="sNav">
   <button class="sb on" id="sB1" onclick="sT(1)">Step 1<br><span style="font-size:.6rem;opacity:.8">용어검색</span></button>
   <button class="sb" id="sB2" onclick="sT(2)">Step 2<br><span style="font-size:.6rem;opacity:.8">용어카드</span></button>
@@ -286,7 +279,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 
 <main>
 
-<!-- ══ STEP 1: 용어 검색 ══ -->
 <div id="tab-1" class="tc on" style="margin-top:16px">
 
   <div class="search-hero">
@@ -298,7 +290,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
         onkeydown="if(event.key==='Enter')searchTerm()">
       <button onclick="searchTerm()" id="search-btn" class="search-btn">🔍 검색!</button>
     </div>
-    <!-- 분야별 탭 -->
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:16px;position:relative;z-index:1" id="cat-tabs">
       <button onclick="showCat('정치',this)" class="cat-tab on">🏛️ 정치</button>
       <button onclick="showCat('경제',this)" class="cat-tab">💰 경제</button>
@@ -307,11 +298,9 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
       <button onclick="showCat('국제',this)" class="cat-tab">🌐 국제</button>
       <button onclick="showCat('문화',this)" class="cat-tab">🎨 문화</button>
     </div>
-    <!-- 분야별 용어 칩 -->
     <div id="cat-chips" class="quick-chips" style="margin-top:10px"></div>
   </div>
 
-  <!-- 검색 결과 미리보기 -->
   <div id="search-loading" style="display:none" class="cd" style="text-align:center;padding:30px">
     <div class="ld" style="justify-content:center"><span></span><span></span><span></span>
       <span style="margin-left:6px;font-size:.88rem">AI가 용어를 분석하고 이미지를 찾는 중...</span>
@@ -332,7 +321,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
-<!-- ══ STEP 2: 용어 카드 ══ -->
 <div id="tab-2" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:18px">
     <span style="background:var(--sky-l);color:#1070A0;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 2</span>
@@ -341,7 +329,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 
   <div id="term-card-wrap"></div>
 
-  <!-- 이미지 선택 -->
   <div class="cd">
     <div class="ct">🖼️ 관련 이미지 선택</div>
     <div id="term-imgs" class="img-grid"></div>
@@ -350,7 +337,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
     <input type="file" id="custom-img" accept="image/*" style="display:none" onchange="uploadCustomImg(this)">
   </div>
 
-  <!-- AI 스토리 -->
   <div class="story-box">
     <div class="story-label">📖 AI 스토리로 이해하기</div>
     <div class="story-type-row">
@@ -364,7 +350,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
     <button onclick="regenStory()" class="btn bg2 bsm no-print" style="margin-top:10px">🔄 다른 스토리</button>
   </div>
 
-  <!-- 관련 용어 -->
   <div class="cd">
     <div class="ct">🔗 관련 용어</div>
     <div id="related-chips" class="related-chips"></div>
@@ -377,7 +362,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
-<!-- ══ STEP 3: 사전 모음 ══ -->
 <div id="tab-3" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:18px">
     <span style="background:var(--mint-l);color:var(--mint);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 3</span>
@@ -395,14 +379,12 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
-<!-- ══ STEP 4: 완성 사전 ══ -->
 <div id="tab-4" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:18px">
     <span style="background:var(--violet-l);color:var(--violet);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 4</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">완성된 사전</h3>
   </div>
 
-  <!-- 사전 제목 -->
   <div class="cd no-print">
     <div class="ct">📖 사전 제목</div>
     <input type="text" id="dict-title" style="width:100%;padding:10px 13px;background:var(--bg);border:2px solid #D4DBEE;border-radius:9px;font-family:inherit;font-size:.95rem;font-weight:700;outline:none" value="나의 사회 용어 사전">
@@ -418,7 +400,6 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   <button onclick="sT(5)" class="btn bamb bfl no-print" style="margin-top:10px;font-size:.92rem;padding:13px">✍️ 정리 노트 쓰기 →</button>
 </div>
 
-<!-- ══ STEP 5: 정리 노트 ══ -->
 <div id="tab-5" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:18px">
     <span style="background:var(--amber-l);color:#B07000;padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:900">Step 5</span>
@@ -455,16 +436,52 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   Designed by Park Seong-ae · EAIM 사회 용어 사전 v1
 </div>
 
+<!-- ══ 교실 연동 모듈 (Firebase) ══ -->
+<script type="module">
+window.EAIM_APP_TYPE = 'dict';
+import {
+  resolveRoomByCode, joinRoom, saveSubmission, studentEnter
+} from './eaim-classroom-core.js';
+
+window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
+
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  if (!code) return;
+
+  const room = await resolveRoomByCode(code);
+  const nmDesc = document.getElementById('nm-desc');
+  if (!room) {
+    nmDesc.textContent = '⚠️ 수업이 아직 열리지 않았거나 잘못된 링크예요. 선생님께 문의해주세요.';
+    return;
+  }
+
+  window.EAIM_ROOM = room;
+
+  document.getElementById('join-manual').style.display = 'none';
+  document.getElementById('join-by-code').style.display = 'block';
+  document.getElementById('nm-desc').textContent = `"${room.title}" 수업방이에요. 정보를 입력하고 시작해요!`;
+
+  const classSel = document.getElementById('join-class');
+  if (room.mode === 'individual') {
+    classSel.style.display = 'none';
+  } else if (room.classes && room.classes.length) {
+    classSel.innerHTML = room.classes.map(c => `<option>${c.name}</option>`).join('');
+  } else {
+    classSel.style.display = 'none';
+  }
+})();
+</script>
+
 <script>
-// ══ 상태 ══
 let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
-let currentTerm=null;   // {name, category, definition, keywords, story, related, imgUrl}
-let dictEntries=[];     // 사전 항목들
+let currentTerm=null;
+let dictEntries=[];
 let selImgUrl='';
 let selStoryType='생활';
 let particles=[];
 
-// ══ 파티클 ══
 const canvas=document.getElementById('bg-canvas');
 const ctx=canvas.getContext('2d');
 function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
@@ -497,20 +514,59 @@ function animP(){
 }
 animP();
 
-// ══ 로그인 ══
-function sN(){
-  const n=document.getElementById('sni').value.trim();
-  const c=document.getElementById('sclass').value;
-  if(!n){alert('이름을 입력해주세요!');return;}
-  if(!c){alert('반을 선택해주세요!');return;}
-  stuName=n;
+// ══ 로그인 (코드 입장 / 수동 입장 모두 처리) ══
+async function sN(){
+  const room = window.EAIM_ROOM;
+
+  if (room) {
+    const number = document.getElementById('join-number').value.trim();
+    if(!number){alert('번호를 입력해주세요!');return;}
+    const className = room.mode !== 'individual' ? document.getElementById('join-class').value : null;
+
+    try{
+      const { group } = await window.EAIM.joinRoom({
+        teacherUid: room.teacherUid, roomId: room.roomId,
+        className, number,
+      });
+      stuName = (className ? className+' ' : '') + number + '번' + (group ? ` (모둠 ${group})` : '');
+      window.EAIM_STUDENT_META = { className, number, group };
+    }catch(e){
+      alert('입장에 실패했어요. 다시 시도해주세요.');return;
+    }
+  } else {
+    const n=document.getElementById('sni').value.trim();
+    const c=document.getElementById('sclass').value;
+    if(!n){alert('이름을 입력해주세요!');return;}
+    if(!c){alert('반을 선택해주세요!');return;}
+    stuName=n;
+    window.EAIM_STUDENT_META = { className: c, name: n };
+    try{ await window.EAIM.studentEnter(); }catch(e){}
+  }
+
   const nb=document.getElementById('wn');
-  nb.textContent=n+' 님 📚';nb.style.display='';
+  nb.textContent=stuName+' 님 📚';nb.style.display='';
+  if (room) {
+    const badge = document.getElementById('class-badge');
+    badge.textContent = '🔗 ' + room.title;
+    badge.style.display = '';
+  }
   document.getElementById('nm').style.display='none';
   document.getElementById('sNav').style.display='flex';
 }
 
-// ══ Gemini 호출 ══
+// ── 결과물을 교실 서버로 저장 (있을 때만) ──
+async function pushSubmission(kind, title, content){
+  const room = window.EAIM_ROOM;
+  if(!room || !window.EAIM) return;
+  try{
+    await window.EAIM.saveSubmission({
+      teacherUid: room.teacherUid, roomId: room.roomId,
+      studentMeta: window.EAIM_STUDENT_META || {},
+      kind, title, content,
+    });
+  }catch(e){ console.warn('제출 저장 실패(무시 가능):', e); }
+}
+
 async function callGemini(prompt,maxTokens=800){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
@@ -523,7 +579,6 @@ async function callGemini(prompt,maxTokens=800){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
-// ══ Pollinations AI 이미지 생성 (무료! API 키 불필요) ══
 async function genAIImage(prompt) {
   try {
     const fullPrompt = prompt + ', educational illustration, colorful, child-safe, flat design';
@@ -532,7 +587,6 @@ async function genAIImage(prompt) {
   } catch(e) { return null; }
 }
 
-// ══ 위키미디어 이미지 검색 (폴백용) ══
 async function searchWikiImgs(query,count=6){
   const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
   try{
@@ -545,7 +599,6 @@ async function searchWikiImgs(query,count=6){
   }catch(e){return[];}
 }
 
-// ══ STEP 1: 용어 검색 ══
 function quickTerm(term){
   document.getElementById('term-input').value=term;
   searchTerm();
@@ -562,7 +615,6 @@ async function searchTerm(){
 
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
 
-  // 기본 파티클 시작
   _kws=[term,'사회','개념','용어','학습','이해'];
   initParticles(_kws);
 
@@ -584,14 +636,12 @@ async function searchTerm(){
       _kws=info.keywords||_kws;
       initParticles(_kws);
 
-      // 미리보기
       document.getElementById('preview-name').textContent=info.name;
       document.getElementById('preview-cat').textContent=info.category||'사회';
       document.getElementById('preview-def').textContent=info.definition||'';
       document.getElementById('search-loading').style.display='none';
       document.getElementById('search-preview').style.display='block';
 
-      // 배경 이미지 + 카드 미리 준비
       buildTermCard();
       loadTermImages(info.wikiSearch||term);
       genStory('생활');
@@ -620,7 +670,6 @@ async function searchTerm(){
   btn.disabled=false;btn.textContent='🔍 검색!';
 }
 
-// ══ STEP 2: 용어 카드 ══
 function buildTermCard(){
   if(!currentTerm)return;
   const p=currentTerm;
@@ -640,7 +689,6 @@ function buildTermCard(){
         </div>
       </div>
     </div>`;
-  // 배경 이미지
   if(selImgUrl) document.getElementById('bg-image').style.backgroundImage=`url(${selImgUrl})`;
 }
 
@@ -649,21 +697,18 @@ async function loadTermImages(query){
   const ld=document.getElementById('img-loading');
   el.innerHTML='';ld.style.display='flex';
 
-  // 1. AI 이미지 생성 시도
   const aiUrl = await genAIImage(query + ' 개념 일러스트 교육용 사회 수채화 스타일');
   if(aiUrl){
     ld.style.display='none';
     selImgUrl=aiUrl;
     if(currentTerm)currentTerm.imgUrl=aiUrl;
     document.getElementById('bg-image').style.backgroundImage=`url(${aiUrl})`;
-    // AI 이미지 카드로 표시
     const div=document.createElement('div');
     div.className='img-thumb sel';
     div.style.cssText='grid-column:span 2';
     div.innerHTML=`<img src="${aiUrl}" style="width:100%;height:100%;object-fit:cover">`;
     div.onclick=()=>{selImgUrl=aiUrl;if(currentTerm)currentTerm.imgUrl=aiUrl;document.getElementById('bg-image').style.backgroundImage=`url(${aiUrl})`;buildTermCard();}
     el.appendChild(div);
-    // 다시 생성 버튼
     const regenDiv=document.createElement('div');
     regenDiv.className='img-thumb';
     regenDiv.style.cssText='display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,191,138,.1);border:2px dashed rgba(0,191,138,.3)';
@@ -674,7 +719,6 @@ async function loadTermImages(query){
     return;
   }
 
-  // 2. 위키미디어 폴백
   const imgs=await searchWikiImgs(query+' 개념 사회',9);
   ld.style.display='none';
   if(!imgs.length){
@@ -706,7 +750,6 @@ function uploadCustomImg(input){
   buildTermCard();
 }
 
-// ══ AI 스토리 ══
 async function genStory(type){
   if(!currentTerm)return;
   selStoryType=type;
@@ -748,7 +791,6 @@ async function genStory(type){
   }
   ld.style.display='none';
 
-  // 관련 용어 렌더링
   renderRelated();
 }
 
@@ -775,7 +817,7 @@ function renderRelated(){
   });
 }
 
-// ══ 사전에 추가 ══
+// ══ 사전에 추가 (+ 교실 서버로 제출) ══
 function addToDict(){
   if(!currentTerm){alert('용어를 먼저 검색해주세요!');return;}
   const entry={
@@ -787,14 +829,13 @@ function addToDict(){
     related:currentTerm.related||[],
     imgUrl:selImgUrl||'',
   };
-  // 중복 체크
   if(dictEntries.find(e=>e.name===entry.name)){
     alert(`"${entry.name}"은 이미 사전에 있어요!`);return;
   }
   dictEntries.push(entry);
   renderDictList();
+  pushSubmission('사회용어', entry.name, entry.definition + (entry.story ? '\n\n[스토리]\n'+entry.story : ''));
   alert(`"${entry.name}"이(가) 사전에 추가됐어요! 📚\n총 ${dictEntries.length}개의 용어가 있어요.`);
-  // 초기화 후 검색으로
   selImgUrl='';currentTerm=null;
   document.getElementById('term-input').value='';
   sT(3);
@@ -829,7 +870,6 @@ function renderDictList(){
 
 function removeEntry(i){dictEntries.splice(i,1);renderDictList();}
 
-// ══ STEP 4: 완성 사전 ══
 function buildDictBook(){
   const title=document.getElementById('dict-title').value||'나의 사회 용어 사전';
   const wrap=document.getElementById('dict-book-wrap');
@@ -867,7 +907,6 @@ function buildDictBook(){
     </div>`;
 }
 
-// ══ 복사 / 다운로드 ══
 function copyDict(){
   const title=document.getElementById('dict-title').value||'나의 사회 용어 사전';
   let text=`📚 ${title}\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n${'='.repeat(40)}\n\n`;
@@ -901,8 +940,10 @@ function copyNote(){
     .then(()=>alert('📋 정리 노트가 복사됐어요!'));
 }
 
+// ══ 정리노트 저장 시 교실 서버로도 제출 ══
 function downloadNote(){
   const text=document.getElementById('note-text').value;
+  if(text.trim()) pushSubmission('정리노트', '정리노트', text);
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(`정리 노트\n${stuName} | ${new Date().toLocaleDateString('ko-KR')}\n\n${text}`);
   a.download=`${stuName}_정리노트.txt`;a.click();
@@ -917,13 +958,15 @@ function downloadAll(){
     text+='\n'+'-'.repeat(30)+'\n\n';
   });
   const note=document.getElementById('note-text').value;
-  if(note)text+=`\n${'='.repeat(40)}\n✍️ 정리 노트\n${'='.repeat(40)}\n\n${note}`;
+  if(note){
+    text+=`\n${'='.repeat(40)}\n✍️ 정리 노트\n${'='.repeat(40)}\n\n${note}`;
+    pushSubmission('정리노트', '정리노트', note);
+  }
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
   a.download=`${stuName}_사회용어사전_전체.txt`;a.click();
 }
 
-// ══ 정리노트 AI ══
 async function aiNoteCheck(){
   const text=document.getElementById('note-text').value.trim();
   if(!text){alert('정리 노트를 먼저 써주세요!');return;}
@@ -950,7 +993,6 @@ async function aiNoteHelp(){
   }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
 }
 
-// ══ 탭 전환 ══
 function sT(n){
   if(n===4)buildDictBook();
   for(let i=1;i<=5;i++){
@@ -962,7 +1004,6 @@ function sT(n){
   window.scrollTo(0,0);
 }
 
-// ══ 분야별 용어 데이터 ══
 const CAT_TERMS = {
   '정치': [
     {emoji:'🏛️',name:'민주주의'},{emoji:'⚖️',name:'삼권분립'},
@@ -1015,11 +1056,9 @@ const CAT_TERMS = {
 };
 
 function showCat(cat, btn) {
-  // 탭 스타일
   document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
 
-  // 칩 렌더링
   const terms = CAT_TERMS[cat] || [];
   const el = document.getElementById('cat-chips');
   el.innerHTML = '';
@@ -1032,7 +1071,6 @@ function showCat(cat, btn) {
   });
 }
 
-// 초기 로딩 시 정치 탭 표시
 window.addEventListener('load', () => {
   const firstTab = document.querySelector('.cat-tab');
   if (firstTab) showCat('정치', firstTab);

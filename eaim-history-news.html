@@ -15,10 +15,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:80px}
 
-/* ── 배경 파티클 캔버스 ── */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* ── 배경 이미지 레이어 ── */
 #bg-image{
   position:fixed;inset:0;z-index:0;
   background-size:cover;background-position:center;
@@ -33,7 +31,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--paper);color:var(--i
 }
 #bg-overlay{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,6,2,.5) 0%,rgba(20,12,4,.7) 100%)}
 
-/* ── 헤더 ── */
 header{
   position:relative;z-index:10;
   background:linear-gradient(135deg,#1A0808,#3A1010,#1A0808);
@@ -45,7 +42,6 @@ header{
 .logo-sub{font-size:.65rem;color:rgba(200,148,10,.5);margin-top:2px}
 .rb{background:rgba(200,148,10,.15);border:1px solid rgba(200,148,10,.3);border-radius:8px;padding:5px 11px;font-size:.7rem;color:var(--gold);cursor:pointer;font-family:inherit;transition:all .2s}
 
-/* ── 스텝 네비 ── */
 .sn{
   position:sticky;top:0;z-index:50;
   background:rgba(253,248,240,.96);backdrop-filter:blur(12px);
@@ -60,23 +56,19 @@ header{
 .sb.dn{background:var(--paper2);border-color:var(--border);color:var(--ink2)}
 .sb.dn::after{content:' ✓'}
 
-/* ── 메인 ── */
 main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:10}
 .tc{display:none;animation:fu .4s ease}
 .tc.on{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── 카드 ── */
 .cd{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;box-shadow:var(--s)}
 .ct{font-family:'Nanum Myeongjo',serif;font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
 
-/* ── 입력 ── */
 .ni{width:100%;padding:10px 13px;background:var(--paper);border:2px solid var(--border);border-radius:9px;color:var(--ink);font-family:inherit;font-size:.95rem;font-weight:700;outline:none;transition:border-color .2s}
 .ni:focus{border-color:var(--accent);background:white}
 .ta{width:100%;padding:11px 13px;background:var(--paper);border:2px solid var(--border);border-radius:9px;color:var(--ink);font-family:'Nanum Myeongjo',serif;font-size:.92rem;resize:vertical;outline:none;transition:border-color .2s;line-height:1.9;min-height:110px}
 .ta:focus{border-color:var(--accent);background:white}
 
-/* ── 버튼 ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:9px;border:none;font-family:inherit;font-weight:700;font-size:.86rem;cursor:pointer;transition:all .15s}
 .btn:active{transform:scale(.96)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
@@ -88,10 +80,8 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .bfl{width:100%}
 .bsm{padding:7px 13px;font-size:.76rem;border-radius:8px}
 
-/* ── 힌트 ── */
 .hint{background:rgba(200,148,10,.08);border:1.5px solid rgba(200,148,10,.25);border-radius:9px;padding:10px 13px;font-size:.78rem;color:var(--ink2);line-height:1.7;margin-top:10px}
 
-/* ── 인물 카드 ── */
 .person-card{
   background:linear-gradient(135deg,#1A0808,#3A1010);
   border-radius:var(--r);padding:24px;margin-bottom:14px;
@@ -115,7 +105,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .person-era{font-size:.78rem;color:rgba(200,148,10,.7);margin-bottom:12px}
 .person-desc{font-size:.86rem;color:rgba(255,255,255,.85);line-height:1.85;white-space:pre-line}
 
-/* ── 배경 이미지 그리드 ── */
 .bg-img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 .bg-img-thumb{
   aspect-ratio:16/9;border-radius:8px;overflow:hidden;
@@ -126,7 +115,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .bg-img-thumb.sel{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,32,16,.2)}
 .bg-img-thumb:hover{transform:scale(1.03)}
 
-/* ── 기사 아이템 ── */
 .article-item{
   background:var(--paper);border:1.5px solid var(--border);
   border-radius:9px;padding:14px;margin-bottom:10px;
@@ -142,7 +130,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .article-del{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:.9rem;padding:3px;transition:color .2s;flex-shrink:0}
 .article-del:hover{color:var(--accent)}
 
-/* ── 신문 포맷 선택 ── */
 .fmt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
 .fmt-card{
   border:3px solid var(--border);border-radius:10px;
@@ -155,9 +142,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .fmt-name{font-family:'Nanum Myeongjo',serif;font-size:.9rem;font-weight:700;color:var(--ink)}
 .fmt-desc{font-size:.7rem;color:var(--ink3);margin-top:3px}
 
-/* ══ 신문 레이아웃들 ══ */
-
-/* 공통 신문 래퍼 */
 .newspaper{
   background:var(--paper);
   border:2px solid var(--ink2);
@@ -175,19 +159,16 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .np-divider{height:1px;background:var(--ink2);margin:0 16px}
 .np-body{padding:16px}
 
-/* 타입1: 조선일보형 3단 */
 .np-type1 .np-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink2)}
 .np-type1 .np-col{padding:14px;border-right:1px solid var(--border)}
 .np-type1 .np-col:last-child{border-right:none}
 .np-type1 .np-col.wide{grid-column:span 2}
 .np-type1 .np-col.lead{background:rgba(139,32,16,.03)}
 
-/* 타입2: 타임즈형 2단 */
 .np-type2 .np-cols{display:grid;grid-template-columns:2fr 1fr;gap:0;border-top:2px solid var(--ink2)}
 .np-type2 .np-col{padding:16px;border-right:1px solid var(--border)}
 .np-type2 .np-col:last-child{border-right:none}
 
-/* 타입3: 고신문형 */
 .np-type3{background:linear-gradient(135deg,#FDF4DC,#F5E8C0)}
 .np-type3 .np-header{background:linear-gradient(135deg,#1A0808,#3A1010);color:var(--gold)}
 .np-type3 .np-title{color:var(--gold);font-size:1.8rem}
@@ -195,7 +176,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .np-type3 .np-cols{display:flex;flex-direction:column;gap:14px}
 .np-type3 .np-col{border-bottom:1px dashed var(--border);padding-bottom:14px}
 
-/* 타입4: 타블로이드 */
 .np-type4{background:white}
 .np-type4 .np-header{background:var(--accent);border-bottom:4px solid var(--gold)}
 .np-type4 .np-title{color:white;font-size:2.2rem}
@@ -205,14 +185,12 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .np-type4 .np-col:last-child{border-right:none}
 .np-type4 .np-col.full{grid-column:span 2;border-right:none;border-bottom:2px solid var(--accent)}
 
-/* 신문 기사 공통 */
 .np-art-title{font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:6px;line-height:1.3;border-bottom:1px solid var(--border);padding-bottom:5px}
 .np-art-byline{font-size:.65rem;color:var(--ink3);margin-bottom:8px}
 .np-art-img{width:100%;border-radius:4px;margin-bottom:8px;object-fit:cover;max-height:140px}
 .np-art-body{font-size:.78rem;color:var(--ink2);line-height:1.85;white-space:pre-line}
 .np-art-era{display:inline-block;background:var(--accent);color:white;font-size:.62rem;padding:2px 7px;border-radius:3px;margin-bottom:6px;font-weight:700}
 
-/* ── 감상문 ── */
 .essay-result{
   background:var(--paper);border:1.5px solid var(--border);
   border-radius:var(--r);padding:20px;margin-top:12px;
@@ -220,19 +198,16 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .essay-title{font-family:'Nanum Myeongjo',serif;font-size:1.1rem;color:var(--accent);margin-bottom:8px;font-weight:800}
 .essay-body{font-size:.88rem;color:var(--ink2);line-height:1.9;white-space:pre-line}
 
-/* ── AI 결과 ── */
 .ai-box{background:rgba(200,148,10,.07);border:1.5px solid rgba(200,148,10,.25);border-radius:9px;padding:14px;margin-top:10px;display:none}
 .ai-label{font-size:.72rem;font-weight:700;color:var(--gold);margin-bottom:7px}
 .ai-text{font-size:.86rem;color:var(--ink2);line-height:1.8;white-space:pre-line}
 
-/* ── 로딩 ── */
 .ld{display:flex;align-items:center;gap:6px;color:var(--ink3);font-size:.82rem}
 .ld span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:bl 1.2s infinite}
 .ld span:nth-child(2){animation-delay:.2s}
 .ld span:nth-child(3){animation-delay:.4s}
 @keyframes bl{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-/* ── 다운로드/복사 버튼 ── */
 .action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .act-btn{
   flex:1;min-width:100px;padding:10px;border-radius:9px;border:none;
@@ -245,7 +220,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .ab-dl{background:linear-gradient(135deg,var(--gold),#A07008);color:white}
 .ab-print{background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:white}
 
-/* ── 모달 ── */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
 .mb{background:var(--paper);border-radius:1.5rem;padding:28px;width:100%;max-width:400px;box-shadow:0 24px 56px rgba(0,0,0,.3);border:1.5px solid var(--border);text-align:center}
 .mb h2{font-family:'Nanum Myeongjo',serif;font-size:1.4rem;color:var(--accent);margin-bottom:6px}
@@ -262,7 +236,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   .newspaper{box-shadow:none;border:1px solid #999}
 }
 
-/* ── 역사 장르/분위기 칩 ── */
 .hist-genre-chip,.hist-mood-chip{
   padding:8px 14px;border-radius:99px;font-size:.8rem;font-weight:700;
   cursor:pointer;border:2px solid var(--border);background:white;
@@ -272,8 +245,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 .hist-genre-chip.on{background:var(--accent);border-color:#6A1008;color:white;box-shadow:0 3px 10px rgba(139,32,16,.3)}
 .hist-mood-chip.on{background:var(--gold);border-color:#A07008;color:#1C0A00;box-shadow:0 3px 10px rgba(200,148,10,.3)}
 
-
-/* ── 이미지 스타일 버튼 ── */
 .img-style-btn, .person-style-btn {
   padding:6px 13px;border-radius:99px;font-size:.74rem;font-weight:700;
   cursor:pointer;border:2px solid var(--border);background:#fff;
@@ -285,40 +256,50 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   box-shadow:0 3px 10px rgba(139,32,16,.28)
 }
 
-
-/* ── 위키백과 링크 ── */
 #wiki-link:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(56,189,248,.25); }
 
+/* ── 학급 연결 배지 ── */
+.class-badge{background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.72rem;color:#38BDF8;font-weight:700;display:none}
 </style>
 </head>
 <body>
 
-<!-- 배경 이미지 레이어 -->
 <div id="bg-image"></div>
 <div id="bg-overlay"></div>
 <canvas id="bg-canvas"></canvas>
 
-<!-- 이름 입력 모달 -->
+<!-- 이름 입력 모달 (코드 없이 접속했을 때 - 미리보기/개별연습용) -->
 <div id="nm" class="ov">
   <div class="mb">
     <div style="font-size:2.8rem;margin-bottom:11px">📰</div>
     <h2>역사신문 만들기</h2>
-    <p>역사 인물을 조사하고 나만의 신문을 만들어봐요!</p>
-    <input type="text" id="sni" placeholder="이름을 입력하세요"
-      style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid var(--border);border-radius:.8rem;padding:10px;outline:none;margin-bottom:10px;background:white;transition:border-color .2s"
-      onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
-      onkeydown="if(event.key==='Enter')sN()">
-    <select id="sclass" style="width:100%;padding:9px;border:2px solid var(--border);border-radius:.8rem;font-family:inherit;font-weight:700;background:white;outline:none;margin-bottom:14px">
-      <option value="">반 선택</option>
-      <option>1반</option><option>2반</option><option>3반</option>
-      <option>4반</option><option>5반</option><option>6반</option>
-    </select>
-    <button onclick="sN()" class="btn bp bfl" style="font-size:.95rem;padding:12px">📰 신문 만들기 시작!</button>
-    <button onclick="showTL()" style="margin-top:9px;background:none;border:none;font-size:.7rem;color:var(--ink3);cursor:pointer;font-family:inherit">선생님이신가요?</button>
+    <p id="nm-desc">역사 인물을 조사하고 나만의 신문을 만들어봐요!</p>
+
+    <!-- 코드로 연결된 경우: 반/번호만 입력 -->
+    <div id="join-by-code" style="display:none">
+      <select id="join-class" style="width:100%;padding:9px;border:2px solid var(--border);border-radius:.8rem;font-family:inherit;font-weight:700;background:white;outline:none;margin-bottom:10px"></select>
+      <input type="number" id="join-number" placeholder="번호를 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid var(--border);border-radius:.8rem;padding:10px;outline:none;margin-bottom:10px;background:white"
+        onkeydown="if(event.key==='Enter')sN()">
+      <button onclick="sN()" class="btn bp bfl" style="font-size:.95rem;padding:12px">📰 신문 만들기 시작!</button>
+    </div>
+
+    <!-- 코드 없이 접속한 경우: 기존 방식 -->
+    <div id="join-manual">
+      <input type="text" id="sni" placeholder="이름을 입력하세요"
+        style="width:100%;text-align:center;font-size:1.05rem;font-family:inherit;font-weight:700;border:2px solid var(--border);border-radius:.8rem;padding:10px;outline:none;margin-bottom:10px;background:white;transition:border-color .2s"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        onkeydown="if(event.key==='Enter')sN()">
+      <select id="sclass" style="width:100%;padding:9px;border:2px solid var(--border);border-radius:.8rem;font-family:inherit;font-weight:700;background:white;outline:none;margin-bottom:14px">
+        <option value="">반 선택</option>
+        <option>1반</option><option>2반</option><option>3반</option>
+        <option>4반</option><option>5반</option><option>6반</option>
+      </select>
+      <button onclick="sN()" class="btn bp bfl" style="font-size:.95rem;padding:12px">📰 신문 만들기 시작!</button>
+    </div>
   </div>
 </div>
 
-<!-- 헤더 -->
 <header>
   <div class="hi">
     <div>
@@ -326,13 +307,13 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
       <div class="logo-sub">History Newspaper Creator</div>
     </div>
     <div style="display:flex;gap:6px;align-items:center">
+      <span id="class-badge" class="class-badge"></span>
       <span id="wn" style="display:none;background:rgba(200,148,10,.18);border:1px solid rgba(200,148,10,.3);border-radius:99px;padding:4px 12px;font-size:.76rem;color:var(--gold);font-weight:700"></span>
       <button onclick="location.reload()" class="rb">↺</button>
     </div>
   </div>
 </header>
 
-<!-- 스텝 네비 -->
 <div class="sn" id="sNav" style="display:none">
   <button class="sb on" id="sB1" onclick="sT(1)">Step 1<br><span style="font-size:.6rem;opacity:.8">인물입력</span></button>
   <button class="sb" id="sB2" onclick="sT(2)">Step 2<br><span style="font-size:.6rem;opacity:.8">배경탐색</span></button>
@@ -345,7 +326,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 
 <main>
 
-<!-- ══ STEP 1 ══ -->
 <div id="tab-1" class="tc on" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 1</span>
@@ -377,18 +357,15 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 2 ══ -->
 <div id="tab-2" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 2</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">역사 배경 탐색</h3>
   </div>
 
-  <!-- 배경 이미지 -->
   <div class="cd">
     <div class="ct">🎨 시대 배경 이미지</div>
 
-    <!-- AI 그림 생성 (Pollinations - 무료!) -->
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
       <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 그림 생성 (무료! API 키 불필요)</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
@@ -417,7 +394,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
       </div>
     </div>
 
-    <!-- 위키백과 검색 -->
     <div style="margin-bottom:10px">
       <div style="font-size:.74rem;font-weight:700;color:var(--ink2);margin-bottom:7px">🔍 위키백과 이미지 검색</div>
       <div style="display:flex;gap:7px">
@@ -430,14 +406,12 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div id="bg-wiki-loading" class="ld" style="display:none"><span></span><span></span><span></span><span style="margin-left:5px">위키백과 검색 중...</span></div>
     <div id="bg-imgs" class="bg-img-grid"></div>
 
-    <!-- 직접 업로드 -->
     <div style="margin-top:10px">
       <button onclick="document.getElementById('bg-upload').click()" class="btn bg2 bsm">📁 이미지 직접 업로드</button>
       <input type="file" id="bg-upload" accept="image/*" style="display:none" onchange="uploadBgImg(this)">
     </div>
   </div>
 
-  <!-- 시대 키워드 -->
   <div class="cd">
     <div class="ct">✨ 시대 키워드 (배경에 흐름)</div>
     <div id="era-keywords" style="display:flex;flex-wrap:wrap;gap:7px"></div>
@@ -448,21 +422,17 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 3 ══ -->
 <div id="tab-3" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 3</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">인물 카드</h3>
   </div>
 
-  <!-- 인물 카드 -->
   <div id="person-card-wrap"></div>
 
-  <!-- 인물 이미지 -->
   <div class="cd">
     <div class="ct">🎨 인물 이미지</div>
 
-    <!-- AI 인물 그림 생성 -->
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
       <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성 (무료!)</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
@@ -488,13 +458,11 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
       </div>
     </div>
 
-    <!-- 위키백과 검색 -->
     <button onclick="searchPersonImgWiki()" class="btn bg2 bfl bsm" style="margin-bottom:8px">
       🔍 위키백과 인물 이미지 검색
     </button>
     <div id="person-imgs" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px"></div>
 
-    <!-- 직접 업로드 -->
     <button onclick="document.getElementById('img-upload').click()" class="btn bg2 bfl bsm">
       📁 이미지 직접 업로드
     </button>
@@ -502,7 +470,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </div>
 
 
-  <!-- 위키백과 이미지 & 링크 -->
   <div class="cd" style="border-color:rgba(56,189,248,.25)">
     <div class="ct" style="color:#1070A0">🌐 위키백과 이미지 & 링크</div>
     <button onclick="loadWikiInfo(currentPerson?.name||'')" class="btn bsky bfl bsm" style="margin-bottom:10px">
@@ -530,7 +497,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 신문에 추가 버튼 -->
   <button onclick="addToNewspaper()" class="btn bgold bfl" style="font-size:.95rem;padding:13px;margin-bottom:8px">
     📰 이 인물을 신문에 추가!
   </button>
@@ -539,21 +505,18 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 4 ══ -->
 <div id="tab-4" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 4</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">신문 포맷 선택</h3>
   </div>
 
-  <!-- 신문 제목 -->
   <div class="cd">
     <div class="ct">📰 신문 제목</div>
     <input type="text" id="np-title" class="ni" placeholder="예: 조선역사신문, 한국역사타임즈..." value="역사신문">
     <input type="text" id="np-date" class="ni" placeholder="발행일 (예: 2024년 6월 8일)" style="margin-top:8px" id="np-date">
   </div>
 
-  <!-- 포맷 선택 -->
   <div class="cd">
     <div class="ct">🗞️ 신문 스타일 선택</div>
     <div class="fmt-grid">
@@ -581,25 +544,21 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </div>
 
 
-  <!-- 직접 입력 섹션 -->
   <div class="cd" style="border-color:rgba(200,148,10,.3)">
     <div class="ct">✏️ 모둠원 내용 직접 추가
       <span style="font-size:.68rem;color:var(--ink3);font-weight:400">모둠원이 조사한 내용을 직접 입력하거나 붙여넣어요</span>
     </div>
 
-    <!-- 탭 -->
     <div style="display:flex;gap:6px;margin-bottom:14px">
       <button onclick="switchInputTab('ai')" id="itab-ai" class="btn bp bsm">🤖 AI 자동</button>
       <button onclick="switchInputTab('manual')" id="itab-manual" class="btn bg2 bsm">✏️ 직접 입력</button>
     </div>
 
-    <!-- AI 자동 탭 -->
     <div id="input-ai" style="display:block">
       <div class="hint">💡 Step 1~3을 거쳐서 AI가 자동으로 인물 정보를 가져와요. 모둠장이 대표로 진행해요!</div>
       <button onclick="sT(1)" class="btn bp bfl" style="margin-top:10px">← Step 1로 가서 인물 추가</button>
     </div>
 
-    <!-- 직접 입력 탭 -->
     <div id="input-manual" style="display:none">
       <div style="display:flex;flex-direction:column;gap:8px">
         <div>
@@ -634,7 +593,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 추가된 기사 목록 -->
   <div class="cd">
     <div class="ct">📝 추가된 기사 <span id="art-count" style="background:var(--paper2);color:var(--ink2);border-radius:99px;padding:2px 10px;font-size:.72rem">0개</span></div>
     <div id="article-list">
@@ -647,17 +605,14 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 5 ══ -->
 <div id="tab-5" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 5</span>
     <h3 style="font-size:1.3rem;font-weight:900;font-family:'Nanum Myeongjo',serif;margin-top:8px">완성된 역사신문</h3>
   </div>
 
-  <!-- 신문 미리보기 -->
   <div id="newspaper-preview" style="margin-bottom:14px"></div>
 
-  <!-- 액션 버튼 -->
   <div class="action-row no-print">
     <button onclick="copyNewspaper()" class="act-btn ab-copy">📋 텍스트 복사</button>
     <button onclick="downloadNewspaper()" class="act-btn ab-dl">💾 다운로드</button>
@@ -669,7 +624,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </button>
 </div>
 
-<!-- ══ STEP 6 ══ -->
 <div id="tab-6" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 6</span>
@@ -693,13 +647,11 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 감상문 완성본 -->
   <div id="essay-final" style="display:none" class="essay-result">
     <div class="essay-title" id="essay-final-title"></div>
     <div class="essay-body" id="essay-final-body"></div>
   </div>
 
-  <!-- 액션 버튼 -->
   <div class="action-row no-print" style="margin-top:12px">
     <button onclick="copyEssay()" class="act-btn ab-copy">📋 감상문 복사</button>
     <button onclick="downloadEssay()" class="act-btn ab-dl">💾 감상문 저장</button>
@@ -711,7 +663,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 </div>
 
 
-<!-- ══ STEP 7 ══ -->
 <div id="tab-7" class="tc" style="margin-top:16px">
   <div style="text-align:center;margin-bottom:20px">
     <span style="background:rgba(139,32,16,.1);color:var(--accent);padding:5px 16px;border-radius:99px;font-size:.8rem;font-weight:700">Step 7</span>
@@ -719,7 +670,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <p style="font-size:.82rem;color:var(--ink3);margin-top:5px">신문 속 역사 인물이 노래가 돼요</p>
   </div>
 
-  <!-- 신문 내용 미리보기 -->
   <div class="cd" style="border-color:rgba(200,148,10,.35);background:linear-gradient(135deg,#FFFEF5,#FFF8E0)">
     <div class="ct" style="color:var(--gold)">📰 신문 속 역사 인물</div>
     <div id="suno-articles-preview" style="display:flex;flex-wrap:wrap;gap:7px">
@@ -727,7 +677,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 장르 선택 -->
   <div class="cd">
     <div class="ct">🎵 음악 스타일 선택</div>
     <div style="display:flex;flex-wrap:wrap;gap:7px">
@@ -745,7 +694,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <p style="font-size:.72rem;color:var(--ink3);margin-top:7px">여러 개 선택 가능해요!</p>
   </div>
 
-  <!-- 분위기 선택 -->
   <div class="cd">
     <div class="ct">🌊 가사 분위기</div>
     <div style="display:flex;flex-wrap:wrap;gap:7px">
@@ -757,14 +705,11 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     </div>
   </div>
 
-  <!-- 생성 버튼 -->
   <button onclick="genHistSuno()" id="hist-suno-btn" class="btn bgold bfl" style="font-size:.95rem;padding:14px;margin-bottom:14px">
     🤖 역사 가사 & 수노 프롬프트 생성!
   </button>
 
-  <!-- 결과 -->
   <div id="hist-suno-result" style="display:none">
-    <!-- 가사 -->
     <div class="cd" style="border-color:rgba(200,148,10,.3)">
       <div class="ct" style="color:var(--gold)">🎵 AI가 만든 역사 가사</div>
       <div id="hist-lyrics-text" style="font-family:'Nanum Myeongjo',serif;font-size:.95rem;color:var(--ink);line-height:2.1;white-space:pre-line;background:var(--paper2);border-radius:9px;padding:16px;border:1px dashed var(--border)"></div>
@@ -774,7 +719,6 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
       </div>
     </div>
 
-    <!-- 수노 프롬프트 -->
     <div style="background:linear-gradient(135deg,#1A0808,#0A1A20);border-radius:var(--r);padding:22px;border:2px solid rgba(200,148,10,.28);box-shadow:0 8px 32px rgba(0,0,0,.2)">
       <div style="font-family:'Nanum Myeongjo',serif;font-size:1.05rem;font-weight:800;color:var(--gold);margin-bottom:16px">🎸 수노 프롬프트 완성!</div>
 
@@ -815,17 +759,55 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 
 <div style="text-align:center;padding:12px;color:var(--ink3);font-size:.68rem;position:relative;z-index:10" class="no-print">Designed by Park Seong-ae · EAIM 역사신문 v1</div>
 
-<script>
-// ══ 상태 ══
-let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
-let currentPerson=null;   // {name, era, desc, keywords, imgUrl}
-let articles=[];          // 신문 기사 배열
-let selBgImg='';          // 선택된 배경 이미지
-let selPersonImg='';      // 선택된 인물 이미지
-let selFmtNum=1;          // 신문 포맷 번호
-let particles=[];         // 파티클 배열
+<!-- ══ 교실 연동 모듈 (Firebase) ══ -->
+<script type="module">
+window.EAIM_APP_TYPE = 'history';
+import {
+  resolveRoomByCode, joinRoom, saveSubmission, studentEnter
+} from './eaim-classroom-core.js';
 
-// ══ 파티클 시스템 ══
+window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
+
+// 페이지 로드 시 URL의 ?code=XXXXXX 확인
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  if (!code) return; // 코드 없으면 기존 수동 입력 방식 그대로
+
+  const room = await resolveRoomByCode(code);
+  const nmDesc = document.getElementById('nm-desc');
+  if (!room) {
+    nmDesc.textContent = '⚠️ 수업이 아직 열리지 않았거나 잘못된 링크예요. 선생님께 문의해주세요.';
+    return;
+  }
+
+  window.EAIM_ROOM = room; // {teacherUid, roomId, mode, classes, groupSize, title}
+
+  // 코드 입장 UI로 전환
+  document.getElementById('join-manual').style.display = 'none';
+  document.getElementById('join-by-code').style.display = 'block';
+  document.getElementById('nm-desc').textContent = `"${room.title}" 수업방이에요. 정보를 입력하고 시작해요!`;
+
+  const classSel = document.getElementById('join-class');
+  if (room.mode === 'individual') {
+    classSel.style.display = 'none';
+  } else if (room.classes && room.classes.length) {
+    classSel.innerHTML = room.classes.map(c => `<option>${c.name}</option>`).join('');
+  } else {
+    classSel.style.display = 'none';
+  }
+})();
+</script>
+
+<script>
+let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let currentPerson=null;
+let articles=[];
+let selBgImg='';
+let selPersonImg='';
+let selFmtNum=1;
+let particles=[];
+
 const canvas=document.getElementById('bg-canvas');
 const ctx=canvas.getContext('2d');
 let keywords=[];
@@ -866,23 +848,63 @@ function animParticles(){
 }
 animParticles();
 
-// ══ 로그인 ══
-function sN(){
-  const n=document.getElementById('sni').value.trim();
-  const c=document.getElementById('sclass').value;
-  if(!n){alert('이름을 입력해주세요!');return;}
-  if(!c){alert('반을 선택해주세요!');return;}
-  stuName=n;
-  document.getElementById('wn').textContent=n+' 님 📰';
+// ══ 로그인 (코드 입장 / 수동 입장 모두 처리) ══
+async function sN(){
+  const room = window.EAIM_ROOM;
+
+  if (room) {
+    // ── 코드로 들어온 학생 ──
+    const number = document.getElementById('join-number').value.trim();
+    if(!number){alert('번호를 입력해주세요!');return;}
+    const className = room.mode !== 'individual' ? document.getElementById('join-class').value : null;
+
+    try{
+      const { group } = await window.EAIM.joinRoom({
+        teacherUid: room.teacherUid, roomId: room.roomId,
+        className, number,
+      });
+      stuName = (className ? className+' ' : '') + number + '번' + (group ? ` (모둠 ${group})` : '');
+      window.EAIM_STUDENT_META = { className, number, group };
+    }catch(e){
+      alert('입장에 실패했어요. 다시 시도해주세요.');return;
+    }
+  } else {
+    // ── 코드 없이 직접 접속(개별 연습/선생님 미리보기) ──
+    const n=document.getElementById('sni').value.trim();
+    const c=document.getElementById('sclass').value;
+    if(!n){alert('이름을 입력해주세요!');return;}
+    if(!c){alert('반을 선택해주세요!');return;}
+    stuName=n;
+    window.EAIM_STUDENT_META = { className: c, name: n };
+    try{ await window.EAIM.studentEnter(); }catch(e){}
+  }
+
+  document.getElementById('wn').textContent=stuName+' 님 📰';
   document.getElementById('wn').style.display='';
+  if (room) {
+    const badge = document.getElementById('class-badge');
+    badge.textContent = '🔗 ' + room.title;
+    badge.style.display = '';
+  }
   document.getElementById('nm').style.display='none';
   document.getElementById('sNav').style.display='flex';
-  // 오늘 날짜 자동 입력
   document.getElementById('np-date').value=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
 }
 function showTL(){document.getElementById('nm').style.display='none';}
 
-// ══ Gemini 호출 ══
+// ── 결과물을 교실 서버로 저장 (있을 때만) ──
+async function pushSubmission(kind, title, content){
+  const room = window.EAIM_ROOM;
+  if(!room || !window.EAIM) return;
+  try{
+    await window.EAIM.saveSubmission({
+      teacherUid: room.teacherUid, roomId: room.roomId,
+      studentMeta: window.EAIM_STUDENT_META || {},
+      kind, title, content,
+    });
+  }catch(e){ console.warn('제출 저장 실패(무시 가능):', e); }
+}
+
 async function callGemini(prompt,maxTokens=1000){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
@@ -895,7 +917,6 @@ async function callGemini(prompt,maxTokens=1000){
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }
 
-// ══ 위키미디어 이미지 검색 ══
 async function searchWikiImages(query,count=6){
   const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(query)+'&gsrnamespace=6&gsrlimit='+count+'&prop=imageinfo&iiprop=url|mime&iiurlwidth=400&format=json&origin=*';
   try{
@@ -909,7 +930,6 @@ async function searchWikiImages(query,count=6){
   }catch(e){return[];}
 }
 
-// ══ STEP 1 → 2 ══
 function quickSelect(name){
   document.getElementById('person-input').value=name;
   searchPerson();
@@ -922,17 +942,14 @@ async function searchPerson(){
 
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
 
-  // 키워드 파티클 시작
   const defaultKws=[name,'역사','조선','한국','전통','문화','역사적','인물'];
   initParticles(defaultKws);
 
-  // 위키백과 배경 이미지 자동 검색
   if(document.getElementById('bg-wiki-search')) {
     document.getElementById('bg-wiki-search').value = name;
     searchBgWiki();
   }
 
-  // AI로 인물 정보 가져오기
   if(key){
     try{
       const raw=await callGemini(`한국 역사 인물/사건 "${name}"에 대해 중학생을 위한 정보를 JSON으로 주세요.
@@ -975,7 +992,6 @@ function renderEraKeywords(kws){
   });
 }
 
-// ══ STEP 3: 인물 카드 ══
 function buildPersonCard(){
   if(!currentPerson)return;
   const p=currentPerson;
@@ -1030,7 +1046,7 @@ function uploadPersonImg(input){
   buildPersonCard();
 }
 
-// ══ 신문에 추가 ══
+// ══ 신문에 추가 (+ 교실 서버로 제출) ══
 function addToNewspaper(){
   if(!currentPerson){alert('인물 정보가 없어요!');return;}
   const art={
@@ -1043,6 +1059,7 @@ function addToNewspaper(){
   };
   articles.push(art);
   renderArticleList();
+  pushSubmission('역사인물기사', art.name, art.article || art.desc);
   alert(`"${art.name}"이(가) 신문에 추가됐어요! 📰`);
   sT(4);
 }
@@ -1085,14 +1102,12 @@ function removeArticle(i){
   buildNewspaper();
 }
 
-// ══ 포맷 선택 ══
 function selFmt(n,el){
   selFmtNum=n;
   document.querySelectorAll('.fmt-card').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
 }
 
-// ══ STEP 5: 신문 생성 ══
 function buildNewspaper(){
   const title=document.getElementById('np-title').value||'역사신문';
   const date=document.getElementById('np-date').value||new Date().toLocaleDateString('ko-KR');
@@ -1125,7 +1140,6 @@ function buildNewspaper(){
     </div>`;
 
   if(selFmtNum===1){
-    // 조선일보형 3단
     html=`<div class="newspaper np-type1">
       ${headerHtml}
       <div class="np-divider"></div>
@@ -1138,7 +1152,6 @@ function buildNewspaper(){
       </div>
     </div>`;
   } else if(selFmtNum===2){
-    // 타임즈형 2단
     html=`<div class="newspaper np-type2">
       ${headerHtml}
       <div class="np-divider"></div>
@@ -1157,7 +1170,6 @@ function buildNewspaper(){
       </div>
     </div>`;
   } else if(selFmtNum===3){
-    // 고신문형
     html=`<div class="newspaper np-type3">
       <div class="np-header">
         <div class="np-title" style="color:var(--gold);font-family:'Nanum Myeongjo',serif">◈ ${title} ◈</div>
@@ -1182,7 +1194,6 @@ function buildNewspaper(){
       </div>
     </div>`;
   } else {
-    // 타블로이드형
     html=`<div class="newspaper np-type4">
       <div class="np-header">
         <div class="np-title">${title}</div>
@@ -1203,7 +1214,6 @@ function buildNewspaper(){
   preview.innerHTML=html;
 }
 
-// ══ 복사 / 다운로드 ══
 function copyNewspaper(){
   const title=document.getElementById('np-title').value||'역사신문';
   const date=document.getElementById('np-date').value||'';
@@ -1239,8 +1249,10 @@ function copyEssay(){
   navigator.clipboard.writeText(text).then(()=>alert('📋 감상문이 복사됐어요!'));
 }
 
+// ══ 감상문 저장 시 교실 서버로도 제출 ══
 function downloadEssay(){
   const text=document.getElementById('essay-text').value;
+  if(text.trim()) pushSubmission('역사감상문', '감상문', text);
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(`역사 감상문\n작성: ${stuName}\n\n${text}`);
   a.download=`${stuName}_역사감상문.txt`;a.click();
@@ -1256,13 +1268,15 @@ function downloadAll(){
     if(art.achievements?.length) text+='\n▪ 주요 업적:\n'+art.achievements.map(a=>'· '+a).join('\n');
     text+='\n\n'+'-'.repeat(30)+'\n\n';
   });
-  if(essay) text+=`\n\n${'='.repeat(40)}\n✍️ 역사 감상문\n${'='.repeat(40)}\n\n${essay}`;
+  if(essay){
+    text+=`\n\n${'='.repeat(40)}\n✍️ 역사 감상문\n${'='.repeat(40)}\n\n${essay}`;
+    pushSubmission('역사감상문', '감상문', essay);
+  }
   const a=document.createElement('a');
   a.href='data:text/plain;charset=utf-8,\uFEFF'+encodeURIComponent(text);
   a.download=`${stuName}_역사신문_전체.txt`;a.click();
 }
 
-// ══ 감상문 AI ══
 async function aiEssayCheck(){
   const text=document.getElementById('essay-text').value.trim();
   if(!text){alert('감상문을 먼저 써주세요!');return;}
@@ -1289,7 +1303,6 @@ async function aiEssayInspire(){
   }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
 }
 
-// ══ 탭 전환 ══
 function sT(n){
   if(n===5) buildNewspaper();
   for(let i=1;i<=7;i++){
@@ -1302,7 +1315,6 @@ function sT(n){
   window.scrollTo(0,0);
 }
 
-// ══ 직접 입력 탭 ══
 let manualImgUrl = '';
 
 function switchInputTab(tab) {
@@ -1320,6 +1332,7 @@ function setManualImg(input) {
   prev.src = manualImgUrl; prev.style.display = 'block';
 }
 
+// ══ 직접 입력한 기사도 교실 서버로 제출 ══
 function addManualArticle() {
   const name = document.getElementById('manual-name').value.trim();
   const era  = document.getElementById('manual-era').value.trim();
@@ -1339,8 +1352,8 @@ function addManualArticle() {
   });
 
   renderArticleList();
+  pushSubmission('역사인물기사', name, desc);
 
-  // 입력 초기화
   ['manual-name','manual-era','manual-desc','manual-achievements'].forEach(id => {
     document.getElementById(id).value = '';
   });
@@ -1352,7 +1365,6 @@ function addManualArticle() {
 }
 
 
-// ══ Step 7: 역사 수노 ══
 let histGenres = ['웅장한 오케스트라'];
 let histMoods  = ['웅장하고 감동적인'];
 
@@ -1363,7 +1375,6 @@ function toggleHistGenre(el, genre) {
   } else histGenres = histGenres.filter(g => g !== genre);
 }
 function toggleHistMood(el, mood) {
-  // 분위기는 하나만 선택
   document.querySelectorAll('.hist-mood-chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
   histMoods = [mood];
@@ -1394,7 +1405,6 @@ async function genHistSuno() {
   const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
 
   if (!key) {
-    // API 없으면 기본 가사 생성
     const basicLyrics = articles.map(a =>
       `[Verse]\n${a.name}의 이름은 역사에 빛나고\n${a.era || '그 시절'} 이 땅에서 꽃을 피웠네\n${a.achievements?.[0] ? a.achievements[0]+'\n' : ''}용기와 지혜로 세상을 바꿔\n\n`
     ).join('') + `[Chorus]\n역사의 강은 흘러흘러\n우리에게 교훈을 남기고\n${names}의 정신\n오늘도 우리 마음속에`;
@@ -1444,7 +1454,6 @@ ${descs}
       `[Style: ${result.style}]\n[Mood: ${result.mood}]\n\n[Lyrics]\n${result.lyrics}`;
     document.getElementById('hist-suno-result').style.display = 'block';
   } catch(e) {
-    // 파싱 실패시 기본 생성
     const style = genres + ', Korean historical, epic, emotional';
     const basicLyrics = articles.map(a =>
       `[Verse]\n${a.name}의 이름은 역사에 빛나고\n${a.era||'그 시절'} 이 땅을 밝혔네\n`
@@ -1477,7 +1486,6 @@ function copyHistSuno() {
 }
 
 
-// ══ Gemini 2.0 이미지 생성 ══
 async function genHistoryImage(prompt, style='watercolor') {
   const styleMap = {
     watercolor: 'watercolor painting soft colors artistic Korean history scene',
@@ -1486,15 +1494,12 @@ async function genHistoryImage(prompt, style='watercolor') {
     illustration: 'historical illustration educational textbook detailed',
   };
   const styleText = styleMap[style] || styleMap.watercolor;
-  // 영어로만, 특수문자 없이, 간단하게
   const engPrompt = styleText + ' ' + prompt.replace(/[^\w\s가-힣]/g, ' ');
   const seed = Math.floor(Math.random() * 9999);
-  // Pollinations 안정적인 URL 형식
   const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(engPrompt)}?width=800&height=450&model=flux&seed=${seed}&nologo=true`;
   return url;
 }
 
-// ══ 이미지 생성 관련 ══
 let selBgStyle = 'watercolor';
 let selPersonStyle_val = 'watercolor';
 
@@ -1589,9 +1594,7 @@ function setPersonFromGenerated() {
 }
 
 
-// ══ 위키백과 이미지 + 링크 ══
 async function searchWikipedia(name) {
-  // 1. 위키백과 검색으로 정확한 페이지 제목 찾기
   try {
     const searchUrl = `https://ko.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(name)}&srlimit=1&format=json&origin=*`;
     const searchRes = await fetch(searchUrl);
@@ -1599,7 +1602,6 @@ async function searchWikipedia(name) {
     const pageTitle = searchData.query?.search?.[0]?.title;
     if (!pageTitle) return null;
 
-    // 2. 해당 페이지의 이미지 + 링크 가져오기
     const pageUrl = `https://ko.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages|info&piprop=thumbnail&pithumbsize=400&inprop=url&format=json&origin=*`;
     const pageRes = await fetch(pageUrl);
     const pageData = await pageRes.json();
@@ -1630,7 +1632,6 @@ async function loadWikiInfo(name) {
 
   if (result) {
     el.style.display = 'block';
-    // 이미지
     const imgEl = document.getElementById('wiki-img');
     if (result.imgUrl) {
       imgEl.src = result.imgUrl;
@@ -1643,7 +1644,6 @@ async function loadWikiInfo(name) {
     } else {
       imgEl.style.display = 'none';
     }
-    // 링크
     document.getElementById('wiki-link').href = result.wikiUrl;
     document.getElementById('wiki-title').textContent = result.title;
     document.getElementById('wiki-link-url').textContent = result.wikiUrl;
@@ -1654,7 +1654,6 @@ async function loadWikiInfo(name) {
 }
 
 
-// ══ 위키백과 배경 이미지 검색 ══
 async function searchBgWiki() {
   const query = document.getElementById('bg-wiki-search').value.trim()
     || document.getElementById('person-input')?.value.trim()
@@ -1685,7 +1684,6 @@ async function searchBgWiki() {
   });
 }
 
-// ══ 위키백과 인물 이미지 검색 ══
 async function searchPersonImgWiki() {
   if (!currentPerson) { alert('인물을 먼저 검색해주세요!'); return; }
   const imgs = await searchWikiImages(currentPerson.name + ' 초상화 인물', 6);
@@ -1708,7 +1706,6 @@ async function searchPersonImgWiki() {
     el.appendChild(div);
   });
 }
-
 </script>
 </body>
 </html>
