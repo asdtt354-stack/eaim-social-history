@@ -680,12 +680,14 @@ async function pushSubmission(kind, title, content){
   }catch(e){ console.warn('제출 저장 실패(무시 가능):', e); }
 }
 
-async function callGemini(prompt,maxTokens=800){
+async function callGemini(prompt,maxTokens=800,jsonMode=false){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
+  const generationConfig={maxOutputTokens:maxTokens,temperature:0.8,thinkingConfig:{thinkingBudget:0}};
+  if(jsonMode) generationConfig.responseMimeType='application/json';
   const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8}})
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig})
   });
   const d=await r.json();
   if(d.error)throw new Error(d.error.message);
@@ -701,7 +703,7 @@ async function callGeminiSearch(prompt,maxTokens=1000){
     body:JSON.stringify({
       contents:[{parts:[{text:prompt}]}],
       tools:[{google_search:{}}],
-      generationConfig:{maxOutputTokens:maxTokens,temperature:0.5}
+      generationConfig:{maxOutputTokens:maxTokens,temperature:0.5,thinkingConfig:{thinkingBudget:0}}
     })
   });
   const d=await r.json();
@@ -810,7 +812,7 @@ ${factText}
   "keywords": ["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],
   "related": ["관련용어1","관련용어2","관련용어3","관련용어4"],
   "wikiSearch": "위키미디어 이미지 검색어 (영어, 간단히)"
-}`,600);
+}`,600,true);
       const info=parseJsonLoose(raw);
       currentTerm={...info,story:'',imgUrl:''};
       _kws=info.keywords||_kws;
@@ -964,7 +966,7 @@ async function genStory(type){
 - 대화체 포함 (더 생동감 있게)
 - 마지막에 한 줄 정리
 
-스토리만 써주세요 (제목, 설명 없이):`,500);
+스토리만 써주세요 (제목, 설명 없이):`,700);
     currentTerm.story=result;
     el.textContent=result;
   }catch(e){
