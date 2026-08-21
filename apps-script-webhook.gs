@@ -5,7 +5,7 @@
 function doPost(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const data = JSON.parse(e.postData.contents);
-  sheet.appendRow([data.date, data.content]);
+  sheet.appendRow([data.date, data.student || '', data.content]);
   return ContentService.createTextOutput(JSON.stringify({ ok: true }))
     .setMimeType(ContentService.MimeType.JSON);
 }

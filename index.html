@@ -229,11 +229,10 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
     <!-- 연동 설정 -->
     <div class="tp-sub">
       <div style="font-weight:800;margin-bottom:8px;font-size:.86rem">⚙️ 연동 설정</div>
-      <label class="hint">Gemini API 키 (세특 생성용)</label>
-      <input type="password" id="gemini-key-teacher" placeholder="AIzaSy..." style="margin-bottom:8px">
-      <label class="hint">구글시트 Apps Script 웹훅 URL</label>
+      <label class="hint">구글시트 Apps Script 웹훅 URL (세특 시트 내보내기용)</label>
       <input type="text" id="sheet-webhook" placeholder="https://script.google.com/macros/s/.../exec">
       <button class="btn bg2 bsm" style="margin-top:8px" onclick="saveTeacherSettings()">💾 저장</button>
+      <div class="hint" style="margin-top:6px">💡 세특 생성은 아래 "Gemini API 키 (이 기기용)" 키를 그대로 사용해요 — 따로 안 넣어도 돼요.</div>
     </div>
   </div>
 </div>
@@ -502,6 +501,7 @@ window.copyQrLink = () => {
 };
 
 let subsByStudent = {};
+let lastSaenteukStudentKey = null;
 window.loadSubmissionsForSaenteuk = async () => {
   const roomId = document.getElementById('saenteuk-room').value;
   if (!roomId) { alert('수업방을 먼저 만들어주세요!'); return; }
@@ -520,7 +520,8 @@ window.loadSubmissionsForSaenteuk = async () => {
 };
 
 window.genSaenteuk = async (studentKey) => {
-  const key = localStorage.getItem('eaim_gemini_key_teacher') || document.getElementById('gemini-key-teacher').value;
+  lastSaenteukStudentKey = studentKey;
+  const key = localStorage.getItem('eaim_gemini_key') || document.getElementById('api-key-input').value;
   const out = document.getElementById('saenteuk-output');
   if (!key) { alert('Gemini API 키를 먼저 저장해주세요!'); return; }
   const items = subsByStudent[studentKey] || [];
@@ -556,7 +557,7 @@ window.exportToSheet = async () => {
     await fetch(url, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: new Date().toISOString(), content: text })
+      body: JSON.stringify({ date: new Date().toISOString(), student: lastSaenteukStudentKey || '', content: text })
     });
     alert('시트로 전송했어요! (구글 시트에서 확인해주세요)');
   } catch (e) { alert('전송 실패: ' + e.message); }
@@ -587,12 +588,10 @@ window.loadGameResults = async () => {
 };
 
 window.saveTeacherSettings = () => {
-  localStorage.setItem('eaim_gemini_key_teacher', document.getElementById('gemini-key-teacher').value.trim());
   localStorage.setItem('eaim_sheet_webhook', document.getElementById('sheet-webhook').value.trim());
   alert('저장됐어요!');
 };
 function loadTeacherSettings() {
-  document.getElementById('gemini-key-teacher').value = localStorage.getItem('eaim_gemini_key_teacher') || '';
   document.getElementById('sheet-webhook').value = localStorage.getItem('eaim_sheet_webhook') || '';
 }
 </script>
