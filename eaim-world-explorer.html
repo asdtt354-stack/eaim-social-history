@@ -73,9 +73,11 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   color:rgba(255,255,255,.75);cursor:pointer;transition:all .2s;font-family:inherit}
 .ctab:hover{background:rgba(56,189,248,.3);border-color:var(--sky);color:#fff}
 .ctab.on{background:var(--sky);border-color:#1A90C0;color:#fff}
-.map-region{cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.map-region:hover{filter:brightness(1.4);transform:scale(1.03)}
-@media(max-width:480px){#world-map span{font-size:.6rem!important}}
+.map-region-path{cursor:pointer;transition:fill .2s,transform .2s;transform-origin:center}
+.map-region-path:hover{fill-opacity:.55}
+.map-label{fill:#fff;font-size:15px;font-weight:900;text-anchor:middle;pointer-events:none;paint-order:stroke;stroke:rgba(10,22,40,.6);stroke-width:3px}
+.ocean-label{fill:rgba(255,255,255,.32);font-size:13px;font-weight:700;font-style:italic;text-anchor:middle;pointer-events:none;letter-spacing:1px}
+@media(max-width:480px){.map-label{font-size:12px}.ocean-label{font-size:10px}}
 .country-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .cchip{padding:6px 13px;border-radius:99px;font-size:.76rem;font-weight:700;
   background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);
@@ -280,24 +282,50 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   <div style="background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:var(--r);padding:18px 14px;border:2px solid rgba(56,189,248,.2);margin-bottom:14px">
     <div style="font-size:.78rem;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:10px;text-align:center">🗺️ 지도에서 대륙을 클릭해보세요</div>
     <div id="world-map" style="position:relative;width:100%;aspect-ratio:16/8;background:radial-gradient(ellipse at center,rgba(56,189,248,.06) 0%,transparent 70%);border-radius:12px;overflow:hidden">
-      <div class="map-region" onclick="pickContinentFromMap('아시아')" style="position:absolute;left:58%;top:10%;width:34%;height:55%;background:rgba(56,189,248,.22);border:2px solid rgba(56,189,248,.5);border-radius:38% 62% 55% 45%/45% 40% 60% 55%">
-        <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.76rem;font-weight:900;color:#fff;white-space:nowrap">🌏 아시아</span>
-      </div>
-      <div class="map-region" onclick="pickContinentFromMap('유럽')" style="position:absolute;left:44%;top:6%;width:16%;height:32%;background:rgba(124,111,205,.22);border:2px solid rgba(124,111,205,.5);border-radius:50% 50% 45% 55%/55% 45% 55% 45%">
-        <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.7rem;font-weight:900;color:#fff;white-space:nowrap">🌍 유럽</span>
-      </div>
-      <div class="map-region" onclick="pickContinentFromMap('아프리카')" style="position:absolute;left:44%;top:38%;width:18%;height:48%;background:rgba(0,191,138,.22);border:2px solid rgba(0,191,138,.5);border-radius:45% 55% 50% 50%/40% 40% 60% 60%">
-        <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.7rem;font-weight:900;color:#fff;white-space:nowrap">🌍 아프리카</span>
-      </div>
-      <div class="map-region" onclick="pickContinentFromMap('중동')" style="position:absolute;left:52%;top:26%;width:12%;height:24%;background:rgba(245,158,11,.22);border:2px solid rgba(245,158,11,.5);border-radius:45% 55% 50% 50%/50% 50% 50% 50%">
-        <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.65rem;font-weight:900;color:#fff;white-space:nowrap">🕌 중동</span>
-      </div>
-      <div class="map-region" onclick="pickContinentFromMap('아메리카')" style="position:absolute;left:8%;top:8%;width:24%;height:80%;background:rgba(255,107,91,.22);border:2px solid rgba(255,107,91,.5);border-radius:50% 50% 40% 60%/30% 30% 70% 70%">
-        <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.72rem;font-weight:900;color:#fff;white-space:nowrap">🌎 아메리카</span>
-      </div>
-      <div class="map-region" onclick="pickContinentFromMap('오세아니아')" style="position:absolute;left:76%;top:66%;width:18%;height:26%;background:rgba(56,189,248,.22);border:2px solid rgba(56,189,248,.5);border-radius:50%">
-        <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.65rem;font-weight:900;color:#fff;white-space:nowrap">🌏 오세아니아</span>
-      </div>
+      <svg viewBox="0 0 1000 480" style="width:100%;height:100%;display:block">
+        <!-- 아메리카 (북+남 이어진 형태) -->
+        <path class="map-region-path" onclick="pickContinentFromMap('아메리카')"
+          d="M110,50 L200,40 L245,70 L260,120 L235,165 L200,190 L215,220 L260,235 L295,290 L285,360 L245,430 L205,410 L185,350 L165,290 L175,225 L145,180 L95,130 L80,80 Z"
+          fill="rgba(255,107,91,.28)" stroke="rgba(255,107,91,.65)" stroke-width="2"/>
+        <text x="195" y="235" class="map-label">🌎 아메리카</text>
+
+        <!-- 유럽 -->
+        <path class="map-region-path" onclick="pickContinentFromMap('유럽')"
+          d="M440,55 L480,40 L520,55 L545,45 L570,70 L555,105 L575,130 L540,150 L500,165 L460,150 L435,110 L450,80 Z"
+          fill="rgba(124,111,205,.28)" stroke="rgba(124,111,205,.65)" stroke-width="2"/>
+        <text x="500" y="105" class="map-label">🌍 유럽</text>
+
+        <!-- 중동 (아라비아 반도) -->
+        <path class="map-region-path" onclick="pickContinentFromMap('중동')"
+          d="M565,150 L620,155 L645,190 L630,235 L590,255 L555,220 L555,180 Z"
+          fill="rgba(245,158,11,.28)" stroke="rgba(245,158,11,.65)" stroke-width="2"/>
+        <text x="595" y="205" class="map-label">🕌 중동</text>
+
+        <!-- 아프리카 -->
+        <path class="map-region-path" onclick="pickContinentFromMap('아프리카')"
+          d="M455,165 L545,160 L580,200 L575,260 L555,320 L565,370 L530,430 L490,400 L470,340 L440,280 L430,220 Z"
+          fill="rgba(0,191,138,.28)" stroke="rgba(0,191,138,.65)" stroke-width="2"/>
+        <text x="505" y="300" class="map-label">🌍 아프리카</text>
+
+        <!-- 아시아 -->
+        <path class="map-region-path" onclick="pickContinentFromMap('아시아')"
+          d="M600,45 L720,35 L830,55 L910,90 L935,140 L900,190 L920,230 L870,270 L800,290 L760,260 L710,280 L660,250 L640,200 L650,150 L610,110 Z"
+          fill="rgba(56,189,248,.28)" stroke="rgba(56,189,248,.65)" stroke-width="2"/>
+        <text x="775" y="165" class="map-label">🌏 아시아</text>
+
+        <!-- 오세아니아 (호주) -->
+        <path class="map-region-path" onclick="pickContinentFromMap('오세아니아')"
+          d="M810,340 L880,335 L920,360 L925,400 L890,425 L830,420 L800,390 L800,360 Z"
+          fill="rgba(56,189,248,.28)" stroke="rgba(56,189,248,.65)" stroke-width="2"/>
+        <text x="862" y="385" class="map-label">🌏 오세아니아</text>
+
+        <!-- 바다 이름 (장식용, 클릭 안 됨) -->
+        <text x="40" y="230" class="ocean-label">태평양</text>
+        <text x="965" y="130" class="ocean-label">태평양</text>
+        <text x="335" y="200" class="ocean-label">대서양</text>
+        <text x="670" y="345" class="ocean-label">인도양</text>
+        <text x="820" y="150" class="ocean-label" style="font-size:11px">북극해</text>
+      </svg>
     </div>
   </div>
 
