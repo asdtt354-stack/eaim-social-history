@@ -13,7 +13,7 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getAuth, GoogleAuthProvider, signInWithPopup, signOut,
-  signInAnonymously, onAuthStateChanged
+  signInAnonymously, onAuthStateChanged, setPersistence, browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
@@ -34,6 +34,13 @@ const firebaseConfig = {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// ⚠️ 공용 컴퓨터 보호용: 로그인 상태를 "브라우저 세션"에만 저장합니다.
+// 새로고침/탭 재열기에는 로그인이 유지되지만, 브라우저를 완전히 종료하면
+// 자동으로 로그아웃돼요 (다음 사람이 그대로 이어서 쓰는 걸 방지).
+setPersistence(auth, browserSessionPersistence).catch((e) => {
+  console.warn('로그인 지속성 설정 실패(기본값으로 동작):', e);
+});
 
 /* ── 이 파일을 쓰는 앱의 이름을 각 HTML에서 지정 ──
    예) window.EAIM_APP_TYPE = 'history' | 'dict' | 'game' | 'world'; */
