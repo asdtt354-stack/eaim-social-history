@@ -12,7 +12,7 @@
 
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
+  getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut,
   signInAnonymously, onAuthStateChanged, setPersistence, browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
@@ -51,8 +51,23 @@ const APP_TYPE = () => window.EAIM_APP_TYPE || 'unknown';
 /* ════════ 교사 인증 ════════ */
 export async function teacherLogin() {
   await persistenceReady;
-  return signInWithPopup(auth, new GoogleAuthProvider());
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' }); // 자동 로그인 대신 매번 계정 선택 창을 띄움
+  try {
+    return await signInWithPopup(auth, provider);
+  } catch (e) {
+    // ⚠️ 학교 보안 프로그램 등으로 팝업이 조용히 막히는 환경(auth/popup-blocked)에서는
+    // 팝업 대신 리디렉션 방식(같은 페이지에서 구글 로그인 페이지로 이동했다가 돌아옴)으로 자동 전환.
+    if (e?.code === 'auth/popup-blocked') {
+      return signInWithRedirect(auth, provider);
+    }
+    throw e;
+  }
 }
+// 리디렉션으로 돌아왔을 때 로그인 결과를 확인(에러가 있으면 콘솔에 기록만 하고 넘어감)
+getRedirectResult(auth).catch((e) => {
+  console.warn('리디렉션 로그인 처리 중 오류(무시 가능):', e);
+});
 export function teacherLogout() {
   return signOut(auth);
 }
