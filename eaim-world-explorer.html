@@ -313,6 +313,12 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
           fill="rgba(56,189,248,.28)" stroke="rgba(56,189,248,.65)" stroke-width="2"/>
         <text x="775" y="165" class="map-label">🌏 아시아</text>
 
+        <!-- 러시아 (유럽 위~아시아 위까지 가로로 길게, 유럽 쪽으로 아래까지 내려와서 겹치게 이어줌) -->
+        <path class="map-region-path" onclick="pickContinentFromMap('러시아')"
+          d="M420,90 L470,50 L520,25 L600,35 L680,15 L760,25 L840,15 L910,35 L925,60 L850,45 L770,55 L690,42 L610,58 L540,50 L495,85 L470,125 L425,120 Z"
+          fill="rgba(148,163,184,.3)" stroke="rgba(148,163,184,.7)" stroke-width="2"/>
+        <text x="700" y="45" class="map-label" style="font-size:13px">🐻 러시아</text>
+
         <!-- 오세아니아 (호주) -->
         <path class="map-region-path" onclick="pickContinentFromMap('오세아니아')"
           d="M810,340 L880,335 L920,360 L925,400 L890,425 L830,420 L800,390 L800,360 Z"
@@ -337,6 +343,7 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
       <button id="ctab-아프리카" onclick="showContinent('아프리카',this)" class="ctab">🌍 아프리카</button>
       <button id="ctab-오세아니아" onclick="showContinent('오세아니아',this)" class="ctab">🌏 오세아니아</button>
       <button id="ctab-중동" onclick="showContinent('중동',this)" class="ctab">🕌 중동</button>
+      <button id="ctab-러시아" onclick="showContinent('러시아',this)" class="ctab">🐻 러시아</button>
     </div>
     <div id="country-chips" class="country-chips" style="margin-top:10px"></div>
   </div>
@@ -548,6 +555,9 @@ const CONTINENTS = {
     {e:'🇦🇪',n:'아랍에미리트'},{e:'🇮🇱',n:'이스라엘'},{e:'🇯🇴',n:'요르단'},
     {e:'🇱🇧',n:'레바논'},{e:'🇸🇾',n:'시리아'},{e:'🇾🇪',n:'예멘'},
     {e:'🇴🇲',n:'오만'},{e:'🇶🇦',n:'카타르'},{e:'🇰🇼',n:'쿠웨이트'},
+  ],
+  '러시아': [
+    {e:'🇷🇺',n:'러시아'},
   ],
 };
 
