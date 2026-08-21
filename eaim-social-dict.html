@@ -581,13 +581,30 @@ async function pushSubmission(kind, title, content){
 async function callGemini(prompt,maxTokens=800){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,{
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8}})
   });
   const d=await r.json();
   if(d.error)throw new Error(d.error.message);
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
+
+/** 구글 검색 그라운딩을 켜서 호출 — 실시간 검색 결과를 참고해 더 정확한 사실 정보를 만들 때 사용 */
+async function callGeminiSearch(prompt,maxTokens=1000){
+  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  if(!key)throw new Error('NO_KEY');
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      contents:[{parts:[{text:prompt}]}],
+      tools:[{google_search:{}}],
+      generationConfig:{maxOutputTokens:maxTokens,temperature:0.5}
+    })
+  });
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return (d.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('');
 }
 
 /** Gemini 응답에서 순수 JSON만 관대하게 추출 (앞뒤에 설명 텍스트가 섞여 와도 파싱되도록) */
@@ -672,7 +689,7 @@ async function searchTerm(){
 
   if(key){
     try{
-      const raw=await callGemini(`중학교 사회 교과 용어 "${term}"에 대해 JSON으로 주세요.
+      const raw=await callGeminiSearch(`중학교 사회 교과 용어 "${term}"에 대해 JSON으로 주세요.
 다른 텍스트 없이 순수 JSON만:
 {
   "name": "용어명",
