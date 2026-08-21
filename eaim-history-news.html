@@ -301,6 +301,24 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </div>
 </div>
 
+<!-- 기분 체크 모달 (이름 입력 후, 본 화면 진입 전) -->
+<div id="mood-check" class="ov" style="display:none">
+  <div class="mb">
+    <div style="font-size:2.4rem;margin-bottom:10px">💛</div>
+    <h2 style="margin-bottom:6px">오늘 기분이 어때요?</h2>
+    <p style="margin-bottom:16px">신문 만들기 전에 잠깐, 마음부터 살펴봐요</p>
+    <div id="mood-pick" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">
+      <button class="btn bg2" onclick="pickMood('great')" style="flex:1;min-width:70px">😄<br><span style="font-size:.72rem">최고예요</span></button>
+      <button class="btn bg2" onclick="pickMood('good')" style="flex:1;min-width:70px">🙂<br><span style="font-size:.72rem">좋아요</span></button>
+      <button class="btn bg2" onclick="pickMood('normal')" style="flex:1;min-width:70px">😐<br><span style="font-size:.72rem">그저 그래요</span></button>
+      <button class="btn bg2" onclick="pickMood('tired')" style="flex:1;min-width:70px">😪<br><span style="font-size:.72rem">피곤해요</span></button>
+      <button class="btn bg2" onclick="pickMood('down')" style="flex:1;min-width:70px">😔<br><span style="font-size:.72rem">속상해요</span></button>
+    </div>
+    <div id="mood-msg" style="display:none;background:var(--paper2);border-radius:9px;padding:14px;margin-bottom:14px;font-size:.86rem;color:var(--ink2);line-height:1.7;text-align:left"></div>
+    <button id="mood-continue-btn" class="btn bp bfl" style="display:none" onclick="continueAfterMood()">📰 신문 만들러 가기 →</button>
+  </div>
+</div>
+
 <header>
   <div class="hi">
     <div>
@@ -368,7 +386,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div class="ct">🎨 시대 배경 이미지</div>
 
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
-      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 그림 생성 (무료! API 키 불필요)</div>
+      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 그림 생성 (Gemini API 키 사용)</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
         <button onclick="selImgStyle('watercolor',this)" class="img-style-btn on">🖌️ 수채화</button>
         <button onclick="selImgStyle('minhwa',this)" class="img-style-btn">🎭 민화</button>
@@ -435,7 +453,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div class="ct">🎨 인물 이미지</div>
 
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
-      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성 (무료!)</div>
+      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성 (Gemini API 키 사용)</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
         <button onclick="selPersonStyle('watercolor',this)" class="person-style-btn on">🖌️ 수채화</button>
         <button onclick="selPersonStyle('minhwa',this)" class="person-style-btn">🎭 민화</button>
@@ -888,10 +906,33 @@ async function sN(){
     badge.style.display = '';
   }
   document.getElementById('nm').style.display='none';
-  document.getElementById('sNav').style.display='flex';
   document.getElementById('np-date').value=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+  showMoodCheck();
 }
 function showTL(){document.getElementById('nm').style.display='none';}
+
+// ── 기분 체크: 이름 입력 후, 본 화면 진입 전 ──
+const MOOD_MESSAGES = {
+  great: '오늘 컨디션 최고네요! 🎉 그 기운 그대로 역사 속 인물을 만나러 가볼까요? 좋은 에너지로 만든 신문은 더 빛나요.',
+  good: '기분 좋은 하루네요 🙂 편안한 마음으로 역사 인물을 탐구해봐요. 오늘도 좋은 발견이 있을 거예요.',
+  normal: '평범한 하루도 괜찮아요. 잠깐 역사 속으로 들어가다 보면 생각지 못한 흥미로운 순간을 만날 수도 있어요 😊',
+  tired: '피곤한 날엔 무리하지 않아도 돼요. 오늘은 딱 할 수 있는 만큼만 해봐요. 천천히 해도 충분해요 🌙',
+  down: '마음이 힘든 날이었군요. 괜찮아요, 그런 날도 있는 거예요. 오늘은 잠깐이라도 다른 이야기 속에서 쉬어가요. 힘들 땐 선생님이나 주변 사람에게 이야기하는 것도 큰 도움이 돼요 💛',
+};
+function pickMood(mood){
+  document.getElementById('mood-msg').textContent = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
+  document.getElementById('mood-msg').style.display = 'block';
+  document.getElementById('mood-continue-btn').style.display = 'flex';
+}
+function showMoodCheck(){
+  document.getElementById('mood-msg').style.display = 'none';
+  document.getElementById('mood-continue-btn').style.display = 'none';
+  document.getElementById('mood-check').style.display = 'flex';
+}
+function continueAfterMood(){
+  document.getElementById('mood-check').style.display = 'none';
+  document.getElementById('sNav').style.display = 'flex';
+}
 
 // ── 선생님 미리보기: 이름/반 입력 없이 바로 앱 둘러보기 ──
 function skipPreview(){
@@ -1012,17 +1053,27 @@ async function searchPerson(){
 
   if(key){
     try{
-      const raw=await callGeminiSearch(`한국 역사 인물/사건 "${name}"에 대해 중학생을 위한 정보를 JSON으로 주세요.
-검색을 통해 정확한 사실(연도, 직책, 업적 등)을 확인한 뒤 답하세요.
-다른 텍스트 없이 순수 JSON만:
+      // 1단계: 검색 그라운딩으로 사실 정보를 자유 문장으로 받아옴 (JSON을 강요하면 검색 결과 설명이 섞여 파싱이 깨지므로)
+      const factText = await callGeminiSearch(`한국 역사 인물/사건 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤,
+중학생 눈높이로 알려주세요: 시대(예: 조선시대 중기, 1392-1910), 생몰년 또는 발생 연도, 직책/별칭,
+설명(3~4문장), 주요 업적 3가지, 관련 키워드 6~8개, 신문 기사 형식 요약(3~4문장, 격식체).
+자유로운 문장으로 답하세요.`, 900);
+
+      // 2단계: 위 자료를 검색 없이 순수 JSON으로만 정리 (이 단계는 형식을 잘 지킴)
+      const raw=await callGemini(`아래 자료를 JSON으로 정리해주세요. 다른 텍스트 없이 순수 JSON만 출력하세요.
+
+[자료]
+${factText}
+
+[JSON 형식]
 {
   "name": "인물/사건명",
-  "era": "시대 (예: 조선시대 중기, 1392-1910)",
+  "era": "시대",
   "birth": "생몰년 또는 발생 연도",
   "title": "직책/별칭",
   "desc": "인물/사건 설명 (3-4문장, 중학생 눈높이)",
   "achievements": ["업적1","업적2","업적3"],
-  "keywords": ["시대키워드1","키워드2","키워드3","키워드4","키워드5","키워드6","키워드7","키워드8"],
+  "keywords": ["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],
   "article": "신문 기사 형식 본문 (3-4문장, 격식체)"
 }`,800);
       currentPerson=parseJsonLoose(raw);

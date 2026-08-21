@@ -210,6 +210,24 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
+<!-- 기분 체크 모달 (이름 입력 후, 본 화면 진입 전) -->
+<div id="mood-check" class="ov" style="display:none">
+  <div class="mb">
+    <div style="font-size:2.4rem;margin-bottom:10px">💛</div>
+    <h2 style="margin-bottom:6px;font-family:'Nanum Myeongjo',serif;color:var(--navy)">오늘 기분이 어때요?</h2>
+    <p style="margin-bottom:16px;color:var(--ink3);font-size:.84rem">세계 탐구를 떠나기 전에 잠깐, 마음부터 살펴봐요</p>
+    <div id="mood-pick" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">
+      <button class="btn bg2" onclick="pickMood('great')" style="flex:1;min-width:70px">😄<br><span style="font-size:.72rem">최고예요</span></button>
+      <button class="btn bg2" onclick="pickMood('good')" style="flex:1;min-width:70px">🙂<br><span style="font-size:.72rem">좋아요</span></button>
+      <button class="btn bg2" onclick="pickMood('normal')" style="flex:1;min-width:70px">😐<br><span style="font-size:.72rem">그저 그래요</span></button>
+      <button class="btn bg2" onclick="pickMood('tired')" style="flex:1;min-width:70px">😪<br><span style="font-size:.72rem">피곤해요</span></button>
+      <button class="btn bg2" onclick="pickMood('down')" style="flex:1;min-width:70px">😔<br><span style="font-size:.72rem">속상해요</span></button>
+    </div>
+    <div id="mood-msg" style="display:none;background:var(--bg);border-radius:9px;padding:14px;margin-bottom:14px;font-size:.86rem;color:var(--ink2);line-height:1.7;text-align:left"></div>
+    <button id="mood-continue-btn" class="btn bsky bfl" style="display:none" onclick="continueAfterMood()">🌍 탐구하러 가기 →</button>
+  </div>
+</div>
+
 <header>
   <div class="hi">
     <div>
@@ -535,7 +553,30 @@ async function sN(){
     badge.style.display = '';
   }
   document.getElementById('nm').style.display='none';
-  document.getElementById('sNav').style.display='flex';
+  showMoodCheck();
+}
+
+// ── 기분 체크: 이름 입력 후, 본 화면 진입 전 ──
+const MOOD_MESSAGES = {
+  great: '오늘 컨디션 최고네요! 🎉 그 기운 그대로 세계 여러 나라를 만나러 가볼까요? 좋은 에너지로 떠나는 탐구는 더 즐거워요.',
+  good: '기분 좋은 하루네요 🙂 편안한 마음으로 세계를 탐구해봐요. 오늘도 새로운 발견이 있을 거예요.',
+  normal: '평범한 하루도 괜찮아요. 잠깐 다른 나라 이야기 속으로 들어가다 보면 생각지 못한 흥미로운 순간을 만날 수도 있어요 😊',
+  tired: '피곤한 날엔 무리하지 않아도 돼요. 오늘은 딱 할 수 있는 만큼만 해봐요. 천천히 해도 충분해요 🌙',
+  down: '마음이 힘든 날이었군요. 괜찮아요, 그런 날도 있는 거예요. 오늘은 잠깐이라도 다른 나라 이야기 속에서 쉬어가요. 힘들 땐 선생님이나 주변 사람에게 이야기하는 것도 큰 도움이 돼요 💛',
+};
+function pickMood(mood){
+  document.getElementById('mood-msg').textContent = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
+  document.getElementById('mood-msg').style.display = 'block';
+  document.getElementById('mood-continue-btn').style.display = 'flex';
+}
+function showMoodCheck(){
+  document.getElementById('mood-msg').style.display = 'none';
+  document.getElementById('mood-continue-btn').style.display = 'none';
+  document.getElementById('mood-check').style.display = 'flex';
+}
+function continueAfterMood(){
+  document.getElementById('mood-check').style.display = 'none';
+  document.getElementById('sNav').style.display = 'flex';
   showContinent('아시아',document.querySelector('.ctab'));
 }
 
@@ -667,17 +708,27 @@ async function selectCountry(name){
 
   if(key){
     try{
-      const raw=await callGeminiSearch(`중학교 사회 교과에서 배우는 나라 "${name}"에 대해 JSON으로 정보를 주세요.
-다른 텍스트 없이 순수 JSON만:
+      // 1단계: 검색 그라운딩으로 사실 정보(기본 정보·정치·경제·역사)를 자유 문장으로 받아옴
+      const factText = await callGeminiSearch(`중학교 사회 교과에서 배우는 나라 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤 알려주세요:
+한국어 공식 명칭, 수도, 인구, 공용어, 주요 종교, 면적, 대륙, 정치체제(2문장), 경제수준 및 특징(2문장), 문화 특징(2문장), 역사 핵심(2문장), 한국과의 관계(2문장).
+자유로운 문장으로 답하세요.`, 1200);
+
+      // 2단계: 위 자료 + 창작 콘텐츠(스토리/음악/수노)를 함께 검색 없이 순수 JSON으로 정리
+      const raw=await callGemini(`아래 자료를 바탕으로 JSON을 만들어주세요. 자료에 없는 창작 항목(story, music, keywords, wikiSearch)은 자연스럽게 만들어 채우세요. 다른 텍스트 없이 순수 JSON만 출력하세요.
+
+[자료]
+${factText}
+
+[JSON 형식]
 {
   "name": "나라 이름",
   "nameKo": "한국어 공식 명칭",
   "flag": "국기 이모지",
   "capital": "수도",
-  "population": "인구 (예: 약 5천만 명)",
+  "population": "인구",
   "language": "공용어",
   "religion": "주요 종교",
-  "area": "면적 (예: 약 10만 km²)",
+  "area": "면적",
   "continent": "대륙",
   "keywords": ["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],
   "politics": "정치체제 설명 (2문장)",

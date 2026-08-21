@@ -226,6 +226,24 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   </div>
 </div>
 
+<!-- 기분 체크 모달 (이름 입력 후, 본 화면 진입 전) -->
+<div id="mood-check" class="ov" style="display:none">
+  <div class="mb">
+    <div style="font-size:2.4rem;margin-bottom:10px">💛</div>
+    <div style="font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:6px">오늘 기분이 어때요?</div>
+    <p style="margin-bottom:16px;color:rgba(255,255,255,.5);font-size:.84rem">게임 시작 전에 잠깐, 마음부터 살펴봐요</p>
+    <div id="mood-pick" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">
+      <button class="btn bg2" onclick="pickMood('great')" style="flex:1;min-width:70px">😄<br><span style="font-size:.72rem">최고예요</span></button>
+      <button class="btn bg2" onclick="pickMood('good')" style="flex:1;min-width:70px">🙂<br><span style="font-size:.72rem">좋아요</span></button>
+      <button class="btn bg2" onclick="pickMood('normal')" style="flex:1;min-width:70px">😐<br><span style="font-size:.72rem">그저 그래요</span></button>
+      <button class="btn bg2" onclick="pickMood('tired')" style="flex:1;min-width:70px">😪<br><span style="font-size:.72rem">피곤해요</span></button>
+      <button class="btn bg2" onclick="pickMood('down')" style="flex:1;min-width:70px">😔<br><span style="font-size:.72rem">속상해요</span></button>
+    </div>
+    <div id="mood-msg" style="display:none;background:rgba(255,255,255,.06);border-radius:9px;padding:14px;margin-bottom:14px;font-size:.86rem;color:rgba(255,255,255,.8);line-height:1.7;text-align:left"></div>
+    <button id="mood-continue-btn" class="btn bsky bfl" style="display:none" onclick="continueAfterMood()">🎮 게임하러 가기 →</button>
+  </div>
+</div>
+
 <header>
   <div class="hi">
     <div class="logo">🎮 EAIM <span>사회 게임방</span></div>
@@ -555,6 +573,31 @@ async function sN(){
   }
 
   document.getElementById('nm').style.display = 'none';
+  window.EAIM_ROOM_FOR_MOOD = room; // continueAfterMood에서 참조
+  showMoodCheck();
+}
+
+// ── 기분 체크: 이름 입력 후, 본 화면 진입 전 ──
+const MOOD_MESSAGES = {
+  great: '오늘 컨디션 최고네요! 🎉 그 기운 그대로 게임으로 몸 풀어볼까요? 좋은 에너지로 하면 더 잘 풀려요.',
+  good: '기분 좋은 하루네요 🙂 편안한 마음으로 게임을 즐겨봐요. 오늘도 재밌는 시간이 될 거예요.',
+  normal: '평범한 하루도 괜찮아요. 잠깐 게임에 집중하다 보면 기분 전환이 될 수도 있어요 😊',
+  tired: '피곤한 날엔 무리하지 않아도 돼요. 오늘은 딱 할 수 있는 만큼만 해봐요. 천천히 해도 충분해요 🌙',
+  down: '마음이 힘든 날이었군요. 괜찮아요, 그런 날도 있는 거예요. 오늘은 잠깐이라도 게임하면서 쉬어가요. 힘들 땐 선생님이나 주변 사람에게 이야기하는 것도 큰 도움이 돼요 💛',
+};
+function pickMood(mood){
+  document.getElementById('mood-msg').textContent = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
+  document.getElementById('mood-msg').style.display = 'block';
+  document.getElementById('mood-continue-btn').style.display = 'flex';
+}
+function showMoodCheck(){
+  document.getElementById('mood-msg').style.display = 'none';
+  document.getElementById('mood-continue-btn').style.display = 'none';
+  document.getElementById('mood-check').style.display = 'flex';
+}
+function continueAfterMood(){
+  document.getElementById('mood-check').style.display = 'none';
+  const room = window.EAIM_ROOM_FOR_MOOD;
   if (room) {
     const badge = document.getElementById('class-badge');
     badge.textContent = '🔗 ' + room.title;
