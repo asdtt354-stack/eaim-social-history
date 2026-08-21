@@ -474,6 +474,12 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
       <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성 (Gemini API 키 사용)</div>
+      <div style="font-size:.7rem;font-weight:700;color:var(--ink3);margin-bottom:5px">📸 무엇을 그릴까요?</div>
+      <div style="display:flex;gap:6px;margin-bottom:9px">
+        <button onclick="selImageSubject('portrait',this)" id="subj-portrait-btn" class="person-style-btn on" style="flex:1">👤 인물 초상화</button>
+        <button onclick="selImageSubject('scene',this)" id="subj-scene-btn" class="person-style-btn" style="flex:1">⚔️ 사건 장면</button>
+      </div>
+      <div style="font-size:.7rem;font-weight:700;color:var(--ink3);margin-bottom:5px">🎨 그림 스타일</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
         <button onclick="selPersonStyle('watercolor',this)" class="person-style-btn on">🖌️ 수채화</button>
         <button onclick="selPersonStyle('minhwa',this)" class="person-style-btn">🎭 민화</button>
@@ -1247,6 +1253,12 @@ function renderEraKeywords(kws){
 function buildPersonCard(){
   if(!currentPerson)return;
   const p=currentPerson;
+  // 사건 모드로 검색했으면 이미지 주제 기본값을 "사건 장면"으로 자동 전환(사용자가 다시 바꿀 수 있음)
+  if(p.mode==='event' && document.getElementById('subj-scene-btn')){
+    selImageSubjectVal = 'scene';
+    document.getElementById('subj-portrait-btn').classList.remove('on');
+    document.getElementById('subj-scene-btn').classList.add('on');
+  }
   const wrap=document.getElementById('person-card-wrap');
   wrap.innerHTML=`
     <div class="person-card">
@@ -1401,10 +1413,10 @@ function buildNewspaper(){
     </div>`;
 
   const bannerHtml = selBgImg
-    ? `<div style="width:100%;max-height:220px;overflow:hidden;border-bottom:2px solid var(--ink2)">
-         <img src="${selBgImg}" alt="시대 배경" style="width:100%;height:220px;object-fit:cover;display:block">
+    ? `<div style="width:100%;max-height:150px;overflow:hidden;border-bottom:2px solid var(--ink2)">
+         <img src="${selBgImg}" alt="시대 배경" style="width:100%;height:150px;object-fit:cover;display:block">
        </div>`
-    : '';
+    : `<div style="padding:8px 16px;font-size:.7rem;color:var(--ink3);text-align:center;background:var(--paper2)">🖼️ 시대 배경 이미지가 아직 없어요 — Step 2에서 이미지를 골라보세요</div>`;
 
   const artHtml=(art,showImg=true)=>`
     <div>
@@ -1843,6 +1855,7 @@ async function callGeminiImage(prompt) {
 
 let selBgStyle = 'watercolor';
 let selPersonStyle_val = 'watercolor';
+let selImageSubjectVal = 'portrait'; // 'portrait' | 'scene' — 인물 검색이어도 사건 장면 그림을 고를 수 있게
 
 function selImgStyle(style, el) {
   selBgStyle = style;
@@ -1853,6 +1866,11 @@ function selPersonStyle(style, el) {
   selPersonStyle_val = style;
   document.querySelectorAll('.person-style-btn').forEach(b => b.classList.remove('on'));
   el.classList.add('on');
+}
+function selImageSubject(subject, el) {
+  selImageSubjectVal = subject;
+  document.getElementById('subj-portrait-btn').classList.toggle('on', subject==='portrait');
+  document.getElementById('subj-scene-btn').classList.toggle('on', subject==='scene');
 }
 
 async function genBgImage() {
@@ -1898,8 +1916,8 @@ async function genPersonImage() {
   if (!currentPerson) { alert('인물을 먼저 검색해주세요!'); return; }
   const name = currentPerson.name;
   const era = currentPerson.era || '';
-  const prompt = currentPerson.mode === 'event'
-    ? `${name}, ${era}, 역사적 사건의 장면 묘사 (특정 인물 얼굴 클로즈업이 아닌 상황 전체를 보여주는 그림)`
+  const prompt = selImageSubjectVal === 'scene'
+    ? `${name}, ${era}, 역사적 사건/장면 묘사 (특정 인물 얼굴 클로즈업이 아닌 상황 전체를 보여주는 그림)`
     : `${name} 역사 인물, ${era}, 역사적 초상화`;
 
   document.getElementById('person-gen-loading').style.display = 'block';
