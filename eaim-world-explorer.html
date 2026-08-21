@@ -664,12 +664,14 @@ async function pushSubmission(kind, title, content){
   }catch(e){ console.warn('제출 저장 실패(무시 가능):', e); }
 }
 
-async function callGemini(prompt,maxTokens=1000){
+async function callGemini(prompt,maxTokens=1000,jsonMode=false){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
+  const generationConfig={maxOutputTokens:maxTokens,temperature:0.7,thinkingConfig:{thinkingBudget:0}};
+  if(jsonMode) generationConfig.responseMimeType='application/json';
   const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.7}})
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig})
   });
   const d=await r.json();
   if(d.error)throw new Error(d.error.message);
@@ -685,7 +687,7 @@ async function callGeminiSearch(prompt,maxTokens=1500){
     body:JSON.stringify({
       contents:[{parts:[{text:prompt}]}],
       tools:[{google_search:{}}],
-      generationConfig:{maxOutputTokens:maxTokens,temperature:0.5}
+      generationConfig:{maxOutputTokens:maxTokens,temperature:0.5,thinkingConfig:{thinkingBudget:0}}
     })
   });
   const d=await r.json();
@@ -768,9 +770,10 @@ async function selectCountry(name){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
 
   if(key){
+    let factText = '';
     try{
       // 1단계: 검색 그라운딩으로 사실 정보(기본 정보·정치·경제·역사)를 자유 문장으로 받아옴
-      const factText = await callGeminiSearch(`중학교 사회 교과에서 배우는 나라 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤 알려주세요:
+      factText = await callGeminiSearch(`중학교 사회 교과에서 배우는 나라 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤 알려주세요:
 한국어 공식 명칭, 수도, 인구, 공용어, 주요 종교, 면적, 대륙, 정치체제(2문장), 경제수준 및 특징(2문장), 문화 특징(2문장), 역사 핵심(2문장), 한국과의 관계(2문장).
 자유로운 문장으로 답하세요.`, 1200);
 
@@ -809,7 +812,7 @@ ${factText}
     "sunoPrompt": "수노 전체 프롬프트 (영어, 전통음악 기반)"
   },
   "wikiSearch": "위키미디어 이미지 검색어 (영어)"
-}`,1500);
+}`,1500,true);
       currentCountry=parseJsonLoose(raw);
       _kws=currentCountry.keywords||[name];
       initParticles(_kws);
@@ -820,8 +823,12 @@ ${factText}
       buildMusic();
       addExplored(name);
     }catch(e){
-      console.warn('나라 정보 파싱 실패:', e);
-      currentCountry={name,nameKo:name,flag:'🌍',capital:'정보 없음',population:'',language:'',religion:'',area:'',continent:'',keywords:[name],politics:'API 키를 설정하면 정보를 볼 수 있어요.',economy:'',culture:'',history:'',koreaRelation:'',story:name+'의 중학생 이야기를 불러오지 못했어요.',music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, ethnic',sunoPrompt:'[Style: '+name+' traditional music]\n\n[Lyrics]\n...'},wikiSearch:name};
+      console.warn('나라 정보 JSON 변환 실패, 검색된 원문으로 대체:', e);
+      if(factText){
+        currentCountry={name,nameKo:name,flag:'🌍',capital:'',population:'',language:'',religion:'',area:'',continent:'',keywords:[name],politics:factText,economy:'',culture:'',history:'',koreaRelation:'',story:factText,music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, ethnic',sunoPrompt:'[Style: '+name+' traditional music]\n\n[Lyrics]\n...'},wikiSearch:name};
+      } else {
+        currentCountry={name,nameKo:name,flag:'🌍',capital:'정보를 불러오지 못했어요',population:'',language:'',religion:'',area:'',continent:'',keywords:[name],politics:'정보를 불러오지 못했어요. 다시 시도해보세요.',economy:'',culture:'',history:'',koreaRelation:'',story:name+'의 중학생 이야기를 불러오지 못했어요.',music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, ethnic',sunoPrompt:'[Style: '+name+' traditional music]\n\n[Lyrics]\n...'},wikiSearch:name};
+      }
       buildCountryCard();loadCountryImgs(name);buildExplore();buildStory();buildMusic();addExplored(name);
     }
   } else {
