@@ -304,7 +304,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 <!-- 기분 체크 모달 (이름 입력 후, 본 화면 진입 전) -->
 <div id="mood-check" class="ov" style="display:none">
   <div class="mb">
-    <div style="font-size:2.4rem;margin-bottom:10px">💛</div>
+    <img src="muto.png" alt="뮤토" style="width:96px;margin:0 auto 10px;display:block">
     <h2 style="margin-bottom:6px">오늘 기분이 어때요?</h2>
     <p style="margin-bottom:16px">신문 만들기 전에 잠깐, 마음부터 살펴봐요</p>
     <div id="mood-pick" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">
@@ -315,6 +315,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
       <button class="btn bg2" onclick="pickMood('down')" style="flex:1;min-width:70px">😔<br><span style="font-size:.72rem">속상해요</span></button>
     </div>
     <div id="mood-msg" style="display:none;background:var(--paper2);border-radius:9px;padding:14px;margin-bottom:14px;font-size:.86rem;color:var(--ink2);line-height:1.7;text-align:left"></div>
+    <div id="mood-speak-status" style="display:none;font-size:.72rem;color:var(--ink3);margin-bottom:10px">🔊 뮤토가 말하는 중...</div>
     <button id="mood-continue-btn" class="btn bp bfl" style="display:none" onclick="continueAfterMood()">📰 신문 만들러 가기 →</button>
   </div>
 </div>
@@ -920,9 +921,69 @@ const MOOD_MESSAGES = {
   down: '마음이 힘든 날이었군요. 괜찮아요, 그런 날도 있는 거예요. 오늘은 잠깐이라도 다른 이야기 속에서 쉬어가요. 힘들 땐 선생님이나 주변 사람에게 이야기하는 것도 큰 도움이 돼요 💛',
 };
 function pickMood(mood){
-  document.getElementById('mood-msg').textContent = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
+  const msg = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
+  document.getElementById('mood-msg').textContent = msg;
   document.getElementById('mood-msg').style.display = 'block';
   document.getElementById('mood-continue-btn').style.display = 'flex';
+  speakMuto(msg);
+}
+
+/** Gemini TTS로 뮤토 목소리 생성해서 재생 (실패해도 조용히 넘어감 — 텍스트는 이미 화면에 보이므로) */
+async function speakMuto(text){
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if(!key) return;
+  const statusEl = document.getElementById('mood-speak-status');
+  if(statusEl){ statusEl.style.display='block'; statusEl.textContent='🔊 뮤토가 말하는 중...'; }
+  try{
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key='+key,{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        contents: [{ parts: [{ text }] }],
+        generationConfig: {
+          responseModalities: ['AUDIO'],
+          speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } }
+        }
+      })
+    });
+    const d = await r.json();
+    const part = d.candidates?.[0]?.content?.parts?.[0];
+    const inline = part?.inlineData || part?.inline_data;
+    if(!inline){ if(statusEl) statusEl.style.display='none'; return; }
+    let rate = 24000;
+    const mt = inline.mimeType || inline.mime_type || '';
+    const m = mt.match(/rate=(\d+)/);
+    if(m) rate = parseInt(m[1],10);
+    const wavBlob = pcmBase64ToWavBlob(inline.data, rate);
+    const url = URL.createObjectURL(wavBlob);
+    const audio = new Audio(url);
+    audio.onended = () => { if(statusEl) statusEl.style.display='none'; URL.revokeObjectURL(url); };
+    audio.onerror = () => { if(statusEl) statusEl.style.display='none'; };
+    await audio.play().catch(()=>{ if(statusEl) statusEl.style.display='none'; });
+  }catch(e){
+    console.warn('뮤토 음성 생성 실패(무시 가능):', e);
+    if(statusEl) statusEl.style.display='none';
+  }
+}
+
+/** Gemini TTS가 반환하는 16bit PCM(raw)을 브라우저에서 재생 가능한 WAV Blob으로 변환 */
+function pcmBase64ToWavBlob(base64pcm, sampleRate){
+  const binary = atob(base64pcm);
+  const len = binary.length;
+  const pcmBytes = new Uint8Array(len);
+  for(let i=0;i<len;i++) pcmBytes[i] = binary.charCodeAt(i);
+  const numChannels=1, bitsPerSample=16;
+  const blockAlign = numChannels*bitsPerSample/8;
+  const byteRate = sampleRate*blockAlign;
+  const header = new ArrayBuffer(44);
+  const view = new DataView(header);
+  const writeStr=(off,str)=>{for(let i=0;i<str.length;i++)view.setUint8(off+i,str.charCodeAt(i));};
+  writeStr(0,'RIFF'); view.setUint32(4,36+len,true); writeStr(8,'WAVE');
+  writeStr(12,'fmt '); view.setUint32(16,16,true); view.setUint16(20,1,true);
+  view.setUint16(22,numChannels,true); view.setUint32(24,sampleRate,true);
+  view.setUint32(28,byteRate,true); view.setUint16(32,blockAlign,true);
+  view.setUint16(34,bitsPerSample,true);
+  writeStr(36,'data'); view.setUint32(40,len,true);
+  return new Blob([header, pcmBytes], {type:'audio/wav'});
 }
 function showMoodCheck(){
   document.getElementById('mood-msg').style.display = 'none';
