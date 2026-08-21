@@ -281,6 +281,8 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
       <button onclick="showCatTerms('환경',this)" class="cat-tab">🌱 환경</button>
       <button onclick="showCatTerms('국제',this)" class="cat-tab">🌐 국제</button>
       <button onclick="showCatTerms('문화',this)" class="cat-tab">🎨 문화</button>
+      <button onclick="showCatTerms('한국사',this)" class="cat-tab">📜 한국사</button>
+      <button onclick="showCatTerms('세계사',this)" class="cat-tab">🌍 세계사</button>
     </div>
     <div id="term-chip-wrap" class="term-chips"></div>
     <div style="display:flex;gap:8px;margin-top:8px">
@@ -454,6 +456,8 @@ const ALL_TERMS = {
   '환경': ['기후변화','지속가능발전','탄소중립','신재생에너지','해수면상승','온실가스','생물다양성','수자원','자원순환','산림파괴','에너지전환','미세먼지'],
   '국제': ['UN','국제기구','난민','외교','국제분쟁','평화협정','국제무역','G20','경제제재','ODA','WTO','WHO'],
   '문화': ['문화다양성','한류','대중문화','문화유산','디지털문화','예술','문해력','문화상대주의','문화교류','문화산업','전통문화','세계시민의식'],
+  '한국사': ['이순신','세종대왕','유관순','광개토대왕','신사임당','안중근','장영실','김구','임진왜란','3.1운동','병자호란','동학농민운동'],
+  '세계사': ['콜럼버스','나폴레옹','진시황','알렉산더대왕','카이사르','마틴루터킹','마하트마 간디','링컨','프랑스혁명','산업혁명','제1차 세계대전','제2차 세계대전'],
 };
 
 const TERM_DEFS = {
@@ -529,6 +533,30 @@ const TERM_DEFS = {
   '문화산업':'문화 콘텐츠를 상업적으로 생산·유통하는 산업',
   '전통문화':'오랫동안 전해 내려오는 고유한 문화',
   '세계시민의식':'세계를 하나의 공동체로 생각하는 의식',
+  '이순신':'조선시대 삼도수군통제사로 한산도·명량·노량 등 주요 해전에서 왜군을 물리친 명장',
+  '세종대왕':'조선 4대 왕으로 훈민정음을 창제하고 과학·문화·국방 등 여러 분야에서 큰 업적을 남긴 임금',
+  '유관순':'3.1운동 당시 아우내 장터 만세운동을 이끈 독립운동가',
+  '광개토대왕':'고구려 19대 왕으로 만주와 한반도 북부까지 영토를 크게 넓힌 정복군주',
+  '신사임당':'조선시대의 화가이자 문인으로 뛰어난 그림과 글씨를 남긴 여성 예술가',
+  '안중근':'하얼빈에서 이토 히로부미를 저격한 독립운동가',
+  '장영실':'조선시대 과학자로 자격루·측우기 등 여러 과학 기구를 발명함',
+  '김구':'대한민국 임시정부를 이끈 독립운동가이자 정치가',
+  '임진왜란':'1592년 일본이 조선을 침략해 일어난 전쟁으로 이순신 장군의 활약으로 극복함',
+  '3.1운동':'1919년 3월 1일 일제강점기에 일어난 전국적인 독립운동',
+  '병자호란':'1636년 청나라가 조선을 침략한 전쟁으로 인조가 삼전도에서 항복함',
+  '동학농민운동':'1894년 동학 교도와 농민들이 부패한 정치와 외세에 맞서 일으킨 농민운동',
+  '콜럼버스':'1492년 아메리카 대륙에 도달한 탐험가',
+  '나폴레옹':'프랑스 혁명 이후 황제에 올라 유럽 대부분을 정복했던 군사 지도자',
+  '진시황':'중국을 최초로 통일하고 만리장성을 건설한 진나라의 황제',
+  '알렉산더대왕':'그리스에서 인도까지 이어지는 대제국을 건설한 마케도니아의 왕',
+  '카이사르':'로마 공화정 말기의 정치가이자 장군으로 로마 제국의 기틀을 마련함',
+  '마틴루터킹':'비폭력 저항으로 미국의 흑인 인권운동을 이끈 지도자',
+  '마하트마 간디':'비폭력 저항운동으로 인도의 독립을 이끈 지도자',
+  '링컨':'미국의 16대 대통령으로 노예제를 폐지함',
+  '프랑스혁명':'1789년 자유·평등·박애를 내세우며 절대왕정을 무너뜨린 시민혁명',
+  '산업혁명':'18세기 후반 영국에서 시작된 기계화로 생산방식이 크게 바뀐 변화',
+  '제1차 세계대전':'1914년부터 1918년까지 유럽을 중심으로 벌어진 세계 전쟁',
+  '제2차 세계대전':'1939년부터 1945년까지 벌어진 인류 역사상 가장 큰 규모의 전쟁',
 };
 
 function initParticles(){
@@ -817,7 +845,7 @@ async function callGemini(prompt, maxTokens=600){
   if(!key) throw new Error('NO_KEY');
   const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
     method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8}})
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8,thinkingConfig:{thinkingBudget:0}}})
   });
   const d = await r.json();
   if(d.error) throw new Error(d.error.message);
