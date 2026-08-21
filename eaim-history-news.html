@@ -626,7 +626,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
           <img id="manual-img-preview" style="display:none;width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--border);margin-top:8px">
         </div>
       </div>
-      <button onclick="addManualArticle()" class="btn bgold bfl" style="margin-top:14px;font-size:.92rem;padding:12px">
+      <button onclick="addManualArticle()" id="manual-save-btn" class="btn bgold bfl" style="margin-top:14px;font-size:.92rem;padding:12px">
         📰 신문에 추가!
       </button>
     </div>
@@ -1159,10 +1159,11 @@ async function searchPerson(){
   }
 
   if(key){
+    let factText = '';
     try{
       const isEvent = searchMode === 'event';
       // 1단계: 검색 그라운딩으로 사실 정보를 자유 문장으로 받아옴 (JSON을 강요하면 검색 결과 설명이 섞여 파싱이 깨지므로)
-      const factText = isEvent
+      factText = isEvent
         ? await callGeminiSearch(`한국 역사 사건 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤,
 중학생 눈높이로 알려주세요: 시대/발생 연도, 이 사건과 관련된 대표 인물이나 직책,
 설명(3~4문장), 사건의 배경·전개·결과를 각각 한 줄씩 요약한 핵심 포인트 3가지, 관련 키워드 6~8개, 신문 기사 형식 요약(3~4문장, 격식체).
@@ -1197,15 +1198,20 @@ ${factText}
   "debateTopic": "논쟁의 주제를 한 문장으로 (논쟁이 없으면 빈 문자열)",
   "debateView1": "첫 번째 관점 (2-3문장, 논쟁 없으면 빈 문자열)",
   "debateView2": "두 번째 관점 (2-3문장, 논쟁 없으면 빈 문자열)"
-}`,900,true);
+}`,1500,true);
       currentPerson=parseJsonLoose(raw);
       currentPerson.mode = searchMode;
       initParticles(currentPerson.keywords||defaultKws);
       renderEraKeywords(currentPerson.keywords||defaultKws);
       buildPersonCard();
     }catch(e){
-      console.warn('인물 정보 파싱 실패:', e);
-      currentPerson={name,era:'',birth:'',title:'',desc:name+'에 대한 정보를 불러오지 못했어요.',achievements:[],keywords:defaultKws,article:'',mode:searchMode};
+      console.warn('인물 정보 JSON 변환 실패, 검색된 원문으로 대체:', e);
+      // JSON 변환은 실패해도, 1단계에서 검색한 원문(factText)이 있으면 그걸 그대로 살려서 신문에 쓸 내용이 아예 없는 최악의 상황을 막음
+      if(factText){
+        currentPerson={name,era:'',birth:'',title:'',desc:factText,achievements:[],keywords:defaultKws,article:factText,mode:searchMode};
+      } else {
+        currentPerson={name,era:'',birth:'',title:'',desc:name+'에 대한 정보를 불러오지 못했어요. 다시 시도해보세요.',achievements:[],keywords:defaultKws,article:'',mode:searchMode};
+      }
       renderEraKeywords(defaultKws);
       buildPersonCard();
     }
@@ -1342,6 +1348,7 @@ function renderArticleList(){
         <div style="font-size:.72rem;color:var(--ink3)">${art.era}</div>
         <div style="font-size:.78rem;color:var(--ink2);margin-top:4px;line-height:1.5">${art.desc.substring(0,60)}...</div>
       </div>
+      <button class="article-del" onclick="editArticle(${i})" title="수정" style="margin-right:2px">✏️</button>
       <button class="article-del" onclick="removeArticle(${i})">🗑️</button>`;
     el.appendChild(div);
   });
@@ -1349,6 +1356,8 @@ function renderArticleList(){
 
 function removeArticle(i){
   articles.splice(i,1);
+  if(editingArticleIndex===i) editingArticleIndex=-1;
+  else if(editingArticleIndex>i) editingArticleIndex--;
   renderArticleList();
   buildNewspaper();
 }
@@ -1582,6 +1591,7 @@ function sT(n){
 }
 
 let manualImgUrl = '';
+let editingArticleIndex = -1; // -1이면 새로 추가, 0 이상이면 그 인덱스를 수정 중
 
 function switchInputTab(tab) {
   document.getElementById('input-ai').style.display = tab==='ai' ? 'block' : 'none';
@@ -1598,7 +1608,29 @@ function setManualImg(input) {
   prev.src = manualImgUrl; prev.style.display = 'block';
 }
 
-// ══ 직접 입력한 기사도 교실 서버로 제출 ══
+// ══ 기존 기사 수정하기: 직접입력 탭을 그 기사 내용으로 채워서 열어줌 ══
+function editArticle(i){
+  const art = articles[i];
+  editingArticleIndex = i;
+  document.getElementById('manual-name').value = art.name || '';
+  document.getElementById('manual-era').value = art.era || '';
+  document.getElementById('manual-desc').value = art.article || art.desc || '';
+  document.getElementById('manual-achievements').value = (art.achievements || []).join('\n');
+  manualImgUrl = art.imgUrl || '';
+  if (manualImgUrl) {
+    document.getElementById('manual-img-name').textContent = '기존 이미지 유지 중';
+    const prev = document.getElementById('manual-img-preview');
+    prev.src = manualImgUrl; prev.style.display = 'block';
+  } else {
+    document.getElementById('manual-img-name').textContent = '선택 없음';
+    document.getElementById('manual-img-preview').style.display = 'none';
+  }
+  switchInputTab('manual');
+  document.getElementById('manual-save-btn').textContent = `✏️ "${art.name}" 수정 완료!`;
+  document.getElementById('manual-name').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ══ 직접 입력한 기사도 교실 서버로 제출 (새로 추가 / 기존 수정 둘 다 처리) ══
 function addManualArticle() {
   const name = document.getElementById('manual-name').value.trim();
   const era  = document.getElementById('manual-era').value.trim();
@@ -1609,13 +1641,20 @@ function addManualArticle() {
   if (!desc) { alert('기사 내용을 입력해주세요!'); return; }
 
   const achievements = achRaw ? achRaw.split('\n').map(s=>s.trim()).filter(Boolean) : [];
-
-  articles.push({
+  const newArt = {
     name, era, desc,
     article: desc,
     achievements,
     imgUrl: manualImgUrl || '',
-  });
+  };
+
+  const isEditing = editingArticleIndex >= 0;
+  if (isEditing) {
+    // 기존 값 유지할 필드(mode, debate 관련)는 살려두고 나머지만 덮어씀
+    articles[editingArticleIndex] = { ...articles[editingArticleIndex], ...newArt };
+  } else {
+    articles.push(newArt);
+  }
 
   renderArticleList();
   pushSubmission('역사인물기사', name, desc);
@@ -1626,8 +1665,14 @@ function addManualArticle() {
   manualImgUrl = '';
   document.getElementById('manual-img-name').textContent = '선택 없음';
   document.getElementById('manual-img-preview').style.display = 'none';
+  document.getElementById('manual-save-btn').textContent = '📰 신문에 추가!';
+  editingArticleIndex = -1;
 
-  alert(`"${name}"이(가) 신문에 추가됐어요! 📰\n총 ${articles.length}개의 기사가 있어요.\n\n"👀 지금 바로 신문 미리보기" 버튼을 눌러서 확인해보세요!`);
+  if (isEditing) {
+    alert(`"${name}" 기사가 수정됐어요! 📝`);
+  } else {
+    alert(`"${name}"이(가) 신문에 추가됐어요! 📰\n총 ${articles.length}개의 기사가 있어요.\n\n"👀 지금 바로 신문 미리보기" 버튼을 눌러서 확인해보세요!`);
+  }
 }
 
 
