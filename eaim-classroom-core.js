@@ -38,7 +38,9 @@ export const db = getFirestore(app);
 // ⚠️ 공용 컴퓨터 보호용: 로그인 상태를 "브라우저 세션"에만 저장합니다.
 // 새로고침/탭 재열기에는 로그인이 유지되지만, 브라우저를 완전히 종료하면
 // 자동으로 로그아웃돼요 (다음 사람이 그대로 이어서 쓰는 걸 방지).
-setPersistence(auth, browserSessionPersistence).catch((e) => {
+// 이 설정이 끝나기 전에 로그인/입장을 시도하면 실패할 수 있으므로,
+// teacherLogin()과 studentEnter()는 아래 Promise가 끝날 때까지 기다립니다.
+const persistenceReady = setPersistence(auth, browserSessionPersistence).catch((e) => {
   console.warn('로그인 지속성 설정 실패(기본값으로 동작):', e);
 });
 
@@ -47,7 +49,8 @@ setPersistence(auth, browserSessionPersistence).catch((e) => {
 const APP_TYPE = () => window.EAIM_APP_TYPE || 'unknown';
 
 /* ════════ 교사 인증 ════════ */
-export function teacherLogin() {
+export async function teacherLogin() {
+  await persistenceReady;
   return signInWithPopup(auth, new GoogleAuthProvider());
 }
 export function teacherLogout() {
@@ -59,6 +62,7 @@ export function onTeacherAuthChange(cb) {
 
 /* ════════ 학생 익명 입장 ════════ */
 export async function studentEnter() {
+  await persistenceReady;
   if (!auth.currentUser) await signInAnonymously(auth);
   return auth.currentUser;
 }
