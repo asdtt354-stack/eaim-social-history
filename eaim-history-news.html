@@ -353,14 +353,23 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
   </div>
 
   <div class="cd">
-    <div class="ct">🏛️ 인물 / 사건 입력</div>
-    <input type="text" id="person-input" class="ni" placeholder="예: 이순신, 세종대왕, 임진왜란, 3.1운동..." style="margin-bottom:10px" onkeydown="if(event.key==='Enter')searchPerson()">
-    <div class="hint">💡 인물 이름이나 역사적 사건을 입력하면 AI가 설명하고 관련 이미지를 찾아드려요!</div>
+    <div class="ct">🔀 무엇을 탐구할까요?</div>
+    <div style="display:flex;gap:8px">
+      <button id="mode-person-btn" onclick="setSearchMode('person',this)" class="btn bp" style="flex:1">👤 인물</button>
+      <button id="mode-event-btn" onclick="setSearchMode('event',this)" class="btn bg2" style="flex:1">📜 사건</button>
+    </div>
+    <div class="hint" style="margin-top:8px" id="mode-hint">👤 인물 모드: 초상화 그림 + 업적 중심으로 정리돼요</div>
+  </div>
+
+  <div class="cd">
+    <div class="ct" id="input-label">🏛️ 인물 입력</div>
+    <input type="text" id="person-input" class="ni" placeholder="예: 이순신, 세종대왕..." style="margin-bottom:10px" onkeydown="if(event.key==='Enter')searchPerson()">
+    <div class="hint" id="input-hint">💡 인물 이름을 입력하면 AI가 설명하고 관련 이미지를 찾아드려요!</div>
   </div>
 
   <div class="cd">
     <div class="ct">⚡ 빠른 선택</div>
-    <div style="display:flex;flex-wrap:wrap;gap:7px">
+    <div id="quick-select-person" style="display:flex;flex-wrap:wrap;gap:7px">
       <button onclick="quickSelect('이순신')" class="btn bg2 bsm">⚓ 이순신</button>
       <button onclick="quickSelect('세종대왕')" class="btn bg2 bsm">📖 세종대왕</button>
       <button onclick="quickSelect('유관순')" class="btn bg2 bsm">🌸 유관순</button>
@@ -370,9 +379,19 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
       <button onclick="quickSelect('장영실')" class="btn bg2 bsm">⚙️ 장영실</button>
       <button onclick="quickSelect('김구')" class="btn bg2 bsm">🇰🇷 김구</button>
     </div>
+    <div id="quick-select-event" style="display:none;flex-wrap:wrap;gap:7px">
+      <button onclick="quickSelect('임진왜란')" class="btn bg2 bsm">⚔️ 임진왜란</button>
+      <button onclick="quickSelect('3.1운동')" class="btn bg2 bsm">✊ 3.1운동</button>
+      <button onclick="quickSelect('갑오개혁')" class="btn bg2 bsm">📜 갑오개혁</button>
+      <button onclick="quickSelect('병자호란')" class="btn bg2 bsm">🛡️ 병자호란</button>
+      <button onclick="quickSelect('동학농민운동')" class="btn bg2 bsm">🌾 동학농민운동</button>
+      <button onclick="quickSelect('6.25전쟁')" class="btn bg2 bsm">🎖️ 6.25전쟁</button>
+      <button onclick="quickSelect('훈민정음 창제')" class="btn bg2 bsm">📖 훈민정음 창제</button>
+      <button onclick="quickSelect('4.19혁명')" class="btn bg2 bsm">🗳️ 4.19혁명</button>
+    </div>
   </div>
 
-  <button onclick="searchPerson()" class="btn bp bfl" style="font-size:.95rem;padding:13px">
+  <button onclick="searchPerson()" id="search-start-btn" class="btn bp bfl" style="font-size:.95rem;padding:13px">
     🔍 인물 탐색 시작!
   </button>
 </div>
@@ -618,6 +637,9 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div id="article-list">
       <p style="color:var(--ink3);font-size:.82rem;text-align:center;padding:16px">아직 추가된 기사가 없어요.<br>Step 3에서 인물을 추가해주세요!</p>
     </div>
+    <button onclick="sT(5)" class="btn bgold bfl" style="margin-top:10px;font-size:.86rem;padding:11px">
+      👀 지금 바로 신문 미리보기 (한 명만 있어도 OK!)
+    </button>
   </div>
 
   <button onclick="sT(5)" class="btn bp bfl" style="font-size:.95rem;padding:13px">
@@ -821,6 +843,28 @@ window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
 
 <script>
 let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let searchMode = 'person'; // 'person' | 'event'
+
+function setSearchMode(mode, btn){
+  searchMode = mode;
+  document.getElementById('mode-person-btn').className = 'btn ' + (mode==='person'?'bp':'bg2');
+  document.getElementById('mode-event-btn').className = 'btn ' + (mode==='event'?'bp':'bg2');
+  document.getElementById('quick-select-person').style.display = mode==='person' ? 'flex' : 'none';
+  document.getElementById('quick-select-event').style.display = mode==='event' ? 'flex' : 'none';
+  if(mode==='person'){
+    document.getElementById('input-label').textContent = '🏛️ 인물 입력';
+    document.getElementById('person-input').placeholder = '예: 이순신, 세종대왕...';
+    document.getElementById('input-hint').textContent = '💡 인물 이름을 입력하면 AI가 설명하고 관련 이미지를 찾아드려요!';
+    document.getElementById('mode-hint').textContent = '👤 인물 모드: 초상화 그림 + 업적 중심으로 정리돼요';
+    document.getElementById('search-start-btn').textContent = '🔍 인물 탐색 시작!';
+  } else {
+    document.getElementById('input-label').textContent = '📜 사건 입력';
+    document.getElementById('person-input').placeholder = '예: 임진왜란, 3.1운동...';
+    document.getElementById('input-hint').textContent = '💡 사건 이름을 입력하면 AI가 배경·전개·결과를 정리하고 관련 이미지를 찾아드려요!';
+    document.getElementById('mode-hint').textContent = '📜 사건 모드: 장면 그림 + 배경·전개·결과 중심으로 정리돼요';
+    document.getElementById('search-start-btn').textContent = '🔍 사건 탐색 시작!';
+  }
+}
 let currentPerson=null;
 let articles=[];
 let selBgImg='';
@@ -1019,12 +1063,14 @@ async function pushSubmission(kind, title, content){
   }catch(e){ console.warn('제출 저장 실패(무시 가능):', e); }
 }
 
-async function callGemini(prompt,maxTokens=1000){
+async function callGemini(prompt,maxTokens=1000,jsonMode=false){
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
   if(!key)throw new Error('NO_KEY');
+  const generationConfig={maxOutputTokens:maxTokens,temperature:0.7};
+  if(jsonMode) generationConfig.responseMimeType='application/json';
   const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.7}})
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig})
   });
   const d=await r.json();
   if(d.error)throw new Error(d.error.message);
@@ -1099,12 +1145,12 @@ function quickSelect(name){
 
 async function searchPerson(){
   const name=document.getElementById('person-input').value.trim();
-  if(!name){alert('인물이나 사건을 입력해주세요!');return;}
+  if(!name){alert(searchMode==='event'?'사건을 입력해주세요!':'인물을 입력해주세요!');return;}
   sT(2);
 
   const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
 
-  const defaultKws=[name,'역사','조선','한국','전통','문화','역사적','인물'];
+  const defaultKws=[name,'역사','조선','한국','전통','문화','역사적',searchMode==='event'?'사건':'인물'];
   initParticles(defaultKws);
 
   if(document.getElementById('bg-wiki-search')) {
@@ -1114,11 +1160,23 @@ async function searchPerson(){
 
   if(key){
     try{
+      const isEvent = searchMode === 'event';
       // 1단계: 검색 그라운딩으로 사실 정보를 자유 문장으로 받아옴 (JSON을 강요하면 검색 결과 설명이 섞여 파싱이 깨지므로)
-      const factText = await callGeminiSearch(`한국 역사 인물/사건 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤,
-중학생 눈높이로 알려주세요: 시대(예: 조선시대 중기, 1392-1910), 생몰년 또는 발생 연도, 직책/별칭,
+      const factText = isEvent
+        ? await callGeminiSearch(`한국 역사 사건 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤,
+중학생 눈높이로 알려주세요: 시대/발생 연도, 이 사건과 관련된 대표 인물이나 직책,
+설명(3~4문장), 사건의 배경·전개·결과를 각각 한 줄씩 요약한 핵심 포인트 3가지, 관련 키워드 6~8개, 신문 기사 형식 요약(3~4문장, 격식체).
+그리고 이 사건에 대해 역사학자들 사이에 실제로 존재하는 평가나 해석의 차이(논쟁거리)가 있다면,
+한쪽에 치우치지 않게 서로 다른 두 관점을 균형 있게 소개해주세요(중학생이 스스로 생각해볼 수 있도록 유도하는 톤으로).
+논쟁거리가 뚜렷하지 않으면 "이 사건에 대해서는 큰 논쟁이 없습니다"라고 솔직히 답하세요.
+자유로운 문장으로 답하세요.`, 1100)
+        : await callGeminiSearch(`한국 역사 인물 "${name}"에 대해 검색해서 정확한 사실을 확인한 뒤,
+중학생 눈높이로 알려주세요: 시대(예: 조선시대 중기, 1392-1910), 생몰년, 직책/별칭,
 설명(3~4문장), 주요 업적 3가지, 관련 키워드 6~8개, 신문 기사 형식 요약(3~4문장, 격식체).
-자유로운 문장으로 답하세요.`, 900);
+그리고 이 인물에 대해 역사학자들 사이에 실제로 존재하는 평가나 해석의 차이(논쟁거리)가 있다면,
+한쪽에 치우치지 않게 서로 다른 두 관점을 균형 있게 소개해주세요(중학생이 스스로 생각해볼 수 있도록 유도하는 톤으로).
+논쟁거리가 뚜렷하지 않은 인물이면 "이 인물에 대해서는 큰 논쟁이 없습니다"라고 솔직히 답하세요.
+자유로운 문장으로 답하세요.`, 1100);
 
       // 2단계: 위 자료를 검색 없이 순수 JSON으로만 정리 (이 단계는 형식을 잘 지킴)
       const raw=await callGemini(`아래 자료를 JSON으로 정리해주세요. 다른 텍스트 없이 순수 JSON만 출력하세요.
@@ -1128,22 +1186,26 @@ ${factText}
 
 [JSON 형식]
 {
-  "name": "인물/사건명",
+  "name": "${isEvent?'사건명':'인물명'}",
   "era": "시대",
-  "birth": "생몰년 또는 발생 연도",
-  "title": "직책/별칭",
-  "desc": "인물/사건 설명 (3-4문장, 중학생 눈높이)",
-  "achievements": ["업적1","업적2","업적3"],
+  "birth": "${isEvent?'발생 연도':'생몰년'}",
+  "title": "${isEvent?'관련 대표 인물/직책':'직책/별칭'}",
+  "desc": "설명 (3-4문장, 중학생 눈높이)",
+  "achievements": ["${isEvent?'배경':'업적1'}","${isEvent?'전개':'업적2'}","${isEvent?'결과':'업적3'}"],
   "keywords": ["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],
-  "article": "신문 기사 형식 본문 (3-4문장, 격식체)"
-}`,800);
+  "article": "신문 기사 형식 본문 (3-4문장, 격식체)",
+  "debateTopic": "논쟁의 주제를 한 문장으로 (논쟁이 없으면 빈 문자열)",
+  "debateView1": "첫 번째 관점 (2-3문장, 논쟁 없으면 빈 문자열)",
+  "debateView2": "두 번째 관점 (2-3문장, 논쟁 없으면 빈 문자열)"
+}`,900,true);
       currentPerson=parseJsonLoose(raw);
+      currentPerson.mode = searchMode;
       initParticles(currentPerson.keywords||defaultKws);
       renderEraKeywords(currentPerson.keywords||defaultKws);
       buildPersonCard();
     }catch(e){
       console.warn('인물 정보 파싱 실패:', e);
-      currentPerson={name,era:'',birth:'',title:'',desc:name+'에 대한 정보를 불러오지 못했어요.',achievements:[],keywords:defaultKws,article:''};
+      currentPerson={name,era:'',birth:'',title:'',desc:name+'에 대한 정보를 불러오지 못했어요.',achievements:[],keywords:defaultKws,article:'',mode:searchMode};
       renderEraKeywords(defaultKws);
       buildPersonCard();
     }
@@ -1184,9 +1246,18 @@ function buildPersonCard(){
       </div>
       ${p.achievements?.length?`
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);position:relative;z-index:1">
-        <div style="font-size:.7rem;color:rgba(200,148,10,.7);font-weight:700;margin-bottom:7px;letter-spacing:.08em">주요 업적</div>
+        <div style="font-size:.7rem;color:rgba(200,148,10,.7);font-weight:700;margin-bottom:7px;letter-spacing:.08em">${p.mode==='event'?'배경 · 전개 · 결과':'주요 업적'}</div>
         <div style="display:flex;flex-wrap:wrap;gap:6px">
           ${p.achievements.map(a=>`<span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:4px 10px;font-size:.75rem;color:rgba(255,255,255,.85)">${a}</span>`).join('')}
+        </div>
+      </div>`:''}
+      ${p.debateTopic?`
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);position:relative;z-index:1">
+        <div style="font-size:.7rem;color:rgba(200,148,10,.7);font-weight:700;margin-bottom:7px;letter-spacing:.08em">🤔 생각해볼 논쟁거리</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.9);font-weight:700;margin-bottom:8px">${p.debateTopic}</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${p.debateView1?`<div style="background:rgba(255,255,255,.08);border-left:3px solid rgba(200,148,10,.6);border-radius:6px;padding:8px 10px;font-size:.76rem;color:rgba(255,255,255,.85);line-height:1.6"><strong style="color:var(--gold)">관점 A</strong> · ${p.debateView1}</div>`:''}
+          ${p.debateView2?`<div style="background:rgba(255,255,255,.08);border-left:3px solid rgba(56,189,248,.6);border-radius:6px;padding:8px 10px;font-size:.76rem;color:rgba(255,255,255,.85);line-height:1.6"><strong style="color:#38BDF8">관점 B</strong> · ${p.debateView2}</div>`:''}
         </div>
       </div>`:''}
     </div>`;
@@ -1229,12 +1300,19 @@ function addToNewspaper(){
     article:currentPerson.article||currentPerson.desc||'',
     achievements:currentPerson.achievements||[],
     imgUrl:selPersonImg||'',
+    debateTopic:currentPerson.debateTopic||'',
+    debateView1:currentPerson.debateView1||'',
+    debateView2:currentPerson.debateView2||'',
+    mode:currentPerson.mode||'person',
   };
   articles.push(art);
   renderArticleList();
   pushSubmission('역사인물기사', art.name, art.article || art.desc);
-  alert(`"${art.name}"이(가) 신문에 추가됐어요! 📰`);
-  sT(4);
+  if(confirm(`"${art.name}"이(가) 신문에 추가됐어요! 📰\n\n지금 바로 신문을 미리보기 할까요?\n(취소하면 Step 4에서 신문 제목/스타일을 먼저 정할 수 있어요)`)){
+    sT(5);
+  } else {
+    sT(4);
+  }
 }
 
 function addAnotherPerson(){
@@ -1302,19 +1380,31 @@ function buildNewspaper(){
       </div>
     </div>`;
 
+  const bannerHtml = selBgImg
+    ? `<div style="width:100%;max-height:220px;overflow:hidden;border-bottom:2px solid var(--ink2)">
+         <img src="${selBgImg}" alt="시대 배경" style="width:100%;height:220px;object-fit:cover;display:block">
+       </div>`
+    : '';
+
   const artHtml=(art,showImg=true)=>`
     <div>
       <div class="np-art-era">${art.era||'역사'}</div>
       <div class="np-art-title">${art.name} — 역사의 현장</div>
       <div class="np-art-byline">특집 기자 ${stuName} | 역사 탐방팀</div>
-      ${showImg&&art.imgUrl?`<img class="np-art-img" src="${art.imgUrl}" alt="${art.name}">`:''}
+      ${art.imgUrl?`<img class="np-art-img" src="${art.imgUrl}" alt="${art.name}">`:''}
       <div class="np-art-body">${art.article||art.desc}</div>
-      ${art.achievements?.length?`<div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)"><div style="font-size:.68rem;font-weight:700;color:var(--ink3);margin-bottom:4px">■ 주요 업적</div>${art.achievements.map(a=>`<div style="font-size:.73rem;color:var(--ink2)">· ${a}</div>`).join('')}</div>`:''}
+      ${art.achievements?.length?`<div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)"><div style="font-size:.68rem;font-weight:700;color:var(--ink3);margin-bottom:4px">■ ${art.mode==='event'?'배경·전개·결과':'주요 업적'}</div>${art.achievements.map(a=>`<div style="font-size:.73rem;color:var(--ink2)">· ${a}</div>`).join('')}</div>`:''}
+      ${art.debateTopic?`<div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)">
+        <div style="font-size:.68rem;font-weight:700;color:var(--accent);margin-bottom:4px">🤔 생각해볼 논쟁거리 — ${art.debateTopic}</div>
+        ${art.debateView1?`<div style="font-size:.72rem;color:var(--ink2);line-height:1.6;margin-bottom:3px"><strong>관점 A</strong> · ${art.debateView1}</div>`:''}
+        ${art.debateView2?`<div style="font-size:.72rem;color:var(--ink2);line-height:1.6"><strong>관점 B</strong> · ${art.debateView2}</div>`:''}
+      </div>`:''}
     </div>`;
 
   if(selFmtNum===1){
     html=`<div class="newspaper np-type1">
       ${headerHtml}
+      ${bannerHtml}
       <div class="np-divider"></div>
       <div class="np-body">
         <div class="np-cols">
@@ -1327,6 +1417,7 @@ function buildNewspaper(){
   } else if(selFmtNum===2){
     html=`<div class="newspaper np-type2">
       ${headerHtml}
+      ${bannerHtml}
       <div class="np-divider"></div>
       <div class="np-body">
         <div class="np-cols">
@@ -1348,6 +1439,7 @@ function buildNewspaper(){
         <div class="np-title" style="color:var(--gold);font-family:'Nanum Myeongjo',serif">◈ ${title} ◈</div>
         <div class="np-meta" style="color:rgba(200,148,10,.6)">${date} | ${stuName} 편찬</div>
       </div>
+      ${bannerHtml}
       <div class="np-body">
         <div style="text-align:center;margin-bottom:16px;font-size:.8rem;color:var(--ink3);letter-spacing:.15em">— 역사의 한 페이지를 기록하다 —</div>
         <div class="np-cols">
@@ -1372,6 +1464,7 @@ function buildNewspaper(){
         <div class="np-title">${title}</div>
         <div class="np-meta">${date} | ${stuName}</div>
       </div>
+      ${bannerHtml}
       <div class="np-body" style="padding:0">
         <div class="np-cols">
           ${articles.length>0?`
@@ -1534,7 +1627,7 @@ function addManualArticle() {
   document.getElementById('manual-img-name').textContent = '선택 없음';
   document.getElementById('manual-img-preview').style.display = 'none';
 
-  alert(`"${name}"이(가) 신문에 추가됐어요! 📰\n총 ${articles.length}개의 기사가 있어요.`);
+  alert(`"${name}"이(가) 신문에 추가됐어요! 📰\n총 ${articles.length}개의 기사가 있어요.\n\n"👀 지금 바로 신문 미리보기" 버튼을 눌러서 확인해보세요!`);
 }
 
 
@@ -1749,7 +1842,9 @@ async function genPersonImage() {
   if (!currentPerson) { alert('인물을 먼저 검색해주세요!'); return; }
   const name = currentPerson.name;
   const era = currentPerson.era || '';
-  const prompt = `${name} 역사 인물, ${era}, 역사적 초상화`;
+  const prompt = currentPerson.mode === 'event'
+    ? `${name}, ${era}, 역사적 사건의 장면 묘사 (특정 인물 얼굴 클로즈업이 아닌 상황 전체를 보여주는 그림)`
+    : `${name} 역사 인물, ${era}, 역사적 초상화`;
 
   document.getElementById('person-gen-loading').style.display = 'block';
   document.getElementById('person-generated').style.display = 'none';
