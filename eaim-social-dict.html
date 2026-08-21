@@ -582,11 +582,29 @@ const MOOD_MESSAGES = {
   tired: '피곤한 날엔 무리하지 않아도 돼요. 오늘은 딱 할 수 있는 만큼만 해봐요. 천천히 해도 충분해요 🌙',
   down: '마음이 힘든 날이었군요. 괜찮아요, 그런 날도 있는 거예요. 오늘은 잠깐이라도 다른 이야기 속에서 쉬어가요. 힘들 땐 선생님이나 주변 사람에게 이야기하는 것도 큰 도움이 돼요 💛',
 };
-function pickMood(mood){
-  const msg = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
-  document.getElementById('mood-msg').textContent = msg;
+const MOOD_LABELS = { great:'최고예요', good:'좋아요', normal:'그저 그래요', tired:'피곤해요', down:'속상해요' };
+
+/** AI가 그때그때 새로 만든 위로/응원 문구를 반환 (키 없거나 실패하면 고정 문구로 대체) */
+async function genMoodMessage(mood){
+  const fallback = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
+  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  if(!key) return fallback;
+  try{
+    const extra = mood==='down' ? ' 특히 오늘 마음이 힘들다고 했으니, 위로하면서 선생님이나 주변 사람에게 이야기하는 것도 좋다는 걸 자연스럽게 한 마디 덧붙여주세요.' : '';
+    const result = await callGemini(`오늘 기분이 "${MOOD_LABELS[mood]||mood}"라고 답한 중학생에게 뮤토라는 귀여운 캐릭터가 짧게 위로하거나 응원하는 말을 건네주세요. 1~2문장, 다정하고 친근한 말투, 이모지 1개 포함, 매번 다른 표현으로 새롭게 써주세요.${extra}`, 150);
+    return (result||'').trim() || fallback;
+  }catch(e){
+    console.warn('기분 메시지 생성 실패, 고정 문구로 대체:', e);
+    return fallback;
+  }
+}
+
+async function pickMood(mood){
+  document.getElementById('mood-msg').textContent = '💭 뮤토가 답을 생각하고 있어요...';
   document.getElementById('mood-msg').style.display = 'block';
   document.getElementById('mood-continue-btn').style.display = 'flex';
+  const msg = await genMoodMessage(mood);
+  document.getElementById('mood-msg').textContent = msg;
   speakMuto(msg);
 }
 
