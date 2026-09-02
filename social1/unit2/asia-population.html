@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아시아의 인구 특성과 성장 잠재력 - EAIM 사회 수업</title>
+<style>
+  :root { --main-color:#f59e0b; --bg-dark:#0a0708; --accent:#a855f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg-dark); color:#fff; font-family:'Pretendard',-apple-system,sans-serif; min-height:100vh; }
+  a { color:inherit; }
+  .topbar { position:sticky; top:0; z-index:40; background:rgba(10,7,8,0.92); backdrop-filter:blur(10px); border-bottom:1px solid #262022; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .crumb { font-size:0.78em; color:#888; } .crumb b{ color:#ccc; font-weight:600; } .crumb .sep{ margin:0 6px; color:#444; }
+  .hub-link { font-size:0.72em; color:#aaa; text-decoration:none; padding:6px 12px; border:1px solid #3a3a3c; border-radius:8px; }
+  .hub-link:hover { border-color:var(--accent); color:#fff; }
+  .hero { padding:56px 20px 30px; text-align:center; max-width:760px; margin:0 auto; }
+  .hero .eyebrow { font-size:0.74em; font-weight:800; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
+  .hero h1 { font-size:clamp(1.6em,4vw,2.3em); margin:0 0 14px; background:linear-gradient(100deg,#fff 30%,#fcd34d 60%,var(--accent) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1.3; }
+  .hero p.lead { color:#aaa; font-size:0.96em; line-height:1.7; margin:0 auto; max-width:560px; }
+  .goal-box { max-width:620px; margin:26px auto 0; text-align:left; background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.28); border-radius:14px; padding:16px 20px; }
+  .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
+  .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
+
+  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
+  .section-head h2 { margin:0; font-size:1.15em; }
+
+  .activity-wrap { max-width:700px; margin:0 auto; padding:0 20px; }
+  .scenario-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:20px 22px; text-align:center; }
+  .scenario-box .sq { font-size:0.92em; font-weight:700; margin-bottom:16px; }
+  .var-row { display:flex; flex-direction:column; gap:10px; text-align:left; }
+  .var-item { display:flex; align-items:center; gap:10px; padding:10px 14px; background:#1a1a1c; border:1.5px solid #2f2f31; border-radius:10px; font-size:0.86em; }
+  .var-item .vt { flex:1; }
+  .var-select { background:#0d0d0e; color:#ccc; border:1px solid #333; border-radius:6px; padding:4px 8px; font-size:0.8em; max-width:160px; }
+  .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
+  .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
+
+  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
+  .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
+  .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
+  .q-opts { display:flex; flex-direction:column; gap:8px; }
+  .q-opt { text-align:left; background:#1a1a1c; border:1.5px solid #2f2f31; color:#ccc; padding:10px 14px; border-radius:9px; font-size:0.85em; cursor:pointer; }
+  .q-opt.correct { border-color:#34d399; background:rgba(52,211,153,0.12); color:#a7f3d0; }
+  .q-opt.wrong { border-color:#f43f5e; background:rgba(244,63,94,0.12); color:#fda4af; }
+  .q-opt:disabled { cursor:default; }
+  .q-fb { margin-top:10px; font-size:0.82em; line-height:1.6; color:#bbb; display:none; padding-top:10px; border-top:1px dashed #2f2f31; }
+
+  .celebrate-wrap { max-width: 700px; margin: 50px auto 40px; padding: 0 20px; }
+  .celebrate-card { background: linear-gradient(135deg, rgba(245,158,11,0.14), rgba(168,85,247,0.14)); border: 1.5px solid rgba(245,158,11,0.3); border-radius: 22px; padding: 30px 26px; text-align: center; }
+  .celebrate-card .cc-emoji { font-size: 2.2em; margin-bottom: 10px; }
+  .celebrate-card h2 { margin: 0 0 8px; font-size: 1.15em; }
+  .celebrate-card p { color: #ccc; font-size: 0.85em; line-height: 1.7; margin: 0 auto 16px; max-width: 480px; }
+  .celebrate-card .go-btn { display: inline-block; background: var(--main-color); color: #2b1a02; font-weight: 800; padding: 10px 20px; border-radius: 10px; font-size: 0.84em; }
+
+  .lesson-nav { max-width:760px; margin:0 auto 60px; padding:0 20px; display:flex; justify-content:space-between; gap:12px; }
+  .nav-btn { flex:1; text-decoration:none; padding:14px 18px; border-radius:12px; border:1px solid #2a2a2c; background:#121012; color:#ccc; font-size:0.82em; }
+  .nav-btn .k { display:block; font-size:0.72em; color:#777; margin-bottom:4px; } .nav-btn .t { font-weight:800; color:#fff; }
+  .nav-btn.next { text-align:right; } .nav-btn.disabled { opacity:0.4; pointer-events:none; }
+  footer { text-align:center; padding:10px 20px 50px; color:#555; font-size:0.75em; }
+</style>
+</head>
+<body>
+<script src="../../self-check-room/shared/tracker.js"></script>
+
+  <div class="topbar">
+    <div class="crumb"><b>사회1</b><span class="sep">/</span>Ⅱ. 아시아<span class="sep">/</span><b>아시아의 인구 특성과 성장 잠재력</b></div>
+    <a class="hub-link" href="../unit2-hub.html">← 단원 목록으로</a>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Ⅱ-3</div>
+    <h1>아시아의 인구 특성과 성장 잠재력</h1>
+    <p class="lead">아시아의 인구 특성과 성장 잠재력에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
+    <div class="goal-box"><div class="label">학습 목표</div><p>아시아의 인구 특성과 성장 잠재력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
+  </section>
+
+  <div class="section-head"><div class="num">01</div><h2>인구 밀집 지역일까, 인구 희박 지역일까?</h2></div>
+  <div class="activity-wrap">
+    <div class="scenario-box">
+      <div class="sq">🧭 아래 항목들이 "인구 밀집 지역"에 가까운지, "인구 희박 지역"에 가까운지 골라보자.</div>
+      <div class="var-row" id="varRow"></div>
+      <button class="check-btn" onclick="checkVars()">✅ 확인하기</button>
+      <div class="var-fb" id="varFb"></div>
+    </div>
+  </div>
+
+  <div class="quiz-wrap">
+    <h2>스스로 확인하기</h2>
+    <div class="sub">아래 문제를 풀며 오늘 배운 내용을 점검해 보자.</div>
+    <div id="quizArea"></div>
+  </div>
+
+
+
+  <div class="lesson-nav">
+    <a class="nav-btn" href="asia-culture.html"><span class="k">← 이전 소단원</span><span class="t">아시아의 종교와 문화 다양성</span></a>
+    <a class="nav-btn next" href="asia-industry.html"><span class="k">다음 소단원</span><span class="t">아시아의 산업 특징과 변화 →</span></a>
+  </div>
+
+  <footer>EAIM 사회 수업 · 아시아</footer>
+
+<script>
+const VARS = [{"key": "v0", "label": "계절풍 기후로 벼농사가 활발한 동아시아", "correct": "인구 밀집 지역"}, {"key": "v1", "label": "건조한 사막이 넓은 중앙아시아 내륙", "correct": "인구 희박 지역"}, {"key": "v2", "label": "갠지스강 유역의 비옥한 평야(남아시아)", "correct": "인구 밀집 지역"}, {"key": "v3", "label": "험준한 고산 지대", "correct": "인구 희박 지역"}];
+function renderVars(){
+  const row = document.getElementById('varRow'); row.innerHTML='';
+  VARS.forEach(v => {
+    row.innerHTML += `
+      <div class="var-item">
+        <span class="vt">${v.label}</span>
+        <select class="var-select" data-k="${v.key}">
+          <option value="">선택</option>
+          <option value="인구 밀집 지역">인구 밀집 지역</option>
+          <option value="인구 희박 지역">인구 희박 지역</option>
+        </select>
+      </div>`;
+  });
+}
+renderVars();
+
+function checkVars(){
+  const selects = document.querySelectorAll('.var-select');
+  let allCorrect = true, allFilled = true;
+  selects.forEach(sel => {
+    const v = VARS.find(x=>x.key===sel.dataset.k);
+    if (!sel.value) allFilled = false;
+    if (sel.value !== v.correct) allCorrect = false;
+  });
+  const fb = document.getElementById('varFb');
+  if (!allFilled) { fb.textContent = '모든 항목을 선택해 주세요.'; return; }
+  fb.textContent = allCorrect
+    ? '✅ 정답입니다! 개념을 잘 구분했어요.'
+    : '❌ 다시 확인해 보자. 각 항목의 핵심 특징을 다시 살펴보자.';
+
+  if (window.EAIM) {
+    const answers = Array.from(selects).map(s => `${s.dataset.k}=${s.value}`).join(', ');
+    EAIM.logActivity('Ⅱ. 아시아', '아시아의 인구 특성과 성장 잠재력', '분류 활동', (allCorrect ? '✅ 정답' : '❌ 오답') + ' — ' + answers);
+  }
+}
+
+const QUIZ = [{"q": "아시아의 인구 특성으로 가장 알맞은 것은?", "opts": ["세계 인구의 극히 일부만 차지한다", "세계 인구의 절반 이상이 아시아에 거주한다", "인구가 전 지역에 고르게 분포한다", "인구밀도가 세계에서 가장 낮다"], "answer": 1, "fb": "아시아는 중국, 인도를 비롯한 인구 대국이 많아 세계 인구의 절반 이상이 살고 있는 대륙이에요."}, {"q": "생산가능인구(15~64세) 비중이 높아 경제 성장에 유리한 인구 구조를 무엇이라 하는가?", "opts": ["인구 절벽", "인구 보너스(인구 배당 효과)", "고령화 사회", "초저출생 사회"], "answer": 1, "fb": "인구 보너스(인구 배당 효과)는 일할 수 있는 생산가능인구 비중이 높아 노동력이 풍부하고 경제 성장에 유리한 상태를 말해요. 인도, 동남아시아 일부 국가가 여기 해당해요."}, {"q": "아시아 인구 분포에 대한 설명으로 알맞지 않은 것은?", "opts": ["동아시아와 남아시아에 인구가 밀집해 있다", "벼농사가 가능한 계절풍 기후 지역에 인구가 많다", "건조 기후 지역은 대체로 인구밀도가 낮다", "아시아 전역의 인구밀도가 모두 비슷하다"], "answer": 3, "fb": "아시아는 계절풍 기후로 벼농사가 활발한 동아시아·남아시아 일부에 인구가 밀집하고, 건조한 서남아시아·중앙아시아 내륙은 인구밀도가 낮아 지역차가 커요."}];
+function renderQuiz(){
+  const area = document.getElementById('quizArea'); area.innerHTML='';
+  QUIZ.forEach((item,qi)=>{
+    const card=document.createElement('div'); card.className='q-card';
+    const optsHtml=item.opts.map((o,oi)=>`<button class="q-opt" data-qi="${qi}" data-oi="${oi}">${o}</button>`).join('');
+    card.innerHTML=`<div class="q-text">Q${qi+1}. ${item.q}</div><div class="q-opts">${optsHtml}</div><div class="q-fb" id="fb-${qi}"></div>`;
+    area.appendChild(card);
+  });
+  let quizAnswered=0, quizScore=0;
+  area.querySelectorAll('.q-opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const qi=+btn.dataset.qi, oi=+btn.dataset.oi, item=QUIZ[qi];
+      area.querySelectorAll(`.q-opt[data-qi="${qi}"]`).forEach(s=>{
+        s.disabled=true;
+        if(+s.dataset.oi===item.answer) s.classList.add('correct');
+        else if(+s.dataset.oi===oi) s.classList.add('wrong');
+      });
+      const fb=document.getElementById(`fb-${qi}`); fb.style.display='block';
+      fb.textContent=(oi===item.answer?'✅ 정답! ':'❌ 다시 생각해 보자. ')+item.fb;
+      quizAnswered++;
+      if (oi===item.answer) quizScore++;
+      if (quizAnswered===QUIZ.length && window.EAIM) {
+        EAIM.logActivity('Ⅱ. 아시아', '아시아의 인구 특성과 성장 잠재력', '퀴즈', quizScore+'/'+QUIZ.length+' 정답');
+      }
+    });
+  });
+}
+renderQuiz();
+</script>
+</body>
+</html>
