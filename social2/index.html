@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사회2 - EAIM 사회 수업</title>
+<style>
+  :root {
+    --main-color: #f59e0b;
+    --bg-dark: #0a0708;
+    --accent: #a855f7;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-dark); color: #fff; font-family: 'Pretendard', -apple-system, sans-serif; min-height: 100vh; }
+  a { color: inherit; text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 40; background: rgba(10,7,8,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #262022; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .crumb { font-size: 0.78em; color: #888; }
+  .crumb b { color: #ccc; font-weight: 600; }
+  .hub-link { font-size: 0.72em; color: #aaa; padding: 6px 12px; border: 1px solid #3a3a3c; border-radius: 8px; }
+  .hub-link:hover { border-color: var(--accent); color: #fff; }
+
+  .hero { padding: 56px 20px 20px; text-align: center; max-width: 760px; margin: 0 auto; }
+  .hero .eyebrow { font-size: 0.74em; font-weight: 800; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  .hero h1 { font-size: clamp(2em, 5vw, 3em); margin: 0 0 14px; background: linear-gradient(100deg, #fff 25%, #fcd34d 55%, var(--accent) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lead { color: #aaa; font-size: 0.98em; line-height: 1.75; margin: 0 auto; max-width: 580px; }
+
+  .progress-shell { max-width: 620px; margin: 30px auto 0; padding: 16px 22px; background: #121012; border: 1px solid #262022; border-radius: 16px; }
+  .progress-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .progress-top .p-label { font-size: 0.82em; color: #ccc; font-weight: 700; }
+  .progress-top .p-count { font-size: 0.78em; color: #888; }
+  .progress-bar-outer { height: 9px; border-radius: 5px; background: #262022; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--accent), var(--main-color)); }
+
+  .unit-wrap { max-width: 920px; margin: 50px auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 700px) { .unit-wrap { grid-template-columns: 1fr; } }
+
+  .ucard { display: flex; gap: 16px; align-items: flex-start; background: #121012; border: 1.5px solid #262022; border-radius: 18px; padding: 20px; transition: all .2s; }
+  .ucard.ready:hover { border-color: var(--main-color); transform: translateY(-3px); }
+  .ucard .u-roman { font-size: 1.6em; font-weight: 900; color: var(--accent); flex-shrink: 0; width: 44px; text-align: center; }
+  .ucard .u-body { flex: 1; min-width: 0; }
+  .ucard .u-title { font-size: 1.02em; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .ucard .u-desc { font-size: 0.8em; color: #999; line-height: 1.6; margin-bottom: 10px; }
+  .ucard .u-badge { display: inline-block; font-size: 0.66em; font-weight: 800; padding: 3px 9px; border-radius: 6px; }
+  .ucard.ready .u-badge { color: #34d399; background: rgba(52,211,153,0.14); }
+
+  footer { text-align: center; padding: 10px 20px 50px; color: #555; font-size: 0.75em; }
+
+  .qr-modal-overlay { display:none; position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
+  .qr-modal-overlay.open { display:flex; }
+  .qr-modal-box { background:#141013; border:1.5px solid var(--main-color); border-radius:24px; padding:32px 28px; text-align:center; max-width:360px; width:100%; position:relative; }
+  .qr-modal-box .qr-close { position:absolute; top:14px; right:16px; background:none; border:none; color:#888; font-size:1.3em; cursor:pointer; }
+  .qr-modal-box .qr-title { font-size:1.1em; font-weight:900; margin-bottom:4px; }
+  .qr-modal-box .qr-sub { font-size:0.8em; color:#999; margin-bottom:20px; }
+  .qr-modal-box #qrcodeCanvas { background:#fff; padding:14px; border-radius:16px; display:inline-block; }
+  .qr-modal-box .qr-url { margin-top:18px; font-size:0.72em; color:#777; word-break:break-all; }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="crumb"><b>사회2</b></div>
+    <button class="hub-link" style="cursor:pointer" onclick="openQR()">📱 QR로 접속하기</button>
+    <a class="hub-link" href="../self-check-room/my-record.html">📋 나의 학습 기록</a>
+    <a class="hub-link" href="../self-check-room/index.html">← 처음으로</a>
+  </div>
+
+  <div class="qr-modal-overlay" id="qrOverlay" onclick="if(event.target===this) closeQR()">
+    <div class="qr-modal-box">
+      <button class="qr-close" onclick="closeQR()">✕</button>
+      <div class="qr-title">📱 QR로 접속하기</div>
+      <div class="qr-sub">학생들이 이 QR을 스캔하면 사회2 화면으로 바로 들어와요</div>
+      <div id="qrcodeCanvas"></div>
+      <div class="qr-url" id="qrUrlText"></div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">2022 개정 교육과정 기반 중등사회2</div>
+    <h1>사회2</h1>
+    <p class="lead">교과서 순서 그대로, 대단원을 하나씩 눌러 학습을 시작해 보자.</p>
+  </section>
+
+  <div class="progress-shell">
+    <div class="progress-top"><span class="p-label">전체 진행률</span><span class="p-count" id="pCount"></span></div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="pBar"></div></div>
+  </div>
+
+  <div class="unit-wrap" id="unitWrap"></div>
+
+  <footer>EAIM 사회 수업 · 사회2</footer>
+
+<script>
+const UNITS = [
+  { roman:'Ⅰ', title:'헌법과 국가기관', desc:'대통령과 행정부, 국회, 법원과 헌법재판소', href:'unit1-hub.html' },
+  { roman:'Ⅱ', title:'경제생활과 선택', desc:'합리적 선택, 안정적 경제생활, 기업가 정신', href:'unit2-hub.html' },
+  { roman:'Ⅲ', title:'시장과 가격', desc:'시장의 의미, 가격의 결정과 변동', href:'unit3-hub.html' },
+  { roman:'Ⅳ', title:'우리나라 경제와 세계화', desc:'경제 성장과 GDP, 물가와 실업, 환율', href:'unit4-hub.html' },
+  { roman:'Ⅴ', title:'국제사회와 한반도', desc:'국제 사회의 행위 주체, 분쟁, 우리나라의 국제 문제', href:'unit5-hub.html' },
+  { roman:'Ⅵ', title:'사회 변동과 사회문제', desc:'사회 변동, 사회문제, 대응 방안', href:'unit6-hub.html' },
+  { roman:'Ⅶ', title:'대한민국, 우리가 살아가는 곳', desc:'위치와 영역, 행정구역, 지역 문제', href:'unit7-hub.html' },
+  { roman:'Ⅷ', title:'우리나라의 자연환경과 인간생활', desc:'지형, 기후, 자연재해', href:'unit8-hub.html' },
+  { roman:'Ⅸ', title:'중부지역', desc:'수도권 공간 구조, 강원·충청의 변화, 지역 불균형', href:'unit9-hub.html' },
+  { roman:'Ⅹ', title:'남부지역', desc:'영·호남 공업 지역, 제주도의 변화', href:'unit10-hub.html' },
+  { roman:'Ⅺ', title:'북부지역', desc:'북부지역 특성, 접경지역, 한반도 평화', href:'unit11-hub.html' },
+  { roman:'Ⅻ', title:'지속가능한 세계와 글로벌 시민', desc:'식량·에너지 자원, 글로벌 환경, 세계 시민', href:'unit12-hub.html' },
+];
+
+function render(){
+  const wrap = document.getElementById('unitWrap');
+  wrap.innerHTML = UNITS.map(u => {
+    const inner = `
+      <div class="u-roman">${u.roman}</div>
+      <div class="u-body">
+        <div class="u-title">${u.title}</div>
+        <div class="u-desc">${u.desc}</div>
+        <span class="u-badge">학습 가능</span>
+      </div>
+    `;
+    return `<a class="ucard ready" href="${u.href}">${inner}</a>`;
+  }).join('');
+
+  document.getElementById('pCount').textContent = `${UNITS.length} / ${UNITS.length}개 단원`;
+  document.getElementById('pBar').style.width = '100%';
+}
+render();
+
+function openQR(){
+  const url = window.location.href.split('#')[0];
+  document.getElementById('qrUrlText').textContent = url;
+  const box = document.getElementById('qrcodeCanvas');
+  box.innerHTML = '';
+  new QRCode(box, { text: url, width: 220, height: 220, colorDark:'#0a0708', colorLight:'#ffffff' });
+  document.getElementById('qrOverlay').classList.add('open');
+}
+function closeQR(){
+  document.getElementById('qrOverlay').classList.remove('open');
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body>
+</html>
