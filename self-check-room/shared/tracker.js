@@ -10,6 +10,14 @@
   const NAME_KEY = 'eaim_student_name';
   const LOG_KEY = 'eaim_activity_log';
 
+  const SUBJECT_LABELS = { social1:'사회1', social2:'사회2', history1:'역사1', history2:'역사2' };
+
+  /** 현재 페이지 URL 경로에서 과목 폴더명(social1/social2/history1/history2)을 자동 인식 */
+  function detectSubject() {
+    const m = location.pathname.match(/\/(social1|social2|history1|history2)\//);
+    return m ? m[1] : 'unknown';
+  }
+
   function getStudentName() {
     let name = localStorage.getItem(NAME_KEY);
     if (!name) {
@@ -23,9 +31,12 @@
   function logActivity(unit, subunit, type, result) {
     try {
       const name = getStudentName();
+      const subject = detectSubject();
       const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
       log.push({
         name,
+        subject,
+        subjectLabel: SUBJECT_LABELS[subject] || subject,
         unit,
         subunit,
         type,
@@ -47,5 +58,5 @@
     localStorage.removeItem(LOG_KEY);
   }
 
-  window.EAIM = { getStudentName, logActivity, getAllLogs, clearAllLogs };
+  window.EAIM = { getStudentName, logActivity, getAllLogs, clearAllLogs, SUBJECT_LABELS };
 })();
