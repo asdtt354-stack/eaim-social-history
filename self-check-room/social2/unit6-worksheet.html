@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅵ단원 학습지 - 사회 셀프체크룸</title>
+<script src="../../social2/unit6/quiz-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root { --ink:#1a1a1a; --line:#ccc; --accent:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#e8e8ea; color:var(--ink); font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif; }
+
+  .control-bar { position: sticky; top:0; z-index:50; background:#111; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .control-bar .cb-left { font-size:0.82em; color:#aaa; }
+  .control-bar .cb-left a { color:#7dd3fc; text-decoration:none; margin-right:14px; }
+  .control-bar .cb-right { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .toggle-btn { border:1.5px solid #444; background:#1a1a1a; color:#ccc; padding:8px 14px; border-radius:8px; font-size:0.8em; font-weight:700; cursor:pointer; }
+  .toggle-btn.on { border-color:#f43f5e; background:rgba(244,63,94,0.2); color:#fda4af; }
+  .print-btn { border:none; background:#7c3aed; color:#fff; padding:9px 18px; border-radius:8px; font-size:0.82em; font-weight:800; cursor:pointer; }
+  .download-btn { border:none; background:#0d9488; color:#fff; padding:9px 18px; border-radius:8px; font-size:0.82em; font-weight:800; cursor:pointer; }
+  .download-btn:disabled { opacity:0.6; cursor:wait; }
+  .warn-note { font-size:0.72em; color:#fbbf24; text-align:center; padding:6px 20px; background:#1a1508; }
+
+  .sheet { max-width: 780px; margin: 30px auto 60px; background:#fff; padding: 50px 56px; box-shadow: 0 6px 30px rgba(0,0,0,0.25); }
+  .sheet-header { border-bottom: 3px solid var(--ink); padding-bottom: 14px; margin-bottom: 20px; }
+  .sheet-header h1 { margin:0; font-size:1.5em; }
+  .sheet-header .sh-sub { font-size:0.85em; color:#555; margin-top:4px; }
+  .info-row { display:flex; gap:24px; margin-top:16px; font-size:0.9em; flex-wrap:wrap; }
+  .info-row .info-item { display:flex; align-items:baseline; gap:6px; }
+  .info-item .fill-line { display:inline-block; min-width:90px; border-bottom:1px solid var(--ink); }
+
+  .instructions { margin: 20px 0 26px; font-size:0.86em; color:#333; background:#f5f5f7; border-left:3px solid var(--accent); padding:10px 14px; line-height:1.7; }
+
+  .part-title { font-size:1.1em; font-weight:900; margin:34px 0 16px; padding-bottom:6px; border-bottom:2.5px solid var(--ink); }
+
+  .section { margin-bottom: 30px; }
+  .section-title { font-size:1em; font-weight:800; border-bottom:1.5px solid #333; padding-bottom:6px; margin-bottom:14px; display:flex; justify-content:space-between; }
+  .section-title .st-page { font-weight:600; color:#777; font-size:0.8em; }
+
+  .item { margin-bottom: 18px; page-break-inside: avoid; }
+  .item .item-q { font-size:0.94em; font-weight:700; margin-bottom:8px; }
+  .item .item-q .qnum { display:inline-block; width:1.6em; }
+  .item .opts { padding-left: 1.6em; display:flex; flex-direction:column; gap:6px; }
+  .item .opt { font-size:0.9em; display:flex; align-items:baseline; gap:8px; }
+  .item .opt .circle { display:inline-block; width:1.2em; height:1.2em; border:1.4px solid #333; border-radius:50%; flex-shrink:0; }
+
+  .w-item { margin-bottom: 26px; page-break-inside: avoid; }
+  .w-item .w-topic { font-size:0.78em; font-weight:800; color:#777; margin-bottom:4px; }
+  .w-item .w-q { font-size:0.94em; font-weight:700; margin-bottom:10px; }
+  .w-lines { border-bottom:1px solid #999; height:26px; margin-bottom:2px; }
+
+  .answer-key { display:none; margin-top:8px; padding:8px 12px; background:#fef3c7; border:1px dashed #d97706; border-radius:6px; font-size:0.82em; color:#78350f; }
+  body.show-answers .answer-key { display:block; }
+  body.show-answers .opt.is-correct .circle { background:#d97706; border-color:#d97706; }
+
+  .footer-note { text-align:center; font-size:0.78em; color:#999; margin-top:40px; padding-top:16px; border-top:1px solid #eee; }
+
+  @media print {
+    body { background:#fff; }
+    .control-bar, .warn-note { display:none !important; }
+    .sheet { box-shadow:none; margin:0; max-width:none; padding: 10mm 14mm; }
+    .section, .w-item { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body id="pageBody">
+
+  <div class="control-bar">
+    <div class="cb-left"><a href="index.html">← 사회2</a><span>Ⅵ단원 인쇄용 학습지</span></div>
+    <div class="cb-right">
+      <button class="toggle-btn" id="toggleBtn" onclick="toggleAnswers()">🔑 정답 표시 (교사용)</button>
+      <button class="download-btn" id="downloadBtn" onclick="downloadPDF()">📥 PDF 다운로드</button>
+      <button class="print-btn" onclick="window.print()">🖨️ 이 화면 그대로 인쇄</button>
+    </div>
+  </div>
+  <div class="warn-note" id="warnNote" style="display:none;">⚠️ 지금 "정답 표시"가 켜져 있어요 — 학생용은 먼저 꺼서 인쇄하고, 교사 보관용만 이 상태로 인쇄하세요.</div>
+
+  <div class="sheet">
+    <div class="sheet-header">
+      <h1>Ⅵ. 사회 변동과 사회문제 — 확인 학습지</h1>
+      <div class="sh-sub">EAIM 사회 수업 · 객관식 9문항 + 서술형 3문항</div>
+      <div class="info-row">
+        <div class="info-item">반<span class="fill-line"></span></div>
+        <div class="info-item">번호<span class="fill-line"></span></div>
+        <div class="info-item">이름<span class="fill-line"></span></div>
+        <div class="info-item">날짜<span class="fill-line"></span></div>
+      </div>
+    </div>
+
+    <div class="part-title">Ⅰ. 객관식</div>
+    <div class="instructions">정답이라고 생각하는 보기 앞의 동그라미(○)를 색칠하거나 표시하세요.</div>
+    <div id="sectionsArea"></div>
+
+    <div class="part-title">Ⅱ. 서술형</div>
+    <div class="instructions">배운 내용을 떠올리며 자신의 말로 자유롭게 서술하세요.</div>
+    <div id="writtenArea"></div>
+
+    <div class="footer-note">EAIM 사회 수업 · 셀프체크룸</div>
+  </div>
+
+<script>
+const SUBUNIT_KEYS = ['socialChange','socialProblem','socialResponse'];
+
+function renderMC(){
+  const area = document.getElementById('sectionsArea');
+  area.innerHTML = '';
+  let qNum = 0;
+  SUBUNIT_KEYS.forEach(key => {
+    const sub = EAIM_QUIZ_DATA[key];
+    const section = document.createElement('div');
+    section.className = 'section';
+    section.innerHTML = `<div class="section-title"><span>${sub.label}</span></div>`;
+    sub.questions.forEach(item => {
+      qNum++;
+      const div = document.createElement('div');
+      div.className = 'item';
+      const optsHtml = item.opts.map((o,oi) => `<div class="opt ${oi===item.answer?'is-correct':''}"><span class="circle"></span><span>${o}</span></div>`).join('');
+      div.innerHTML = `
+        <div class="item-q"><span class="qnum">${qNum}.</span>${item.q}</div>
+        <div class="opts">${optsHtml}</div>
+        <div class="answer-key">✔ 정답: ${item.opts[item.answer]} — ${item.fb}</div>`;
+      section.appendChild(div);
+    });
+    area.appendChild(section);
+  });
+}
+renderMC();
+
+function renderWritten(){
+  const area = document.getElementById('writtenArea');
+  area.innerHTML = '';
+  let wNum = 0;
+  SUBUNIT_KEYS.forEach(key => {
+    const sub = EAIM_QUIZ_DATA[key];
+    const w = sub.written;
+    wNum++;
+    const div = document.createElement('div');
+    div.className = 'w-item';
+    div.innerHTML = `
+      <div class="w-topic">${sub.label}</div>
+      <div class="w-q">서${wNum}. ${w.q}</div>
+      <div class="w-lines"></div>
+      <div class="w-lines"></div>
+      <div class="answer-key">✔ 모범답안: ${w.sample}</div>`;
+    area.appendChild(div);
+  });
+}
+renderWritten();
+
+function toggleAnswers(){
+  const body = document.getElementById('pageBody');
+  const btn = document.getElementById('toggleBtn');
+  const warn = document.getElementById('warnNote');
+  body.classList.toggle('show-answers');
+  const on = body.classList.contains('show-answers');
+  btn.classList.toggle('on', on);
+  warn.style.display = on ? 'block' : 'none';
+}
+
+function downloadPDF(){
+  const btn = document.getElementById('downloadBtn');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ 준비 중...';
+
+  const sheet = document.querySelector('.sheet');
+  const withAnswers = document.getElementById('pageBody').classList.contains('show-answers');
+
+  html2canvas(sheet, { scale: 2, backgroundColor: '#ffffff', useCORS: true }).then(canvas => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210, pageHeight = 297;
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const imgData = canvas.toDataURL('image/png');
+
+    let heightLeft = imgHeight, position = 0;
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    const filename = `사회2_Ⅵ단원_학습지${withAnswers ? '_정답포함(교사용)' : ''}.pdf`;
+    pdf.save(filename);
+    btn.disabled = false;
+    btn.textContent = original;
+  }).catch(err => {
+    console.error(err);
+    alert('PDF 생성 중 문제가 발생했어요. 다시 시도해 주세요.');
+    btn.disabled = false;
+    btn.textContent = original;
+  });
+}
+</script>
+</body>
+</html>

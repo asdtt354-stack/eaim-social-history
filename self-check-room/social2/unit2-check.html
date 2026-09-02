@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ⅱ단원 확인하기 - 사회 셀프체크룸</title>
+<script src="../../social2/unit2/quiz-data.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="../shared/teacher-tracker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root { --main-color:#22d3ee; --bg-dark:#07090c; --accent:#a855f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg-dark); color:#fff; font-family:'Pretendard',-apple-system,sans-serif; min-height:100vh; }
+  a { color:inherit; }
+  .topbar { position:sticky; top:0; z-index:40; background:rgba(7,9,12,0.92); backdrop-filter:blur(10px); border-bottom:1px solid #1a1e24; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .crumb { font-size:0.78em; color:#888; } .crumb b{ color:#ccc; font-weight:600; }
+  .hub-link { font-size:0.72em; color:#aaa; text-decoration:none; padding:6px 12px; border:1px solid #2c313a; border-radius:8px; }
+  .hub-link:hover { border-color:var(--accent); color:#fff; }
+
+  .hero { padding:50px 20px 24px; text-align:center; max-width:700px; margin:0 auto; }
+  .hero .eyebrow { font-size:0.74em; font-weight:800; letter-spacing:2px; color:var(--main-color); text-transform:uppercase; margin-bottom:10px; }
+  .hero h1 { font-size:clamp(1.6em,4vw,2.2em); margin:0 0 12px; }
+  .hero p { color:#999; font-size:0.9em; line-height:1.7; }
+  .source-note { font-size:0.74em; color:#666; margin-top:10px; }
+
+  .name-box { max-width:420px; margin:20px auto 0; padding:0 20px; }
+  .name-box input { width:100%; background:#0d0f14; border:1.5px solid #2c313a; border-radius:10px; color:#eee; padding:10px 14px; font-size:0.9em; text-align:center; }
+
+  .section-label { max-width:700px; margin:38px auto 14px; padding:0 20px; font-size:0.78em; font-weight:800; color:var(--main-color); letter-spacing:1px; }
+
+  .progress-mini { max-width:700px; margin:26px auto 0; padding:0 20px; text-align:center; font-size:0.8em; color:#888; }
+  .progress-bar-outer { height:6px; border-radius:4px; background:#161a20; overflow:hidden; margin-top:8px; max-width:400px; margin-left:auto; margin-right:auto; }
+  .progress-bar-inner { height:100%; background:linear-gradient(90deg,var(--main-color),var(--accent)); width:0%; transition:width .3s; }
+
+  .topic-block { max-width:700px; margin:34px auto 0; padding:0 20px; }
+  .topic-title { font-size:0.78em; font-weight:800; color:var(--main-color); letter-spacing:1px; margin-bottom:10px; padding-left:2px; display:flex; justify-content:space-between; }
+  .topic-title .tt-page { color:#555; font-weight:600; }
+  .q-card { background:#0d0f14; border:1px solid #1a1e24; border-radius:14px; padding:18px 20px; margin-bottom:12px; }
+  .q-card .q-text { font-size:0.9em; font-weight:700; margin-bottom:12px; color:#eee; }
+  .q-opts { display:flex; flex-direction:column; gap:8px; }
+  .q-opt { text-align:left; background:#161a20; border:1.5px solid #262b33; color:#ccc; padding:10px 14px; border-radius:9px; font-size:0.84em; cursor:pointer; }
+  .q-opt.correct { border-color:#34d399; background:rgba(52,211,153,0.12); color:#a7f3d0; }
+  .q-opt.wrong { border-color:#f43f5e; background:rgba(244,63,94,0.12); color:#fda4af; }
+  .q-opt:disabled { cursor:default; }
+  .q-fb { margin-top:10px; font-size:0.8em; line-height:1.6; color:#bbb; display:none; padding-top:10px; border-top:1px dashed #262b33; }
+
+  /* 서술형 카드 */
+  .w-card { background:#0d0f14; border:1px solid #1a1e24; border-radius:14px; padding:18px 20px; margin-bottom:12px; }
+  .w-card .w-topic { font-size:0.72em; font-weight:800; color:#fbbf24; margin-bottom:6px; }
+  .w-card .w-q { font-size:0.9em; font-weight:700; margin-bottom:10px; color:#eee; line-height:1.6; }
+  .w-card textarea { width:100%; min-height:80px; background:#161a20; border:1.5px solid #262b33; border-radius:9px; color:#eee; padding:10px 12px; font-size:0.85em; font-family:inherit; resize:vertical; }
+  .w-card .w-guide { font-size:0.74em; color:#777; margin-top:6px; }
+  .w-card .w-sample-btn { margin-top:10px; border:1.5px solid #444; background:transparent; color:#aaa; padding:7px 14px; border-radius:8px; font-size:0.76em; cursor:pointer; }
+  .w-card .w-sample { display:none; margin-top:10px; padding:10px 12px; background:rgba(251,191,36,0.08); border:1px dashed #d97706; border-radius:8px; font-size:0.8em; color:#fde68a; line-height:1.7; }
+  .w-card .w-sample.show { display:block; }
+
+  .summary-wrap { max-width:700px; margin:50px auto 0; padding:0 20px; display:none; }
+  .summary-card { background:#0d0f14; border:1.5px solid var(--main-color); border-radius:20px; padding:26px 24px; text-align:center; }
+  .summary-card h2 { margin:0 0 6px; font-size:1.2em; }
+  .summary-card .total-score { font-size:2em; font-weight:900; color:var(--main-color); margin:8px 0 20px; }
+  .topic-bars { text-align:left; max-width:460px; margin:0 auto; }
+  .tb-row { margin-bottom:14px; }
+  .tb-row .tb-label { display:flex; justify-content:space-between; font-size:0.82em; margin-bottom:6px; }
+  .tb-row .tb-label b { color:#eee; }
+  .tb-outer { height:10px; border-radius:5px; background:#161a20; overflow:hidden; }
+  .tb-inner { height:100%; border-radius:5px; }
+  .tb-inner.good { background:#34d399; }
+  .tb-inner.low { background:#f43f5e; }
+  .comment-box { margin-top:20px; padding:14px 18px; background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.25); border-radius:12px; font-size:0.84em; color:#e5d8fb; line-height:1.75; text-align:left; }
+  .written-note { margin-top:14px; padding:12px 16px; background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.25); border-radius:10px; font-size:0.78em; color:#fde68a; text-align:left; }
+
+  .action-row { text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .action-btn { border:none; font-weight:800; padding:11px 20px; border-radius:10px; font-size:0.84em; cursor:pointer; }
+  .action-btn.print-btn { background:var(--main-color); color:#04222b; }
+  .action-btn.download-btn { background:#0d9488; color:#fff; }
+  .action-btn:disabled { opacity:0.6; cursor:wait; }
+  .retry-btn { background:transparent; border:1.5px solid #444; color:#aaa; }
+  .action-btn.submit-btn { background:#a855f7; color:#fff; }
+  .action-btn.submit-btn.done { background:#166534; }
+  .submit-status { text-align:center; font-size:0.8em; margin-top:8px; min-height:18px; }
+
+  footer { text-align:center; padding:40px 20px 50px; color:#555; font-size:0.75em; }
+
+  @media print {
+    .topbar, .name-box, .progress-mini, .topic-block, .action-row, .section-label { display:none !important; }
+    body { background:#fff; color:#111; }
+    .summary-wrap { display:block !important; margin-top:20px; }
+    .summary-card { border-color:#7c3aed; }
+    .tb-row .tb-label { color:#333; }
+    .comment-box, .written-note { color:#333; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="crumb"><b>🔍 셀프체크룸</b> / 사회2 / Ⅱ단원 확인하기</div>
+    <a class="hub-link" href="index.html">← 사회2</a>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Ⅱ. 경제생활과 선택 · 형성평가</div>
+    <h1>얼마나 이해했는지 확인해 보자</h1>
+    <p>3개 소단원에서 각각 객관식 1문제씩, 그리고 서술형 문제 1개를 풀어보자.</p>
+    <div class="source-note">※ 문제는 매번 새로 무작위로 출제된다. 다시 풀면 다른 문제가 나올 수 있다.</div>
+  </section>
+
+  <div class="name-box">
+    <input type="text" id="studentName" placeholder="이름을 입력해 주세요">
+  </div>
+
+  <div class="progress-mini">
+    <span id="progressText">0 / 3 객관식 완료</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+  </div>
+
+  <div class="section-label">📝 객관식</div>
+  <div class="topic-block" id="quizArea"></div>
+
+  <div class="section-label">✍️ 서술형 — 하나를 골라 자유롭게 써보자</div>
+  <div class="topic-block" id="writtenArea"></div>
+
+  <div class="summary-wrap" id="summaryWrap"></div>
+
+  <footer>EAIM 사회 수업 · 셀프체크룸</footer>
+
+<script>
+function pickOne(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+const SUBUNIT_KEYS = ['rationalChoice','stableLife','entrepreneur'];
+const SELECTED = SUBUNIT_KEYS.map(key => {
+  const sub = EAIM_QUIZ_DATA[key];
+  return { key, label: sub.label, page: sub.page, question: pickOne(sub.questions) };
+});
+
+let answeredCount = 0;
+const totalQ = SELECTED.length;
+const topicScores = {};
+SELECTED.forEach(s => topicScores[s.key] = { correct:0, total:1, label:s.label });
+
+function renderQuiz(){
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  SELECTED.forEach(sel => {
+    const item = sel.question;
+    const card = document.createElement('div');
+    const optsHtml = item.opts.map((o,oi) => `<button class="q-opt" data-gid="${sel.key}" data-oi="${oi}">${o}</button>`).join('');
+    card.innerHTML = `
+      <div class="topic-title"><span>${sel.label}</span></div>
+      <div class="q-card">
+        <div class="q-text">${item.q}</div>
+        <div class="q-opts">${optsHtml}</div>
+        <div class="q-fb" id="fb-${sel.key}"></div>
+      </div>`;
+    area.appendChild(card);
+  });
+
+  area.querySelectorAll('.q-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.gid, oi = +btn.dataset.oi;
+      const sel = SELECTED.find(s=>s.key===key);
+      const item = sel.question;
+      area.querySelectorAll(`.q-opt[data-gid="${key}"]`).forEach(s => {
+        s.disabled = true;
+        if (+s.dataset.oi === item.answer) s.classList.add('correct');
+        else if (+s.dataset.oi === oi) s.classList.add('wrong');
+      });
+      const fb = document.getElementById(`fb-${key}`);
+      fb.style.display = 'block';
+      fb.textContent = (oi === item.answer ? '✅ ' : '❌ ') + item.fb;
+      if (oi === item.answer) topicScores[key].correct++;
+      answeredCount++;
+      document.getElementById('progressText').textContent = `${answeredCount} / ${totalQ} 객관식 완료`;
+      document.getElementById('progressBar').style.width = (answeredCount/totalQ*100) + '%';
+      if (answeredCount === totalQ) maybeShowSummary();
+    });
+  });
+}
+renderQuiz();
+
+/* 서술형: 소단원 중 2개를 무작위로 골라 제시 */
+let writtenDone = false;
+let currentWrittenKeys = [];
+function renderWritten(){
+  const wKeys = [...SUBUNIT_KEYS].sort(()=>Math.random()-0.5).slice(0,2);
+  currentWrittenKeys = wKeys;
+  const area = document.getElementById('writtenArea');
+  area.innerHTML = '';
+  wKeys.forEach((key, idx) => {
+    const sub = EAIM_QUIZ_DATA[key];
+    const w = sub.written;
+    const card = document.createElement('div');
+    card.className = 'w-card';
+    card.innerHTML = `
+      <div class="w-topic">${sub.label}</div>
+      <div class="w-q">${w.q}</div>
+      <textarea placeholder="여기에 자유롭게 답을 써 보자..." data-idx="${idx}"></textarea>
+      <div class="w-guide">💡 ${w.guide}</div>
+      <button class="w-sample-btn" data-idx="${idx}">모범답안 보기</button>
+      <div class="w-sample" id="wsample-${idx}">${w.sample}</div>
+    `;
+    area.appendChild(card);
+  });
+  area.querySelectorAll('.w-sample-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const el = document.getElementById('wsample-'+btn.dataset.idx);
+      el.classList.toggle('show');
+      writtenDone = true;
+    });
+  });
+}
+renderWritten();
+
+function maybeShowSummary(){
+  showSummary();
+}
+
+function showSummary(){
+  const name = document.getElementById('studentName').value.trim() || '이름 미입력';
+  let totalCorrect = 0;
+  Object.values(topicScores).forEach(s => totalCorrect += s.correct);
+
+  const weakTopics = [];
+  let barsHtml = '';
+  SELECTED.forEach(sel => {
+    const s = topicScores[sel.key];
+    const pct = s.correct === 1 ? 100 : 0;
+    const cls = pct === 100 ? 'good' : 'low';
+    if (pct < 100) weakTopics.push(sel.page ? `${sel.label}(${sel.page}쪽)` : sel.label);
+    barsHtml += `
+      <div class="tb-row">
+        <div class="tb-label"><span>${sel.label}</span><b>${s.correct}/${s.total}</b></div>
+        <div class="tb-outer"><div class="tb-inner ${cls}" style="width:${pct}%"></div></div>
+      </div>`;
+  });
+
+  let comment;
+  if (totalCorrect === totalQ) comment = '🎉 모든 소단원을 정확히 이해하고 있어요! 다음 단원으로 자신 있게 넘어가도 좋아요.';
+  else if (weakTopics.length === 1) comment = `교과서 ${weakTopics[0]} 부분을 다시 살펴보면 완벽해질 것 같아요.`;
+  else comment = `교과서 ${weakTopics.join(', ')} 부분을 다시 한 번 복습해 보면 도움이 될 것 같아요.`;
+
+  const wrap = document.getElementById('summaryWrap');
+  wrap.style.display = 'block';
+  wrap.innerHTML = `
+    <div class="summary-card">
+      <h2>${name} 학생의 결과</h2>
+      <div class="total-score">${totalCorrect} / ${totalQ}</div>
+      <div class="topic-bars">${barsHtml}</div>
+      <div class="comment-box">💬 ${comment}</div>
+      <div class="written-note">✍️ 서술형 문제는 자동 채점되지 않아요. 위에서 작성한 내용과 모범답안을 비교해 스스로 점검해 보자.</div>
+      <div class="action-row">
+        ${(window.EAIM_TEACHER && EAIM_TEACHER.getTeacherUid()) ? `<button class="action-btn submit-btn" id="submitBtn" onclick="EAIM_TEACHER.submitWithUI(window.__submitPayload,'submitBtn','submitStatus')">📤 선생님께 제출하기</button>` : ''}
+        <button class="action-btn download-btn" id="downloadBtn" onclick="downloadResultPDF('${name}')">📥 PDF 다운로드</button>
+        <button class="action-btn print-btn" onclick="window.print()">🖨️ 인쇄 / PDF로 저장</button>
+        <button class="action-btn retry-btn" onclick="location.reload()">↺ 다른 문제로 다시 풀기</button>
+      </div>
+      <div class="submit-status" id="submitStatus"></div>
+    </div>
+  `;
+  window.__submitPayload = { subject:'social2', unitKey:'unit2', unitLabel:'Ⅱ. 경제생활과 선택', correct: totalCorrect, total: totalQ, weakTopics , writtenAnswers: currentWrittenKeys.map((key, idx) => { const ta = document.querySelector(`#writtenArea textarea[data-idx="${idx}"]`); const sub = EAIM_QUIZ_DATA[key]; return { topic: sub.label, question: sub.written.q, answer: (ta && ta.value.trim()) || '(작성하지 않음)' }; }) };
+  wrap.scrollIntoView({ behavior:'smooth' });
+}
+
+function downloadResultPDF(name){
+  const btn = document.getElementById('downloadBtn');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ 준비 중...';
+
+  const card = document.querySelector('.summary-card');
+  html2canvas(card, { scale: 2, backgroundColor: '#0d0f14', useCORS: true }).then(canvas => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210;
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const imgData = canvas.toDataURL('image/png');
+    pdf.addImage(imgData, 'PNG', 0, 15, imgWidth, imgHeight);
+    pdf.save(`${name}_Ⅱ단원_확인결과.pdf`);
+    btn.disabled = false;
+    btn.textContent = original;
+  }).catch(err => {
+    console.error(err);
+    alert('PDF 생성 중 문제가 발생했어요. 다시 시도해 주세요.');
+    btn.disabled = false;
+    btn.textContent = original;
+  });
+}
+</script>
+</body>
+</html>

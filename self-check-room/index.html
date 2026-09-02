@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>셀프체크룸 - EAIM 사회역사 수업</title>
+<style>
+  :root { --main-color:#22d3ee; --bg-dark:#07090c; --accent:#a855f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg-dark); color:#fff; font-family:'Pretendard',-apple-system,sans-serif; min-height:100vh; }
+  a { color:inherit; text-decoration:none; }
+  .topbar { position:sticky; top:0; z-index:40; background:rgba(7,9,12,0.92); backdrop-filter:blur(10px); border-bottom:1px solid #1a1e24; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .crumb { font-size:0.78em; color:#888; } .crumb b{ color:#ccc; font-weight:600; }
+  .hub-link { font-size:0.72em; color:#aaa; padding:6px 12px; border:1px solid #2c313a; border-radius:8px; }
+  .hub-link:hover { border-color:var(--accent); color:#fff; }
+
+  .hero { padding:60px 20px 24px; text-align:center; max-width:700px; margin:0 auto; }
+  .hero .eyebrow { font-size:0.74em; font-weight:800; letter-spacing:2px; color:var(--main-color); text-transform:uppercase; margin-bottom:10px; }
+  .hero h1 { font-size:clamp(2em,5vw,2.8em); margin:0 0 14px; background:linear-gradient(100deg,#fff 25%,#67e8f9 55%,var(--accent) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.lead { color:#aaa; font-size:0.96em; line-height:1.75; }
+
+  .grade-wrap { max-width:700px; margin:50px auto 60px; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:520px) { .grade-wrap { grid-template-columns:1fr; } }
+  .g-card { background:#0d0f14; border:1.5px solid #1a1e24; border-radius:20px; padding:32px 24px 22px; text-align:center; transition:all .25s; }
+  .g-card:hover { border-color:var(--main-color); transform:translateY(-4px); }
+  .g-card .g-icon { font-size:2.4em; margin-bottom:12px; }
+  .g-card .g-link { display:block; }
+  .g-card .g-title { font-size:1.15em; font-weight:900; margin-bottom:6px; }
+  .g-card .g-desc { font-size:0.8em; color:#999; margin-bottom:16px; }
+  .g-card .g-qr-btn { border:1px solid #2c313a; background:#161a20; color:#aaa; font-size:0.72em; font-weight:700; padding:7px 14px; border-radius:8px; cursor:pointer; }
+  .g-card .g-qr-btn:hover { border-color:var(--main-color); color:#fff; }
+
+  footer { text-align:center; padding:10px 20px 50px; color:#555; font-size:0.75em; }
+  footer a { color:#444; text-decoration:none; }
+  footer a:hover { color:#888; }
+
+  .qr-modal-overlay { display:none; position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
+  .qr-modal-overlay.open { display:flex; }
+  .qr-modal-box { background:#0d0f14; border:1.5px solid var(--main-color); border-radius:24px; padding:32px 28px; text-align:center; max-width:360px; width:100%; position:relative; }
+  .qr-modal-box .qr-close { position:absolute; top:14px; right:16px; background:none; border:none; color:#888; font-size:1.3em; cursor:pointer; }
+  .qr-modal-box .qr-title { font-size:1.1em; font-weight:900; margin-bottom:4px; }
+  .qr-modal-box .qr-sub { font-size:0.8em; color:#999; margin-bottom:20px; }
+  .qr-modal-box #qrcodeCanvas { background:#fff; padding:14px; border-radius:16px; display:inline-block; }
+  .qr-modal-box .qr-url { margin-top:18px; font-size:0.72em; color:#777; word-break:break-all; }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="crumb"><b>🔍 셀프체크룸</b></div>
+    <a class="hub-link" href="dashboard.html">👩‍🏫 선생님 대시보드</a>
+    <button class="hub-link" style="cursor:pointer" onclick="openQR('index.html','셀프체크룸 전체')">📱 QR로 접속하기</button>
+    <a class="hub-link" href="../index.html">← 처음으로</a>
+  </div>
+
+  <div class="qr-modal-overlay" id="qrOverlay" onclick="if(event.target===this) closeQR()">
+    <div class="qr-modal-box">
+      <button class="qr-close" onclick="closeQR()">✕</button>
+      <div class="qr-title">📱 QR로 접속하기</div>
+      <div class="qr-sub" id="qrModalSub">학생들이 이 QR을 스캔하면 셀프체크룸으로 바로 들어와요</div>
+      <div id="qrcodeCanvas"></div>
+      <div class="qr-url" id="qrUrlText"></div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Self-Check Room</div>
+    <h1>셀프체크룸</h1>
+    <p class="lead">수업 페이지와는 별개의 공간이다. 한 단원을 다 본 뒤 여기 와서 짧게 확인하면, 내가 어떤 개념을 헷갈려하는지 스스로 바로 확인할 수 있다.</p>
+  </section>
+
+  <div class="grade-wrap">
+    <div class="g-card">
+      <a class="g-link" href="social1/index.html">
+        <div class="g-icon">🌍</div>
+        <div class="g-title">사회1</div>
+        <div class="g-desc">중등사회1 단원별 확인</div>
+      </a>
+      <button class="g-qr-btn" onclick="openQR('social1/index.html','사회1')">📱 사회1 QR</button>
+    </div>
+    <div class="g-card" style="opacity:.45">
+      <div class="g-icon">🏛️</div>
+      <div class="g-title">사회2</div>
+      <div class="g-desc">준비중</div>
+    </div>
+    <div class="g-card" style="opacity:.45">
+      <div class="g-icon">📜</div>
+      <div class="g-title">역사1 (한국사)</div>
+      <div class="g-desc">준비중</div>
+    </div>
+    <div class="g-card" style="opacity:.45">
+      <div class="g-icon">🗺️</div>
+      <div class="g-title">역사2 (세계사)</div>
+      <div class="g-desc">준비중</div>
+    </div>
+  </div>
+
+  <div class="grade-wrap" style="grid-template-columns:1fr; max-width:400px;">
+    <a class="g-card" href="my-record.html">
+      <div class="g-icon">📋</div>
+      <div class="g-title">나의 학습 기록</div>
+      <div class="g-desc">지금까지 쌓인 활동 기록 모아 보기</div>
+    </a>
+  </div>
+
+  <footer>EAIM 사회역사 수업 · 셀프체크룸</footer>
+
+<script>
+function openQR(path, label){
+  const url = new URL(path, window.location.href).href;
+  document.getElementById('qrModalSub').textContent = `학생들이 이 QR을 스캔하면 ${label} 화면으로 바로 들어와요`;
+  document.getElementById('qrUrlText').textContent = url;
+  const box = document.getElementById('qrcodeCanvas');
+  box.innerHTML = '';
+  new QRCode(box, { text: url, width: 220, height: 220, colorDark:'#07090c', colorLight:'#ffffff' });
+  document.getElementById('qrOverlay').classList.add('open');
+}
+function closeQR(){
+  document.getElementById('qrOverlay').classList.remove('open');
+}
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="shared/teacher-tracker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body>
+</html>
