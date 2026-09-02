@@ -40,6 +40,9 @@
   .report-title .rt-count { font-size:0.78em; color:#666; }
 
   .unit-group { margin-bottom:22px; }
+  .subject-group { margin-bottom:32px; }
+  .subj-head { font-size:1.05em; font-weight:900; color:#fff; background:linear-gradient(90deg, rgba(34,211,238,0.14), transparent); border-left:4px solid var(--main-color); padding:8px 14px; border-radius:0 8px 8px 0; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .subj-head .subj-count { font-size:0.7em; font-weight:700; color:#888; }
   .unit-group h3 { font-size:1em; color:var(--accent); border-bottom:1px solid #262022; padding-bottom:8px; margin-bottom:12px; }
   .sub-group { margin-bottom:14px; }
   .sub-group .sg-title { font-size:0.86em; font-weight:800; color:#ddd; margin-bottom:8px; }
@@ -74,6 +77,7 @@
     .record-item { background:#f4f4f5; border-color:#ddd; }
     .record-item .ri-result { color:#222; }
     .unit-group h3 { color:#7c3aed; }
+    .subj-head { color:#0d9488; border-left-color:#0d9488; background:transparent; }
     a { text-decoration: none; }
   }
 </style>
@@ -160,33 +164,49 @@ function render(){
     return;
   }
 
-  // 단원 > 소단원 순으로 그룹화
-  const byUnit = {};
+  // 과목(subjectLabel) > 단원 > 소단원 순으로 그룹화
+  // (예전 기록엔 subjectLabel이 없을 수 있어 '기타'로 묶음)
+  const bySubject = {};
   logs.forEach(l => {
-    byUnit[l.unit] = byUnit[l.unit] || {};
-    byUnit[l.unit][l.subunit] = byUnit[l.unit][l.subunit] || [];
-    byUnit[l.unit][l.subunit].push(l);
+    const subj = l.subjectLabel || '기타';
+    bySubject[subj] = bySubject[subj] || {};
+    bySubject[subj][l.unit] = bySubject[subj][l.unit] || {};
+    bySubject[subj][l.unit][l.subunit] = bySubject[subj][l.unit][l.subunit] || [];
+    bySubject[subj][l.unit][l.subunit].push(l);
+  });
+
+  // 과목 표시 순서 고정(사회1→사회2→역사1→역사2→기타)
+  const SUBJECT_ORDER = ['사회1','사회2','역사1','역사2','기타'];
+  const subjectKeys = Object.keys(bySubject).sort((a,b) => {
+    const ia = SUBJECT_ORDER.indexOf(a), ib = SUBJECT_ORDER.indexOf(b);
+    return (ia<0?99:ia) - (ib<0?99:ib);
   });
 
   let html = `
     <div class="report-title">
       <div class="rt-school">EAIM 사회역사 수업 · 학습 활동 기록지</div>
       <h2>${name} 학생</h2>
-      <div class="rt-count">총 ${logs.length}건의 활동 기록</div>
+      <div class="rt-count">총 ${logs.length}건의 활동 기록 · ${subjectKeys.length}개 과목</div>
     </div>
   `;
 
-  Object.entries(byUnit).forEach(([unit, subunits]) => {
-    html += `<div class="unit-group"><h3>${unit}</h3>`;
-    Object.entries(subunits).forEach(([sub, items]) => {
-      html += `<div class="sub-group"><div class="sg-title">${sub}</div>`;
-      items.forEach(item => {
-        html += `
-          <div class="record-item">
-            <span class="ri-type">${item.type}</span>
-            <span class="ri-result">${item.result}</span>
-            <span class="ri-time">${fmtTime(item.time)}</span>
-          </div>`;
+  subjectKeys.forEach(subj => {
+    const units = bySubject[subj];
+    const subjCount = Object.values(units).reduce((sum, subs) => sum + Object.values(subs).reduce((s2,arr)=>s2+arr.length,0), 0);
+    html += `<div class="subject-group"><div class="subj-head">${subj} <span class="subj-count">${subjCount}건</span></div>`;
+    Object.entries(units).forEach(([unit, subunits]) => {
+      html += `<div class="unit-group"><h3>${unit}</h3>`;
+      Object.entries(subunits).forEach(([sub, items]) => {
+        html += `<div class="sub-group"><div class="sg-title">${sub}</div>`;
+        items.forEach(item => {
+          html += `
+            <div class="record-item">
+              <span class="ri-type">${item.type}</span>
+              <span class="ri-result">${item.result}</span>
+              <span class="ri-time">${fmtTime(item.time)}</span>
+            </div>`;
+        });
+        html += `</div>`;
       });
       html += `</div>`;
     });
