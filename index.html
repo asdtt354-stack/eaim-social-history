@@ -114,6 +114,23 @@ textarea{width:100%;min-height:110px;border:2px solid rgba(255,255,255,.15);bord
 .card-game .card-header::after{content:'🎮';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
 .card-game .enter-btn{background:linear-gradient(135deg,#F59E0B,#D07800);color:#1C0A00}
 
+.card-check{border:2px solid rgba(34,211,238,.3)}
+.card-check .card-header{background:linear-gradient(135deg,#07222A,#0A3540,#081A30)}
+.card-check .card-header::after{content:'🔍';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-check .enter-btn{background:linear-gradient(135deg,#22D3EE,#0EA5C4);color:#04222B}
+
+.card-s1{border:2px solid rgba(245,158,11,.3)}
+.card-s1 .card-header{background:linear-gradient(135deg,#2A1808,#40260A,#301A08)}
+.card-s1 .card-header::after{content:'🌏';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-s1 .enter-btn{background:linear-gradient(135deg,#F59E0B,#D07800);color:#1C0A00}
+
+.card-s2{border:2px solid rgba(168,85,247,.3)}
+.card-s2 .card-header{background:linear-gradient(135deg,#180A2A,#26123F,#1A0A30)}
+.card-s2 .card-header::after{content:'🏛️';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none}
+.card-s2 .enter-btn{background:linear-gradient(135deg,#A855F7,#7C3AED)}
+.section-label{max-width:800px;margin:20px auto 0;padding:0 16px;font-size:.78rem;font-weight:800;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
 /* ── AI 키(학생 기기용) ── */
 .ai-key-box{background:linear-gradient(135deg,#2C1810,#4A2818);border-radius:1.2rem;padding:16px 20px;border:2px solid rgba(212,168,71,.25);box-shadow:0 8px 28px rgba(0,0,0,.2);color:#fff;margin-top:16px}
 
@@ -261,7 +278,79 @@ footer{text-align:center;padding:16px;color:var(--ink3);font-size:.72rem}
 </div>
 
 <!-- 앱 카드 -->
-<div class="cards">
+<div class="section-label">📖 교과 학습 · 사회1 · 사회2 · 역사1 · 역사2</div>
+<div class="cards" style="padding-bottom:0">
+
+  <a href="social1/index.html" class="app-card card-s1">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#F59E0B;box-shadow:0 0 6px #F59E0B"></div> 12단원 · 인터랙티브 수업</div>
+      <div class="card-h2">🌏 사회1 수업</div>
+      <span class="card-h2-sub">Social Studies 1 · Interactive Lessons</span>
+      <p class="card-desc">세계화·아시아·유럽부터 민주주의·인권까지 12단원 37개 소단원! 분류 활동으로 개념을 익히고 바로 퀴즈로 확인.</p>
+      <div class="feat-row">
+        <span class="feat-pill">🌍 세계지리 6단원</span>
+        <span class="feat-pill">🏛️ 일반사회 6단원</span>
+        <span class="feat-pill">🎓 분류 활동+퀴즈</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot" style="background:#FEF3C7;color:#D97706">Ⅰ</div><div class="sdot" style="background:#FEE2E2;color:#DC2626">Ⅱ</div><div class="sdot" style="background:#DCFCE7;color:#15803D">Ⅲ</div>
+        <div class="sdot" style="background:#F3E8FF;color:#7E22CE">…</div><div class="sdot" style="background:#E0F5FF;color:#1070A0">Ⅻ</div>
+      </div>
+      <button class="enter-btn" style="background:linear-gradient(135deg,#F59E0B,#D07800);color:#1C0A00">입장하기 →</button>
+    </div>
+  </a>
+
+  <a href="social2/index.html" class="app-card card-s2">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#A855F7;box-shadow:0 0 6px #A855F7"></div> 12단원 · 인터랙티브 수업</div>
+      <div class="card-h2">🏛️ 사회2 수업</div>
+      <span class="card-h2-sub">Social Studies 2 · Interactive Lessons</span>
+      <p class="card-desc">헌법·경제·국제사회부터 우리나라 지역까지 12단원 37개 소단원! 분류 활동으로 개념을 익히고 바로 퀴즈로 확인.</p>
+      <div class="feat-row">
+        <span class="feat-pill">⚖️ 정치·경제·국제사회</span>
+        <span class="feat-pill">🗺️ 우리나라 지역지리</span>
+        <span class="feat-pill">🎓 분류 활동+퀴즈</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot" style="background:#FEF3C7;color:#D97706">Ⅰ</div><div class="sdot" style="background:#FEE2E2;color:#DC2626">Ⅱ</div><div class="sdot" style="background:#DCFCE7;color:#15803D">Ⅲ</div>
+        <div class="sdot" style="background:#F3E8FF;color:#7E22CE">…</div><div class="sdot" style="background:#E0F5FF;color:#1070A0">Ⅻ</div>
+      </div>
+      <button class="enter-btn" style="background:linear-gradient(135deg,#A855F7,#7C3AED)">입장하기 →</button>
+    </div>
+  </a>
+
+  <a href="self-check-room/index.html" class="app-card card-check">
+    <div class="card-header">
+      <div class="card-tag"><div class="live-dot" style="background:#22D3EE;box-shadow:0 0 6px #22D3EE"></div> 형성평가 · 인쇄용 학습지 · 교사 대시보드</div>
+      <div class="card-h2">🔍 셀프체크룸</div>
+      <span class="card-h2-sub">Self-Check Room · Digital & Print</span>
+      <p class="card-desc">무작위 출제 객관식·서술형으로 스스로 점검! 인쇄용 학습지도 바로 뽑고, 선생님은 반별 결과를 대시보드에서 확인해요.</p>
+      <div class="feat-row">
+        <span class="feat-pill">📝 무작위 형성평가</span>
+        <span class="feat-pill">🖨️ 인쇄용 학습지</span>
+        <span class="feat-pill">📊 교사 대시보드</span>
+        <span class="feat-pill">📋 나의 학습 기록</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="step-dots">
+        <div class="sdot" style="background:#E0F5FF;color:#1070A0">사회1</div>
+        <div class="sdot" style="background:#FFF0EE;color:#C03020">사회2</div>
+        <div class="sdot" style="background:#FFFBEB;color:#B07000">역사1</div>
+        <div class="sdot" style="background:#E0FBF2;color:#008F66">역사2</div>
+      </div>
+      <button class="enter-btn" style="background:linear-gradient(135deg,#22D3EE,#0EA5C4);color:#04222B">입장하기 →</button>
+    </div>
+  </a>
+
+</div>
+
+<div class="section-label">🎨 교과외 활동 · AI 창작 · 게임</div>
+<div class="cards" style="padding-top:12px">
 
   <a href="eaim-history-news.html" class="app-card card-history">
     <div class="card-header">
