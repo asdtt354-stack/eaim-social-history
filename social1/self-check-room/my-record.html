@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 학습 기록 - EAIM 사회역사 수업</title>
+<style>
+  :root { --main-color:#22d3ee; --bg-dark:#07090c; --accent:#a855f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg-dark); color:#fff; font-family:'Pretendard',-apple-system,sans-serif; min-height:100vh; }
+  a { color:inherit; }
+
+  .topbar { position:sticky; top:0; z-index:40; background:rgba(10,7,8,0.92); backdrop-filter:blur(10px); border-bottom:1px solid #262022; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .crumb { font-size:0.78em; color:#888; } .crumb b{ color:#ccc; font-weight:600; }
+  .hub-link { font-size:0.72em; color:#aaa; text-decoration:none; padding:6px 12px; border:1px solid #3a3a3c; border-radius:8px; }
+  .hub-link:hover { border-color:var(--accent); color:#fff; }
+
+  .hero { padding:50px 20px 20px; text-align:center; max-width:700px; margin:0 auto; }
+  .hero .eyebrow { font-size:0.74em; font-weight:800; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
+  .hero h1 { font-size:clamp(1.6em,4vw,2.2em); margin:0 0 10px; }
+  .hero p { color:#999; font-size:0.88em; line-height:1.7; }
+
+  .name-box { max-width:500px; margin:20px auto 0; padding:0 20px; text-align:center; }
+  .name-box .nb-inner { background:#121012; border:1px solid #262022; border-radius:14px; padding:14px 18px; }
+  .name-box .nb-label { font-size:0.72em; color:#888; margin-bottom:6px; }
+  .name-box .nb-name { font-size:1.3em; font-weight:900; color:var(--main-color); }
+  .name-box .nb-edit { font-size:0.72em; color:#666; text-decoration:underline; cursor:pointer; margin-left:8px; }
+
+  .action-row { max-width:700px; margin:20px auto 0; padding:0 20px; text-align:center; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .action-btn { border:none; font-weight:800; padding:11px 20px; border-radius:10px; font-size:0.84em; cursor:pointer; }
+  .print-btn { background:var(--main-color); color:#04222b; box-shadow:0 4px 14px rgba(34,211,238,0.35); }
+  .download-btn { background:#0d9488; color:#fff; }
+  .action-btn:disabled { opacity:0.6; cursor:wait; }
+  .reset-btn { background:transparent; border:1.5px solid #444; color:#aaa; }
+
+  .report { max-width:700px; margin:36px auto 0; padding:0 20px 60px; }
+  .report-title { text-align:center; margin-bottom:24px; }
+  .report-title .rt-school { font-size:0.8em; color:#888; }
+  .report-title h2 { margin:6px 0; font-size:1.3em; }
+  .report-title .rt-count { font-size:0.78em; color:#666; }
+
+  .unit-group { margin-bottom:22px; }
+  .unit-group h3 { font-size:1em; color:var(--accent); border-bottom:1px solid #262022; padding-bottom:8px; margin-bottom:12px; }
+  .sub-group { margin-bottom:14px; }
+  .sub-group .sg-title { font-size:0.86em; font-weight:800; color:#ddd; margin-bottom:8px; }
+  .record-item { background:#121012; border:1px solid #262022; border-radius:10px; padding:10px 14px; margin-bottom:6px; font-size:0.82em; display:flex; justify-content:space-between; gap:12px; align-items:baseline; flex-wrap:wrap; }
+  .record-item .ri-type { font-weight:800; color:var(--main-color); flex-shrink:0; }
+  .record-item .ri-result { flex:1; color:#ddd; }
+  .record-item .ri-time { font-size:0.72em; color:#666; flex-shrink:0; }
+
+  .empty-note { text-align:center; color:#777; font-size:0.86em; padding:40px 20px; }
+
+  .feedback-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .feedback-wrap h3 { font-size:1em; color:var(--main-color); margin-bottom:12px; }
+  .fb-item { background:#121012; border:1px solid #262022; border-left:3px solid var(--main-color); border-radius:10px; padding:12px 16px; margin-bottom:8px; }
+  .fb-item .fb-meta { font-size:0.72em; color:#888; margin-bottom:6px; }
+  .fb-item .fb-text { font-size:0.88em; color:#eee; line-height:1.6; }
+
+  .connect-wrap { max-width:500px; margin:20px auto 0; padding:0 20px; }
+  .connect-box { background:#121012; border:1px dashed #333; border-radius:14px; padding:16px 18px; text-align:center; }
+  .connect-box .cb-label { font-size:0.8em; color:#999; margin-bottom:10px; line-height:1.6; }
+  .connect-box .cb-row { display:flex; gap:8px; }
+  .connect-box input { flex:1; background:#1a1a1c; border:1.5px solid #333; color:#eee; padding:9px 12px; border-radius:9px; font-size:0.82em; }
+  .connect-box button { border:none; background:var(--main-color); color:#04222b; font-weight:800; padding:9px 16px; border-radius:9px; font-size:0.82em; cursor:pointer; }
+  .connected-badge { max-width:500px; margin:20px auto 0; padding:0 20px; text-align:center; font-size:0.78em; color:#34d399; }
+
+  footer { text-align:center; padding:10px 20px 50px; color:#555; font-size:0.75em; }
+
+  /* 인쇄용 스타일 */
+  @media print {
+    .topbar, .name-box .nb-edit, .action-row { display:none !important; }
+    body { background:#fff; color:#111; }
+    .hero p, .rt-school, .rt-count, .sub-group .sg-title { color:#555; }
+    .record-item { background:#f4f4f5; border-color:#ddd; }
+    .record-item .ri-result { color:#222; }
+    .unit-group h3 { color:#7c3aed; }
+    a { text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<script src="shared/tracker.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="shared/teacher-tracker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <div class="topbar">
+    <div class="crumb"><b>🔍 셀프체크룸</b> · 나의 학습 기록</div>
+    <a class="hub-link" href="index.html">← 셀프체크룸</a>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">EAIM 사회역사 수업</div>
+    <h1>📋 나의 학습 기록</h1>
+    <p>지금까지 여러 소단원에서 푼 퀴즈, 매칭 활동, 서술형 활동이 이 화면에 자동으로 모입니다.<br>다 확인했으면 아래 버튼으로 인쇄(PDF 저장)해서 제출해 보자.</p>
+  </section>
+
+  <div class="name-box">
+    <div class="nb-inner">
+      <div class="nb-label">학생 이름</div>
+      <div class="nb-name" id="studentNameDisplay"></div>
+      <span class="nb-edit" onclick="editName()">이름 다시 입력</span>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn download-btn" id="downloadBtn" onclick="downloadRecordPDF()">📥 PDF 다운로드</button>
+    <button class="action-btn print-btn" onclick="window.print()">🖨️ 인쇄 / PDF로 저장</button>
+    <button class="action-btn reset-btn" onclick="resetLogs()">🗑️ 기록 초기화</button>
+  </div>
+
+  <div class="connect-wrap" id="connectWrap" style="display:none;">
+    <div class="connect-box">
+      <div class="cb-label">선생님이 QR을 보여주지 않았다면, 알려주신 코드나 링크를 여기에 붙여넣어 보세요. 그러면 선생님이 남긴 피드백을 받아볼 수 있어요.</div>
+      <div class="cb-row">
+        <input type="text" id="teacherCodeInput" placeholder="코드 또는 링크 붙여넣기">
+        <button onclick="connectTeacherCode()">연결하기</button>
+      </div>
+    </div>
+  </div>
+  <div class="connected-badge" id="connectedBadge" style="display:none;">✅ 선생님과 연결되어 있어요 — 피드백을 자동으로 받아볼 수 있어요.</div>
+
+  <div class="feedback-wrap" id="feedbackWrap" style="display:none;">
+    <h3>👩‍🏫 선생님 피드백</h3>
+    <div id="feedbackList"></div>
+  </div>
+
+  <div class="report" id="reportArea"></div>
+
+  <footer>EAIM 사회역사 수업 · 이 기록은 이 기기(브라우저)에만 저장됩니다.</footer>
+
+<script>
+function editName(){
+  localStorage.removeItem('eaim_student_name');
+  location.reload();
+}
+function resetLogs(){
+  if (confirm('정말 모든 학습 기록을 지울까요? 되돌릴 수 없어요.')) {
+    EAIM.clearAllLogs();
+    render();
+  }
+}
+
+function fmtTime(iso){
+  const d = new Date(iso);
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function render(){
+  const name = EAIM.getStudentName();
+  document.getElementById('studentNameDisplay').textContent = name;
+
+  const logs = EAIM.getAllLogs();
+  const area = document.getElementById('reportArea');
+
+  if (logs.length === 0) {
+    area.innerHTML = `<div class="empty-note">아직 기록이 없어요. 소단원 페이지에서 퀴즈나 활동을 풀어보면 여기에 자동으로 쌓입니다.</div>`;
+    return;
+  }
+
+  // 단원 > 소단원 순으로 그룹화
+  const byUnit = {};
+  logs.forEach(l => {
+    byUnit[l.unit] = byUnit[l.unit] || {};
+    byUnit[l.unit][l.subunit] = byUnit[l.unit][l.subunit] || [];
+    byUnit[l.unit][l.subunit].push(l);
+  });
+
+  let html = `
+    <div class="report-title">
+      <div class="rt-school">EAIM 사회역사 수업 · 학습 활동 기록지</div>
+      <h2>${name} 학생</h2>
+      <div class="rt-count">총 ${logs.length}건의 활동 기록</div>
+    </div>
+  `;
+
+  Object.entries(byUnit).forEach(([unit, subunits]) => {
+    html += `<div class="unit-group"><h3>${unit}</h3>`;
+    Object.entries(subunits).forEach(([sub, items]) => {
+      html += `<div class="sub-group"><div class="sg-title">${sub}</div>`;
+      items.forEach(item => {
+        html += `
+          <div class="record-item">
+            <span class="ri-type">${item.type}</span>
+            <span class="ri-result">${item.result}</span>
+            <span class="ri-time">${fmtTime(item.time)}</span>
+          </div>`;
+      });
+      html += `</div>`;
+    });
+    html += `</div>`;
+  });
+
+  area.innerHTML = html;
+}
+render();
+
+function renderFeedback(list){
+  const wrap = document.getElementById('feedbackWrap');
+  const box = document.getElementById('feedbackList');
+  if (!list || !list.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  box.innerHTML = list.map(f => {
+    const time = f.feedbackAt && f.feedbackAt.toDate ? f.feedbackAt.toDate().toLocaleString('ko-KR') : '';
+    const SUBJECT_LABELS = { social1:'사회1', social2:'사회2', history1:'역사1', history2:'역사2' };
+    const subjectLabel = SUBJECT_LABELS[f.subject] || f.subject;
+    return `<div class="fb-item">
+      <div class="fb-meta">${subjectLabel} · ${f.unitLabel || f.unitKey || ''} ${time ? '· '+time : ''}</div>
+      <div class="fb-text">${f.feedback}</div>
+    </div>`;
+  }).join('');
+}
+if (window.EAIM_TEACHER && EAIM_TEACHER.getTeacherUid()) {
+  EAIM_TEACHER.subscribeMyFeedback(renderFeedback);
+  document.getElementById('connectedBadge').style.display = 'block';
+} else if (window.EAIM_TEACHER) {
+  document.getElementById('connectWrap').style.display = 'block';
+}
+
+function connectTeacherCode(){
+  const val = document.getElementById('teacherCodeInput').value;
+  if (window.EAIM_TEACHER && EAIM_TEACHER.connectTeacherManually(val)) {
+    location.reload();
+  } else {
+    alert('선생님께 받은 코드나 링크를 다시 확인해서 붙여넣어 주세요.');
+  }
+}
+
+function downloadRecordPDF(){
+  const btn = document.getElementById('downloadBtn');
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ 준비 중...';
+
+  const name = EAIM.getStudentName();
+  const target = document.querySelector('.report');
+
+  html2canvas(target, { scale: 2, backgroundColor: '#0a0708', useCORS: true }).then(canvas => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210, pageHeight = 297;
+    const imgWidth = pageWidth;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const imgData = canvas.toDataURL('image/png');
+
+    let heightLeft = imgHeight, position = 0;
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save(`${name}_학습기록.pdf`);
+    btn.disabled = false;
+    btn.textContent = original;
+  }).catch(err => {
+    console.error(err);
+    alert('PDF 생성 중 문제가 발생했어요. 다시 시도해 주세요.');
+    btn.disabled = false;
+    btn.textContent = original;
+  });
+}
+</script>
+</body>
+</html>
