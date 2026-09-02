@@ -390,6 +390,7 @@ import {
 } from './eaim-classroom-core.js';
 
 let currentApp = 'history';
+window.EAIM_APP_TYPE = currentApp;
 let rooms = [];
 
 window.doLogin = () => teacherLogin().catch(e => alert('로그인 실패: ' + e.message));
@@ -409,6 +410,7 @@ onTeacherAuthChange(user => {
 
 window.selectApp = (app, btn) => {
   currentApp = app;
+  window.EAIM_APP_TYPE = app;
   document.querySelectorAll('.app-tab').forEach(b => b.classList.remove('bp'));
   btn.classList.add('bp');
   document.getElementById('game-result-card').style.display = app === 'game' ? 'block' : 'none';
