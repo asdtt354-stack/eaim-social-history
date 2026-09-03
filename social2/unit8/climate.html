@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">우리나라의 기후 특성과 기후변화에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>우리나라의 기후 특성과 기후변화의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="climateLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5c2a12"/>
+            <stop offset="55%" stop-color="#a8521f"/>
+            <stop offset="100%" stop-color="#e8a84a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#climateLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#1a1414" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#100c0c"/>
+        
+      </svg>
+      <div class="cap"><b>폭염 속 여름</b> — 열대야·폭염 증가</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="climateRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a3a5c"/>
+            <stop offset="55%" stop-color="#5a7a9c"/>
+            <stop offset="100%" stop-color="#c4dce8"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#climateRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#e8eef2" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#c8d4dc"/>
+        <g fill="#ffffff"><circle cx="60" cy="60" r="3"/><circle cx="95" cy="90" r="3"/><circle cx="130" cy="120" r="3"/><circle cx="165" cy="60" r="3"/><circle cx="200" cy="90" r="3"/><circle cx="235" cy="120" r="3"/><circle cx="270" cy="60" r="3"/><circle cx="305" cy="90" r="3"/><circle cx="340" cy="120" r="3"/><circle cx="375" cy="60" r="3"/></g>
+      </svg>
+      <div class="cap"><b>폭설 속 겨울</b> — 기후변화로 극단화되는 날씨</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>우리나라 기후의 특징일까, 기후 변화로 나타난 변화일까?</h2></div>
   <div class="activity-wrap">

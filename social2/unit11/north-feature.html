@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">북부 지역의 지리적 특성과 주민 생활에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>북부 지역의 지리적 특성과 주민 생활의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="north_featureLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a3a5c"/>
+            <stop offset="55%" stop-color="#4a5a7c"/>
+            <stop offset="100%" stop-color="#8494ac"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#north_featureLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#1a2230" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#101620"/>
+        <g fill="#5a6a7a"><polygon points="130,190 170,130 230,130 270,190"/></g>
+      </svg>
+      <div class="cap"><b>북부지역 지형</b> — 개마고원, 높은 산지 비율</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="north_featureRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1a2a"/>
+            <stop offset="55%" stop-color="#2a2a3a"/>
+            <stop offset="100%" stop-color="#3a3a4a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#north_featureRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#141420" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#0c0c16"/>
+        
+      </svg>
+      <div class="cap"><b>주민 생활</b> — 다른 정치·경제 체제</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>북부지역(북한)의 지형적 특징일까, 북부지역 주민 생활의 특징일까?</h2></div>
   <div class="activity-wrap">

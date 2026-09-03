@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">우리나라의 자연재해와 대처 방안에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>우리나라의 자연재해와 대처 방안의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="disasterLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1a2a"/>
+            <stop offset="55%" stop-color="#2a2a4a"/>
+            <stop offset="100%" stop-color="#4a4a6c"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#disasterLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#12121c" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#0a0a12"/>
+        <g stroke="#8ea8c4" stroke-width="3" fill="none"><path d="M100,60 Q140,40 180,60 T260,60 T340,60" stroke-width="2" opacity="0.6"/><line x1="150" y1="90" x2="140" y2="130"/><line x1="200" y1="90" x2="190" y2="130"/><line x1="250" y1="90" x2="240" y2="130"/></g>
+      </svg>
+      <div class="cap"><b>태풍·집중호우</b> — 여름철 대표 자연재해</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="disasterRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1a2a"/>
+            <stop offset="55%" stop-color="#12324a"/>
+            <stop offset="100%" stop-color="#2a5a7a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#disasterRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#0a1420" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#060c14"/>
+        <path d="M200,105 L230,118 L230,150 Q230,175 200,190 Q170,175 170,150 L170,118 Z" fill="none" stroke="#7ee0c8" stroke-width="4"/>
+      </svg>
+      <div class="cap"><b>피해를 줄이는 노력</b> — 예보 시스템과 안전 교육</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>우리나라 여름철 자연재해일까, 자연재해 피해를 줄이는 노력일까?</h2></div>
   <div class="activity-wrap">

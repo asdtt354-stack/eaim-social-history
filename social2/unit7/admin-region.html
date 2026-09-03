@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">우리나라의 행정구역과 내가 사는 장소에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>우리나라의 행정구역과 내가 사는 장소의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="admin_regionLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a0714"/>
+            <stop offset="55%" stop-color="#1a1030"/>
+            <stop offset="100%" stop-color="#2a1848"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#admin_regionLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#0f0a1c" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#080510"/>
+        <g fill="none" stroke="#a855f7" stroke-width="2"><rect x="150" y="110" width="50" height="40"/><rect x="200" y="110" width="50" height="60"/><rect x="150" y="150" width="50" height="40"/></g>
+      </svg>
+      <div class="cap"><b>행정구역</b> — 특별시·광역시·도로 구분</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="admin_regionRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f3d2a"/>
+            <stop offset="55%" stop-color="#1e6b4a"/>
+            <stop offset="100%" stop-color="#3a9c6c"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#admin_regionRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#0a1c14" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#06120c"/>
+        <g fill="#fcd34d"><path d="M200,110 C185,110 175,122 175,137 C175,155 200,180 200,180 C200,180 225,155 225,137 C225,122 215,110 200,110 Z"/><circle cx="200" cy="136" r="8" fill="#1a1a1a"/></g>
+      </svg>
+      <div class="cap"><b>내가 사는 장소</b> — 우리 지역의 위치와 특징</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>행정구역의 특징일까, 지역 소개 시 포함하면 좋은 요소일까?</h2></div>
   <div class="activity-wrap">
