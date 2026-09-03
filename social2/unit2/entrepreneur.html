@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">기업의 역할과 기업가 정신에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>기업의 역할과 기업가 정신의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>기업</b>은 시장경제에서 상품을 생산해 이윤을 얻는 동시에, 일자리를 만들고 세금을 내 국가 재정에 기여해요. 기업의 규모와 영향력이 커지면서, 법을 지키며 공정하게 경쟁하고 소비자·근로자의 권리를 보호하는 <b>사회적 책임</b>도 함께 요구받고 있어요.</p><p><b>기업가 정신</b>이란 위험을 무릅쓰고 불확실한 상황에 도전하는 담대함과 끈기예요. 동력 비행기를 발명한 라이트 형제처럼, 훌륭한 기업가들은 수많은 실패를 겪으면서도 교훈을 얻어 다시 도전해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>기업가 정신에 해당하는 태도일까, 기업의 사회적 책임에 해당하는 것일까?</h2></div>
   <div class="activity-wrap">
@@ -145,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "재화나 서비스를 생산하는 경제 주체로, 이윤을 목적으로 활동하는 조직은?", "opts": ["기업", "가계", "정부", "노동조합"], "answer": 0, "fb": "기업은 생산의 주체로서 재화와 서비스를 만들어 시장에 공급하고 이윤을 추구하는 경제 조직이에요."}, {"q": "새로운 아이디어와 도전 정신으로 위험을 감수하며 사업을 이끌어 가는 정신을 무엇이라 하는가?", "opts": ["기업가 정신", "소비자 주권", "희소성", "공유 경제"], "answer": 0, "fb": "기업가 정신은 새로운 가치를 만들기 위해 위험을 감수하고 혁신적으로 도전하는 자세를 말해요."}, {"q": "기업이 이윤 추구 외에 사회에 대해 가져야 할 책임으로 알맞은 것은?", "opts": ["사회적 책임(환경 보호, 근로자 보호 등)", "오직 이윤만 추구하는 것", "법을 어겨도 되는 것", "소비자를 속이는 것"], "answer": 0, "fb": "오늘날 기업은 이윤 추구뿐 아니라 환경 보호, 근로자의 권리 보호, 소비자 보호 등 사회적 책임을 다해야 한다는 요구를 받고 있어요."}];
+const QUIZ = [{"q":"재화나 서비스를 생산하는 경제 주체로, 이윤을 목적으로 활동하는 조직은?","opts":["기업","가계","정부","노동조합"],"answer":0,"fb":"기업은 생산의 주체로서 재화와 서비스를 만들어 시장에 공급하고 이윤을 추구하는 경제 조직이에요."},{"q":"새로운 아이디어와 도전 정신으로 위험을 감수하며 사업을 이끌어 가는 정신을 무엇이라 하는가?","opts":["기업가 정신","소비자 주권","희소성","공유 경제"],"answer":0,"fb":"기업가 정신은 새로운 가치를 만들기 위해 위험을 감수하고 혁신적으로 도전하는 자세를 말해요."},{"q":"동력 비행기를 발명한 라이트 형제의 사례가 보여 주는 기업가 정신의 태도로 가장 알맞은 것은?","opts":["불확실한 상황에 도전하는 담대함과 끈기","실패를 두려워해 아무것도 하지 않는 것","이미 성공한 방법만 따라 하는 것","위험을 절대 감수하지 않는 것"],"answer":0,"fb":"훌륭한 기업가들은 대부분 처음엔 수많은 실패를 겪지만, 그 실패에서 교훈을 얻어 불확실한 상황에 도전한다는 공통점이 있어요. 라이트 형제도 위험을 무릅쓰고 도전한 끝에 성공했어요."},{"q":"기업이 이윤 추구 외에 사회에 대해 가져야 할 책임으로 알맞은 것은?","opts":["사회적 책임(환경 보호, 근로자 보호 등)","오직 이윤만 추구하는 것","법을 어겨도 되는 것","소비자를 속이는 것"],"answer":0,"fb":"오늘날 기업은 이윤 추구뿐 아니라 환경 보호, 근로자의 권리 보호, 소비자 보호 등 사회적 책임을 다해야 한다는 요구를 받고 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

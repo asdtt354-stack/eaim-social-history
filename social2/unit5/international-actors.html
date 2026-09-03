@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">국제 사회의 행위 주체와 특징에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>국제 사회의 행위 주체와 특징의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>주권을 가진 국가들이 서로 영향을 주고받으며 공존하는 사회를 <b>국제 사회</b>라고 해요. 국가가 가장 기본적인 행위 주체지만, 오늘날엔 다국적 기업, 국제기구(유엔 등), 국제적으로 영향력 있는 개인·비정부기구(NGO)도 함께 참여해요.</p><p>국제 사회는 자국의 이익을 우선시하는 <b>힘의 논리</b>가 작용하면서도, 동시에 국제법과 국제기구를 통한 <b>협력</b>이 함께 이루어진다는 특징이 있어요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>국가(전통적 행위 주체)일까, 국가 외의 행위 주체일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "국제 사회에서 가장 기본적이고 전통적인 행위 주체로, 주권을 가진 단위는?", "opts": ["국가", "개인", "다국적 기업", "국제 비정부 기구"], "answer": 0, "fb": "국가는 국제 사회를 구성하는 가장 기본적인 행위 주체로, 독립적인 주권을 가지고 다른 국가와 관계를 맺어요."}, {"q": "여러 나라가 모여 만든, 유엔(UN)과 같은 국제기구를 무엇이라 하는가?", "opts": ["정부 간 국제기구", "개인", "다국적 기업", "국내 지방자치단체"], "answer": 0, "fb": "유엔처럼 여러 국가의 정부가 모여 만든 조직을 정부 간 국제기구라고 하며, 국가 간 협력과 분쟁 조정 역할을 해요."}, {"q": "국제 사회의 특징으로 가장 알맞은 것은?", "opts": ["힘의 논리가 작용하면서도 국제법과 협력이 함께 존재한다", "모든 나라가 완전히 동등한 힘을 가진다", "분쟁이 전혀 발생하지 않는다", "국가 간 협력이 전혀 이루어지지 않는다"], "answer": 0, "fb": "국제 사회는 자국의 이익을 우선시하는 힘의 논리가 작용하는 한편, 국제법과 국제기구를 통한 협력도 함께 이루어지는 특징이 있어요."}];
+const QUIZ = [{"q":"국제 사회에서 가장 기본적이고 전통적인 행위 주체로, 주권을 가진 단위는?","opts":["국가","개인","다국적 기업","국제 비정부 기구"],"answer":0,"fb":"국가는 국제 사회를 구성하는 가장 기본적인 행위 주체로, 독립적인 주권을 가지고 다른 국가와 관계를 맺어요."},{"q":"여러 나라가 모여 만든, 유엔(UN)과 같은 국제기구를 무엇이라 하는가?","opts":["정부 간 국제기구","개인","다국적 기업","국내 지방자치단체"],"answer":0,"fb":"유엔처럼 여러 국가의 정부가 모여 만든 조직을 정부 간 국제기구라고 하며, 국가 간 협력과 분쟁 조정 역할을 해요."},{"q":"국제 사회의 특징으로 가장 알맞은 것은?","opts":["힘의 논리가 작용하면서도 국제법과 협력이 함께 존재한다","모든 나라가 완전히 동등한 힘을 가진다","분쟁이 전혀 발생하지 않는다","국가 간 협력이 전혀 이루어지지 않는다"],"answer":0,"fb":"국제 사회는 자국의 이익을 우선시하는 힘의 논리가 작용하는 한편, 국제법과 국제기구를 통한 협력도 함께 이루어지는 특징이 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

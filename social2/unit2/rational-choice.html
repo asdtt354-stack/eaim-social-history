@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">경제생활에서의 합리적 선택에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>경제생활에서의 합리적 선택의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>재화·서비스를 만드는 <b>생산</b>, 사서 쓰는 <b>소비</b>, 그 대가를 나누는 <b>분배</b>를 합쳐 경제활동이라고 해요. 인간의 욕구는 무한한데 자원은 한정돼 있어 선택의 문제가 생기는 것을 <b>희소성</b>이라 해요.</p><p>어떤 선택으로 얻는 만족감을 <b>편익</b>, 그 대가를 <b>비용</b>이라 해요. <b>기회비용</b>은 선택하며 포기한 것들 중 가장 가치가 큰 것으로, 직접 지불한 돈·시간뿐 아니라 다른 선택을 했다면 얻었을 만족감까지 포함해요. 편익이 기회비용보다 클 때 합리적 선택이라 할 수 있어요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>합리적 선택의 예일까, 비합리적 선택의 예일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "자원은 한정되어 있는데 원하는 것은 많아서 선택의 문제가 생기는 현상을 무엇이라 하는가?", "opts": ["희소성", "풍요성", "무한성", "균등성"], "answer": 0, "fb": "희소성은 인간의 욕구에 비해 자원이 상대적으로 부족한 상태를 말하며, 모든 경제 문제의 근본 원인이 돼요."}, {"q": "한 가지를 선택함으로써 포기하게 되는 것 중 가장 가치 있는 것을 무엇이라 하는가?", "opts": ["기회비용", "매몰비용", "고정비용", "총비용"], "answer": 0, "fb": "기회비용은 어떤 선택을 할 때 포기해야 하는 여러 대안 중 가장 가치 있는 것을 말해요. 합리적 선택은 편익이 기회비용보다 클 때 이루어져요."}, {"q": "합리적 선택을 위해 고려해야 할 것으로 가장 알맞은 것은?", "opts": ["비용과 편익을 비교해 편익이 더 큰 쪽을 선택한다", "무조건 가장 비싼 것을 고른다", "아무 기준 없이 즉흥적으로 결정한다", "기회비용은 고려하지 않는다"], "answer": 0, "fb": "합리적 선택은 여러 대안의 비용과 편익을 꼼꼼히 비교해, 최소 비용으로 최대 편익을 얻을 수 있는 쪽을 선택하는 것을 말해요."}];
+const QUIZ = [{"q":"자원은 한정되어 있는데 원하는 것은 많아서 선택의 문제가 생기는 현상을 무엇이라 하는가?","opts":["희소성","풍요성","무한성","균등성"],"answer":0,"fb":"희소성은 인간의 욕구에 비해 자원이 상대적으로 부족한 상태를 말하며, 모든 경제 문제의 근본 원인이 돼요."},{"q":"한 가지를 선택함으로써 포기하게 되는 것 중 가장 가치 있는 것을 무엇이라 하는가?","opts":["기회비용","매몰비용","고정비용","총비용"],"answer":0,"fb":"기회비용은 어떤 선택을 할 때 포기해야 하는 여러 대안 중 가장 가치 있는 것을 말해요. 합리적 선택은 편익이 기회비용보다 클 때 이루어져요."},{"q":"합리적 선택을 위해 고려해야 할 것으로 가장 알맞은 것은?","opts":["비용과 편익을 비교해 편익이 더 큰 쪽을 선택한다","무조건 가장 비싼 것을 고른다","아무 기준 없이 즉흥적으로 결정한다","기회비용은 고려하지 않는다"],"answer":0,"fb":"합리적 선택은 여러 대안의 비용과 편익을 꼼꼼히 비교해, 최소 비용으로 최대 편익을 얻을 수 있는 쪽을 선택하는 것을 말해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

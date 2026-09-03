@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">오늘날의 사회문제에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>오늘날의 사회문제의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>사회문제</b>는 개인의 습관이나 자연 현상이 아니라, 사회 제도나 구조에서 비롯되어 여러 구성원이 함께 겪는 문제예요. 그래서 개인의 노력만으로는 해결하기 어렵고 사회적 노력이 필요해요.</p><p>오늘날엔 온실가스로 인한 <b>기후위기</b>(폭염·가뭄·해수면 상승)와, 2020년 전 세계로 퍼진 코로나19 같은 <b>팬데믹</b>이 대표적인 사회문제로 떠올랐어요. 세계화로 국가 간 교류가 활발해지면서 이런 문제는 더 빠르게 퍼지고 있어요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>오늘날의 대표적인 사회문제일까, 사회문제라고 보기 어려운 것일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "한 사회의 많은 구성원에게 부정적인 영향을 미쳐 함께 해결해야 할 문제를 무엇이라 하는가?", "opts": ["사회문제", "개인의 취향", "자연현상", "기회비용"], "answer": 0, "fb": "사회문제는 개인만의 문제가 아니라 사회 구조와 관련되어 많은 구성원에게 영향을 미치는 문제로, 사회적 노력을 통해 해결해야 해요."}, {"q": "오늘날 우리 사회의 대표적인 사회문제로 알맞지 않은 것은?", "opts": ["저출생·고령화", "청소년 및 노인 빈곤", "환경 오염", "완전한 평등 실현"], "answer": 3, "fb": "\"완전한 평등 실현\"은 사회가 지향하는 목표이지, 그 자체가 사회문제는 아니에요. 저출생·고령화, 빈곤, 환경 오염 등이 대표적인 사회문제예요."}, {"q": "사회문제가 개인의 문제와 다른 점으로 가장 알맞은 것은?", "opts": ["사회 구조와 관련되어 개인의 노력만으로 해결하기 어렵다", "한 사람에게만 영향을 미친다", "사회와 전혀 관계가 없다", "해결할 필요가 없는 문제이다"], "answer": 0, "fb": "사회문제는 그 원인이 사회 구조나 제도와 얽혀 있는 경우가 많아, 개인의 노력만으로는 해결하기 어렵고 사회적·제도적 노력이 함께 필요해요."}];
+const QUIZ = [{"q":"한 사회의 많은 구성원에게 부정적인 영향을 미쳐 함께 해결해야 할 문제를 무엇이라 하는가?","opts":["사회문제","개인의 취향","자연현상","기회비용"],"answer":0,"fb":"사회문제는 개인만의 문제가 아니라 사회 구조와 관련되어 많은 구성원에게 영향을 미치는 문제로, 사회적 노력을 통해 해결해야 해요."},{"q":"오늘날 우리 사회의 대표적인 사회문제로 알맞지 않은 것은?","opts":["저출생·고령화","청소년 및 노인 빈곤","환경 오염","완전한 평등 실현"],"answer":3,"fb":"\"완전한 평등 실현\"은 사회가 지향하는 목표이지, 그 자체가 사회문제는 아니에요. 저출생·고령화, 빈곤, 환경 오염 등이 대표적인 사회문제예요."},{"q":"사회문제가 개인의 문제와 다른 점으로 가장 알맞은 것은?","opts":["사회 구조와 관련되어 개인의 노력만으로 해결하기 어렵다","한 사람에게만 영향을 미친다","사회와 전혀 관계가 없다","해결할 필요가 없는 문제이다"],"answer":0,"fb":"사회문제는 그 원인이 사회 구조나 제도와 얽혀 있는 경우가 많아, 개인의 노력만으로는 해결하기 어렵고 사회적·제도적 노력이 함께 필요해요."},{"q":"2020년 전 세계적으로 유행하며 사람들의 일상과 경제에 큰 영향을 준 감염병 사례는?","opts":["코로나바이러스 감염증-19(팬데믹)","독감(계절성)","수두","알레르기 비염"],"answer":0,"fb":"코로나19 팬데믹은 생물 다양성 감소와 세계화로 국가 간 교류가 활발해지면서 감염병이 넓은 지역에 빠르게 퍼진 대표적인 사례로, 사람들의 일상을 단절시키고 경제적 어려움을 가져왔어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

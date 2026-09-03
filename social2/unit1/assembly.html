@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">국회에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>국회의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>국회</b>는 국민이 뽑은 국회의원들로 구성되어 법률을 만들고 국가의 중요한 일을 결정하는 국가기관이에요. 국회의 대표적 역할은 크게 세 가지예요: 법률을 만들고 고치는 <b>입법 기능</b>, 예산을 심사·확정하는 <b>재정 기능</b>, 국정 감사·조사 같은 <b>일반 국정 기능</b>.</p><p>이 밖에도 국회는 헌법 개정안을 제안·의결하고, 대통령이 외국과 맺은 조약에 동의권을 가져요. 국정 감사·조사를 통해 정부가 법을 제대로 집행하는지 감시하고 견제하는 역할도 해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>국회의 입법 기능일까, 국회의 견제 기능일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "국민이 선거로 뽑은 대표들로 구성되어 법률을 만드는 국가 기관은?", "opts": ["국회", "법원", "행정부", "헌법재판소"], "answer": 0, "fb": "국회는 국민이 직접 선출한 국회의원들로 구성되며, 법률을 제정·개정하는 입법 기관이에요."}, {"q": "국회가 정부의 예산안을 심사하고 확정하는 권한을 무엇이라 하는가?", "opts": ["예산 심의·확정권", "사면권", "외교권", "재판권"], "answer": 0, "fb": "국회는 정부가 제출한 예산안을 심사하고 확정하는 예산 심의·확정권을 가지고 있어 국가 재정을 견제해요."}, {"q": "국회가 행정부(정부)를 감시하고 견제하기 위해 하는 활동으로 알맞은 것은?", "opts": ["국정 감사·조사", "판결 선고", "대통령 임명", "조약 체결"], "answer": 0, "fb": "국회는 국정 감사와 국정 조사를 통해 정부가 법을 제대로 집행하고 있는지 감시하고 견제하는 역할을 해요."}];
+const QUIZ = [{"q":"국민이 선거로 뽑은 대표들로 구성되어 법률을 만드는 국가 기관은?","opts":["국회","법원","행정부","헌법재판소"],"answer":0,"fb":"국회는 국민이 직접 선출한 국회의원들로 구성되며, 법률을 제정·개정하는 입법 기관이에요."},{"q":"국회가 정부의 예산안을 심사하고 확정하는 권한을 무엇이라 하는가?","opts":["예산 심의·확정권","사면권","외교권","재판권"],"answer":0,"fb":"국회는 정부가 제출한 예산안을 심사하고 확정하는 예산 심의·확정권을 가지고 있어 국가 재정을 견제해요."},{"q":"국회가 행정부(정부)를 감시하고 견제하기 위해 하는 활동으로 알맞은 것은?","opts":["국정 감사·조사","판결 선고","대통령 임명","조약 체결"],"answer":0,"fb":"국회는 국정 감사와 국정 조사를 통해 정부가 법을 제대로 집행하고 있는지 감시하고 견제하는 역할을 해요."},{"q":"국회의 세 가지 대표적 기능으로 알맞은 것은?","opts":["입법에 관한 기능, 재정에 관한 기능, 일반 국정에 관한 기능","오직 재판만 담당하는 기능","오직 행정 집행만 하는 기능","오직 외교만 담당하는 기능"],"answer":0,"fb":"국회는 법률을 만들고 고치는 입법 기능, 예산을 심의·확정하는 재정 기능, 국정 감사·조사 같은 일반 국정에 관한 기능을 수행해요. 헌법 개정안 제안·의결, 조약 동의권도 국회의 권한이에요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

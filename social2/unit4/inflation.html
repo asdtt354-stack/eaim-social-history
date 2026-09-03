@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">물가 변동과 실업에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>물가 변동과 실업의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>정부는 여러 상품 가격을 종합해 평균한 <b>물가 지수</b>(기준 시점을 100으로 비교)로 물가 변동을 파악해요. 물가가 계속 오르는 현상을 <b>인플레이션</b>이라 하며, 화폐의 실질 가치를 떨어뜨려요.</p><p><b>실업</b>은 일할 능력과 의사가 있는데도 일자리를 구하지 못한 상태예요. 다만 일할 의사가 없는 학생·전업주부, 일할 능력이 없는 어린이·노약자, 구직을 포기한 사람은 실업자로 보지 않아요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>인플레이션(물가 상승)의 특징일까, 실업의 특징일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "여러 상품의 가격을 종합해 평균한 것으로, 시간에 따른 물가 수준의 변화를 보여주는 것은?", "opts": ["물가 지수", "환율", "GDP", "이자율"], "answer": 0, "fb": "물가 지수는 여러 상품과 서비스 가격을 종합해 평균 낸 수치로, 물가가 오르는지 내리는지를 파악하는 데 쓰여요."}, {"q": "물가가 지속적으로 오르는 현상을 무엇이라 하는가?", "opts": ["인플레이션", "디플레이션", "실업", "경제 성장"], "answer": 0, "fb": "인플레이션은 물가가 지속적으로 오르는 현상으로, 화폐의 실질 가치가 떨어지는 문제를 가져와요."}, {"q": "일할 의사와 능력이 있는데도 일자리를 구하지 못한 상태를 무엇이라 하는가?", "opts": ["실업", "인플레이션", "경기 호황", "완전 고용"], "answer": 0, "fb": "실업은 일할 능력과 의사가 있음에도 일자리를 얻지 못한 상태로, 개인의 소득 감소뿐 아니라 국가 경제에도 부정적 영향을 줘요."}];
+const QUIZ = [{"q":"여러 상품의 가격을 종합해 평균한 것으로, 시간에 따른 물가 수준의 변화를 보여주는 것은?","opts":["물가 지수","환율","GDP","이자율"],"answer":0,"fb":"물가 지수는 여러 상품과 서비스 가격을 종합해 평균 낸 수치로, 물가가 오르는지 내리는지를 파악하는 데 쓰여요."},{"q":"물가가 지속적으로 오르는 현상을 무엇이라 하는가?","opts":["인플레이션","디플레이션","실업","경제 성장"],"answer":0,"fb":"인플레이션은 물가가 지속적으로 오르는 현상으로, 화폐의 실질 가치가 떨어지는 문제를 가져와요."},{"q":"일할 의사와 능력이 있는데도 일자리를 구하지 못한 상태를 무엇이라 하는가?","opts":["실업","인플레이션","경기 호황","완전 고용"],"answer":0,"fb":"실업은 일할 능력과 의사가 있음에도 일자리를 얻지 못한 상태로, 개인의 소득 감소뿐 아니라 국가 경제에도 부정적 영향을 줘요."},{"q":"실업자로 보기 <b>어려운</b> 경우로 가장 알맞은 것은?","opts":["학업에 전념하며 취업할 의사가 없는 대학생","지난 4주간 이력서를 내고 면접을 본 구직자","갑자기 일자리를 잃고 새 직장을 찾는 사람","회사가 문을 닫아 실직한 사람"],"answer":0,"fb":"실업자는 \"일할 능력과 의사가 있는데 일자리가 없는 사람\"이에요. 일할 의사가 없는 학생·전업주부, 일할 능력이 없는 어린이·노약자, 구직을 포기한 사람은 실업자로 보지 않아요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

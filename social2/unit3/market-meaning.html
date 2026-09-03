@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,7 +82,16 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>시장의 의미와 필요성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p><b>시장</b>은 사고자 하는 사람(수요자)과 팔고자 하는 사람(공급자)이 만나 거래가 이루어지는 곳이나 활동을 말해요. 재래시장처럼 눈에 보이는 장소일 수도 있지만, <b>온라인 쇼핑몰이나 주식 시장처럼 특정 장소가 없어도</b> 거래가 이루어지면 시장이라고 볼 수 있어요.</p>
+      <p>시장이 있으면 사려는 사람과 팔려는 사람을 일일이 찾아다닐 필요 없이 한곳에서 효율적으로 만날 수 있어서, <b>거래 비용과 시간이 줄어들고</b> 교환이 훨씬 편리해져요. 반대로 도서관에서 책을 빌리는 것처럼 대가를 주고받는 거래가 아니라면, 아무리 사람이 모이는 곳이어도 시장이라고 하지 않아요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>시장의 예일까, 시장으로 보기 어려운 것일까?</h2></div>
+  <p style="max-width:700px;margin:-6px auto 0;padding:0 20px;font-size:0.82em;color:#888;">💡 위에서 배운 개념을 떠올리며, 아래 항목이 시장에 해당하는지 직접 판단해 보자.</p>
   <div class="activity-wrap">
     <div class="scenario-box">
       <div class="sq">🧭 아래 항목들이 "시장의 예"에 가까운지, "시장으로 보기 어려운 것"에 가까운지 골라보자.</div>
@@ -138,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "사고자 하는 사람과 팔고자 하는 사람이 만나 거래가 이루어지는 곳(또는 활동)을 무엇이라 하는가?", "opts": ["시장", "정부", "가계", "기업가 정신"], "answer": 0, "fb": "시장은 재화나 서비스를 사고파는 사람들이 만나 거래하는 장(場)으로, 반드시 특정 장소를 뜻하지 않고 온라인 거래도 포함해요."}, {"q": "시장이 존재함으로써 얻을 수 있는 이점으로 가장 알맞은 것은?", "opts": ["거래 비용과 시간을 줄이고 효율적인 교환이 가능해진다", "모든 물건이 무료가 된다", "거래가 완전히 사라진다", "경쟁이 전혀 없어진다"], "answer": 0, "fb": "시장이 있으면 사고자 하는 사람과 팔고자 하는 사람을 일일이 찾아다닐 필요 없이 한 곳에서 효율적으로 거래할 수 있어요."}, {"q": "다음 중 시장의 종류로 볼 수 없는 것은?", "opts": ["재래시장", "온라인 쇼핑몰", "주식 시장", "학교 도서관"], "answer": 3, "fb": "학교 도서관은 책을 빌려주는 곳이지 재화나 서비스를 사고파는 거래가 이루어지는 시장이 아니에요."}];
+const QUIZ = [{"q":"사고자 하는 사람과 팔고자 하는 사람이 만나 거래가 이루어지는 곳(또는 활동)을 무엇이라 하는가?","opts":["시장","정부","가계","기업가 정신"],"answer":0,"fb":"시장은 재화나 서비스를 사고파는 사람들이 만나 거래하는 장(場)으로, 반드시 특정 장소를 뜻하지 않고 온라인 거래도 포함해요."},{"q":"시장이 존재함으로써 얻을 수 있는 이점으로 가장 알맞은 것은?","opts":["거래 비용과 시간을 줄이고 효율적인 교환이 가능해진다","모든 물건이 무료가 된다","거래가 완전히 사라진다","경쟁이 전혀 없어진다"],"answer":0,"fb":"시장이 있으면 사고자 하는 사람과 팔고자 하는 사람을 일일이 찾아다닐 필요 없이 한 곳에서 효율적으로 거래할 수 있어요."},{"q":"다음 중 시장의 종류로 볼 수 없는 것은?","opts":["재래시장","온라인 쇼핑몰","주식 시장","학교 도서관"],"answer":3,"fb":"학교 도서관은 책을 빌려주는 곳이지 재화나 서비스를 사고파는 거래가 이루어지는 시장이 아니에요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

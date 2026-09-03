@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">법원과 헌법재판소에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>법원과 헌법재판소의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>분쟁이나 범죄가 발생했을 때 법을 적용해 판단하는 국가 작용을 <b>사법</b>이라 하고, 이를 담당하는 곳이 <b>법원</b>이에요. 재판을 통해 법적 분쟁을 해결하고 국민의 권리를 보호해요.</p><p><b>헌법재판소</b>는 헌법 해석과 관련된 다툼을 다루는 기관이에요. 위헌 법률 심판, 헌법 소원 심판, 탄핵 심판, 권한 쟁의 심판, 정당 해산 심판을 담당해, 헌법 수호 기관이자 기본권 보장 기관 역할을 해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>법원의 역할일까, 헌법재판소의 역할일까?</h2></div>
   <div class="activity-wrap">
@@ -145,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "법을 적용하여 분쟁을 해결하고 재판을 담당하는 국가 기관은?", "opts": ["법원", "국회", "행정부", "지방자치단체"], "answer": 0, "fb": "법원은 재판을 통해 법적 분쟁을 해결하고 국민의 권리를 보호하는 사법 기관이에요."}, {"q": "법률이 헌법에 위반되는지, 대통령 등의 탄핵 여부를 심판하는 기관은?", "opts": ["헌법재판소", "경찰청", "검찰청", "감사원"], "answer": 0, "fb": "헌법재판소는 법률의 위헌 여부, 탄핵 심판, 정당 해산 심판 등 헌법과 관련된 중요한 사항을 심판하는 기관이에요."}, {"q": "법원과 행정부, 국회가 서로 다른 기관으로 분리되어 있는 원리를 무엇이라 하는가?", "opts": ["삼권 분립(권력 분립)", "중앙 집권", "지방 자치", "단일 정당제"], "answer": 0, "fb": "삼권 분립은 입법(국회), 행정(정부), 사법(법원)의 권력을 서로 다른 기관에 나누어 견제와 균형을 이루도록 하는 원리예요."}];
+const QUIZ = [{"q":"법을 적용하여 분쟁을 해결하고 재판을 담당하는 국가 기관은?","opts":["법원","국회","행정부","지방자치단체"],"answer":0,"fb":"법원은 재판을 통해 법적 분쟁을 해결하고 국민의 권리를 보호하는 사법 기관이에요."},{"q":"법률이 헌법에 위반되는지, 대통령 등의 탄핵 여부를 심판하는 기관은?","opts":["헌법재판소","경찰청","검찰청","감사원"],"answer":0,"fb":"헌법재판소는 법률의 위헌 여부, 탄핵 심판, 정당 해산 심판 등 헌법과 관련된 중요한 사항을 심판하는 기관이에요."},{"q":"헌법재판소가 담당하는 심판의 종류로 알맞지 않은 것은?","opts":["위헌 법률 심판","헌법 소원 심판","권한 쟁의 심판","민사 손해배상 심판"],"answer":3,"fb":"헌법재판소는 위헌 법률 심판, 헌법 소원 심판, 탄핵 심판, 권한 쟁의 심판, 정당 해산 심판을 담당해요. 개인 간 손해배상 같은 민사 사건은 법원(일반 재판)이 담당해요."},{"q":"법원과 행정부, 국회가 서로 다른 기관으로 분리되어 있는 원리를 무엇이라 하는가?","opts":["삼권 분립(권력 분립)","중앙 집권","지방 자치","단일 정당제"],"answer":0,"fb":"삼권 분립은 입법(국회), 행정(정부), 사법(법원)의 권력을 서로 다른 기관에 나누어 견제와 균형을 이루도록 하는 원리예요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

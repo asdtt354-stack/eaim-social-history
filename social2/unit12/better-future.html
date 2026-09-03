@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">더 나은 지역을 만들기 위한 노력에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>더 나은 지역을 만들기 위한 노력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>세계 시민</b>은 자신이 사는 지역을 넘어 지구촌 전체의 문제(환경·빈곤·인권 등)에 관심을 갖고 책임감 있게 행동하는 사람이에요. 공정무역 제품 이용, 봉사 활동, 환경 캠페인 참여가 구체적인 실천 방법이에요.</p><p>지역문제는 <b>문제 인식 → 원인 파악 → 정보 탐색·해결 방안 모색 → 실천</b>의 과정으로 해결해요. 환경·사회 문제는 규모가 크고 복잡해 개인·기업·국가가 함께 협력해야 효과적으로 풀어갈 수 있어요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>세계 시민다운 태도일까, 세계 시민답지 않은 태도일까?</h2></div>
   <div class="activity-wrap">
@@ -145,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "세계 시민으로서 가져야 할 태도로 가장 알맞은 것은?", "opts": ["지구촌 문제에 관심을 갖고 책임감 있게 행동하는 태도", "자신이 사는 지역에만 관심을 갖는 태도", "다른 나라 문제에 완전히 무관심한 태도", "환경 문제를 남의 일로만 여기는 태도"], "answer": 0, "fb": "세계 시민은 자신이 사는 지역을 넘어 지구촌 전체의 문제(환경, 빈곤, 인권 등)에 관심을 갖고 책임감 있게 행동하려는 태도를 가져야 해요."}, {"q": "더 나은 지역(지구촌)을 만들기 위한 실천 방법으로 알맞은 것은?", "opts": ["공정무역 제품 이용, 자원봉사, 환경 보호 캠페인 참여", "자원을 낭비하는 것", "지역 문제에 무관심한 것", "다른 사람과 협력을 거부하는 것"], "answer": 0, "fb": "공정무역 제품 이용, 봉사 활동, 환경 캠페인 참여 등은 더 나은 지역과 지구촌을 만들기 위한 구체적인 실천 방법이에요."}, {"q": "지속가능한 미래를 위해 개인, 기업, 국가가 함께 협력해야 하는 까닭으로 가장 알맞은 것은?", "opts": ["환경·사회 문제는 한 주체의 노력만으로 해결하기 어렵기 때문", "한 사람의 힘으로 모든 문제가 해결되기 때문", "협력이 전혀 필요하지 않기 때문", "문제는 이미 모두 해결되었기 때문"], "answer": 0, "fb": "기후 변화나 자원 고갈 같은 문제는 규모가 크고 복잡해 개인, 기업, 국가가 함께 협력해야 효과적으로 해결할 수 있어요."}];
+const QUIZ = [{"q":"세계 시민으로서 가져야 할 태도로 가장 알맞은 것은?","opts":["지구촌 문제에 관심을 갖고 책임감 있게 행동하는 태도","자신이 사는 지역에만 관심을 갖는 태도","다른 나라 문제에 완전히 무관심한 태도","환경 문제를 남의 일로만 여기는 태도"],"answer":0,"fb":"세계 시민은 자신이 사는 지역을 넘어 지구촌 전체의 문제(환경, 빈곤, 인권 등)에 관심을 갖고 책임감 있게 행동하려는 태도를 가져야 해요."},{"q":"더 나은 지역(지구촌)을 만들기 위한 실천 방법으로 알맞은 것은?","opts":["공정무역 제품 이용, 자원봉사, 환경 보호 캠페인 참여","자원을 낭비하는 것","지역 문제에 무관심한 것","다른 사람과 협력을 거부하는 것"],"answer":0,"fb":"공정무역 제품 이용, 봉사 활동, 환경 캠페인 참여 등은 더 나은 지역과 지구촌을 만들기 위한 구체적인 실천 방법이에요."},{"q":"지역문제를 해결하는 과정의 순서로 가장 알맞은 것은?","opts":["문제 인식 → 원인 파악 → 정보 탐색·해결 방안 모색 → 실천","실천 → 문제 인식 → 원인 파악 → 정보 탐색","원인 파악 없이 곧바로 실천","문제를 인식만 하고 아무것도 하지 않음"],"answer":0,"fb":"지역문제를 해결하려면 먼저 문제를 인식하고 발생 원인을 파악한 뒤, 필요한 정보를 찾아 해결 방안을 탐색하고, 관련 기관·주민과 의견을 조정해 실천하는 순서로 접근하는 것이 효과적이에요."},{"q":"지속가능한 미래를 위해 개인, 기업, 국가가 함께 협력해야 하는 까닭으로 가장 알맞은 것은?","opts":["환경·사회 문제는 한 주체의 노력만으로 해결하기 어렵기 때문","한 사람의 힘으로 모든 문제가 해결되기 때문","협력이 전혀 필요하지 않기 때문","문제는 이미 모두 해결되었기 때문"],"answer":0,"fb":"기후 변화나 자원 고갈 같은 문제는 규모가 크고 복잡해 개인, 기업, 국가가 함께 협력해야 효과적으로 해결할 수 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

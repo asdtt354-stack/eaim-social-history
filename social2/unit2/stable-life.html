@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">안정적인 경제생활을 위한 노력에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>안정적인 경제생활을 위한 노력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>경제생활은 생애 주기에 따라 달라져요. <b>유소년기</b>엔 부모 소득에 의존해 소비만 하고, <b>청년기</b>엔 소득이 발생하기 시작해요. <b>중장년기</b>엔 소득이 늘지만 자녀 교육·주택 마련 등으로 지출도 크게 늘고, <b>노년기</b>엔 은퇴로 소득이 줄어들어요.</p><p>이런 변화에 대비하려면 <b>자산 관리</b>(소득을 언제, 얼마나 쓰고 지킬지 계획)와 <b>신용 관리</b>(빌린 돈을 약속대로 갚을 수 있는 능력 관리)가 중요해요. 저축은 안전하지만 수익이 적고, 투자는 수익을 기대할 수 있지만 위험도 커요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>저축의 특징일까, 투자의 특징일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "수입과 지출 계획을 세워 자산을 관리하는 것을 무엇이라 하는가?", "opts": ["재무 설계(자산 관리)", "기회비용", "희소성", "시장 실패"], "answer": 0, "fb": "재무 설계는 개인이나 가계가 소득과 지출을 계획하고 저축·투자 등을 통해 안정적인 경제생활을 준비하는 것을 말해요."}, {"q": "미래를 대비해 소득의 일부를 지금 쓰지 않고 모아 두는 것을 무엇이라 하는가?", "opts": ["저축", "소비", "투자 위험", "기부"], "answer": 0, "fb": "저축은 현재의 소비를 줄이고 소득의 일부를 미래를 위해 모아 두는 경제 활동이에요."}, {"q": "자산을 늘리기 위해 주식, 부동산 등에 돈을 투입하는 것을 무엇이라 하는가?", "opts": ["투자", "저축만 해당", "소비", "기부"], "answer": 0, "fb": "투자는 미래에 더 큰 수익을 기대하며 주식, 채권, 부동산 등에 자금을 투입하는 활동으로, 저축보다 수익과 위험이 클 수 있어요."}];
+const QUIZ = [{"q":"수입과 지출 계획을 세워 자산을 관리하는 것을 무엇이라 하는가?","opts":["재무 설계(자산 관리)","기회비용","희소성","시장 실패"],"answer":0,"fb":"재무 설계는 개인이나 가계가 소득과 지출을 계획하고 저축·투자 등을 통해 안정적인 경제생활을 준비하는 것을 말해요."},{"q":"미래를 대비해 소득의 일부를 지금 쓰지 않고 모아 두는 것을 무엇이라 하는가?","opts":["저축","소비","투자 위험","기부"],"answer":0,"fb":"저축은 현재의 소비를 줄이고 소득의 일부를 미래를 위해 모아 두는 경제 활동이에요."},{"q":"자산을 늘리기 위해 주식, 부동산 등에 돈을 투입하는 것을 무엇이라 하는가?","opts":["투자","저축만 해당","소비","기부"],"answer":0,"fb":"투자는 미래에 더 큰 수익을 기대하며 주식, 채권, 부동산 등에 자금을 투입하는 활동으로, 저축보다 수익과 위험이 클 수 있어요."},{"q":"생애주기 중, 소득이 크게 늘지만 자녀 교육·주택 마련·노후 준비 등으로 지출도 크게 늘어나는 시기는?","opts":["중장년기","유소년기","노년기만 해당","태아기"],"answer":0,"fb":"유소년기는 부모 소득에 의존해 소비만 하고, 청년기에 소득이 발생하기 시작해요. 중장년기에는 소득이 크게 늘지만 지출도 함께 늘고, 노년기에는 은퇴로 소득이 줄어들어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">우리나라가 직면한 국제 문제에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>우리나라가 직면한 국제 문제의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>우리나라는 유라시아 대륙과 태평양을 잇는 지리적 요충지에 있어 주변 강대국(미국·러시아·일본·중국)과 이해관계가 얽혀 있고, 남북 분단으로 군사적 긴장이 계속되는 <b>안보 문제</b>를 겪고 있어요.</p><p>이 밖에도 독도 영유권·역사 교과서 왜곡 같은 <b>역사·영토 문제</b>, 경제·환경·난민 문제 등 다양한 국제 문제에 직면해 있어요. 정확한 역사적 사실과 국제법적 근거를 바탕으로 논리적으로 대응하는 자세가 중요해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>우리나라가 직면한 국제 문제일까, 국제 문제 해결을 위한 올바른 태도일까?</h2></div>
   <div class="activity-wrap">
@@ -145,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "우리나라가 국제 사회에서 직면한 대표적인 문제로 가장 알맞은 것은?", "opts": ["독도 영유권 문제, 역사 왜곡 문제 등", "국제 사회와의 완전한 단절", "모든 나라와의 무역 중단", "어떠한 국제 문제도 없음"], "answer": 0, "fb": "우리나라는 독도 영유권을 둘러싼 문제, 역사 교과서 왜곡 문제 등 주변국과의 갈등 사안에 직면해 있어요."}, {"q": "독도가 역사적·국제법적으로 우리나라 영토인 근거를 이해하는 태도로 가장 알맞은 것은?", "opts": ["역사적 자료와 국제법적 근거를 바탕으로 논리적으로 대응한다", "아무 근거 없이 감정적으로만 대응한다", "문제 자체를 무시한다", "상대국의 주장을 무조건 받아들인다"], "answer": 0, "fb": "독도 문제와 같은 사안은 역사적 자료, 지리적 사실, 국제법적 근거를 바탕으로 논리적이고 체계적으로 대응하는 것이 중요해요."}, {"q": "국제 문제 해결을 위해 시민이 할 수 있는 노력으로 알맞은 것은?", "opts": ["정확한 역사적 사실을 알고 국제 사회에 올바르게 알리는 활동", "문제에 무관심한 태도", "잘못된 정보를 그대로 퍼뜨리는 것", "국제 문제에 대해 전혀 공부하지 않는 것"], "answer": 0, "fb": "시민들은 관련된 정확한 역사적 사실을 알고, 이를 국제 사회에 올바르게 알리는 캠페인이나 홍보 활동 등을 통해 힘을 보탤 수 있어요."}];
+const QUIZ = [{"q":"우리나라가 국제 사회에서 직면한 대표적인 문제로 가장 알맞은 것은?","opts":["독도 영유권 문제, 역사 왜곡 문제 등","국제 사회와의 완전한 단절","모든 나라와의 무역 중단","어떠한 국제 문제도 없음"],"answer":0,"fb":"우리나라는 독도 영유권을 둘러싼 문제, 역사 교과서 왜곡 문제 등 주변국과의 갈등 사안에 직면해 있어요."},{"q":"우리나라가 안보 문제를 겪는 배경으로 가장 알맞은 것은?","opts":["유라시아 대륙과 태평양을 잇는 지리적 요충지에 위치하고, 남북 분단으로 군사적 긴장이 지속되기 때문","주변에 다른 나라가 전혀 없기 때문","지리적 위치가 국제 관계와 무관하기 때문","군사적 긴장이 전혀 없기 때문"],"answer":0,"fb":"우리나라는 유라시아 대륙과 태평양을 연결하는 지리적 요충지여서 주변 강대국들과 이해관계가 얽혀 있고, 남북 분단으로 군사적 긴장이 계속되고 있어 안보 문제를 겪고 있어요."},{"q":"독도가 역사적·국제법적으로 우리나라 영토인 근거를 이해하는 태도로 가장 알맞은 것은?","opts":["역사적 자료와 국제법적 근거를 바탕으로 논리적으로 대응한다","아무 근거 없이 감정적으로만 대응한다","문제 자체를 무시한다","상대국의 주장을 무조건 받아들인다"],"answer":0,"fb":"독도 문제와 같은 사안은 역사적 자료, 지리적 사실, 국제법적 근거를 바탕으로 논리적이고 체계적으로 대응하는 것이 중요해요."},{"q":"국제 문제 해결을 위해 시민이 할 수 있는 노력으로 알맞은 것은?","opts":["정확한 역사적 사실을 알고 국제 사회에 올바르게 알리는 활동","문제에 무관심한 태도","잘못된 정보를 그대로 퍼뜨리는 것","국제 문제에 대해 전혀 공부하지 않는 것"],"answer":0,"fb":"시민들은 관련된 정확한 역사적 사실을 알고, 이를 국제 사회에 올바르게 알리는 캠페인이나 홍보 활동 등을 통해 힘을 보탤 수 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

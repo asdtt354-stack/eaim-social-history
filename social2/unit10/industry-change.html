@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
   .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
@@ -117,6 +124,8 @@
     </div>
   </div>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>우리나라는 1960년대부터 <b>수출 주도형 가공 무역</b> 정책을 펼쳤어요. 부산·울산·여수·광양 등 항구를 통해 원료를 수입하고 완제품을 수출하며, 영남·호남은 세계적인 공업 지역으로 성장했어요. 울산은 자동차·조선·석유화학 중화학 공업의 중심지예요.</p><p>오늘날 호남은 농업 중심에서 신재생에너지·첨단 산업으로 다각화되고 있고, 전통 제조업 도시는 산업 구조 변화로 경기 침체·인구 감소 같은 과제를 안고 있어요.</p></div></div>
+
   <div class="section-head"><div class="num">01</div><h2>영남 지역 중화학 공업의 특징일까, 호남 지역 산업 변화의 방향일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -180,7 +189,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "영남 지역에서 발달한 대표적인 중화학 공업 도시로 알맞은 것은?", "opts": ["울산(자동차·조선·석유화학)", "제주(관광업)", "춘천(관광업)", "수원(반도체)"], "answer": 0, "fb": "울산은 자동차, 조선, 석유화학 등 중화학 공업이 크게 발달한 영남 지역의 대표적인 공업 도시예요."}, {"q": "호남 지역의 산업 변화 방향으로 가장 알맞은 것은?", "opts": ["농업 중심에서 첨단 산업·신재생에너지 산업으로 다각화", "모든 산업이 완전히 사라짐", "오직 농업만 유지됨", "중공업만 새롭게 발달함"], "answer": 0, "fb": "호남 지역은 전통적으로 농업이 발달했지만, 최근에는 신재생에너지·첨단 산업 등으로 산업 구조가 다각화되고 있어요."}, {"q": "전통 제조업 중심 공업 도시가 겪는 어려움으로 알맞은 것은?", "opts": ["산업 구조 변화에 따른 경기 침체와 인구 감소", "인구가 계속 폭증하는 문제", "산업이 전혀 없었던 문제", "완전히 새로운 도시로 재탄생하는 데 아무 어려움이 없음"], "answer": 0, "fb": "조선업 등 전통 제조업 중심 도시는 산업 구조가 변화하면서 경기 침체와 인구 감소 같은 어려움을 겪기도 해요."}];
+const QUIZ = [{"q":"영남 지역에서 발달한 대표적인 중화학 공업 도시로 알맞은 것은?","opts":["울산(자동차·조선·석유화학)","제주(관광업)","춘천(관광업)","수원(반도체)"],"answer":0,"fb":"울산은 자동차, 조선, 석유화학 등 중화학 공업이 크게 발달한 영남 지역의 대표적인 공업 도시예요."},{"q":"1960년대부터 부산·울산·여수·광양 등 항구 도시를 중심으로 영남·호남 지역이 세계적 공업 지역으로 성장한 방식은?","opts":["수출 주도형 가공 무역","자급자족형 농업 경제","내수 전용 소규모 생산","수입 전면 금지 정책"],"answer":0,"fb":"우리나라는 1960년대부터 수출 주도형 공업 정책을 추진했고, 원료와 완제품을 항구로 수출입하는 가공 무역 형태로 영남·호남 지역이 세계적인 공업 지역으로 성장했어요."},{"q":"호남 지역의 산업 변화 방향으로 가장 알맞은 것은?","opts":["농업 중심에서 첨단 산업·신재생에너지 산업으로 다각화","모든 산업이 완전히 사라짐","오직 농업만 유지됨","중공업만 새롭게 발달함"],"answer":0,"fb":"호남 지역은 전통적으로 농업이 발달했지만, 최근에는 신재생에너지·첨단 산업 등으로 산업 구조가 다각화되고 있어요."},{"q":"전통 제조업 중심 공업 도시가 겪는 어려움으로 알맞은 것은?","opts":["산업 구조 변화에 따른 경기 침체와 인구 감소","인구가 계속 폭증하는 문제","산업이 전혀 없었던 문제","완전히 새로운 도시로 재탄생하는 데 아무 어려움이 없음"],"answer":0,"fb":"조선업 등 전통 제조업 중심 도시는 산업 구조가 변화하면서 경기 침체와 인구 감소 같은 어려움을 겪기도 해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

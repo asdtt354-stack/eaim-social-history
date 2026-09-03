@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">우리나라의 식량 자원과 에너지 자원에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>우리나라의 식량 자원과 에너지 자원의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>식단이 서구화되면서 쌀 소비는 줄고 밀·육류·과일 소비는 늘고 있어요. 쌀 자급률은 비교적 높지만 밀·콩 같은 곡물과 석유·천연가스 등 화석 연료 대부분은 해외 수입에 의존해요.</p><p>해외 의존도가 높으면 국제 정세 변화로 가격이 급등하거나 공급이 끊길 위험이 있어요. 그래서 수입 국가를 다변화하고 태양광·풍력 같은 <b>신재생에너지</b>를 개발하는 노력이 중요해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>우리나라 식량·에너지 자원의 특징일까, 자원 안정적 확보를 위한 노력일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "우리나라의 식량 자원 상황에 대한 설명으로 가장 알맞은 것은?", "opts": ["쌀은 자급률이 높지만 밀·콩 등은 수입 의존도가 높다", "모든 식량을 완전히 자급자족한다", "식량을 전혀 생산하지 않는다", "식량 문제는 전혀 존재하지 않는다"], "answer": 0, "fb": "우리나라는 쌀 자급률은 비교적 높은 편이지만, 밀·콩·옥수수 같은 곡물은 수입에 크게 의존하고 있어요."}, {"q": "우리나라 에너지 자원의 특징으로 가장 알맞은 것은?", "opts": ["화석 연료 대부분을 해외에서 수입한다", "모든 에너지를 국내에서 자체 생산한다", "에너지를 전혀 사용하지 않는다", "에너지 자원이 매우 풍부해 수출한다"], "answer": 0, "fb": "우리나라는 석유, 천연가스 등 화석 연료가 부족해 대부분을 해외에서 수입에 의존하고 있어요."}, {"q": "에너지 자원을 안정적으로 확보하기 위한 노력으로 알맞은 것은?", "opts": ["수입 국가 다변화와 신재생에너지 개발", "한 나라에만 전적으로 의존", "에너지 개발을 전혀 하지 않는 것", "에너지 절약을 하지 않는 것"], "answer": 0, "fb": "에너지 안보를 위해 수입 국가를 다변화하고, 태양광·풍력 같은 신재생에너지 개발을 늘려 가는 노력이 필요해요."}];
+const QUIZ = [{"q":"우리나라의 식량 자원 상황에 대한 설명으로 가장 알맞은 것은?","opts":["쌀은 자급률이 높지만 밀·콩 등은 수입 의존도가 높다","모든 식량을 완전히 자급자족한다","식량을 전혀 생산하지 않는다","식량 문제는 전혀 존재하지 않는다"],"answer":0,"fb":"우리나라는 쌀 자급률은 비교적 높은 편이지만, 밀·콩·옥수수 같은 곡물은 수입에 크게 의존하고 있어요."},{"q":"우리나라 에너지 자원의 특징으로 가장 알맞은 것은?","opts":["화석 연료 대부분을 해외에서 수입한다","모든 에너지를 국내에서 자체 생산한다","에너지를 전혀 사용하지 않는다","에너지 자원이 매우 풍부해 수출한다"],"answer":0,"fb":"우리나라는 석유, 천연가스 등 화석 연료가 부족해 대부분을 해외에서 수입에 의존하고 있어요."},{"q":"에너지 자원을 안정적으로 확보하기 위한 노력으로 알맞은 것은?","opts":["수입 국가 다변화와 신재생에너지 개발","한 나라에만 전적으로 의존","에너지 개발을 전혀 하지 않는 것","에너지 절약을 하지 않는 것"],"answer":0,"fb":"에너지 안보를 위해 수입 국가를 다변화하고, 태양광·풍력 같은 신재생에너지 개발을 늘려 가는 노력이 필요해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

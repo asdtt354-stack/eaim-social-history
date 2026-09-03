@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
   .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
@@ -117,6 +124,8 @@
     </div>
   </div>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>우리나라는 계절풍의 영향으로 사계절이 뚜렷하고, 유라시아 대륙 동쪽에 있어 여름·겨울 기온 차(연교차)가 큰 <b>대륙성 기후</b>가 나타나요. 남북으로 길게 뻗어 있어 남부·북부 지역 간 기온 차도 커요.</p><p>지구 온난화로 평균 기온이 오르며 폭염·열대야가 늘고, 사과·배 같은 과일 주산지가 점점 북상하는 등 <b>기후변화</b>가 뚜렷해지고 있어요. 지방자치단체는 기후 데이터 확보, 취약 지역 파악 등 지역별 대응 전략을 세우고 있어요.</p></div></div>
+
   <div class="section-head"><div class="num">01</div><h2>우리나라 기후의 특징일까, 기후 변화로 나타난 변화일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -180,7 +189,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "우리나라의 기후 특징으로 가장 알맞은 것은?", "opts": ["사계절이 뚜렷하고 계절풍의 영향을 받는다", "일 년 내내 같은 날씨가 이어진다", "사막 기후만 나타난다", "계절 변화가 전혀 없다"], "answer": 0, "fb": "우리나라는 여름과 겨울에 부는 바람의 방향이 달라지는 계절풍의 영향을 받아 사계절이 뚜렷하게 나타나요."}, {"q": "지구 온난화로 인해 우리나라 기후에서 나타나고 있는 변화로 가장 알맞은 것은?", "opts": ["평균 기온 상승과 열대야·폭염 증가", "평균 기온이 계속 낮아짐", "기후 변화가 전혀 없음", "겨울이 훨씬 길어짐"], "answer": 0, "fb": "지구 온난화로 우리나라도 평균 기온이 상승하고, 여름철 폭염·열대야 일수가 늘어나는 등 기후 변화가 뚜렷하게 나타나고 있어요."}, {"q": "기후 변화가 우리나라 농업에 미치는 영향으로 가장 알맞은 것은?", "opts": ["재배 작물의 지역이 북상하는 등 농업 지도가 변화한다", "농업에 아무런 영향이 없다", "모든 농작물이 자라지 않게 된다", "농업 생산량이 항상 일정하게 유지된다"], "answer": 0, "fb": "기온이 오르면서 사과·배 같은 과일의 주산지가 점점 북쪽으로 이동하는 등, 기후 변화로 재배 작물의 지역 분포가 바뀌고 있어요."}];
+const QUIZ = [{"q":"우리나라의 기후 특징으로 가장 알맞은 것은?","opts":["사계절이 뚜렷하고 계절풍의 영향을 받는다","일 년 내내 같은 날씨가 이어진다","사막 기후만 나타난다","계절 변화가 전혀 없다"],"answer":0,"fb":"우리나라는 여름과 겨울에 부는 바람의 방향이 달라지는 계절풍의 영향을 받아 사계절이 뚜렷하게 나타나요."},{"q":"유라시아 대륙 동쪽에 위치해 여름·겨울 기온 차(연교차)가 크게 나타나는 우리나라 기후의 특징은?","opts":["대륙성 기후","해양성 기후","고산 기후","적도 기후"],"answer":0,"fb":"우리나라는 유라시아 대륙 동쪽에 있어 겨울엔 대륙의 영향으로 기온이 낮고, 여름엔 해양의 영향으로 기온이 높아지는 대륙성 기후가 나타나요. 이 때문에 연교차(여름-겨울 기온 차)가 커요."},{"q":"지구 온난화로 인해 우리나라 기후에서 나타나고 있는 변화로 가장 알맞은 것은?","opts":["평균 기온 상승과 열대야·폭염 증가","평균 기온이 계속 낮아짐","기후 변화가 전혀 없음","겨울이 훨씬 길어짐"],"answer":0,"fb":"지구 온난화로 우리나라도 평균 기온이 상승하고, 여름철 폭염·열대야 일수가 늘어나는 등 기후 변화가 뚜렷하게 나타나고 있어요."},{"q":"기후 변화가 우리나라 농업에 미치는 영향으로 가장 알맞은 것은?","opts":["재배 작물의 지역이 북상하는 등 농업 지도가 변화한다","농업에 아무런 영향이 없다","모든 농작물이 자라지 않게 된다","농업 생산량이 항상 일정하게 유지된다"],"answer":0,"fb":"기온이 오르면서 사과·배 같은 과일의 주산지가 점점 북쪽으로 이동하는 등, 기후 변화로 재배 작물의 지역 분포가 바뀌고 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

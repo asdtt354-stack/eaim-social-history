@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
   .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
@@ -117,6 +124,8 @@
     </div>
   </div>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>남북은 <b>휴전선(군사분계선)</b>을 사이에 두고 군사적으로 대치하고 있어요. 그 주변의 <b>비무장지대(DMZ)</b>는 사람 출입이 오래 제한되며 오히려 자연 생태계가 잘 보존됐어요.</p><p>접경지역의 모습은 세계마다 달라요. 북한-중국 접경(압록강)은 경제 협력이 이루어지는 반면, 벨기에-네덜란드 접경 마을 바를러처럼 <b>솅겐 조약</b> 적용 국가 간에는 통제 없이 자유롭게 국경을 오갈 수 있어요.</p></div></div>
+
   <div class="section-head"><div class="num">01</div><h2>휴전선·비무장지대(DMZ)의 특징일까, 분단이 접경지역에 미친 영향일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -180,7 +189,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "남한과 북한을 가르는 군사분계선을 무엇이라 하는가?", "opts": ["휴전선(군사분계선)", "해안선", "국경선(다른 나라와의)", "행정구역 경계선"], "answer": 0, "fb": "휴전선(군사분계선)은 6·25 전쟁의 정전 협정에 따라 남한과 북한을 가르는 경계선이에요."}, {"q": "휴전선 주변, 민간인 출입이 제한되어 자연 생태계가 잘 보존된 지역을 무엇이라 하는가?", "opts": ["비무장지대(DMZ)", "수도권", "경제자유구역", "산업 단지"], "answer": 0, "fb": "비무장지대(DMZ)는 휴전선을 따라 설정된 완충 지역으로, 오랫동안 사람의 출입이 제한되면서 오히려 자연 생태계가 잘 보존된 특징이 있어요."}, {"q": "분단이 접경지역 주민 생활에 미친 영향으로 가장 알맞은 것은?", "opts": ["개발과 이동에 여러 제약이 있었다", "아무런 영향이 없었다", "가장 발전된 지역이 되었다", "인구가 폭발적으로 늘어났다"], "answer": 0, "fb": "접경지역은 군사적 이유로 개발이 제한되고 이동에도 제약이 있어, 다른 지역에 비해 상대적으로 발전이 더딘 경우가 많았어요."}];
+const QUIZ = [{"q":"남한과 북한을 가르는 군사분계선을 무엇이라 하는가?","opts":["휴전선(군사분계선)","해안선","국경선(다른 나라와의)","행정구역 경계선"],"answer":0,"fb":"휴전선(군사분계선)은 6·25 전쟁의 정전 협정에 따라 남한과 북한을 가르는 경계선이에요."},{"q":"휴전선 주변, 민간인 출입이 제한되어 자연 생태계가 잘 보존된 지역을 무엇이라 하는가?","opts":["비무장지대(DMZ)","수도권","경제자유구역","산업 단지"],"answer":0,"fb":"비무장지대(DMZ)는 휴전선을 따라 설정된 완충 지역으로, 오랫동안 사람의 출입이 제한되면서 오히려 자연 생태계가 잘 보존된 특징이 있어요."},{"q":"분단이 접경지역 주민 생활에 미친 영향으로 가장 알맞은 것은?","opts":["개발과 이동에 여러 제약이 있었다","아무런 영향이 없었다","가장 발전된 지역이 되었다","인구가 폭발적으로 늘어났다"],"answer":0,"fb":"접경지역은 군사적 이유로 개발이 제한되고 이동에도 제약이 있어, 다른 지역에 비해 상대적으로 발전이 더딘 경우가 많았어요."},{"q":"벨기에와 네덜란드의 접경 마을 바를러처럼, 유럽 솅겐 조약 적용 국가 간 접경지역의 특징으로 알맞은 것은?","opts":["통제 없이 개인이 자유롭게 국경을 넘나들 수 있다","남북 접경지역처럼 군사적으로 완전히 차단되어 있다","아무도 살지 않는 무인 지대이다","국경이 전혀 존재하지 않는다"],"answer":0,"fb":"유럽 솅겐 조약 적용국(프랑스·독일·벨기에·네덜란드 등) 사이의 접경지역은 통제 없이 자유롭게 국경을 오갈 수 있어요. 이는 군사분계선으로 엄격히 나뉜 남북 접경지역과 매우 대조적인 모습이에요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{
