@@ -7,6 +7,7 @@
 <script src="../../social1/unit8/quiz-data.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="../shared/tracker.js"></script>
 <script src="../shared/teacher-tracker.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -132,6 +133,15 @@
   <footer>EAIM 사회 수업 · 셀프체크룸</footer>
 
 <script>
+/* tracker.js에 이미 저장된 이름이 있으면 자동으로 채워 넣고, 여기서 입력하면 tracker.js와 동기화 */
+(function(){
+  const nameInput = document.getElementById('studentName');
+  if (nameInput && window.EAIM) {
+    const saved = EAIM.peekStudentName();
+    if (saved) nameInput.value = saved;
+    nameInput.addEventListener('blur', () => EAIM.setStudentName(nameInput.value));
+  }
+})();
 function pickOne(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 const SUBUNIT_KEYS = ['cultureMeaning','cultureMedia','cultureAttitude'];
@@ -267,6 +277,11 @@ function showSummary(){
     </div>
   `;
   window.__submitPayload = { subject:'social1', unitKey:'unit8', unitLabel:'Ⅷ. 다양한 문화의 이해', correct: totalCorrect, total: totalQ, weakTopics , writtenAnswers: currentWrittenKeys.map((key, idx) => { const ta = document.querySelector(`#writtenArea textarea[data-idx="${idx}"]`); const sub = EAIM_QUIZ_DATA[key]; return { topic: sub.label, question: sub.written.q, answer: (ta && ta.value.trim()) || '(작성하지 않음)' }; }) };
+    if (window.EAIM) {
+    EAIM.setStudentName(name);
+    EAIM.logActivity(window.__submitPayload.unitLabel, '전체 단원 형성평가', '셀프체크룸',
+      totalCorrect + '/' + totalQ + ' 정답 (서술형 ' + currentWrittenKeys.length + '문항 작성)');
+  }
   wrap.scrollIntoView({ behavior:'smooth' });
 }
 

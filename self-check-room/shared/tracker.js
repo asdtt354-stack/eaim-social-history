@@ -28,6 +28,17 @@
     return name;
   }
 
+  /** 이미 저장된 이름이 있으면 그대로 반환, 없으면 프롬프트 없이 null 반환(체크룸 등에서 미리 채워 넣을 때 사용) */
+  function peekStudentName() {
+    return localStorage.getItem(NAME_KEY) || null;
+  }
+
+  /** 체크룸 등 다른 화면에서 학생이 직접 입력한 이름을 tracker.js 저장소와 동기화 */
+  function setStudentName(name) {
+    const trimmed = (name || '').trim();
+    if (trimmed) localStorage.setItem(NAME_KEY, trimmed);
+  }
+
   function logActivity(unit, subunit, type, result) {
     try {
       const name = getStudentName();
@@ -58,5 +69,5 @@
     localStorage.removeItem(LOG_KEY);
   }
 
-  window.EAIM = { getStudentName, logActivity, getAllLogs, clearAllLogs, SUBJECT_LABELS };
+  window.EAIM = { getStudentName, peekStudentName, setStudentName, logActivity, getAllLogs, clearAllLogs, SUBJECT_LABELS };
 })();
