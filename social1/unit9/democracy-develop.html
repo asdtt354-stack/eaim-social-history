@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">민주주의의 발전 과정과 원리에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>민주주의의 발전 과정과 원리의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>민주주의는 고대 그리스 <b>아테네</b>에서 시작됐어요. 시민이 민회에 직접 참여해 토론하고 추첨·윤번제로 공직을 맡는 <b>직접 민주주의</b>였지만, 시민권이 성인 남성에게만 있어 여성·외국인·노예는 참여할 수 없는 <b>제한적 민주주의</b>였어요.</p><p>이후 영국 명예혁명, 노동자들의 참정권 요구 운동(차티스트 운동) 등을 거쳐 20세기 중반에는 성별·신분·재산에 관계없이 모든 국민이 투표할 수 있는 <b>보통 선거</b>가 확립됐어요. 우리나라도 4·19 혁명, 5·18 민주화 운동, 6월 민주 항쟁을 거치며 민주주의를 발전시켜 왔어요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>직접 민주주의의 예일까, 간접(대의) 민주주의의 예일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "고대 그리스 아테네에서 시민들이 직접 광장에 모여 정치에 참여했던 방식을 무엇이라 하는가?", "opts": ["직접 민주주의", "간접 민주주의", "대의 민주주의", "군주 정치"], "answer": 0, "fb": "고대 아테네에서는 시민들이 직접 민회에 모여 토론하고 의사결정을 하는 직접 민주주의가 이루어졌어요."}, {"q": "오늘날 대부분의 나라에서 국민이 대표를 뽑아 정치를 맡기는 민주주의 방식을 무엇이라 하는가?", "opts": ["간접 민주주의(대의 민주주의)", "직접 민주주의", "전제 정치", "귀족 정치"], "answer": 0, "fb": "오늘날은 인구가 많고 영토가 넓어 모든 국민이 직접 정치에 참여하기 어렵기 때문에, 대표를 선출해 정치를 맡기는 간접(대의) 민주주의를 채택하고 있어요."}, {"q": "민주주의의 기본 원리 중 \"권력 분립\"의 목적으로 가장 알맞은 것은?", "opts": ["한 사람에게 모든 권력을 집중시키기 위해", "권력 남용을 막고 서로 견제하게 하기 위해", "국민의 참여를 막기 위해", "법을 아예 없애기 위해"], "answer": 1, "fb": "권력 분립은 입법·행정·사법 권력을 나누어 서로 견제하게 함으로써 권력이 한곳에 집중되어 남용되는 것을 막기 위한 원리예요."}];
+const QUIZ = [{"q":"고대 그리스 아테네에서 시민들이 직접 광장에 모여 정치에 참여했던 방식을 무엇이라 하는가?","opts":["직접 민주주의","간접 민주주의","대의 민주주의","군주 정치"],"answer":0,"fb":"고대 아테네에서는 시민들이 직접 민회에 모여 토론하고 의사결정을 하는 직접 민주주의가 이루어졌어요."},{"q":"오늘날 대부분의 나라에서 국민이 대표를 뽑아 정치를 맡기는 민주주의 방식을 무엇이라 하는가?","opts":["간접 민주주의(대의 민주주의)","직접 민주주의","전제 정치","귀족 정치"],"answer":0,"fb":"오늘날은 인구가 많고 영토가 넓어 모든 국민이 직접 정치에 참여하기 어렵기 때문에, 대표를 선출해 정치를 맡기는 간접(대의) 민주주의를 채택하고 있어요."},{"q":"민주주의의 기본 원리 중 \"권력 분립\"의 목적으로 가장 알맞은 것은?","opts":["한 사람에게 모든 권력을 집중시키기 위해","권력 남용을 막고 서로 견제하게 하기 위해","국민의 참여를 막기 위해","법을 아예 없애기 위해"],"answer":1,"fb":"권력 분립은 입법·행정·사법 권력을 나누어 서로 견제하게 함으로써 권력이 한곳에 집중되어 남용되는 것을 막기 위한 원리예요."},{"q":"고대 아테네의 민주주의가 \"제한적 민주주의\"였다고 평가받는 까닭으로 가장 알맞은 것은?","opts":["성인 남성에게만 시민권이 있어 여성·외국인·노예는 정치에 참여할 수 없었기 때문","왕이 모든 것을 결정했기 때문","민회 자체가 없었기 때문","전혀 민주적이지 않았기 때문"],"answer":0,"fb":"아테네는 시민이 민회에 직접 참여하는 직접 민주주의를 실현했지만, 시민권이 성인 남성에게만 있어 여성·외국인·노예는 정치에 참여할 수 없는 제한적 민주주의였어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

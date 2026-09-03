@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">현대 민주주의의 특징과 발전을 위한 노력에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>현대 민주주의의 특징과 발전을 위한 노력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>오늘날은 국가 규모가 커지고 사회가 복잡해져 모든 시민이 직접 참여하기 어려워, 대부분 <b>대의 민주주의</b>를 실시해요. 이를 보완하기 위해 국민투표·국민발안·국민소환 같은 직접 참여 제도도 함께 활용돼요.</p><p>정보 통신 기술의 발달로 시민이 온라인에서 정치 정보를 접하고 여론 형성에 참여하는 <b>전자 민주주의</b>도 활발해지고 있어요. 민주주의가 잘 작동하려면 시민이 정치에 관심을 갖고 비판적으로 판단하며 적극적으로 참여하는 자세가 중요해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>대의 민주주의를 보완하는 참여일까, 민주주의 발전을 위한 시민 자세일까?</h2></div>
   <div class="activity-wrap">
@@ -145,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "오늘날 대의 민주주의의 한계를 보완하기 위해 도입되는 제도로 알맞은 것은?", "opts": ["국민투표, 주민참여예산제 등 직접 참여 제도", "선거 폐지", "국민의 정치 참여 금지", "한 정당만 허용하는 제도"], "answer": 0, "fb": "오늘날에는 국민투표, 국민청원, 주민참여예산제처럼 대의 민주주의를 보완하는 직접 참여 제도가 함께 활용되고 있어요."}, {"q": "인터넷과 SNS의 발달이 현대 민주주의에 미친 영향으로 가장 알맞은 것은?", "opts": ["시민들의 정치 참여와 의견 표현이 더 쉬워졌다", "시민의 정치 참여가 완전히 사라졌다", "정보 공유가 전혀 불가능해졌다", "선거가 필요 없어졌다"], "answer": 0, "fb": "인터넷과 SNS 덕분에 시민들은 온라인 청원, 댓글, 캠페인 등을 통해 더 쉽고 빠르게 정치적 의견을 표현하고 참여할 수 있게 되었어요."}, {"q": "현대 민주주의 발전을 위해 시민에게 요구되는 태도로 가장 알맞은 것은?", "opts": ["정치에 무관심한 태도", "적극적인 관심과 참여, 비판적 사고", "정부의 결정을 무조건 따르는 태도", "다른 사람의 의견을 무시하는 태도"], "answer": 1, "fb": "민주주의가 잘 작동하려면 시민들이 정치에 관심을 갖고 적극적으로 참여하며, 정보를 비판적으로 판단하는 태도가 필요해요."}];
+const QUIZ = [{"q":"오늘날 대의 민주주의의 한계를 보완하기 위해 도입되는 제도로 알맞은 것은?","opts":["국민투표, 주민참여예산제 등 직접 참여 제도","선거 폐지","국민의 정치 참여 금지","한 정당만 허용하는 제도"],"answer":0,"fb":"오늘날에는 국민투표, 국민청원, 주민참여예산제처럼 대의 민주주의를 보완하는 직접 참여 제도가 함께 활용되고 있어요."},{"q":"정보 통신 기술을 활용해 시민이 더 쉽게 정치 정보를 접하고 여론 형성에 참여하는 것을 무엇이라 하는가?","opts":["전자 민주주의","군주 민주주의","제한적 민주주의","엘리트 민주주의"],"answer":0,"fb":"전자 민주주의는 정보 통신 기술을 활용해 시민이 직접 정치에 참여하는 것으로, 인터넷·SNS를 통해 정치 정보를 접하고 온라인 청원·캠페인 등에 참여하는 것이 대표적 사례예요."},{"q":"인터넷과 SNS의 발달이 현대 민주주의에 미친 영향으로 가장 알맞은 것은?","opts":["시민들의 정치 참여와 의견 표현이 더 쉬워졌다","시민의 정치 참여가 완전히 사라졌다","정보 공유가 전혀 불가능해졌다","선거가 필요 없어졌다"],"answer":0,"fb":"인터넷과 SNS 덕분에 시민들은 온라인 청원, 댓글, 캠페인 등을 통해 더 쉽고 빠르게 정치적 의견을 표현하고 참여할 수 있게 되었어요."},{"q":"현대 민주주의 발전을 위해 시민에게 요구되는 태도로 가장 알맞은 것은?","opts":["정치에 무관심한 태도","적극적인 관심과 참여, 비판적 사고","정부의 결정을 무조건 따르는 태도","다른 사람의 의견을 무시하는 태도"],"answer":1,"fb":"민주주의가 잘 작동하려면 시민들이 정치에 관심을 갖고 적극적으로 참여하며, 정보를 비판적으로 판단하는 태도가 필요해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

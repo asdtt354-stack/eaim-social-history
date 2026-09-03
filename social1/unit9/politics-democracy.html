@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">정치와 민주주의에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>정치와 민주주의의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>정치</b>는 좁게는 국회의 법률 제정처럼 정치권력을 얻고 행사하는 활동이지만, 넓게는 사회 구성원 간 대립·갈등을 조정해 합의를 이루는 과정 전체를 뜻해요. 가족회의나 학급회의로 문제를 해결하는 것도 넓은 의미의 정치예요.</p><p><b>민주주의</b>는 소수가 아니라 모든 국민이 나라의 주인으로서 권리를 갖고 다스리는 정치 형태예요. 이를 잘 실현하려면 서로 다른 생각을 인정하는 <b>관용</b>, 신중하게 살피는 <b>비판</b>, 의견을 조율하는 <b>타협</b>의 태도, 그리고 <b>다수결의 원칙</b>이 필요해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>정치 활동의 예일까, 정치라고 보기 어려운 것일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "사회 구성원 간의 갈등을 조정하고 공동체의 문제를 해결해 가는 활동을 무엇이라 하는가?", "opts": ["정치", "경제", "문화", "사회화"], "answer": 0, "fb": "정치는 사회에서 발생하는 다양한 갈등과 이해관계를 조정하며 공동체의 문제를 해결해 가는 활동을 말해요."}, {"q": "\"국민이 나라의 주인이며 국가 권력의 근원이 국민에게 있다\"는 원리를 무엇이라 하는가?", "opts": ["국민 주권의 원리", "왕권신수설", "독재의 원리", "계급 사회의 원리"], "answer": 0, "fb": "국민 주권의 원리는 민주주의의 핵심 원리로, 국가의 최고 권력인 주권이 국민에게 있다는 뜻이에요."}, {"q": "민주주의의 어원(그리스어 데모크라티아)이 담고 있는 의미로 가장 알맞은 것은?", "opts": ["한 사람의 지배", "소수 귀족의 지배", "민중(국민)에 의한 지배", "외국의 지배"], "answer": 2, "fb": "민주주의(democracy)는 그리스어로 \"민중(demos)\"과 \"지배(kratos)\"가 합쳐진 말로, 국민이 스스로 나라를 다스린다는 의미를 담고 있어요."}];
+const QUIZ = [{"q":"사회 구성원 간의 갈등을 조정하고 공동체의 문제를 해결해 가는 활동을 무엇이라 하는가?","opts":["정치","경제","문화","사회화"],"answer":0,"fb":"정치는 사회에서 발생하는 다양한 갈등과 이해관계를 조정하며 공동체의 문제를 해결해 가는 활동을 말해요."},{"q":"가족회의나 학급 회의로 의견을 조율해 문제를 해결하는 활동은 어떤 의미의 정치에 해당하는가?","opts":["좁은 의미의 정치","넓은 의미의 정치","정치가 아니다","경제 활동"],"answer":1,"fb":"좁은 의미의 정치는 국회의 법률 제정처럼 정치권력을 획득·행사하는 활동을 말해요. 반면 넓은 의미의 정치는 사회 구성원 간 대립과 갈등을 조정해 합의를 이루는 과정으로, 가족회의·학급회의도 여기 해당해요."},{"q":"\"국민이 나라의 주인이며 국가 권력의 근원이 국민에게 있다\"는 원리를 무엇이라 하는가?","opts":["국민 주권의 원리","왕권신수설","독재의 원리","계급 사회의 원리"],"answer":0,"fb":"국민 주권의 원리는 민주주의의 핵심 원리로, 국가의 최고 권력인 주권이 국민에게 있다는 뜻이에요."},{"q":"민주주의의 어원(그리스어 데모크라티아)이 담고 있는 의미로 가장 알맞은 것은?","opts":["한 사람의 지배","소수 귀족의 지배","민중(국민)에 의한 지배","외국의 지배"],"answer":2,"fb":"민주주의(democracy)는 그리스어로 \"민중(demos)\"과 \"지배(kratos)\"가 합쳐진 말로, 국민이 스스로 나라를 다스린다는 의미를 담고 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{
