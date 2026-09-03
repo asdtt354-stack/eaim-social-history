@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">재판의 의미와 공정한 재판의 중요성에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>재판의 의미와 공정한 재판의 중요성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>재판</b>은 법원이 법을 적용해 분쟁이나 범죄에 대해 법적 판단을 내리는 절차예요. 개인 간 다툼(손해 배상 등)을 다루는 <b>민사 재판</b>과 범죄에 대한 형벌을 정하는 <b>형사 재판</b> 등이 있어요.</p><p>공정한 재판을 위해서는 법관이 오직 헌법과 법률, 양심에 따라 독립적으로 심판하는 <b>사법권의 독립</b>이 중요해요. 또한 한 사건을 최대 세 번까지 재판받을 수 있는 <b>삼심제</b>는 잘못된 판결로 인한 피해를 줄이고 국민의 권리를 보호해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>공정한 재판을 위한 장치일까, 공정한 재판을 해치는 상황일까?</h2></div>
   <div class="activity-wrap">
@@ -145,7 +154,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "법을 적용해 분쟁이나 범죄에 대해 국가가 최종 판단을 내리는 절차를 무엇이라 하는가?", "opts": ["재판", "선거", "입법", "행정"], "answer": 0, "fb": "재판은 법원이 법을 적용해 분쟁을 해결하거나 범죄 여부와 형벌을 최종적으로 판단하는 절차예요."}, {"q": "한 사건에 대해 여러 번 재판받을 수 있도록 하여 국민의 권리를 보호하는 제도는?", "opts": ["삼심제", "단심제", "배심원제", "탄핵 제도"], "answer": 0, "fb": "삼심제는 한 사건에 대해 최대 세 번까지 재판을 받을 수 있게 하여, 잘못된 판결로 인한 피해를 줄이고 국민의 권리를 보호하는 제도예요."}, {"q": "공정한 재판을 위해 법원과 법관에게 요구되는 원칙은?", "opts": ["사법권의 독립", "정부의 재판 개입", "언론의 재판 결과 사전 결정", "국회의 재판 지시"], "answer": 0, "fb": "사법권의 독립은 법원과 법관이 다른 국가 기관이나 외부 압력의 영향을 받지 않고 오직 법과 양심에 따라 재판할 수 있도록 하는 원칙이에요."}];
+const QUIZ = [{"q":"법을 적용해 분쟁이나 범죄에 대해 국가가 최종 판단을 내리는 절차를 무엇이라 하는가?","opts":["재판","선거","입법","행정"],"answer":0,"fb":"재판은 법원이 법을 적용해 분쟁을 해결하거나 범죄 여부와 형벌을 최종적으로 판단하는 절차예요."},{"q":"한 사건에 대해 여러 번 재판받을 수 있도록 하여 국민의 권리를 보호하는 제도는?","opts":["삼심제","단심제","배심원제","탄핵 제도"],"answer":0,"fb":"삼심제는 한 사건에 대해 최대 세 번까지 재판을 받을 수 있게 하여, 잘못된 판결로 인한 피해를 줄이고 국민의 권리를 보호하는 제도예요."},{"q":"공정한 재판을 위해 법원과 법관에게 요구되는 원칙은?","opts":["사법권의 독립","정부의 재판 개입","언론의 재판 결과 사전 결정","국회의 재판 지시"],"answer":0,"fb":"사법권의 독립은 법원과 법관이 다른 국가 기관이나 외부 압력의 영향을 받지 않고 오직 법과 양심에 따라 재판할 수 있도록 하는 원칙이에요."},{"q":"결혼식 영상 촬영 실수처럼, 개인 간 손해 배상을 다투는 재판의 종류는?","opts":["민사 재판","형사 재판","헌법 재판","행정 재판"],"answer":0,"fb":"민사 재판은 개인 간의 재산·계약 등에 관한 다툼을 해결하는 재판이에요. 원고가 소장을 법원에 제출하면 법원이 이를 피고에게 전달하며 절차가 시작돼요. 범죄에 대해 형벌을 정하는 재판은 형사 재판이라고 해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

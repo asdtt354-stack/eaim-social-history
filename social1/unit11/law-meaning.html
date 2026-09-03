@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,8 @@
     <p class="lead">법의 의미와 목적에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>법의 의미와 목적의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>사람들이 함께 살아가려면 지켜야 할 행위의 기준, 곧 <b>사회 규범</b>이 필요해요. 대표적인 사회 규범이 법과 도덕이에요. <b>법</b>은 겉으로 드러난 행위의 결과를 규율하고 어기면 국가로부터 제재를 받지만, <b>도덕</b>은 행위의 동기를 중시하며 양심에 따라 자율적으로 지켜져요.</p><p>법은 사람들이 지켜야 할 행동의 기준을 알려 줌으로써 분쟁을 예방·해결하고, 범죄로부터 사람들을 보호하며, 사회 구성원이 인간다운 삶을 살 수 있도록 권리를 보호하고 사회 전체의 이익을 추구해요.</p></div></div>
 
   <div class="section-head"><div class="num">01</div><h2>법의 특징일까, 도덕의 특징일까?</h2></div>
   <div class="activity-wrap">
@@ -138,7 +147,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "국가가 만들어 강제성을 갖는 사회 규범을 무엇이라 하는가?", "opts": ["법", "도덕", "관습", "종교"], "answer": 0, "fb": "법은 국가가 정하고 지키지 않으면 국가 권력에 의해 제재를 받는, 강제성을 가진 사회 규범이에요."}, {"q": "법과 도덕의 차이점으로 가장 알맞은 것은?", "opts": ["법은 강제성이 있고, 도덕은 자율적으로 지키는 것이다", "법과 도덕은 완전히 같다", "도덕은 국가가 강제로 처벌한다", "법은 지키지 않아도 아무 문제가 없다"], "answer": 0, "fb": "법은 어기면 국가로부터 제재(처벌 등)를 받는 강제성이 있는 반면, 도덕은 양심과 사회적 비난에 의해 자율적으로 지켜지는 규범이에요."}, {"q": "법의 목적으로 가장 알맞은 것은?", "opts": ["개인의 권리를 보호하고 사회 질서를 유지하기 위해", "특정 사람만 이익을 얻게 하기 위해", "사회의 갈등을 오히려 늘리기 위해", "아무런 목적이 없다"], "answer": 0, "fb": "법은 개인의 권리와 자유를 보호하는 동시에, 사회 구성원 간의 갈등을 조정하고 질서를 유지하기 위해 존재해요."}];
+const QUIZ = [{"q":"국가가 만들어 강제성을 갖는 사회 규범을 무엇이라 하는가?","opts":["법","도덕","관습","종교"],"answer":0,"fb":"법은 국가가 정하고 지키지 않으면 국가 권력에 의해 제재를 받는, 강제성을 가진 사회 규범이에요."},{"q":"법과 도덕의 차이점으로 가장 알맞은 것은?","opts":["법은 강제성이 있고, 도덕은 자율적으로 지키는 것이다","법과 도덕은 완전히 같다","도덕은 국가가 강제로 처벌한다","법은 지키지 않아도 아무 문제가 없다"],"answer":0,"fb":"법은 어기면 국가로부터 제재(처벌 등)를 받는 강제성이 있는 반면, 도덕은 양심과 사회적 비난에 의해 자율적으로 지켜지는 규범이에요."},{"q":"법과 도덕이 규율하는 대상의 차이로 가장 알맞은 것은?","opts":["법은 행위의 결과를, 도덕은 행위의 동기를 중요시한다","법과 도덕 모두 결과만 본다","법과 도덕 모두 동기만 본다","법과 도덕은 아무것도 규율하지 않는다"],"answer":0,"fb":"법은 겉으로 드러난 행위의 결과를 규율하는 반면, 도덕은 그 행동을 한 동기(마음가짐)를 중요하게 여겨요. 예를 들어 노약자에게 자리를 양보하는 것은 개인의 양심에 바탕을 둔 도덕적 행동이에요."},{"q":"법의 목적으로 가장 알맞은 것은?","opts":["개인의 권리를 보호하고 사회 질서를 유지하기 위해","특정 사람만 이익을 얻게 하기 위해","사회의 갈등을 오히려 늘리기 위해","아무런 목적이 없다"],"answer":0,"fb":"법은 개인의 권리와 자유를 보호하는 동시에, 사회 구성원 간의 갈등을 조정하고 질서를 유지하기 위해 존재해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{
