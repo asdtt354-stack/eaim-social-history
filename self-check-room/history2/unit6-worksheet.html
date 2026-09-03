@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ⅸ단원 학습지 - 사회 셀프체크룸</title>
-<script src="../../social1/unit9/quiz-data.js"></script>
+<title>Ⅵ단원 학습지 - 역사 셀프체크룸</title>
+<script src="../../history2/unit6/quiz-data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -71,7 +71,7 @@
 <body id="pageBody">
 
   <div class="control-bar">
-    <div class="cb-left"><a href="index.html">← 사회1</a><span>Ⅸ단원 인쇄용 학습지</span></div>
+    <div class="cb-left"><a href="index.html">← 역사2</a><span>Ⅵ단원 인쇄용 학습지</span></div>
     <div class="cb-right">
       <button class="toggle-btn" id="toggleBtn" onclick="toggleAnswers()">🔑 정답 표시 (교사용)</button>
       <button class="download-btn" id="downloadBtn" onclick="downloadPDF()">📥 PDF 다운로드</button>
@@ -82,8 +82,8 @@
 
   <div class="sheet">
     <div class="sheet-header">
-      <h1>Ⅸ. 민주주의와 시민 — 확인 학습지</h1>
-      <div class="sh-sub">EAIM 사회 수업 · 객관식 9문항 + 서술형 3문항</div>
+      <h1>Ⅵ. 세계 대전과 사회 변동 — 확인 학습지</h1>
+      <div class="sh-sub">EAIM 역사 수업 · 객관식 9문항 + 서술형 3문항</div>
       <div class="info-row">
         <div class="info-item">반<span class="fill-line"></span></div>
         <div class="info-item">번호<span class="fill-line"></span></div>
@@ -100,11 +100,11 @@
     <div class="instructions">배운 내용을 떠올리며 자신의 말로 자유롭게 서술하세요.</div>
     <div id="writtenArea"></div>
 
-    <div class="footer-note">EAIM 사회 수업 · 셀프체크룸</div>
+    <div class="footer-note">EAIM 역사 수업 · 셀프체크룸</div>
   </div>
 
 <script>
-const SUBUNIT_KEYS = ['politicsDemocracy','democracyDevelop','modernDemocracy'];
+const SUBUNIT_KEYS = ['worldWarOrder','humanRightsPeace','asiaAfricaMovement'];
 
 function renderMC(){
   const area = document.getElementById('sectionsArea');
@@ -190,7 +190,7 @@ function downloadPDF(){
       heightLeft -= pageHeight;
     }
 
-    const filename = `사회1_Ⅸ단원_학습지${withAnswers ? '_정답포함(교사용)' : ''}.pdf`;
+    const filename = `역사2_Ⅵ단원_학습지${withAnswers ? '_정답포함(교사용)' : ''}.pdf`;
     pdf.save(filename);
     btn.disabled = false;
     btn.textContent = original;

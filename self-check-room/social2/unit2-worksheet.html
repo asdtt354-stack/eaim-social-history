@@ -36,7 +36,9 @@
   .part-title { font-size:1.1em; font-weight:900; margin:34px 0 16px; padding-bottom:6px; border-bottom:2.5px solid var(--ink); }
 
   .section { margin-bottom: 30px; }
-  .section-title { font-size:1em; font-weight:800; border-bottom:1.5px solid #333; padding-bottom:6px; margin-bottom:14px; display:flex; justify-content:space-between; }
+  .section-title { font-size:1em; font-weight:800; border-bottom:1.5px solid #333; padding-bottom:6px; margin-bottom:4px; display:flex; justify-content:space-between; }
+  .standard-line { font-size:0.72em; color:#777; margin-bottom:12px; }
+  .standard-line b { color:#555; }
   .section-title .st-page { font-weight:600; color:#777; font-size:0.8em; }
 
   .item { margin-bottom: 18px; page-break-inside: avoid; }
@@ -47,7 +49,8 @@
   .item .opt .circle { display:inline-block; width:1.2em; height:1.2em; border:1.4px solid #333; border-radius:50%; flex-shrink:0; }
 
   .w-item { margin-bottom: 26px; page-break-inside: avoid; }
-  .w-item .w-topic { font-size:0.78em; font-weight:800; color:#777; margin-bottom:4px; }
+  .w-item .w-topic { font-size:0.78em; font-weight:800; color:#777; margin-bottom:2px; }
+  .w-item .standard-line { margin-bottom:8px; }
   .w-item .w-q { font-size:0.94em; font-weight:700; margin-bottom:10px; }
   .w-lines { border-bottom:1px solid #999; height:26px; margin-bottom:2px; }
 
@@ -111,7 +114,7 @@ function renderMC(){
     const sub = EAIM_QUIZ_DATA[key];
     const section = document.createElement('div');
     section.className = 'section';
-    section.innerHTML = `<div class="section-title"><span>${sub.label}</span></div>`;
+    section.innerHTML = `<div class="section-title"><span>${sub.label}</span></div>${sub.standard ? `<div class="standard-line">📋 <b>성취기준</b> ${sub.standard}</div>` : ''}`;
     sub.questions.forEach(item => {
       qNum++;
       const div = document.createElement('div');
@@ -140,6 +143,7 @@ function renderWritten(){
     div.className = 'w-item';
     div.innerHTML = `
       <div class="w-topic">${sub.label}</div>
+      ${sub.standard ? `<div class="standard-line">📋 <b>성취기준</b> ${sub.standard}</div>` : ''}
       <div class="w-q">서${wNum}. ${w.q}</div>
       <div class="w-lines"></div>
       <div class="w-lines"></div>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>역사2 - 셀프체크룸</title>
+<style>
+  :root { --main-color:#22d3ee; --bg-dark:#07090c; --accent:#a855f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg-dark); color:#fff; font-family:'Pretendard',-apple-system,sans-serif; min-height:100vh; }
+  a { color:inherit; text-decoration:none; }
+  .topbar { position:sticky; top:0; z-index:40; background:rgba(7,9,12,0.92); backdrop-filter:blur(10px); border-bottom:1px solid #1a1e24; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .crumb { font-size:0.78em; color:#888; } .crumb b{ color:#ccc; font-weight:600; }
+  .hub-link { font-size:0.72em; color:#aaa; padding:6px 12px; border:1px solid #2c313a; border-radius:8px; }
+  .hub-link:hover { border-color:var(--accent); color:#fff; }
+  .hero { padding:50px 20px 10px; text-align:center; max-width:700px; margin:0 auto; }
+  .hero .eyebrow { font-size:0.74em; font-weight:800; letter-spacing:2px; color:var(--main-color); text-transform:uppercase; margin-bottom:10px; }
+  .hero h1 { font-size:clamp(1.7em,4vw,2.2em); margin:0; }
+  .unit-wrap { max-width:820px; margin:40px auto 60px; padding:0 20px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  @media (max-width:640px) { .unit-wrap { grid-template-columns:1fr; } }
+  .ucard { display:flex; gap:16px; align-items:flex-start; background:#0d0f14; border:1.5px solid #1a1e24; border-radius:18px; padding:20px; }
+  .ucard .u-roman { font-size:1.4em; font-weight:900; color:var(--accent); flex-shrink:0; width:44px; text-align:center; }
+  .ucard .u-body { flex:1; min-width:0; }
+  .ucard .u-title { font-size:1.02em; font-weight:800; color:#fff; margin-bottom:8px; }
+  .ucard .u-links { display:flex; gap:6px; flex-wrap:wrap; }
+  .ucard .u-links a { font-size:0.7em; font-weight:800; padding:6px 10px; border-radius:7px; }
+  .ucard .u-links a.digital { color:#22d3ee; background:rgba(34,211,238,0.14); }
+  .ucard .u-links a.paper { color:#fbbf24; background:rgba(251,191,36,0.14); }
+  footer { text-align:center; padding:10px 20px 50px; color:#555; font-size:0.75em; }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="crumb"><b>🔍 셀프체크룸</b> / 역사2(세계사)</div>
+    <a class="hub-link" href="../index.html">← 셀프체크룸</a>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">역사2 · 세계사</div>
+    <h1>단원을 골라 확인해 보자</h1>
+  </section>
+
+  <div class="unit-wrap" id="unitWrap"></div>
+
+  <footer>EAIM 역사 수업 · 셀프체크룸</footer>
+
+<script>
+const UNITS = [
+  { icon:'Ⅰ', title:'역사 학습의 기초', digital:'unit1-check.html', paper:'unit1-worksheet.html' },
+  { icon:'Ⅱ', title:'문명의 발생과 고대 세계의 형성', digital:'unit2-check.html', paper:'unit2-worksheet.html' },
+  { icon:'Ⅲ', title:'세계 종교의 확산과 지역 문화의 발전', digital:'unit3-check.html', paper:'unit3-worksheet.html' },
+  { icon:'Ⅳ', title:'지역 세계의 교류와 변화', digital:'unit4-check.html', paper:'unit4-worksheet.html' },
+  { icon:'Ⅴ', title:'제국주의와 국민 국가 건설 운동', digital:'unit5-check.html', paper:'unit5-worksheet.html' },
+  { icon:'Ⅵ', title:'세계 대전과 사회 변동', digital:'unit6-check.html', paper:'unit6-worksheet.html' },
+  { icon:'Ⅶ', title:'현대 세계의 전개와 과제', digital:'unit7-check.html', paper:'unit7-worksheet.html' },
+];
+function render(){
+  document.getElementById('unitWrap').innerHTML = UNITS.map(u => {
+    const links = `<div class="u-links"><a class="digital" href="${u.digital}">📱 디지털</a><a class="paper" href="${u.paper}">🖨️ 인쇄용</a></div>`;
+    return `<div class="ucard ready"><div class="u-roman">${u.icon}</div><div class="u-body"><div class="u-title">${u.title}</div>${links}</div></div>`;
+  }).join('');
+}
+render();
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="../shared/teacher-tracker.js"></script>
+</body>
+</html>

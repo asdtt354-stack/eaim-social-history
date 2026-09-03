@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ⅻ단원 확인하기 - 사회 셀프체크룸</title>
-<script src="../../social2/unit12/quiz-data.js"></script>
+<title>Ⅳ단원 확인하기 - 역사 셀프체크룸</title>
+<script src="../../history2/unit4/quiz-data.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="../shared/teacher-tracker.js"></script>
@@ -101,12 +101,12 @@
 <body>
 
   <div class="topbar">
-    <div class="crumb"><b>🔍 셀프체크룸</b> / 사회2 / Ⅻ단원 확인하기</div>
-    <a class="hub-link" href="index.html">← 사회2</a>
+    <div class="crumb"><b>🔍 셀프체크룸</b> / 역사2 / Ⅳ단원 확인하기</div>
+    <a class="hub-link" href="index.html">← 역사2</a>
   </div>
 
   <section class="hero">
-    <div class="eyebrow">Ⅻ. 지속가능한 세계와 글로벌 시민 · 형성평가</div>
+    <div class="eyebrow">Ⅳ. 지역 세계의 교류와 변화 · 형성평가</div>
     <h1>얼마나 이해했는지 확인해 보자</h1>
     <p>3개 소단원에서 각각 객관식 1문제씩, 그리고 서술형 문제 1개를 풀어보자.</p>
     <div class="source-note">※ 문제는 매번 새로 무작위로 출제된다. 다시 풀면 다른 문제가 나올 수 있다.</div>
@@ -129,12 +129,12 @@
 
   <div class="summary-wrap" id="summaryWrap"></div>
 
-  <footer>EAIM 사회 수업 · 셀프체크룸</footer>
+  <footer>EAIM 역사 수업 · 셀프체크룸</footer>
 
 <script>
 function pickOne(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-const SUBUNIT_KEYS = ['resourceEnergy','globalEnv','betterFuture'];
+const SUBUNIT_KEYS = ['eurasiaTrade','eastAsiaIndiaChange','westAsiaEuropeChange'];
 const SELECTED = SUBUNIT_KEYS.map(key => {
   const sub = EAIM_QUIZ_DATA[key];
   return { key, label: sub.label, page: sub.page, standard: sub.standard, question: pickOne(sub.questions) };
@@ -266,7 +266,7 @@ function showSummary(){
       <div class="submit-status" id="submitStatus"></div>
     </div>
   `;
-  window.__submitPayload = { subject:'social2', unitKey:'unit12', unitLabel:'Ⅻ. 지속가능한 세계와 글로벌 시민', correct: totalCorrect, total: totalQ, weakTopics , writtenAnswers: currentWrittenKeys.map((key, idx) => { const ta = document.querySelector(`#writtenArea textarea[data-idx="${idx}"]`); const sub = EAIM_QUIZ_DATA[key]; return { topic: sub.label, question: sub.written.q, answer: (ta && ta.value.trim()) || '(작성하지 않음)' }; }) };
+  window.__submitPayload = { subject:'history2', unitKey:'unit4', unitLabel:'Ⅳ. 지역 세계의 교류와 변화', correct: totalCorrect, total: totalQ, weakTopics , writtenAnswers: currentWrittenKeys.map((key, idx) => { const ta = document.querySelector(`#writtenArea textarea[data-idx="${idx}"]`); const sub = EAIM_QUIZ_DATA[key]; return { topic: sub.label, question: sub.written.q, answer: (ta && ta.value.trim()) || '(작성하지 않음)' }; }) };
   wrap.scrollIntoView({ behavior:'smooth' });
 }
 
@@ -285,7 +285,7 @@ function downloadResultPDF(name){
     const imgHeight = canvas.height * imgWidth / canvas.width;
     const imgData = canvas.toDataURL('image/png');
     pdf.addImage(imgData, 'PNG', 0, 15, imgWidth, imgHeight);
-    pdf.save(`${name}_Ⅻ단원_확인결과.pdf`);
+    pdf.save(`${name}_Ⅳ단원_확인결과.pdf`);
     btn.disabled = false;
     btn.textContent = original;
   }).catch(err => {

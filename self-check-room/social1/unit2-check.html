@@ -36,7 +36,9 @@
   .progress-bar-inner { height:100%; background:linear-gradient(90deg,var(--main-color),var(--accent)); width:0%; transition:width .3s; }
 
   .topic-block { max-width:700px; margin:34px auto 0; padding:0 20px; }
-  .topic-title { font-size:0.78em; font-weight:800; color:var(--main-color); letter-spacing:1px; margin-bottom:10px; padding-left:2px; display:flex; justify-content:space-between; }
+  .topic-title { font-size:0.78em; font-weight:800; color:var(--main-color); letter-spacing:1px; margin-bottom:4px; padding-left:2px; display:flex; justify-content:space-between; }
+  .standard-badge { font-size:0.66em; color:#888; margin-bottom:10px; padding-left:2px; line-height:1.5; }
+  .standard-badge b { color:#a78bfa; font-weight:800; }
   .topic-title .tt-page { color:#555; font-weight:600; }
   .q-card { background:#0d0f14; border:1px solid #1a1e24; border-radius:14px; padding:18px 20px; margin-bottom:12px; }
   .q-card .q-text { font-size:0.9em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -49,7 +51,9 @@
 
   /* 서술형 카드 */
   .w-card { background:#0d0f14; border:1px solid #1a1e24; border-radius:14px; padding:18px 20px; margin-bottom:12px; }
-  .w-card .w-topic { font-size:0.72em; font-weight:800; color:#fbbf24; margin-bottom:6px; }
+  .w-card .w-topic { font-size:0.72em; font-weight:800; color:#fbbf24; margin-bottom:2px; }
+  .w-card .w-standard { font-size:0.64em; color:#888; margin-bottom:10px; line-height:1.5; }
+  .w-card .w-standard b { color:#fbbf24; font-weight:800; }
   .w-card .w-q { font-size:0.9em; font-weight:700; margin-bottom:10px; color:#eee; line-height:1.6; }
   .w-card textarea { width:100%; min-height:80px; background:#161a20; border:1.5px solid #262b33; border-radius:9px; color:#eee; padding:10px 12px; font-size:0.85em; font-family:inherit; resize:vertical; }
   .w-card .w-guide { font-size:0.74em; color:#777; margin-top:6px; }
@@ -133,7 +137,7 @@ function pickOne(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 const SUBUNIT_KEYS = ['asiaNature','asiaCulture','asiaPopulation','asiaIndustry'];
 const SELECTED = SUBUNIT_KEYS.map(key => {
   const sub = EAIM_QUIZ_DATA[key];
-  return { key, label: sub.label, page: sub.page, question: pickOne(sub.questions) };
+  return { key, label: sub.label, page: sub.page, standard: sub.standard, question: pickOne(sub.questions) };
 });
 
 let answeredCount = 0;
@@ -150,6 +154,7 @@ function renderQuiz(){
     const optsHtml = item.opts.map((o,oi) => `<button class="q-opt" data-gid="${sel.key}" data-oi="${oi}">${o}</button>`).join('');
     card.innerHTML = `
       <div class="topic-title"><span>${sel.label}</span></div>
+      ${sel.standard ? `<div class="standard-badge">📋 <b>성취기준</b> ${sel.standard}</div>` : ''}
       <div class="q-card">
         <div class="q-text">${item.q}</div>
         <div class="q-opts">${optsHtml}</div>
@@ -196,6 +201,7 @@ function renderWritten(){
     card.className = 'w-card';
     card.innerHTML = `
       <div class="w-topic">${sub.label}</div>
+      ${sub.standard ? `<div class="w-standard">📋 <b>성취기준</b> ${sub.standard}</div>` : ''}
       <div class="w-q">${w.q}</div>
       <textarea placeholder="여기에 자유롭게 답을 써 보자..." data-idx="${idx}"></textarea>
       <div class="w-guide">💡 ${w.guide}</div>
