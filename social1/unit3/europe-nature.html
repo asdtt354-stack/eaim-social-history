@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">유럽의 여러 국가와 자연환경에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>유럽의 여러 국가와 자연환경의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="europe_natureLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a5d6b"/>
+            <stop offset="55%" stop-color="#9fb8c4"/>
+            <stop offset="100%" stop-color="#d8e6ea"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#europe_natureLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#5a8f4f" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#3d6b36"/>
+        
+      </svg>
+      <div class="cap"><b>서안 해양성 기후</b> — 연중 온화, 초록 들판</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="europe_natureRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a5c8a"/>
+            <stop offset="55%" stop-color="#4a9dc4"/>
+            <stop offset="100%" stop-color="#a8dcf0"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#europe_natureRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#c9a13a" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#a5822a"/>
+        <g><circle cx="160" cy="170" r="14" fill="#5a7a3a"/><circle cx="190" cy="170" r="14" fill="#5a7a3a"/><circle cx="220" cy="170" r="14" fill="#5a7a3a"/><circle cx="250" cy="170" r="14" fill="#5a7a3a"/></g>
+      </svg>
+      <div class="cap"><b>지중해성 기후</b> — 여름 건조, 올리브·포도</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>서안 해양성 기후일까, 지중해성 기후일까?</h2></div>
   <div class="activity-wrap">

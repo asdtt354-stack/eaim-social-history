@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">태평양 지역의 환경 문제와 해결 방안에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>태평양 지역의 환경 문제와 해결 방안의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="oceania_envLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f3d5c"/>
+            <stop offset="55%" stop-color="#3b7ea8"/>
+            <stop offset="100%" stop-color="#a8d4e8"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#oceania_envLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#1a3a4a" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#102530"/>
+        <g><polygon points="150,190 185,140 220,165 260,190" fill="#ffffff" opacity="0.8"/><path d="M180,190 Q185,180 190,190" stroke="#8ecae6" stroke-width="2" fill="none"/></g>
+      </svg>
+      <div class="cap"><b>해수면 상승의 원인</b> — 지구 온난화로 빙하가 녹음</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="oceania_envRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a2a4a"/>
+            <stop offset="55%" stop-color="#1a4a6c"/>
+            <stop offset="100%" stop-color="#3a7a9c"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#oceania_envRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#0a1a28" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#08141c"/>
+        <g><rect x="197" y="150" width="6" height="40" fill="#3a8c5a"/><path d="M200,150 Q180,138 172,146" stroke="#3a8c5a" stroke-width="4" fill="none"/><path d="M200,150 Q220,138 228,146" stroke="#3a8c5a" stroke-width="4" fill="none"/><rect x="0" y="175" width="400" height="25" fill="#1a4a6c" opacity="0.5"/></g>
+      </svg>
+      <div class="cap"><b>해수면 상승의 영향</b> — 섬나라가 물에 잠길 위기</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>해수면 상승의 원인일까, 해수면 상승의 영향일까?</h2></div>
   <div class="activity-wrap">

@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">도시의 다양성과 지속가능한 도시를 위한 노력에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>도시의 다양성과 지속가능한 도시를 위한 노력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="europe_cityLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f2a3d"/>
+            <stop offset="55%" stop-color="#2a5266"/>
+            <stop offset="100%" stop-color="#5c8a9c"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#europe_cityLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#1a2d38" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#101c24"/>
+        <g stroke="#7ee0c8" stroke-width="3" fill="none"><line x1="0" y1="185" x2="400" y2="185"/><circle cx="180" cy="170" r="10"/><circle cx="220" cy="170" r="10"/><line x1="180" y1="170" x2="200" y2="150" /><line x1="220" y1="170" x2="200" y2="150"/></g>
+      </svg>
+      <div class="cap"><b>지속가능한 도시</b> — 자전거 도로와 친환경 교통</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="europe_cityRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a1a12"/>
+            <stop offset="55%" stop-color="#7a3a1a"/>
+            <stop offset="100%" stop-color="#c9682a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#europe_cityRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#2a1a10" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#1a100a"/>
+        <g fill="#c9682a"><rect x="160" y="150" width="90" height="45"/><rect x="175" y="110" width="10" height="45"/><rect x="200" y="95" width="10" height="60"/><ellipse cx="180" cy="102" rx="9" ry="6" opacity="0.4"/><ellipse cx="205" cy="88" rx="9" ry="6" opacity="0.4"/></g>
+      </svg>
+      <div class="cap"><b>지속가능하지 않은 개발</b> — 매연과 무분별한 개발</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>지속가능한 도시 정책일까, 지속가능하지 않은 정책일까?</h2></div>
   <div class="activity-wrap">

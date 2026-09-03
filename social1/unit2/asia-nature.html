@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">아시아의 여러 국가와 자연환경에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>아시아의 여러 국가와 자연환경의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="asia_natureLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f3d5c"/>
+            <stop offset="55%" stop-color="#3b7ea8"/>
+            <stop offset="100%" stop-color="#a8d4e8"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#asia_natureLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#2f6b46" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#1f4d33"/>
+        <g><path d="M-30,100 Q200,94 340,100" stroke="#e8f5e0" stroke-width="2" fill="none" opacity="0.7"/><path d="M-30,110 Q200,104 340,110" stroke="#e8f5e0" stroke-width="2" fill="none" opacity="0.7"/><path d="M-30,120 Q200,114 340,120" stroke="#e8f5e0" stroke-width="2" fill="none" opacity="0.7"/><path d="M-30,130 Q200,124 340,130" stroke="#e8f5e0" stroke-width="2" fill="none" opacity="0.7"/><path d="M-30,140 Q200,134 340,140" stroke="#e8f5e0" stroke-width="2" fill="none" opacity="0.7"/><path d="M-30,150 Q200,144 340,150" stroke="#e8f5e0" stroke-width="2" fill="none" opacity="0.7"/></g>
+      </svg>
+      <div class="cap"><b>계절풍 기후 지역</b> — 벼농사가 발달한 동아시아·남아시아</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="asia_natureRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7a3a12"/>
+            <stop offset="55%" stop-color="#d97a3f"/>
+            <stop offset="100%" stop-color="#f5c26b"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#asia_natureRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#e0a85e" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#b9793a"/>
+        
+      </svg>
+      <div class="cap"><b>건조 기후 지역</b> — 사막과 오아시스, 서남·중앙아시아</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>계절풍 기후 지역일까, 건조 기후 지역일까?</h2></div>
   <div class="activity-wrap">

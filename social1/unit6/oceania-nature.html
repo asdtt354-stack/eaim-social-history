@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">오세아니아의 지리적 특성과 수용에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>오세아니아의 지리적 특성과 수용의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="oceania_natureLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a1a5c"/>
+            <stop offset="55%" stop-color="#7a3a9c"/>
+            <stop offset="100%" stop-color="#c46ad4"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#oceania_natureLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#2a1038" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#180a24"/>
+        <g><rect x="140" y="130" width="3" height="55" fill="#fcd34d"/><polygon points="143,130 163,138 143,146" fill="#fcd34d"/><rect x="162" y="130" width="3" height="55" fill="#fcd34d"/><polygon points="165,130 185,138 165,146" fill="#fcd34d"/><rect x="184" y="130" width="3" height="55" fill="#fcd34d"/><polygon points="187,130 207,138 187,146" fill="#fcd34d"/><rect x="206" y="130" width="3" height="55" fill="#fcd34d"/><polygon points="209,130 229,138 209,146" fill="#fcd34d"/><rect x="228" y="130" width="3" height="55" fill="#fcd34d"/><polygon points="231,130 251,138 231,146" fill="#fcd34d"/><rect x="250" y="130" width="3" height="55" fill="#fcd34d"/><polygon points="253,130 273,138 253,146" fill="#fcd34d"/></g>
+      </svg>
+      <div class="cap"><b>다문화 사회</b> — 세계 각지 이민자들의 어우러짐</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="oceania_natureRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7a3a12"/>
+            <stop offset="55%" stop-color="#c9682a"/>
+            <stop offset="100%" stop-color="#e8a84a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#oceania_natureRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#c9682a" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#a5501a"/>
+        
+      </svg>
+      <div class="cap"><b>원주민 전통 문화</b> — 애버리지니의 오랜 전통</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>다문화 사회의 모습일까, 원주민 전통 문화일까?</h2></div>
   <div class="activity-wrap">

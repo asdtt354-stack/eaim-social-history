@@ -21,6 +21,13 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -74,6 +81,41 @@
     <p class="lead">지속가능한 발전을 위한 아프리카의 노력에 대해 배우고, 핵심 개념을 직접 분류해 보며 이해를 다져 보자.</p>
     <div class="goal-box"><div class="label">학습 목표</div><p>지속가능한 발전을 위한 아프리카의 노력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
+
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="africa_developLSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7a3a12"/>
+            <stop offset="55%" stop-color="#d97a3f"/>
+            <stop offset="100%" stop-color="#f5c26b"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#africa_developLSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#c9a13a" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#a5822a"/>
+        <g><rect x="160" y="150" width="18" height="10" fill="#3a2a12" opacity="0.9"/><rect x="182" y="150" width="18" height="10" fill="#3a2a12" opacity="0.9"/><rect x="204" y="150" width="18" height="10" fill="#3a2a12" opacity="0.9"/><rect x="160" y="164" width="18" height="10" fill="#3a2a12" opacity="0.9"/><rect x="182" y="164" width="18" height="10" fill="#3a2a12" opacity="0.9"/><rect x="204" y="164" width="18" height="10" fill="#3a2a12" opacity="0.9"/></g>
+      </svg>
+      <div class="cap"><b>지속가능한 발전</b> — 태양광 등 재생에너지</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="africa_developRSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3a2a1a"/>
+            <stop offset="55%" stop-color="#5a4a2a"/>
+            <stop offset="100%" stop-color="#7a6a3a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#africa_developRSky)"/>
+        <path d="M0,150 Q100,125 200,145 T400,140 V200 H0 Z" fill="#2a1a10" opacity="0.85"/>
+        <path d="M0,172 Q120,155 220,170 T400,165 V200 H0 Z" fill="#1a100a"/>
+        
+      </svg>
+      <div class="cap"><b>발전의 어려움</b> — 부족한 기반 시설</div>
+    </div>
+  </div>
 
   <div class="section-head"><div class="num">01</div><h2>지속가능한 발전 노력일까, 발전을 가로막는 어려움일까?</h2></div>
   <div class="activity-wrap">
