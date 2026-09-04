@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>민주주의와 인권의 확산의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('68운동')">68운동</span><span class="wiki-chip" onclick="searchWiki('베트남 전쟁')">베트남 전쟁</span><span class="wiki-chip" onclick="searchWiki('넬슨 만델라')">넬슨 만델라</span><span class="wiki-chip" onclick="searchWiki('아파르트헤이트')">아파르트헤이트</span><span class="wiki-chip" onclick="searchWiki('핵확산금지조약')">핵확산금지조약</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>20세기 후반 청년·학생을 중심으로 기존 체제에 저항하는 탈권위주의 운동(프랑스 68 운동 등)이 일어났어요. 베트남 전쟁을 계기로 <b>반전 평화 운동</b>이 세계로 퍼졌고, 국제 사회는 핵 확산 금지 조약(NPT) 등으로 대량 살상 무기를 줄이려 노력했어요.</p><p>아시아·남아메리카·동유럽 등에서는 독재에 맞선 <b>민주화 운동</b>이 확산됐어요. 남아프리카 공화국의 <b>넬슨 만델라</b>는 인종 차별 정책(아파르트헤이트)에 맞서 싸운 끝에 대통령이 되어 화해와 통합을 추구했어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>세계 여러 나라의 민주화 운동일까, 넬슨 만델라의 활동일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 현대 세계의 전개와 과제</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "20세기 후반 독재 정권에 맞서 확산되었다", "correct": "세계 여러 나라의 민주화 운동"}, {"key": "v1", "label": "아파르트헤이트(인종 차별)에 맞서 싸웠다", "correct": "넬슨 만델라의 활동"}, {"key": "v2", "label": "아시아·남아메리카·동유럽 등에서 일어났다", "correct": "세계 여러 나라의 민주화 운동"}, {"key": "v3", "label": "이후 남아프리카 공화국 대통령이 되었다", "correct": "넬슨 만델라의 활동"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "20세기 후반 여러 나라에서 독재 정권에 맞서 민주화를 이룬 흐름을 무엇이라 하는가?", "opts": ["민주화 운동의 확산", "냉전의 시작", "제국주의의 강화", "식민지 확대"], "answer": 0, "fb": "20세기 후반 아시아, 남아메리카, 동유럽 등 세계 여러 지역에서 독재 정권에 맞선 민주화 운동이 확산되었어요."}, {"q": "남아프리카 공화국에서 인종 차별 정책(아파르트헤이트)에 맞서 싸우며 이후 대통령이 된 인물은?", "opts": ["넬슨 만델라", "간디", "마틴 루서 킹", "처칠"], "answer": 0, "fb": "넬슨 만델라는 남아프리카 공화국의 인종 차별 정책(아파르트헤이트)에 맞서 오랜 투쟁을 벌인 끝에 이를 철폐하고 대통령이 되었어요."}, {"q": "오늘날 국제 사회에서 인권 신장을 위한 노력으로 알맞은 것은?", "opts": ["여성, 아동, 소수자의 권리 보장을 위한 국제 협약", "인권을 개인의 문제로만 여기는 것", "인권 침해를 방관하는 것", "차별을 오히려 정당화하는 것"], "answer": 0, "fb": "국제 사회는 여성, 아동, 난민, 장애인 등 다양한 사람들의 권리를 보장하기 위한 국제 협약을 맺으며 인권 신장을 위해 노력하고 있어요."}];
+const QUIZ = [{"q":"베트남 전쟁을 계기로 전 세계로 퍼진, 전쟁을 반대하고 평화를 지키려는 운동은?","opts":["반전 평화 운동","탈권위주의 운동","민주화 운동","독립운동"],"answer":0,"fb":"반전 평화 운동은 베트남 전쟁을 계기로 미국에서 시작되어 독일, 프랑스 등지로 퍼져 나갔어요. 핵무기 같은 대량 살상 무기 개발에 반대하는 운동도 세계 곳곳에서 함께 일어났어요."},{"q":"핵무기의 확산을 막기 위해 여러 나라가 체결한 국제 조약은?","opts":["핵 확산 금지 조약(NPT)","베르사유 조약","베스트팔렌 조약","난징 조약"],"answer":0,"fb":"국제 사회는 핵무기 등 대량 살상 무기를 축소하고자 핵 확산 금지 조약(NPT) 등을 체결하며 노력해 왔어요."},{"q":"20세기 후반 여러 나라에서 독재 정권에 맞서 민주화를 이룬 흐름을 무엇이라 하는가?","opts":["민주화 운동의 확산","냉전의 시작","제국주의의 강화","식민지 확대"],"answer":0,"fb":"20세기 후반 아시아, 남아메리카, 동유럽 등 세계 여러 지역에서 독재 정권에 맞선 민주화 운동이 확산되었어요."},{"q":"남아프리카 공화국에서 인종 차별 정책(아파르트헤이트)에 맞서 싸우며 이후 대통령이 된 인물은?","opts":["넬슨 만델라","간디","마틴 루서 킹","처칠"],"answer":0,"fb":"넬슨 만델라는 남아프리카 공화국의 인종 차별 정책(아파르트헤이트)에 맞서 오랜 투쟁을 벌인 끝에 이를 철폐하고 대통령이 되었어요."},{"q":"오늘날 국제 사회에서 인권 신장을 위한 노력으로 알맞은 것은?","opts":["여성, 아동, 소수자의 권리 보장을 위한 국제 협약","인권을 개인의 문제로만 여기는 것","인권 침해를 방관하는 것","차별을 오히려 정당화하는 것"],"answer":0,"fb":"국제 사회는 여성, 아동, 난민, 장애인 등 다양한 사람들의 권리를 보장하기 위한 국제 협약을 맺으며 인권 신장을 위해 노력하고 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

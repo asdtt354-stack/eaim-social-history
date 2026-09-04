@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>세계 대전과 변화된 세계 질서의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('제1차 세계대전')">제1차 세계대전</span><span class="wiki-chip" onclick="searchWiki('사라예보 사건')">사라예보 사건</span><span class="wiki-chip" onclick="searchWiki('제2차 세계대전')">제2차 세계대전</span><span class="wiki-chip" onclick="searchWiki('국제연합')">국제연합</span><span class="wiki-chip" onclick="searchWiki('베르사유 조약')">베르사유 조약</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>오스트리아·헝가리 제국의 황태자 부부가 암살된 <b>사라예보 사건</b>(1914)을 계기로 <b>제1차 세계 대전</b>이 일어났어요. 유럽 열강의 동맹 관계가 얽히며 전쟁은 순식간에 전 세계로 확산됐어요.</p><p>1939년 독일의 폴란드 침공으로 <b>제2차 세계 대전</b>이 시작돼 인류 역사상 최대 규모의 전쟁으로 번졌어요. 전쟁이 끝난 뒤 국제 사회는 평화 유지를 위해 <b>국제 연합(UN)</b>을 창설했어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>제1차 세계 대전 관련일까, 제2차 세계 대전 관련일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 세계 대전과 사회 변동</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "1914년 유럽 열강의 대립으로 시작됐다", "correct": "제1차 세계 대전 관련"}, {"key": "v1", "label": "1939년 독일의 폴란드 침공으로 시작됐다", "correct": "제2차 세계 대전 관련"}, {"key": "v2", "label": "동맹국과 협상국이 대립했다", "correct": "제1차 세계 대전 관련"}, {"key": "v3", "label": "국제 연합(UN) 창설의 계기가 되었다", "correct": "제2차 세계 대전 관련"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "1914년 유럽 열강 간의 대립으로 시작되어 전 세계로 확산된 전쟁은?", "opts": ["제1차 세계 대전", "제2차 세계 대전", "십자군 전쟁", "아편 전쟁"], "answer": 0, "fb": "제1차 세계 대전은 1914년 유럽 열강 간의 대립(동맹국 대 협상국)으로 시작되어 전 세계로 번진 대규모 전쟁이에요."}, {"q": "1939년 독일의 폴란드 침공으로 시작된, 인류 역사상 최대 규모의 전쟁은?", "opts": ["제2차 세계 대전", "제1차 세계 대전", "냉전", "베트남 전쟁"], "answer": 0, "fb": "제2차 세계 대전은 1939년 독일의 폴란드 침공으로 시작되어 전 세계를 휩쓴 인류 역사상 최대 규모의 전쟁이에요."}, {"q": "제2차 세계 대전 이후 세계 평화 유지를 위해 창설된 국제기구는?", "opts": ["국제 연합(UN)", "유럽연합(EU)", "아세안(ASEAN)", "나토(NATO)만 해당"], "answer": 0, "fb": "국제 연합(UN)은 제2차 세계 대전이 남긴 참혹한 피해를 반성하며 세계 평화와 안전을 지키기 위해 창설된 국제기구예요."}];
+const QUIZ = [{"q":"1914년 유럽 열강 간의 대립으로 시작되어 전 세계로 확산된 전쟁은?","opts":["제1차 세계 대전","제2차 세계 대전","십자군 전쟁","아편 전쟁"],"answer":0,"fb":"제1차 세계 대전은 1914년 유럽 열강 간의 대립(동맹국 대 협상국)으로 시작되어 전 세계로 번진 대규모 전쟁이에요."},{"q":"오스트리아·헝가리 제국의 황태자 부부가 세르비아계 청년에게 암살되어, 제1차 세계 대전의 직접적인 도화선이 된 사건은?","opts":["사라예보 사건","진주만 공습","루시타니아호 침몰","노르망디 상륙 작전"],"answer":0,"fb":"사라예보 사건(1914)은 보스니아 사라예보를 방문한 오스트리아·헝가리 제국의 황태자 부부가 세르비아계 청년에게 암살된 사건이에요. 이를 계기로 오스트리아·헝가리 제국이 세르비아에 전쟁을 선포하며 제1차 세계 대전이 시작되었어요."},{"q":"1939년 독일의 폴란드 침공으로 시작된, 인류 역사상 최대 규모의 전쟁은?","opts":["제2차 세계 대전","제1차 세계 대전","냉전","베트남 전쟁"],"answer":0,"fb":"제2차 세계 대전은 1939년 독일의 폴란드 침공으로 시작되어 전 세계를 휩쓴 인류 역사상 최대 규모의 전쟁이에요."},{"q":"제2차 세계 대전 이후 세계 평화 유지를 위해 창설된 국제기구는?","opts":["국제 연합(UN)","유럽연합(EU)","아세안(ASEAN)","나토(NATO)만 해당"],"answer":0,"fb":"국제 연합(UN)은 제2차 세계 대전이 남긴 참혹한 피해를 반성하며 세계 평화와 안전을 지키기 위해 창설된 국제기구예요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

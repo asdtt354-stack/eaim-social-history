@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>동아시아·인도 지역 질서의 변화의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('명나라')">명나라</span><span class="wiki-chip" onclick="searchWiki('정화의 대항해')">정화의 대항해</span><span class="wiki-chip" onclick="searchWiki('무굴 제국')">무굴 제국</span><span class="wiki-chip" onclick="searchWiki('타지마할')">타지마할</span><span class="wiki-chip" onclick="searchWiki('에도 막부')">에도 막부</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>주원장(홍무제)은 원을 몰아내고 <b>명</b>을 세워(1368) 한족 전통을 회복하려 했어요. 영락제는 <b>정화</b>를 보내 일곱 차례 대항해를 통해 동남아시아·인도·아프리카까지 진출시키며 국력을 과시했어요. 이후 명은 임진왜란 지원 등으로 재정이 어려워지며 쇠퇴했어요.</p><p>한편 인도에서는 이슬람 세력이 <b>무굴 제국</b>을 세워, 이슬람과 힌두 문화가 융합된 독특한 문화(타지마할 등)를 남겼어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>중국 왕조 교체 관련일까, 무굴 제국(인도) 관련일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 지역 세계의 교류와 변화</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "명이 원을 몰아내고 다시 세워졌다", "correct": "중국 왕조 교체 관련"}, {"key": "v1", "label": "이슬람 세력이 인도에 세운 왕조이다", "correct": "무굴 제국(인도) 관련"}, {"key": "v2", "label": "중국 중심의 조공·책봉 관계가 이어졌다", "correct": "중국 왕조 교체 관련"}, {"key": "v3", "label": "타지마할 같은 이슬람·힌두 융합 문화를 남겼다", "correct": "무굴 제국(인도) 관련"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "중국에서 몽골족이 세운 원을 몰아내고 한족이 다시 세운 나라는?", "opts": ["명", "당", "송", "청"], "answer": 0, "fb": "명은 원을 몰아내고 한족이 다시 세운 나라로, 이후 중국 전통 질서를 회복하려는 정책을 펼쳤어요."}, {"q": "인도에서 이슬람 세력이 세운, 타지마할로 유명한 제국은?", "opts": ["무굴 제국", "굽타 왕조", "마우리아 왕조", "아소카 왕조"], "answer": 0, "fb": "무굴 제국은 인도에 세워진 이슬람 왕조로, 이슬람과 힌두 문화가 융합된 독특한 문화(타지마할 등)를 남겼어요."}, {"q": "동아시아 지역 질서의 변화 속에서도 이어진 국제 관계의 특징으로 알맞은 것은?", "opts": ["중국을 중심으로 한 조공·책봉 관계", "완전히 대등한 무역만 존재", "모든 교류의 전면 중단", "유럽식 조약 체계만 적용"], "answer": 0, "fb": "동아시아에서는 왕조가 바뀌어도 중국을 중심으로 주변국이 조공을 바치고 책봉을 받는 전통적인 국제 관계가 오랫동안 이어졌어요."}];
+const QUIZ = [{"q":"중국에서 몽골족이 세운 원을 몰아내고 한족이 다시 세운 나라는?","opts":["명","당","송","청"],"answer":0,"fb":"명은 원을 몰아내고 한족이 다시 세운 나라로, 이후 중국 전통 질서를 회복하려는 정책을 펼쳤어요."},{"q":"명의 영락제가 국력을 과시하고 여러 나라와 조공 관계를 맺고자, 대규모 함대를 이끌고 동남아시아·인도·아프리카까지 항해하게 한 인물은?","opts":["정화","이순신","콜럼버스","마르코 폴로"],"answer":0,"fb":"정화는 영락제의 명으로 일곱 차례에 걸쳐 대함대를 이끌고 동남아시아, 인도, 아프리카까지 진출해 30여 개 나라와 조공 관계를 맺었어요. 이를 정화의 대항해라고 해요."},{"q":"인도에서 이슬람 세력이 세운, 타지마할로 유명한 제국은?","opts":["무굴 제국","굽타 왕조","마우리아 왕조","아소카 왕조"],"answer":0,"fb":"무굴 제국은 인도에 세워진 이슬람 왕조로, 이슬람과 힌두 문화가 융합된 독특한 문화(타지마할 등)를 남겼어요."},{"q":"동아시아 지역 질서의 변화 속에서도 이어진 국제 관계의 특징으로 알맞은 것은?","opts":["중국을 중심으로 한 조공·책봉 관계","완전히 대등한 무역만 존재","모든 교류의 전면 중단","유럽식 조약 체계만 적용"],"answer":0,"fb":"동아시아에서는 왕조가 바뀌어도 중국을 중심으로 주변국이 조공을 바치고 책봉을 받는 전통적인 국제 관계가 오랫동안 이어졌어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

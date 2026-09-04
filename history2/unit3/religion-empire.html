@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>다양한 종교의 등장과 제국의 변화의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('무함마드')">무함마드</span><span class="wiki-chip" onclick="searchWiki('헤지라')">헤지라</span><span class="wiki-chip" onclick="searchWiki('이슬람 제국')">이슬람 제국</span><span class="wiki-chip" onclick="searchWiki('우마이야 왕조')">우마이야 왕조</span><span class="wiki-chip" onclick="searchWiki('아바스 왕조')">아바스 왕조</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>7세기 초 메카의 상인 <b>무함마드</b>가 유일신 알라 앞에 모든 인간이 평등하다고 가르치는 이슬람교를 정립했어요. 귀족의 탄압을 피해 메디나로 옮긴 사건을 <b>헤지라</b>(622)라 하며, 이슬람력의 원년으로 삼아요.</p><p>이슬람 세력은 정복지 주민에게 개종을 강요하지 않는 대신 지즈야라는 세금을 거두는 관용적인 정책을 펴, 정복지 주민들의 환영을 받으며 빠르게 확산되었어요. 이후 우마이야·아바스 왕조를 거치며 서아시아부터 유럽 일부까지 넓은 이슬람 제국을 이루었어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>이슬람교·이슬람 제국 관련일까, 이슬람 문화권의 학문적 성취일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 세계 종교의 확산과 지역 문화의 발전</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "무함마드가 7세기에 창시했다", "correct": "이슬람교·이슬람 제국 관련"}, {"key": "v1", "label": "수학·천문학·의학이 크게 발달했다", "correct": "이슬람 문화권의 학문적 성취"}, {"key": "v2", "label": "우마이야·아바스 왕조가 세력을 넓혔다", "correct": "이슬람교·이슬람 제국 관련"}, {"key": "v3", "label": "이후 유럽 학문 발전에 영향을 주었다", "correct": "이슬람 문화권의 학문적 성취"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "7세기 서아시아에서 무함마드에 의해 창시된 종교는?", "opts": ["이슬람교", "불교", "유교", "조로아스터교"], "answer": 0, "fb": "이슬람교는 7세기 무함마드가 아라비아반도에서 창시한 종교로, 이후 빠르게 넓은 지역으로 확산되었어요."}, {"q": "이슬람교 확산과 함께 아라비아반도를 중심으로 성립한 대제국은?", "opts": ["이슬람 제국(우마이야·아바스 왕조 등)", "로마 제국", "진(秦)", "아테네"], "answer": 0, "fb": "이슬람교 성립 이후 우마이야 왕조, 아바스 왕조 등 이슬람 제국이 서아시아·북아프리카·유럽 일부까지 넓은 영토를 지배했어요."}, {"q": "이슬람 문화권에서 발달해 유럽에 영향을 준 학문 분야로 알맞은 것은?", "opts": ["수학·천문학·의학", "어떤 학문도 발달하지 않음", "문학만 존재", "학문 활동이 금지됨"], "answer": 0, "fb": "이슬람 문화권은 수학, 천문학, 의학 등에서 크게 발달했고, 이는 이후 유럽 학문 발전에도 영향을 주었어요."}];
+const QUIZ = [{"q":"7세기 서아시아에서 무함마드에 의해 창시된 종교는?","opts":["이슬람교","불교","유교","조로아스터교"],"answer":0,"fb":"이슬람교는 7세기 무함마드가 아라비아반도에서 창시한 종교로, 이후 빠르게 넓은 지역으로 확산되었어요."},{"q":"메카에서 귀족들의 탄압을 받던 무함마드와 신도들이 622년 메디나로 근거지를 옮긴 사건을 무엇이라 하는가?","opts":["헤지라","십자군 전쟁","탈라스 전투","정통 칼리프 시대"],"answer":0,"fb":"헤지라(622)는 무함마드와 신도들이 메카에서 메디나로 근거지를 옮긴 사건으로, 이슬람력의 원년으로 삼을 만큼 중요한 사건이에요. 이후 메디나에서 세력을 키운 무함마드는 메카를 정복했어요."},{"q":"이슬람 세력이 정복한 지역의 주민에게 이슬람교를 강요하지 않는 대신, 개종하지 않으면 거두었던 세금은?","opts":["지즈야","조공","십일조","공물"],"answer":0,"fb":"이슬람 세력은 정복지 주민에게 이슬람교로의 개종을 강요하지 않는 대신, 개종하지 않으면 지즈야라는 세금을 거두었어요. 이렇게 평등을 강조하는 정책 덕분에 이슬람교는 정복지 주민들의 환영을 받으며 빠르게 확산되었어요."},{"q":"이슬람교 확산과 함께 아라비아반도를 중심으로 성립한 대제국은?","opts":["이슬람 제국(우마이야·아바스 왕조 등)","로마 제국","진(秦)","아테네"],"answer":0,"fb":"이슬람교 성립 이후 우마이야 왕조, 아바스 왕조 등 이슬람 제국이 서아시아·북아프리카·유럽 일부까지 넓은 영토를 지배했어요."},{"q":"이슬람 문화권에서 발달해 유럽에 영향을 준 학문 분야로 알맞은 것은?","opts":["수학·천문학·의학","어떤 학문도 발달하지 않음","문학만 존재","학문 활동이 금지됨"],"answer":0,"fb":"이슬람 문화권은 수학, 천문학, 의학 등에서 크게 발달했고, 이는 이후 유럽 학문 발전에도 영향을 주었어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

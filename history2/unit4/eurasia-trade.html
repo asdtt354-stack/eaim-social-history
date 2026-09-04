@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>유라시아 교역망과 문화 교류의 확대의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('송나라')">송나라</span><span class="wiki-chip" onclick="searchWiki('왕안석')">왕안석</span><span class="wiki-chip" onclick="searchWiki('몽골 제국')">몽골 제국</span><span class="wiki-chip" onclick="searchWiki('쿠빌라이 칸')">쿠빌라이 칸</span><span class="wiki-chip" onclick="searchWiki('역참제')">역참제</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>당이 멸망한 후 <b>송</b>(조광윤 건국)은 문인을 우대하는 <b>문치주의</b>를 채택했어요. 왕안석이 민생 안정과 부국강병을 위해 개혁(신법)을 시도했지만 실패했고, 송은 금의 압박으로 수도를 남쪽으로 옮겼어요(남송, 1127).</p><p>13세기 <b>몽골 제국</b>이 유라시아 대륙 전역을 지배하며 역참제로 교역로를 안전하게 관리했고, 비단길을 통해 종교·기술·상품 등 다양한 문화 요소가 여러 지역으로 전파되며 동서 교류가 크게 활발해졌어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>비단길(실크로드)을 통한 교류일까, 몽골 제국 시기의 교류일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 지역 세계의 교류와 변화</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "중국과 서아시아·유럽을 잇는 육상 교역로였다", "correct": "비단길(실크로드)을 통한 교류"}, {"key": "v1", "label": "넓은 영토를 하나로 통치하며 역참제를 운영했다", "correct": "몽골 제국 시기의 교류"}, {"key": "v2", "label": "비단·향신료 등이 오갔다", "correct": "비단길(실크로드)을 통한 교류"}, {"key": "v3", "label": "동서 교역과 문화 교류가 크게 활발해졌다", "correct": "몽골 제국 시기의 교류"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "동서양을 잇는 대표적인 육상 교역로로, 비단 등이 거래되었던 길은?", "opts": ["비단길(실크로드)", "차마고도만 해당", "해상 무역로만 존재", "교역로가 전혀 없었음"], "answer": 0, "fb": "비단길(실크로드)은 중국과 서아시아·유럽을 잇는 대표적인 육상 교역로로, 비단·향신료 등 다양한 물품과 문화가 오갔어요."}, {"q": "13세기 몽골 제국이 유라시아 대륙 전역을 지배하며 나타난 현상으로 알맞은 것은?", "opts": ["동서 교역과 문화 교류가 활발해졌다", "모든 교류가 완전히 끊겼다", "유라시아가 여러 소국으로 쪼개졌다", "상업 활동이 전면 금지되었다"], "answer": 0, "fb": "몽골 제국은 넓은 영토를 하나로 통치하며 역참제 등을 통해 동서 교역로를 안전하게 관리해, 이 시기 동서 교류가 크게 활발해졌어요."}, {"q": "유라시아 교역망을 통해 서로 다른 지역에 전해진 것으로 알맞은 것은?", "opts": ["종교, 기술, 상품 등 다양한 문화 요소", "교역로를 통해서는 아무것도 전해지지 않았다", "오직 무기만 전해졌다", "교류는 문화에 전혀 영향을 주지 않았다"], "answer": 0, "fb": "유라시아 교역망을 통해 종교, 인쇄술·화약 같은 기술, 다양한 상품 등이 여러 지역으로 전파되며 서로 영향을 주고받았어요."}];
+const QUIZ = [{"q":"당이 멸망한 후 중국을 다시 통일하고, 문인을 우대하는 문치주의를 채택한 나라는?","opts":["송(宋)","진(秦)","수(隋)","한(漢)"],"answer":0,"fb":"송 태조(조광윤)는 절도사 출신으로, 중앙군을 강화하고 문인을 우대하는 문치주의 정책을 펴며 황제가 직접 주관하는 전시 제도(과거제)를 도입했어요."},{"q":"송이 거란·서하 등 북방 민족의 압박으로 재정이 어려워지자, 왕안석이 추진한 것은?","opts":["신법(개혁)","봉건제 도입","과거제 폐지","군사력 완전 포기"],"answer":0,"fb":"왕안석은 농민에게 낮은 이자로 돈을 빌려주고 국가가 상품 유통을 관리하는 등 민생 안정과 부국강병을 목표로 개혁(신법)을 시도했지만, 보수파 관료들의 반대로 실패했어요. 이후 송은 금의 공격을 받아 수도를 남쪽으로 옮겼어요(남송, 1127)."},{"q":"13세기 몽골 제국이 유라시아 대륙 전역을 지배하며 나타난 현상으로 알맞은 것은?","opts":["동서 교역과 문화 교류가 활발해졌다","모든 교류가 완전히 끊겼다","유라시아가 여러 소국으로 쪼개졌다","상업 활동이 전면 금지되었다"],"answer":0,"fb":"몽골 제국은 넓은 영토를 하나로 통치하며 역참제 등을 통해 동서 교역로를 안전하게 관리해, 이 시기 동서 교류가 크게 활발해졌어요."},{"q":"유라시아 교역망을 통해 서로 다른 지역에 전해진 것으로 알맞은 것은?","opts":["종교, 기술, 상품 등 다양한 문화 요소","교역로를 통해서는 아무것도 전해지지 않았다","오직 무기만 전해졌다","교류는 문화에 전혀 영향을 주지 않았다"],"answer":0,"fb":"유라시아 교역망을 통해 종교, 인쇄술·화약 같은 기술, 다양한 상품 등이 여러 지역으로 전파되며 서로 영향을 주고받았어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

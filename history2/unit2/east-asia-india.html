@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>고대 동아시아·인도 세계의 형성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('제자백가')">제자백가</span><span class="wiki-chip" onclick="searchWiki('공자')">공자</span><span class="wiki-chip" onclick="searchWiki('진시황')">진시황</span><span class="wiki-chip" onclick="searchWiki('만리장성')">만리장성</span><span class="wiki-chip" onclick="searchWiki('카스트 제도')">카스트 제도</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>춘추 전국 시대의 혼란 속에서 다양한 사상가와 학파, <b>제자백가</b>가 등장했어요. 예와 덕을 강조한 유가, 법과 제도를 강조한 법가, 자연의 순리를 강조한 도가, 차별 없는 사랑을 강조한 묵가가 대표적이에요.</p><p><b>진(秦)</b>은 이런 혼란을 끝내고 중국을 최초로 통일해 문자·도량형을 통일하고 만리장성을 쌓았어요. 한편 인도에서는 엄격한 신분 제도인 카스트 제도가 자리 잡았고, 이곳에서 발생한 <b>불교</b>는 동아시아 여러 나라로 퍼져 나갔어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>고대 중국(진)의 특징일까, 고대 인도의 특징일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -108,6 +140,12 @@
   <footer>EAIM 사회 수업 · 문명의 발생과 고대 세계의 형성</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "중국을 최초로 통일했다", "correct": "고대 중국(진)의 특징"}, {"key": "v1", "label": "카스트라는 엄격한 신분 제도가 있었다", "correct": "고대 인도의 특징"}, {"key": "v2", "label": "만리장성을 축조했다", "correct": "고대 중국(진)의 특징"}, {"key": "v3", "label": "불교가 이 지역에서 처음 발생했다", "correct": "고대 인도의 특징"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -145,7 +183,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "중국을 최초로 통일하고 만리장성을 축조한 나라는?", "opts": ["진(秦)", "한(漢)", "당(唐)", "주(周)"], "answer": 0, "fb": "진(秦)은 중국 최초로 여러 나라를 통일하고 도량형·문자를 통일했으며, 북방 방어를 위해 만리장성을 쌓았어요."}, {"q": "인도에서 신분을 엄격히 구분한 제도로, 지금까지도 사회에 영향을 미치는 것은?", "opts": ["카스트 제도", "봉건제", "과거제", "균전제"], "answer": 0, "fb": "카스트 제도는 고대 인도에서 형성된 엄격한 신분 제도로, 브라만·크샤트리아·바이샤·수드라 등으로 신분을 나누었어요."}, {"q": "인도에서 발생해 동아시아로 널리 퍼진 종교는?", "opts": ["불교", "이슬람교", "크리스트교", "유대교"], "answer": 0, "fb": "불교는 인도에서 발생해 동아시아 여러 나라로 전파되며 사상과 문화에 큰 영향을 주었어요."}];
+const QUIZ = [{"q":"중국을 최초로 통일하고 만리장성을 축조한 나라는?","opts":["진(秦)","한(漢)","당(唐)","주(周)"],"answer":0,"fb":"진(秦)은 중국 최초로 여러 나라를 통일하고 도량형·문자를 통일했으며, 북방 방어를 위해 만리장성을 쌓았어요."},{"q":"춘추 전국 시대에 등장한 여러 사상가와 학파를 통틀어 무엇이라 하는가?","opts":["제자백가","카스트","봉건제","율령"],"answer":0,"fb":"제자백가는 춘추 전국 시대에 등장한 다양한 사상가와 학파를 가리켜요. 예와 덕을 강조한 유가, 법과 제도를 강조한 법가, 자연의 순리를 강조한 도가, 차별 없는 사랑을 강조한 묵가 등이 대표적이에요."},{"q":"인도에서 신분을 엄격히 구분한 제도로, 지금까지도 사회에 영향을 미치는 것은?","opts":["카스트 제도","봉건제","과거제","균전제"],"answer":0,"fb":"카스트 제도는 고대 인도에서 형성된 엄격한 신분 제도로, 브라만·크샤트리아·바이샤·수드라 등으로 신분을 나누었어요."},{"q":"인도에서 발생해 동아시아로 널리 퍼진 종교는?","opts":["불교","이슬람교","크리스트교","유대교"],"answer":0,"fb":"불교는 인도에서 발생해 동아시아 여러 나라로 전파되며 사상과 문화에 큰 영향을 주었어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

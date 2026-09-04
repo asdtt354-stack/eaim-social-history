@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>고대 서아시아·지중해 세계의 형성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('페르시아 제국')">페르시아 제국</span><span class="wiki-chip" onclick="searchWiki('다리우스 1세')">다리우스 1세</span><span class="wiki-chip" onclick="searchWiki('아테네 민주정')">아테네 민주정</span><span class="wiki-chip" onclick="searchWiki('로마법')">로마법</span><span class="wiki-chip" onclick="searchWiki('스파르타')">스파르타</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>메소포타미아에서는 쐐기 문자(설형 문자)가 쓰였고, 서아시아를 처음 통일한 아시리아에 이어 <b>페르시아 제국</b>(아케메네스 왕조)이 다리우스 1세 때 대제국으로 성장했어요. 페르시아는 피정복민의 풍습을 존중하는 관용 정책으로 협조를 얻었어요.</p><p>지중해에서는 그리스 아테네가 시민이 직접 정치에 참여하는 <b>직접 민주 정치</b>를 발전시켰고, 이후 로마 제국이 지중해 세계를 통일해 도로망·법률(로마법) 등을 정비했어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>고대 그리스(아테네)의 특징일까, 고대 로마 제국의 특징일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 문명의 발생과 고대 세계의 형성</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "시민이 직접 민회에 참여하는 정치를 폈다", "correct": "고대 그리스(아테네)의 특징"}, {"key": "v1", "label": "지중해 세계를 통일하고 도로망을 정비했다", "correct": "고대 로마 제국의 특징"}, {"key": "v2", "label": "폴리스라는 도시 국가 형태였다", "correct": "고대 그리스(아테네)의 특징"}, {"key": "v3", "label": "법률(로마법) 체계를 발전시켰다", "correct": "고대 로마 제국의 특징"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "메소포타미아 지역에서 발달한, 쐐기 모양의 문자는?", "opts": ["쐐기 문자(설형 문자)", "한자", "알파벳", "상형 문자만 해당"], "answer": 0, "fb": "쐐기 문자(설형 문자)는 메소포타미아 지역에서 점토판에 새겨 사용한 문자로, 세계에서 가장 오래된 문자 중 하나예요."}, {"q": "고대 그리스에서 시민이 직접 정치에 참여했던 정치 형태는?", "opts": ["아테네의 직접 민주 정치", "전제 군주정만 존재", "완전한 왕정", "봉건제만 존재"], "answer": 0, "fb": "고대 그리스 아테네는 시민들이 민회에 직접 참여해 정책을 결정하는 직접 민주 정치를 발전시켰어요."}, {"q": "지중해 세계를 통일하고 도로망·법률 등을 정비한 고대 제국은?", "opts": ["로마 제국", "페르시아 제국만 해당", "이집트만 해당", "메소포타미아 소국들"], "answer": 0, "fb": "로마 제국은 지중해 세계를 통일하고 도로망, 법률(로마법) 등을 정비해 오랫동안 번영을 누렸어요."}];
+const QUIZ = [{"q":"메소포타미아 지역에서 발달한, 쐐기 모양의 문자는?","opts":["쐐기 문자(설형 문자)","한자","알파벳","상형 문자만 해당"],"answer":0,"fb":"쐐기 문자(설형 문자)는 메소포타미아 지역에서 점토판에 새겨 사용한 문자로, 세계에서 가장 오래된 문자 중 하나예요."},{"q":"피정복민에게 세금을 걷는 대신 그들의 풍습을 존중하는 관용 정책을 펴, 서아시아를 통일한 고대 제국은?","opts":["페르시아 제국(아케메네스 왕조)","로마 제국","이집트 왕국","아테네"],"answer":0,"fb":"페르시아 제국은 기원전 6세기 키루스 2세가 서아시아를 통일한 뒤, 다리우스 1세 때 지중해 연안에서 인더스강까지 이르는 대제국으로 성장했어요. 총독을 파견하고 \"왕의 눈·왕의 귀\"라 불리는 감찰관을 보내면서도, 피정복민의 풍습을 존중하는 관용 정책으로 협조를 얻었어요."},{"q":"고대 그리스에서 시민이 직접 정치에 참여했던 정치 형태는?","opts":["아테네의 직접 민주 정치","전제 군주정만 존재","완전한 왕정","봉건제만 존재"],"answer":0,"fb":"고대 그리스 아테네는 시민들이 민회에 직접 참여해 정책을 결정하는 직접 민주 정치를 발전시켰어요."},{"q":"지중해 세계를 통일하고 도로망·법률 등을 정비한 고대 제국은?","opts":["로마 제국","페르시아 제국만 해당","이집트만 해당","메소포타미아 소국들"],"answer":0,"fb":"로마 제국은 지중해 세계를 통일하고 도로망, 법률(로마법) 등을 정비해 오랫동안 번영을 누렸어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

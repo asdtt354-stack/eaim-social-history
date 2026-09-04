@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>유럽과 아메리카의 국민 국가 체제 형성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('청교도 혁명')">청교도 혁명</span><span class="wiki-chip" onclick="searchWiki('명예혁명')">명예혁명</span><span class="wiki-chip" onclick="searchWiki('프랑스 혁명')">프랑스 혁명</span><span class="wiki-chip" onclick="searchWiki('미국 독립 혁명')">미국 독립 혁명</span><span class="wiki-chip" onclick="searchWiki('독일 통일')">독일 통일</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p>17세기 영국에서는 찰스 1세의 전제 정치에 맞서 의회파가 승리한 <b>청교도 혁명</b>(1642~1649)에 이어, 피 흘리지 않고 왕을 교체하며 권리 장전을 이끌어 낸 <b>명예혁명</b>(1688)이 일어나 의회 중심의 입헌 군주제 기초가 마련됐어요.</p><p>이후 미국은 영국의 식민 지배에서 독립했고(미국 혁명), 프랑스는 1789년 절대 왕정을 무너뜨리며 자유·평등·박애를 내세운 <b>프랑스 혁명</b>을 일으켰어요. 19세기에는 여러 소국으로 나뉘어 있던 독일과 이탈리아도 통일을 이루었어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>프랑스 혁명 관련일까, 독일·이탈리아의 통일일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 제국주의와 국민 국가 건설 운동</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "절대 왕정을 무너뜨렸다", "correct": "프랑스 혁명 관련"}, {"key": "v1", "label": "여러 소국으로 나뉘어 있다가 하나로 합쳐졌다", "correct": "독일·이탈리아의 통일"}, {"key": "v2", "label": "자유·평등·박애 이념을 내세웠다", "correct": "프랑스 혁명 관련"}, {"key": "v3", "label": "19세기에 통일을 이루었다", "correct": "독일·이탈리아의 통일"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "1789년 절대 왕정을 무너뜨리고 자유·평등·박애를 내세운 사건은?", "opts": ["프랑스 혁명", "영국 명예혁명", "미국 독립 혁명", "러시아 혁명"], "answer": 0, "fb": "프랑스 혁명은 1789년 절대 왕정을 무너뜨리고 자유·평등·박애의 이념을 내세운 대표적인 시민 혁명이에요."}, {"q": "영국의 식민 지배에서 벗어나 독립을 선언하고 공화국을 세운 나라는?", "opts": ["미국", "프랑스", "독일", "이탈리아"], "answer": 0, "fb": "미국은 영국의 식민 지배에 맞서 독립 혁명을 벌인 끝에 독립을 선언하고 공화국을 수립했어요."}, {"q": "19세기 여러 개의 소국으로 나뉘어 있다가 통일을 이룬 나라로 알맞은 것은?", "opts": ["독일과 이탈리아", "프랑스와 영국", "미국과 캐나다", "일본과 중국"], "answer": 0, "fb": "독일과 이탈리아는 19세기까지 여러 소국으로 나뉘어 있다가, 각각 프로이센과 사르데냐를 중심으로 통일을 이루었어요."}];
+const QUIZ = [{"q":"찰스 1세의 전제 정치에 맞서 의회파가 승리하고 공화정을 세운 17세기 영국의 혁명은?","opts":["청교도 혁명","명예혁명","프랑스 혁명","미국 독립 혁명"],"answer":0,"fb":"청교도 혁명(1642~1649)은 찰스 1세가 의회를 무시하고 청교도를 탄압하자 의회파(크롬웰 등)가 왕당파에 맞서 승리하고 공화정을 세운 사건이에요."},{"q":"피를 흘리지 않고 의회가 제임스 2세를 몰아내고, 의회의 권한을 명시한 권리 장전을 이끌어 낸 사건은?","opts":["명예혁명","청교도 혁명","프랑스 혁명","러시아 혁명"],"answer":0,"fb":"명예혁명(1688)은 피를 흘리지 않고 정치 체제를 바꾸었다고 해서 붙은 이름이에요. 의회가 제출한 권리 장전을 새 왕이 받아들이면서, 의회를 중심으로 한 입헌 군주제의 기초가 마련되었어요."},{"q":"영국의 식민 지배에서 벗어나 독립을 선언하고 공화국을 세운 나라는?","opts":["미국","프랑스","독일","이탈리아"],"answer":0,"fb":"미국은 영국의 식민 지배에 맞서 독립 혁명을 벌인 끝에 독립을 선언하고 공화국을 수립했어요."},{"q":"19세기 여러 개의 소국으로 나뉘어 있다가 통일을 이룬 나라로 알맞은 것은?","opts":["독일과 이탈리아","프랑스와 영국","미국과 캐나다","일본과 중국"],"answer":0,"fb":"독일과 이탈리아는 19세기까지 여러 소국으로 나뉘어 있다가, 각각 프로이센과 사르데냐를 중심으로 통일을 이루었어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

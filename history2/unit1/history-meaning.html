@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>역사란 무엇이고, 왜 배우는 것일까?의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('역사학')">역사학</span><span class="wiki-chip" onclick="searchWiki('사관(역사)')">사관(역사)</span><span class="wiki-chip" onclick="searchWiki('E.H. 카')">E.H. 카</span><span class="wiki-chip" onclick="searchWiki('역사 서술')">역사 서술</span><span class="wiki-chip" onclick="searchWiki('역사 왜곡')">역사 왜곡</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p><b>역사</b>에는 두 가지 의미가 있어요. 실제로 있었던 과거의 사실인 "사실로서의 역사"와, 역사가가 그 사실을 조사하고 해석해 남긴 "기록으로서의 역사"예요. 우리가 배우는 역사책은 대부분 후자에 해당해요.</p><p>역사를 배우면 과거의 경험에서 삶의 지혜와 교훈을 얻고, 오늘날 우리가 누리는 것들이 어떻게 형성되었는지 이해할 수 있어요. 세계가 그 어느 때보다 가깝게 연결된 오늘날, 역사 학습은 서로 다른 문화를 이해하는 태도를 기르는 데도 도움이 돼요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>사실로서의 역사일까, 기록으로서의 역사일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 역사 학습의 기초</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "과거에 실제로 일어난 사건 그 자체", "correct": "사실로서의 역사"}, {"key": "v1", "label": "역사가가 사료를 조사해 남긴 해석", "correct": "기록으로서의 역사"}, {"key": "v2", "label": "예: 1919년 3·1 운동이 실제로 일어난 일", "correct": "사실로서의 역사"}, {"key": "v3", "label": "예: 역사책에 서술된 3·1 운동에 대한 평가", "correct": "기록으로서의 역사"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "\"역사\"라는 말에 담긴 두 가지 의미로 알맞은 것은?", "opts": ["과거에 일어난 사실 / 그 사실에 대한 기록과 해석", "오직 왕의 이야기만", "미래에 대한 예측만", "허구로 지어낸 이야기"], "answer": 0, "fb": "역사는 크게 \"사실로서의 역사\"(실제 있었던 일)와 \"기록으로서의 역사\"(그것을 조사하고 해석해 남긴 기록), 두 가지 의미를 함께 지녀요."}, {"q": "역사를 배우는 목적으로 가장 알맞은 것은?", "opts": ["과거를 이해해 현재를 성찰하고 미래를 준비하기 위해", "옛날 일이라 아무 쓸모가 없어서", "단순히 연도를 외우기 위해서만", "과거를 무조건 그대로 따라 하기 위해"], "answer": 0, "fb": "역사를 배우면 과거의 경험과 교훈을 통해 현재를 더 깊이 이해하고, 더 나은 미래를 준비하는 데 도움을 받을 수 있어요."}, {"q": "같은 사건이라도 역사가에 따라 해석이 다를 수 있는 까닭으로 가장 알맞은 것은?", "opts": ["역사는 사료를 바탕으로 한 해석을 포함하기 때문에", "역사적 사실 자체가 매번 바뀌기 때문에", "역사가들이 거짓말을 하기 때문에", "역사에는 정답이 전혀 없기 때문에"], "answer": 0, "fb": "역사는 남아 있는 사료를 바탕으로 역사가가 해석하는 과정을 거치기 때문에, 관점이나 시대에 따라 해석이 달라질 수 있어요."}];
+const QUIZ = [{"q":"\"역사\"라는 말에 담긴 두 가지 의미로 알맞은 것은?","opts":["과거에 일어난 사실 / 그 사실에 대한 기록과 해석","오직 왕의 이야기만","미래에 대한 예측만","허구로 지어낸 이야기"],"answer":0,"fb":"역사는 크게 \"사실로서의 역사\"(실제 있었던 일)와 \"기록으로서의 역사\"(그것을 조사하고 해석해 남긴 기록), 두 가지 의미를 함께 지녀요."},{"q":"역사를 배우는 목적으로 가장 알맞은 것은?","opts":["과거를 이해해 현재를 성찰하고 미래를 준비하기 위해","옛날 일이라 아무 쓸모가 없어서","단순히 연도를 외우기 위해서만","과거를 무조건 그대로 따라 하기 위해"],"answer":0,"fb":"역사를 배우면 과거의 경험과 교훈을 통해 현재를 더 깊이 이해하고, 더 나은 미래를 준비하는 데 도움을 받을 수 있어요."},{"q":"같은 사건이라도 역사가에 따라 해석이 다를 수 있는 까닭으로 가장 알맞은 것은?","opts":["역사는 사료를 바탕으로 한 해석을 포함하기 때문에","역사적 사실 자체가 매번 바뀌기 때문에","역사가들이 거짓말을 하기 때문에","역사에는 정답이 전혀 없기 때문에"],"answer":0,"fb":"역사는 남아 있는 사료를 바탕으로 역사가가 해석하는 과정을 거치기 때문에, 관점이나 시대에 따라 해석이 달라질 수 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

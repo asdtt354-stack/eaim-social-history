@@ -21,7 +21,23 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
-  .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
 
@@ -35,7 +51,7 @@
   .var-fb { margin-top:14px; font-size:0.84em; color:#bbb; min-height:20px; }
   .check-btn { margin-top:10px; border:none; background:var(--accent); color:#fff; font-weight:800; padding:9px 18px; border-radius:9px; font-size:0.82em; cursor:pointer; }
 
-  .quiz-wrap { max-width:760px; margin:56px auto 40px; padding:0 20px; }
+  .quiz-wrap { max-width:700px; margin:56px auto 40px; padding:0 20px; }
   .quiz-wrap h2 { font-size:1.2em; color:#fff; margin-bottom:4px; } .quiz-wrap .sub { color:#888; font-size:0.82em; margin-bottom:22px; }
   .q-card { background:#121012; border:1px solid #262022; border-radius:14px; padding:18px 20px; margin-bottom:14px; }
   .q-card .q-text { font-size:0.92em; font-weight:700; margin-bottom:12px; color:#eee; }
@@ -75,6 +91,22 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>동아시아 문화의 형성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('수나라')">수나라</span><span class="wiki-chip" onclick="searchWiki('당나라')">당나라</span><span class="wiki-chip" onclick="searchWiki('과거제')">과거제</span><span class="wiki-chip" onclick="searchWiki('대운하')">대운하</span><span class="wiki-chip" onclick="searchWiki('율령')">율령</span></div>
+  </div>
+
+  <div class="concept-wrap">
+    <div class="concept-box">
+      <div class="ct">📖 핵심 개념</div>
+      <p><b>수</b>는 오랫동안 분열되어 있던 중국을 다시 통일했어요(589). 시험으로 관리를 뽑는 <b>과거제</b>를 시행해 왕권을 강화하고, 화북과 강남을 잇는 대운하를 건설했어요. 그러나 무리한 토목 공사와 고구려 원정 실패로 곧 멸망했어요.</p><p>뒤이은 <b>당</b>은 국제적인 대제국으로 성장하며 동아시아 여러 나라와 교류했어요. 한자·유교·불교·율령이라는 공통 요소를 중심으로 한국·일본·베트남 등이 함께 <b>동아시아 문화권</b>을 이루었어요.</p>
+    </div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>동아시아 문화권의 공통 요소일까, 동아시아 문화권과 무관한 것일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +133,12 @@
   <footer>EAIM 사회 수업 · 세계 종교의 확산과 지역 문화의 발전</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "한자를 공통으로 사용했다", "correct": "동아시아 문화권의 공통 요소"}, {"key": "v1", "label": "카스트 제도(인도의 신분제)", "correct": "동아시아 문화권과 무관한 것"}, {"key": "v2", "label": "유교 사상을 공유했다", "correct": "동아시아 문화권의 공통 요소"}, {"key": "v3", "label": "아즈텍 문명의 신앙", "correct": "동아시아 문화권과 무관한 것"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "동아시아 여러 나라가 공통적으로 사용하며 문화 교류의 매개가 된 문자는?", "opts": ["한자", "알파벳", "쐐기 문자", "그림 문자만"], "answer": 0, "fb": "한자는 중국에서 만들어져 한국, 일본, 베트남 등 동아시아 여러 나라에 전파되어 공통 문화 요소가 되었어요."}, {"q": "중국 당의 제도를 참고해 동아시아 여러 나라가 함께 발전시킨 사상은?", "opts": ["유교", "이슬람교", "크리스트교", "조로아스터교"], "answer": 0, "fb": "유교는 중국에서 발전해 동아시아 여러 나라의 정치·사회 질서에 큰 영향을 준 사상이에요."}, {"q": "동아시아 문화권을 이루는 공통 요소로 알맞지 않은 것은?", "opts": ["한자, 유교, 불교, 율령", "카스트 제도", "동아시아만의 율령 체제", "중국 중심의 조공·책봉 관계"], "answer": 1, "fb": "카스트 제도는 인도 사회의 신분 제도로, 동아시아 문화권의 공통 요소가 아니에요. 동아시아는 한자·유교·불교·율령 등을 공유했어요."}];
+const QUIZ = [{"q":"수 문제가 문벌 귀족의 관직 독점을 막고 왕권을 강화하고자 시행한, 시험으로 관리를 뽑는 제도는?","opts":["과거제","카스트 제도","노예제","봉건제"],"answer":0,"fb":"과거제는 시험을 치러 관리를 뽑는 제도로, 문벌 귀족이 관직을 독차지하는 것을 막고 왕권을 강화하려고 수 문제가 시행했어요. 이후 중국에서 관리를 뽑는 대표적인 방식으로 자리 잡았어요."},{"q":"수 양제가 화북 지방과 강남 지방을 연결하려고 건설한, 오늘날까지도 이용되는 물길은?","opts":["대운하","만리장성","실크로드","비단길"],"answer":0,"fb":"수 양제는 화북과 강남을 잇는 대운하를 완성해 물자와 사람의 이동을 편리하게 했어요. 하지만 대규모 토목 공사와 고구려 원정 실패로 백성의 불만이 커져 수는 세워진 지 얼마 안 돼 멸망했어요(618)."},{"q":"중국 당의 제도를 참고해 동아시아 여러 나라가 함께 발전시킨 사상은?","opts":["유교","이슬람교","크리스트교","조로아스터교"],"answer":0,"fb":"유교는 중국에서 발전해 동아시아 여러 나라의 정치·사회 질서에 큰 영향을 준 사상이에요."},{"q":"동아시아 문화권을 이루는 공통 요소로 알맞지 않은 것은?","opts":["한자, 유교, 불교, 율령","카스트 제도","동아시아만의 율령 체제","중국 중심의 조공·책봉 관계"],"answer":1,"fb":"카스트 제도는 인도 사회의 신분 제도로, 동아시아 문화권의 공통 요소가 아니에요. 동아시아는 한자·유교·불교·율령 등을 공유했어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{
