@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>지속가능한 사회의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>남북은 <b>7·4 남북 공동 성명</b>(1972)으로 처음 통일 원칙(자주·평화·민족 대단결)에 합의했고, 2000년 첫 남북 정상 회담과 <b>6·15 남북 공동 선언</b>을 시작으로 여러 차례 교류와 합의를 이어 왔어요.</p><p>오늘날 우리 사회는 저출생·고령화, 환경 문제, 평화 통일 같은 새로운 과제에 직면해 있어요. 역사를 올바르게 이해하고 이런 문제 해결에 관심을 갖고 참여하는 시민의 자세가 지속가능한 사회를 만드는 밑거름이 돼요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('7·4 남북공동성명')">7·4 남북공동성명</span><span class="wiki-chip" onclick="searchWiki('6·15 남북공동선언')">6·15 남북공동선언</span><span class="wiki-chip" onclick="searchWiki('판문점 선언')">판문점 선언</span><span class="wiki-chip" onclick="searchWiki('남북정상회담')">남북정상회담</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>지속가능한 사회의 과제일까, 남북 평화를 위한 노력일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -108,6 +135,12 @@
   <footer>EAIM 사회 수업 · 근·현대 사회로의 전환</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "저출생·고령화에 대응해야 한다", "correct": "지속가능한 사회의 과제"}, {"key": "v1", "label": "남북 정상 회담을 여러 차례 가졌다", "correct": "남북 평화를 위한 노력"}, {"key": "v2", "label": "환경 보호에 관심을 가져야 한다", "correct": "지속가능한 사회의 과제"}, {"key": "v3", "label": "경제·문화 교류를 추진해왔다", "correct": "남북 평화를 위한 노력"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -145,7 +178,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "오늘날 우리 사회가 지속가능한 발전을 위해 관심을 기울여야 할 과제로 알맞지 않은 것은?", "opts": ["저출생·고령화 대응", "환경 보호", "평화 통일 노력", "역사적 사실 왜곡"], "answer": 3, "fb": "역사적 사실을 왜곡하는 것은 지속가능한 사회를 위한 과제가 아니라 오히려 경계해야 할 태도예요. 저출생·고령화 대응, 환경 보호, 평화 통일 노력 등이 우리 사회의 지속가능한 발전 과제예요."}, {"q": "남북한이 평화와 공동 번영을 위해 추진해 온 노력으로 알맞은 것은?", "opts": ["남북 정상 회담과 경제·문화 교류", "완전한 교류 단절", "군사적 대립만 지속", "통일 논의 전면 중단"], "answer": 0, "fb": "남북한은 여러 차례 정상 회담을 갖고 경제·문화 교류를 추진하는 등 평화와 공동 번영을 위한 노력을 이어 왔어요."}, {"q": "지속가능한 사회를 만들기 위해 시민이 가져야 할 태도로 가장 알맞은 것은?", "opts": ["역사를 올바르게 이해하고 미래 문제 해결에 관심을 갖는 태도", "역사에 완전히 무관심한 태도", "과거 문제는 모두 잊어버리는 태도", "나와 무관한 일이라 여기는 태도"], "answer": 0, "fb": "지속가능한 사회를 위해서는 역사를 올바르게 이해하고, 오늘날 우리 사회가 마주한 문제 해결에 관심을 갖고 참여하는 시민의 태도가 필요해요."}];
+const QUIZ = [{"q":"오늘날 우리 사회가 지속가능한 발전을 위해 관심을 기울여야 할 과제로 알맞지 않은 것은?","opts":["저출생·고령화 대응","환경 보호","평화 통일 노력","역사적 사실 왜곡"],"answer":3,"fb":"역사적 사실을 왜곡하는 것은 지속가능한 사회를 위한 과제가 아니라 오히려 경계해야 할 태도예요. 저출생·고령화 대응, 환경 보호, 평화 통일 노력 등이 우리 사회의 지속가능한 발전 과제예요."},{"q":"남북한이 평화와 공동 번영을 위해 추진해 온 노력으로 알맞은 것은?","opts":["남북 정상 회담과 경제·문화 교류","완전한 교류 단절","군사적 대립만 지속","통일 논의 전면 중단"],"answer":0,"fb":"남북한은 여러 차례 정상 회담을 갖고 경제·문화 교류를 추진하는 등 평화와 공동 번영을 위한 노력을 이어 왔어요."},{"q":"1972년 남북이 자주·평화·민족 대단결의 통일 원칙에 처음 합의하며 발표한 성명은?","opts":["7·4 남북 공동 성명","판문점 선언","6·15 남북 공동 선언","10·4 남북 공동 선언"],"answer":0,"fb":"7·4 남북 공동 성명(1972)은 남북이 처음으로 통일의 원칙(자주·평화·민족 대단결)에 합의해 발표한 성명이에요. 2000년에는 최초의 남북 정상 회담이 열려 6·15 남북 공동 선언이 발표되었어요."},{"q":"지속가능한 사회를 만들기 위해 시민이 가져야 할 태도로 가장 알맞은 것은?","opts":["역사를 올바르게 이해하고 미래 문제 해결에 관심을 갖는 태도","역사에 완전히 무관심한 태도","과거 문제는 모두 잊어버리는 태도","나와 무관한 일이라 여기는 태도"],"answer":0,"fb":"지속가능한 사회를 위해서는 역사를 올바르게 이해하고, 오늘날 우리 사회가 마주한 문제 해결에 관심을 갖고 참여하는 시민의 태도가 필요해요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

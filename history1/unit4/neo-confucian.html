@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>성리학적 질서의 확산의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>지방에서 성리학을 연구하던 <b>사림</b> 세력이 16세기 이후 중앙 정치에 진출하면서 성리학적 질서가 사회 전반에 널리 퍼졌어요. 삼강행실도 같은 책으로 유교 윤리를 백성에게 알렸고, 향촌에서는 향약으로 유교 윤리를 실천했어요.</p><p>이 과정에서 남녀 차별과 적서 차별이 오히려 강화되는 등, 고려 시대보다 여성의 지위가 낮아지는 변화도 나타났어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('사림')">사림</span><span class="wiki-chip" onclick="searchWiki('조광조')">조광조</span><span class="wiki-chip" onclick="searchWiki('향약')">향약</span><span class="wiki-chip" onclick="searchWiki('삼강행실도')">삼강행실도</span><span class="wiki-chip" onclick="searchWiki('서원')">서원</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>성리학적 질서 확산의 결과일까, 향촌 사회의 모습일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 조선의 성립과 발전</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "남녀 차별과 적서 차별이 강화되었다", "correct": "성리학적 질서 확산의 결과"}, {"key": "v1", "label": "향약으로 상부상조를 실천했다", "correct": "향촌 사회의 모습"}, {"key": "v2", "label": "삼강행실도로 유교 윤리를 알렸다", "correct": "성리학적 질서 확산의 결과"}, {"key": "v3", "label": "유교 윤리가 향촌 자치에 반영되었다", "correct": "향촌 사회의 모습"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "조선에서 유교 윤리를 널리 알리기 위해 편찬한 책으로 알맞은 것은?", "opts": ["삼강행실도", "팔만대장경", "동의보감", "경국대전(법전)"], "answer": 0, "fb": "삼강행실도는 충신·효자·열녀의 이야기를 그림과 함께 담아 유교 윤리를 백성들에게 널리 알리기 위해 편찬한 책이에요."}, {"q": "성리학적 질서가 확산되며 조선 사회에서 강화된 것으로 알맞은 것은?", "opts": ["남녀 차별과 적서 차별", "남녀 완전 평등", "신분 제도의 완전한 폐지", "개인의 자유 확대"], "answer": 0, "fb": "성리학적 질서가 확산되면서 남녀 간의 역할 구분과 차별, 적자와 서자를 구분하는 적서 차별 등이 오히려 강화되었어요."}, {"q": "조선 시대 향촌에서 유교 윤리를 실천하고 향촌 자치를 이끈 규약은?", "opts": ["향약", "경국대전", "균역법", "대동법"], "answer": 0, "fb": "향약은 향촌 사회에서 유교 윤리를 실천하고 상부상조하기 위해 만든 자치 규약이에요."}];
+const QUIZ = [{"q":"지방에서 학문을 닦으며 성리학적 질서를 중시하다가, 16세기 이후 조선의 정치 세력으로 성장한 사람들은?","opts":["사림","무신","외척","환관"],"answer":0,"fb":"사림은 지방에서 성리학을 연구하며 학문과 도덕을 중시하던 세력으로, 16세기 이후 중앙 정치에 본격적으로 진출해 성리학적 질서 확산을 이끌었어요."},{"q":"조선에서 유교 윤리를 널리 알리기 위해 편찬한 책으로 알맞은 것은?","opts":["삼강행실도","팔만대장경","동의보감","경국대전(법전)"],"answer":0,"fb":"삼강행실도는 충신·효자·열녀의 이야기를 그림과 함께 담아 유교 윤리를 백성들에게 널리 알리기 위해 편찬한 책이에요."},{"q":"성리학적 질서가 확산되며 조선 사회에서 강화된 것으로 알맞은 것은?","opts":["남녀 차별과 적서 차별","남녀 완전 평등","신분 제도의 완전한 폐지","개인의 자유 확대"],"answer":0,"fb":"성리학적 질서가 확산되면서 남녀 간의 역할 구분과 차별, 적자와 서자를 구분하는 적서 차별 등이 오히려 강화되었어요."},{"q":"조선 시대 향촌에서 유교 윤리를 실천하고 향촌 자치를 이끈 규약은?","opts":["향약","경국대전","균역법","대동법"],"answer":0,"fb":"향약은 향촌 사회에서 유교 윤리를 실천하고 상부상조하기 위해 만든 자치 규약이에요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

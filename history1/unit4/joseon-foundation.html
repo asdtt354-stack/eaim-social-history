@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>조선의 건국과 통치 체제 정비의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>이성계는 위화도 회군으로 실권을 잡은 뒤 신진 사대부와 함께 <b>조선</b>을 세웠어요. 의정부를 중심으로 국정을 총괄하며 성리학을 통치 이념으로 삼아 충효·예의 같은 유교적 질서를 사회 전반에 확립하고자 했어요.</p><p>세종 대에는 백성이 쉽게 글을 익히도록 <b>훈민정음</b>을 창제하고, 측우기·앙부일구 같은 과학 기구도 만들어 조선 초기 문화와 과학 기술이 크게 발전했어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('이성계')">이성계</span><span class="wiki-chip" onclick="searchWiki('훈민정음')">훈민정음</span><span class="wiki-chip" onclick="searchWiki('조선 태종')">조선 태종</span><span class="wiki-chip" onclick="searchWiki('세종대왕')">세종대왕</span><span class="wiki-chip" onclick="searchWiki('경국대전')">경국대전</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>조선의 건국 과정일까, 조선의 통치 체제일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 조선의 성립과 발전</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "위화도 회군으로 이성계가 실권을 잡았다", "correct": "조선의 건국 과정"}, {"key": "v1", "label": "의정부가 국정을 총괄했다", "correct": "조선의 통치 체제"}, {"key": "v2", "label": "신진 사대부와 함께 새 나라를 세웠다", "correct": "조선의 건국 과정"}, {"key": "v3", "label": "유교(성리학)를 통치 이념으로 삼았다", "correct": "조선의 통치 체제"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "위화도 회군을 계기로 정권을 잡고 조선을 건국한 인물은?", "opts": ["이성계", "정몽주", "정도전", "이방원"], "answer": 0, "fb": "이성계는 위화도 회군으로 정치적 실권을 잡은 뒤, 신진 사대부와 함께 새로운 나라 조선을 세웠어요."}, {"q": "조선의 최고 행정 기구로, 국왕을 중심으로 국정을 총괄한 기구는?", "opts": ["의정부", "삼사(사간원 등)", "홍문관", "춘추관"], "answer": 0, "fb": "의정부는 조선의 최고 행정 기구로, 영의정·좌의정·우의정이 국정을 총괄하며 국왕을 보좌했어요."}, {"q": "조선이 유교(성리학)를 통치 이념으로 삼으며 강조한 가치로 알맞은 것은?", "opts": ["충효와 예의 등 유교적 질서", "불교의 자비 사상만 강조", "도교의 신선 사상", "샤머니즘 중심 국가 운영"], "answer": 0, "fb": "조선은 성리학을 통치 이념으로 삼아 충효, 예의 등 유교적 질서를 사회 전반에 확립하고자 했어요."}];
+const QUIZ = [{"q":"위화도 회군을 계기로 정권을 잡고 조선을 건국한 인물은?","opts":["이성계","정몽주","정도전","이방원"],"answer":0,"fb":"이성계는 위화도 회군으로 정치적 실권을 잡은 뒤, 신진 사대부와 함께 새로운 나라 조선을 세웠어요."},{"q":"조선의 최고 행정 기구로, 국왕을 중심으로 국정을 총괄한 기구는?","opts":["의정부","삼사(사간원 등)","홍문관","춘추관"],"answer":0,"fb":"의정부는 조선의 최고 행정 기구로, 영의정·좌의정·우의정이 국정을 총괄하며 국왕을 보좌했어요."},{"q":"조선이 유교(성리학)를 통치 이념으로 삼으며 강조한 가치로 알맞은 것은?","opts":["충효와 예의 등 유교적 질서","불교의 자비 사상만 강조","도교의 신선 사상","샤머니즘 중심 국가 운영"],"answer":0,"fb":"조선은 성리학을 통치 이념으로 삼아 충효, 예의 등 유교적 질서를 사회 전반에 확립하고자 했어요."},{"q":"세종 대에 백성이 쉽게 글을 읽고 쓸 수 있도록 창제한 우리 고유의 문자는?","opts":["훈민정음","이두","한자","향찰"],"answer":0,"fb":"세종은 백성이 자신의 뜻을 쉽게 표현할 수 있도록 훈민정음을 창제했어요. 이 시기에는 측우기, 앙부일구 등 과학 기술도 크게 발전했어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

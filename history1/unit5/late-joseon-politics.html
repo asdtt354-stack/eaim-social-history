@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>조선 후기의 체제 정비와 정치 변화의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>붕당 간 대립이 심해지자 영조와 정조는 <b>탕평책</b>을 펴 붕당에 관계없이 인재를 고루 등용해 정치를 안정시키려 했어요.</p><p>전쟁 이후 백성의 부담을 줄이려고 특산물 대신 쌀·베·동전으로 납부하게 한 <b>대동법</b>도 이 시기의 대표적인 개혁이에요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('영조')">영조</span><span class="wiki-chip" onclick="searchWiki('정조')">정조</span><span class="wiki-chip" onclick="searchWiki('탕평책')">탕평책</span><span class="wiki-chip" onclick="searchWiki('대동법')">대동법</span><span class="wiki-chip" onclick="searchWiki('균역법')">균역법</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>탕평책 관련 사실일까, 대동법 관련 사실일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 조선 사회의 변동</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "영조·정조가 붕당에 관계없이 인재를 등용했다", "correct": "탕평책 관련 사실"}, {"key": "v1", "label": "특산물 대신 쌀·베·동전으로 납부하게 했다", "correct": "대동법 관련 사실"}, {"key": "v2", "label": "붕당 간 대립 완화를 목표로 했다", "correct": "탕평책 관련 사실"}, {"key": "v3", "label": "백성의 세금 부담을 줄이려는 목적이었다", "correct": "대동법 관련 사실"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

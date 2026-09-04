@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>삼국과 가야의 성립과 발전의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>고구려는 <b>소수림왕</b> 때 불교 수용, 태학 설립, 율령 반포로 중앙 집권 체제를 정비했고, 이를 바탕으로 <b>광개토대왕</b> 때 만주와 한반도 북부까지 영토를 크게 넓혔어요.</p><p>삼국은 한강 유역을 차지하며 번갈아 전성기를 맞았어요. 4세기 <b>근초고왕</b>(백제), 5세기 <b>광개토대왕</b>(고구려), 6세기 <b>진흥왕</b>(신라) 순으로 전성기를 이뤘고, 낙동강 하류에서는 가야 연맹이 성장했어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('근초고왕')">근초고왕</span><span class="wiki-chip" onclick="searchWiki('광개토대왕')">광개토대왕</span><span class="wiki-chip" onclick="searchWiki('진흥왕')">진흥왕</span><span class="wiki-chip" onclick="searchWiki('소수림왕')">소수림왕</span><span class="wiki-chip" onclick="searchWiki('가야')">가야</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>4~5세기(백제·고구려 전성기)일까, 6세기(신라 전성기)일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 국가의 형성과 발전</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "근초고왕이 남쪽으로 영토를 크게 넓혔다", "correct": "4~5세기(백제·고구려 전성기)"}, {"key": "v1", "label": "진흥왕이 한강 유역을 차지했다", "correct": "6세기(신라 전성기)"}, {"key": "v2", "label": "광개토대왕이 만주와 한반도 북부까지 진출했다", "correct": "4~5세기(백제·고구려 전성기)"}, {"key": "v3", "label": "신라가 삼국 중 가장 늦게 전성기를 맞았다", "correct": "6세기(신라 전성기)"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "4세기 백제의 전성기를 이끌며 영토를 크게 넓힌 왕은?", "opts": ["근초고왕", "광개토대왕", "진흥왕", "무열왕"], "answer": 0, "fb": "근초고왕은 4세기 백제의 전성기를 이끌며 남쪽으로 영토를 넓히고 고구려를 공격하는 등 크게 세력을 떨쳤어요."}, {"q": "5세기 고구려의 전성기를 이끌며 만주와 한반도 북부까지 영토를 넓힌 왕은?", "opts": ["광개토대왕", "근초고왕", "진흥왕", "태조왕"], "answer": 0, "fb": "광개토대왕은 5세기 고구려의 전성기를 이끌며 만주와 한반도 북부 지역까지 영토를 크게 넓혔어요."}, {"q": "6세기 신라의 전성기를 이끌며 한강 유역을 차지한 왕은?", "opts": ["진흥왕", "근초고왕", "광개토대왕", "문무왕"], "answer": 0, "fb": "진흥왕은 6세기 신라의 전성기를 이끌며 한강 유역을 차지하고 영토를 크게 확장했어요."}];
+const QUIZ = [{"q":"4세기 백제의 전성기를 이끌며 영토를 크게 넓힌 왕은?","opts":["근초고왕","광개토대왕","진흥왕","무열왕"],"answer":0,"fb":"근초고왕은 4세기 백제의 전성기를 이끌며 남쪽으로 영토를 넓히고 고구려를 공격하는 등 크게 세력을 떨쳤어요."},{"q":"5세기 고구려의 전성기를 이끌며 만주와 한반도 북부까지 영토를 넓힌 왕은?","opts":["광개토대왕","근초고왕","진흥왕","태조왕"],"answer":0,"fb":"광개토대왕은 5세기 고구려의 전성기를 이끌며 만주와 한반도 북부 지역까지 영토를 크게 넓혔어요."},{"q":"불교 수용, 태학 설립, 율령 반포로 고구려의 중앙 집권 체제를 정비한 왕은?","opts":["소수림왕","동명성왕","문무왕","의자왕"],"answer":0,"fb":"소수림왕은 불교를 받아들여 백성의 사상을 하나로 모으고, 교육 기관인 태학을 세워 인재를 기르고, 율령을 반포해 통치 기준을 마련하는 등 국가 체제를 정비했어요."},{"q":"6세기 신라의 전성기를 이끌며 한강 유역을 차지한 왕은?","opts":["진흥왕","근초고왕","광개토대왕","문무왕"],"answer":0,"fb":"진흥왕은 6세기 신라의 전성기를 이끌며 한강 유역을 차지하고 영토를 크게 확장했어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

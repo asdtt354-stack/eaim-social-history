@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>신라의 삼국 통일과 발해의 성립의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>6세기 후반 수(隋)가 중국을 통일해 고구려를 압박하자, 고구려는 <b>을지문덕</b>의 활약으로 살수(청천강)에서 수의 대군을 크게 물리쳤어요(살수 대첩, 612). 수는 무리한 전쟁으로 결국 멸망했어요.</p><p>신라는 당과 연합해 백제·고구려를 차례로 멸망시켰고, 이후 당의 세력까지 몰아내는 <b>나·당 전쟁</b>을 거쳐 삼국을 통일했어요. 고구려 유민 대조영은 말갈족과 함께 고구려 계승을 내세운 <b>발해</b>를 세웠어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('을지문덕')">을지문덕</span><span class="wiki-chip" onclick="searchWiki('살수대첩')">살수대첩</span><span class="wiki-chip" onclick="searchWiki('나당전쟁')">나당전쟁</span><span class="wiki-chip" onclick="searchWiki('대조영')">대조영</span><span class="wiki-chip" onclick="searchWiki('발해')">발해</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>삼국 통일 과정의 사건일까, 발해 성립 관련 사실일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 통일신라와 발해</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "당과 연합해 백제·고구려를 멸망시켰다", "correct": "삼국 통일 과정의 사건"}, {"key": "v1", "label": "고구려 유민 대조영이 세운 나라이다", "correct": "발해 성립 관련 사실"}, {"key": "v2", "label": "나·당 전쟁으로 당의 세력을 몰아냈다", "correct": "삼국 통일 과정의 사건"}, {"key": "v3", "label": "말갈족과 함께 고구려 계승을 표방했다", "correct": "발해 성립 관련 사실"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "신라가 당과 연합해 백제와 고구려를 차례로 멸망시키고 삼국을 통일한 왕은?", "opts": ["문무왕", "진흥왕", "무열왕(김춘추)", "경순왕"], "answer": 0, "fb": "문무왕 때 고구려가 멸망하고, 이후 당의 세력까지 몰아내며 삼국 통일이 완성되었어요. 무열왕(김춘추)은 통일의 기틀을 마련했어요."}, {"q": "신라가 당의 세력을 한반도에서 몰아내기 위해 벌인 전쟁은?", "opts": ["나·당 전쟁", "임진왜란", "병자호란", "살수 대첩"], "answer": 0, "fb": "나·당 전쟁은 신라가 당과 연합해 백제·고구려를 멸망시킨 뒤, 한반도 전체를 차지하려는 당의 세력을 몰아내기 위해 벌인 전쟁이에요."}, {"q": "고구려 유민과 말갈족이 힘을 합쳐 세운, 고구려 계승을 표방한 나라는?", "opts": ["발해", "후백제", "후고구려", "가야"], "answer": 0, "fb": "발해는 고구려 유민인 대조영이 말갈족과 함께 세운 나라로, 스스로 고구려를 계승했다고 내세웠어요."}];
+const QUIZ = [{"q":"신라가 당과 연합해 백제와 고구려를 차례로 멸망시키고 삼국을 통일한 왕은?","opts":["문무왕","진흥왕","무열왕(김춘추)","경순왕"],"answer":0,"fb":"문무왕 때 고구려가 멸망하고, 이후 당의 세력까지 몰아내며 삼국 통일이 완성되었어요. 무열왕(김춘추)은 통일의 기틀을 마련했어요."},{"q":"을지문덕이 유인 작전을 펼쳐 수의 대군을 크게 물리친 전투는?","opts":["살수 대첩","한산도 대첩","귀주 대첩","행주 대첩"],"answer":0,"fb":"살수 대첩(612)은 고구려의 을지문덕이 살수(청천강)에서 수의 대군을 유인해 크게 물리친 전투예요. 수는 무리한 전쟁으로 나라의 힘이 약해져 결국 멸망했어요."},{"q":"신라가 당의 세력을 한반도에서 몰아내기 위해 벌인 전쟁은?","opts":["나·당 전쟁","임진왜란","병자호란","살수 대첩"],"answer":0,"fb":"나·당 전쟁은 신라가 당과 연합해 백제·고구려를 멸망시킨 뒤, 한반도 전체를 차지하려는 당의 세력을 몰아내기 위해 벌인 전쟁이에요."},{"q":"고구려 유민과 말갈족이 힘을 합쳐 세운, 고구려 계승을 표방한 나라는?","opts":["발해","후백제","후고구려","가야"],"answer":0,"fb":"발해는 고구려 유민인 대조영이 말갈족과 함께 세운 나라로, 스스로 고구려를 계승했다고 내세웠어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

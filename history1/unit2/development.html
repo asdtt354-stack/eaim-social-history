@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>통일신라와 발해의 발전의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>통일신라는 넓어진 영토를 다스리기 위해 전국을 <b>9주 5소경</b>으로 정비했어요. 발해는 지방을 <b>5경 15부 62주</b>로 나누고, 당의 제도를 참고한 3성 6부제로 중앙 정치를 운영했어요.</p><p>9세기 전반 <b>선왕</b> 때 발해는 옛 고구려 영토 대부분을 되찾으며 전성기를 맞았고, 당으로부터 "바다 동쪽의 융성한 나라"라는 뜻의 <b>해동성국</b>이라 불렸어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('9주 5소경')">9주 5소경</span><span class="wiki-chip" onclick="searchWiki('해동성국')">해동성국</span><span class="wiki-chip" onclick="searchWiki('3성 6부제')">3성 6부제</span><span class="wiki-chip" onclick="searchWiki('장보고')">장보고</span><span class="wiki-chip" onclick="searchWiki('신라 촌락문서')">신라 촌락문서</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>통일신라의 지방 제도일까, 발해의 지방 제도일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 통일신라와 발해</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "9주 5소경으로 지방을 나누었다", "correct": "통일신라의 지방 제도"}, {"key": "v1", "label": "5경 15부 62주로 지방을 나누었다", "correct": "발해의 지방 제도"}, {"key": "v2", "label": "수도 경주의 편중을 보완하려 했다", "correct": "통일신라의 지방 제도"}, {"key": "v3", "label": "해동성국이라 불릴 만큼 국력이 강했다", "correct": "발해의 지방 제도"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "통일신라가 넓어진 영토와 백성을 다스리기 위해 정비한 지방 행정 제도는?", "opts": ["9주 5소경", "8도 체제", "13도 체제", "5경 15부"], "answer": 0, "fb": "통일신라는 전국을 9주로 나누고, 수도의 편중을 보완하기 위해 5소경을 설치해 지방을 효율적으로 다스렸어요."}, {"q": "발해가 넓은 영토와 여러 민족을 다스리기 위해 정비한 지방 행정 제도는?", "opts": ["5경 15부", "9주 5소경", "8도 체제", "3성 6부만 해당"], "answer": 0, "fb": "발해는 지방을 5경 15부 62주로 나누어 다스렸고, 중앙 정치 조직으로는 당의 제도를 참고한 3성 6부제를 운영했어요."}, {"q": "발해가 중국(당)으로부터 \"바다 동쪽의 융성한 나라\"라는 뜻으로 불렸던 칭호는?", "opts": ["해동성국", "동방예의지국", "군자의 나라", "조용조"], "answer": 0, "fb": "발해는 전성기에 당으로부터 \"해동성국(바다 동쪽의 융성한 나라)\"이라 불릴 만큼 국력이 강성했어요."}];
+const QUIZ = [{"q":"통일신라가 넓어진 영토와 백성을 다스리기 위해 정비한 지방 행정 제도는?","opts":["9주 5소경","8도 체제","13도 체제","5경 15부"],"answer":0,"fb":"통일신라는 전국을 9주로 나누고, 수도의 편중을 보완하기 위해 5소경을 설치해 지방을 효율적으로 다스렸어요."},{"q":"발해가 넓은 영토와 여러 민족을 다스리기 위해 정비한 지방 행정 제도는?","opts":["5경 15부","9주 5소경","8도 체제","3성 6부만 해당"],"answer":0,"fb":"발해는 지방을 5경 15부 62주로 나누어 다스렸고, 중앙 정치 조직으로는 당의 제도를 참고한 3성 6부제를 운영했어요."},{"q":"발해가 중국(당)으로부터 \"바다 동쪽의 융성한 나라\"라는 뜻으로 불렸던 칭호는?","opts":["해동성국","동방예의지국","군자의 나라","조용조"],"answer":0,"fb":"발해는 전성기에 당으로부터 \"해동성국(바다 동쪽의 융성한 나라)\"이라 불릴 만큼 국력이 강성했어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

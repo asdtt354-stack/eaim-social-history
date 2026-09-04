@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,23 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>다양한 민족 운동의 전개의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="예: 3·1 운동, 유관순, 대한민국 임시정부..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips">
+      <span class="wiki-chip" onclick="searchWiki('3·1 운동')">3·1 운동</span>
+      <span class="wiki-chip" onclick="searchWiki('유관순')">유관순</span>
+      <span class="wiki-chip" onclick="searchWiki('대한민국 임시정부')">대한민국 임시정부</span>
+      <span class="wiki-chip" onclick="searchWiki('의열단')">의열단</span>
+      <span class="wiki-chip" onclick="searchWiki('물산장려운동')">물산장려운동</span>
+    </div>
+  </div>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>국권을 빼앗긴 이후 1919년 전국적으로 <b>3·1 운동</b>이 일어났고, 이를 계기로 독립운동을 체계적으로 이끌 <b>대한민국 임시 정부</b>가 상하이에 수립됐어요. 이후 무장 투쟁, 외교 활동, 실력 양성 운동 등 다양한 방식의 민족 운동이 전개됐어요.</p><p>1930년대 후반 일제는 침략 전쟁에 한국인을 동원하려고 신사 참배, 황국 신민 서사 암송, 창씨개명을 강요하는 <b>민족 말살 정책</b>을 펼쳤고, 일본군 위안부로 여성을 강제 동원하는 등 심각한 인권 침해를 저질렀어요.</p></div></div>
+
   <div class="section-head"><div class="num">01</div><h2>3·1 운동과 임시 정부일까, 다양한 방식의 독립운동일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +134,11 @@
   <footer>EAIM 사회 수업 · 근·현대 사회로의 전환</footer>
 
 <script>
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "1919년 전국적으로 만세 운동이 일어났다", "correct": "3·1 운동과 임시 정부"}, {"key": "v1", "label": "무장 독립 투쟁이 전개되었다", "correct": "다양한 방식의 독립운동"}, {"key": "v2", "label": "상하이에 대한민국 임시 정부가 수립되었다", "correct": "3·1 운동과 임시 정부"}, {"key": "v3", "label": "실력 양성 운동과 의열 투쟁도 있었다", "correct": "다양한 방식의 독립운동"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +176,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "1919년 전국적으로 일어난, 일제 강점기 최대 규모의 민족 운동은?", "opts": ["3·1 운동", "4·19 혁명", "6월 민주 항쟁", "갑신정변"], "answer": 0, "fb": "3·1 운동은 1919년 전국적으로, 그리고 해외 동포들까지 참여해 일어난 일제 강점기 최대 규모의 독립운동이에요."}, {"q": "3·1 운동 이후 독립운동을 체계적으로 이끌기 위해 상하이에 수립된 조직은?", "opts": ["대한민국 임시 정부", "조선총독부", "동학 농민군", "조선 의용대만"], "answer": 0, "fb": "대한민국 임시 정부는 3·1 운동 이후 독립운동을 조직적으로 이끌기 위해 상하이에 수립된 정부예요."}, {"q": "일제 강점기 국내외에서 전개된 민족 운동으로 알맞지 않은 것은?", "opts": ["무장 독립 투쟁과 외교 활동", "실력 양성 운동(교육·경제)", "의열 투쟁", "일제에 대한 전면적 협력"], "answer": 3, "fb": "민족 운동은 무장 투쟁, 외교 활동, 실력 양성 운동, 의열 투쟁 등 다양한 방식으로 전개되었어요. 일제에 대한 협력은 민족 운동이 아니에요."}];
+const QUIZ = [{"q":"1919년 전국적으로 일어난, 일제 강점기 최대 규모의 민족 운동은?","opts":["3·1 운동","4·19 혁명","6월 민주 항쟁","갑신정변"],"answer":0,"fb":"3·1 운동은 1919년 전국적으로, 그리고 해외 동포들까지 참여해 일어난 일제 강점기 최대 규모의 독립운동이에요."},{"q":"3·1 운동 이후 독립운동을 체계적으로 이끌기 위해 상하이에 수립된 조직은?","opts":["대한민국 임시 정부","조선총독부","동학 농민군","조선 의용대만"],"answer":0,"fb":"대한민국 임시 정부는 3·1 운동 이후 독립운동을 조직적으로 이끌기 위해 상하이에 수립된 정부예요."},{"q":"일제 강점기 국내외에서 전개된 민족 운동으로 알맞지 않은 것은?","opts":["무장 독립 투쟁과 외교 활동","실력 양성 운동(교육·경제)","의열 투쟁","일제에 대한 전면적 협력"],"answer":3,"fb":"민족 운동은 무장 투쟁, 외교 활동, 실력 양성 운동, 의열 투쟁 등 다양한 방식으로 전개되었어요. 일제에 대한 협력은 민족 운동이 아니에요."},{"q":"1930년대 후반 일제가 한국인의 민족정신을 없애려고 신사 참배, 황국 신민 서사 암송 등을 강요한 정책은?","opts":["민족 말살 정책","탕평책","척화비 건립","토지 조사 사업만 해당"],"answer":0,"fb":"일제는 침략 전쟁에 한국인을 효율적으로 동원하고자, 신사 참배·황국 신민 서사 암송을 강요하고 이름을 일본식으로 바꾸게 하는 등 민족 말살 정책을 폈어요. 일본군 위안부로 여성을 강제 동원하는 등 인권을 짓밟는 만행도 저질렀어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>고려의 대외 교류와 문화의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>고려는 세계 최초로 <b>금속 활자</b>를 발명해 「직지심체요절」을 인쇄했고, 몽골의 침입을 부처의 힘으로 물리치고자 <b>팔만대장경</b>을 만들었어요.</p><p>국제 무역항 <b>벽란도</b>에는 아라비아 상인까지 드나들었고, 이를 통해 고려의 이름이 "코리아"로 서방에 알려졌어요. 원 간섭기에는 몽골풍과 고려양이 서로 오가며 문화를 주고받기도 했어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('직지심체요절')">직지심체요절</span><span class="wiki-chip" onclick="searchWiki('팔만대장경')">팔만대장경</span><span class="wiki-chip" onclick="searchWiki('벽란도')">벽란도</span><span class="wiki-chip" onclick="searchWiki('고려청자')">고려청자</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>고려의 인쇄 문화일까, 고려의 대외 교류일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -108,6 +135,12 @@
   <footer>EAIM 사회 수업 · 고려의 성립과 변천</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "세계 최초로 금속 활자를 발명했다", "correct": "고려의 인쇄 문화"}, {"key": "v1", "label": "벽란도에서 아라비아 상인과도 교역했다", "correct": "고려의 대외 교류"}, {"key": "v2", "label": "팔만대장경으로 몽골 침입을 극복하고자 했다", "correct": "고려의 인쇄 문화"}, {"key": "v3", "label": "고려의 이름이 서방에 코리아로 알려졌다", "correct": "고려의 대외 교류"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -145,7 +178,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "고려 시대에 세계 최초로 발명된, 청동 활자를 이용한 인쇄술은?", "opts": ["금속 활자 인쇄술", "목판 인쇄술만 존재", "종이 인쇄술", "석판 인쇄술"], "answer": 0, "fb": "고려는 세계 최초로 금속 활자를 발명해 「직지심체요절」 같은 책을 인쇄했어요."}, {"q": "몽골의 침입을 부처의 힘으로 물리치고자 만든, 유네스코 세계기록유산에 등재된 것은?", "opts": ["팔만대장경", "경국대전", "조선왕조실록", "훈민정음"], "answer": 0, "fb": "팔만대장경은 몽골의 침입을 부처의 힘으로 물리치고자 국가적 사업으로 제작한 대장경으로, 세계기록유산에 등재되어 있어요."}, {"q": "고려가 활발히 교류했던 국제 무역항으로, 이름이 \"코리아(Korea)\"의 유래와도 관련된 곳은?", "opts": ["벽란도", "부산항", "인천항", "목포항"], "answer": 0, "fb": "벽란도는 고려의 국제 무역항으로, 아라비아 상인까지 드나들며 고려의 이름이 \"코리아\"로 서방에 알려지는 계기가 되었어요."}];
+const QUIZ = [{"q":"고려 시대에 세계 최초로 발명된, 청동 활자를 이용한 인쇄술은?","opts":["금속 활자 인쇄술","목판 인쇄술만 존재","종이 인쇄술","석판 인쇄술"],"answer":0,"fb":"고려는 세계 최초로 금속 활자를 발명해 「직지심체요절」 같은 책을 인쇄했어요."},{"q":"몽골의 침입을 부처의 힘으로 물리치고자 만든, 유네스코 세계기록유산에 등재된 것은?","opts":["팔만대장경","경국대전","조선왕조실록","훈민정음"],"answer":0,"fb":"팔만대장경은 몽골의 침입을 부처의 힘으로 물리치고자 국가적 사업으로 제작한 대장경으로, 세계기록유산에 등재되어 있어요."},{"q":"고려가 활발히 교류했던 국제 무역항으로, 이름이 \"코리아(Korea)\"의 유래와도 관련된 곳은?","opts":["벽란도","부산항","인천항","목포항"],"answer":0,"fb":"벽란도는 고려의 국제 무역항으로, 아라비아 상인까지 드나들며 고려의 이름이 \"코리아\"로 서방에 알려지는 계기가 되었어요."},{"q":"원 간섭기에 고려에서 유행한 몽골식 옷·머리 모양 등을 무엇이라 하는가?","opts":["몽골풍","고려양","한류","실학풍"],"answer":0,"fb":"원 간섭기에는 고려에서 몽골식 옷·머리 모양 같은 몽골풍이 유행했고, 반대로 몽골에서도 고려의 옷과 음식(고려양)이 인기를 끄는 등 서로 문화를 주고받았어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

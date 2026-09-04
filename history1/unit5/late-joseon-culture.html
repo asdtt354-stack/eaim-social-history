@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>조선 후기의 사회와 문화의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>조선 후기에는 실생활에 도움이 되는 학문인 <b>실학</b>이 등장했고, 상공업이 발달하며 전국에 장시(시장)가 늘어나는 등 경제도 크게 변화했어요.</p><p>경제적 여유가 생긴 서민들 사이에서는 <b>한글 소설</b>, 판소리, 민화 같은 서민 문화가 크게 발달했어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('실학')">실학</span><span class="wiki-chip" onclick="searchWiki('정약용')">정약용</span><span class="wiki-chip" onclick="searchWiki('한글소설')">한글소설</span><span class="wiki-chip" onclick="searchWiki('판소리')">판소리</span><span class="wiki-chip" onclick="searchWiki('풍속화')">풍속화</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>실학과 상공업의 발달일까, 서민 문화의 발달일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -108,6 +135,12 @@
   <footer>EAIM 사회 수업 · 조선 사회의 변동</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "실생활에 도움이 되는 학문을 연구했다", "correct": "실학과 상공업의 발달"}, {"key": "v1", "label": "한글 소설이 널리 읽혔다", "correct": "서민 문화의 발달"}, {"key": "v2", "label": "전국 각지에 장시(시장)가 늘어났다", "correct": "실학과 상공업의 발달"}, {"key": "v3", "label": "판소리·민화 등이 유행했다", "correct": "서민 문화의 발달"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

@@ -21,6 +21,29 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .photo-wrap { max-width:780px; margin:40px auto 0; padding:0 20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px) { .photo-wrap { grid-template-columns:1fr; } }
+  .photo-card { position:relative; border-radius:16px; overflow:hidden; border:1px solid #262022; background:#121012; }
+  .photo-card svg { width:100%; height:200px; display:block; }
+  .photo-card .cap { padding:10px 14px; font-size:0.76em; color:#bbb; }
+  .photo-card .cap b { color:#fcd34d; }
+
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +98,71 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>고조선과 여러 나라의 형성의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="photo-wrap">
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="dolmenSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a1a3a"/>
+            <stop offset="60%" stop-color="#5c3a5c"/>
+            <stop offset="100%" stop-color="#a8683a"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#dolmenSky)"/>
+        <path d="M0,155 Q120,135 220,150 T400,145 V200 H0 Z" fill="#3a2e28" opacity="0.9"/>
+        <!-- 고인돌(탁자식) -->
+        <g fill="#4a4038">
+          <rect x="150" y="95" width="14" height="55" />
+          <rect x="236" y="95" width="14" height="55" />
+          <rect x="140" y="82" width="120" height="16" />
+        </g>
+        <ellipse cx="200" cy="185" rx="150" ry="10" fill="#1a1414" opacity="0.5"/>
+      </svg>
+      <div class="cap"><b>고인돌</b> — 청동기 시대 지배층의 무덤</div>
+    </div>
+    <div class="photo-card">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bronzeSky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1410"/>
+            <stop offset="60%" stop-color="#3a2a1a"/>
+            <stop offset="100%" stop-color="#6a4a28"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#bronzeSky)"/>
+        <!-- 비파형 동검 -->
+        <g transform="translate(150,100)" fill="#8a9a7a">
+          <path d="M0,-55 Q-14,-30 -8,0 Q-12,20 0,55 Q12,20 8,0 Q14,-30 0,-55 Z"/>
+          <rect x="-3" y="55" width="6" height="30" fill="#5a4a2a"/>
+        </g>
+        <!-- 청동 거울 -->
+        <g transform="translate(270,110)">
+          <circle cx="0" cy="0" r="45" fill="none" stroke="#8a9a7a" stroke-width="4"/>
+          <circle cx="0" cy="0" r="30" fill="none" stroke="#8a9a7a" stroke-width="2" opacity="0.7"/>
+          <circle cx="0" cy="0" r="15" fill="none" stroke="#8a9a7a" stroke-width="2" opacity="0.5"/>
+        </g>
+      </svg>
+      <div class="cap"><b>비파형 동검·청동 거울</b> — 지배층의 권위를 보여 주는 유물</div>
+    </div>
+  </div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="예: 고조선, 8조법, 단군왕검..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips">
+      <span class="wiki-chip" onclick="searchWiki('고조선')">고조선</span>
+      <span class="wiki-chip" onclick="searchWiki('단군왕검')">단군왕검</span>
+      <span class="wiki-chip" onclick="searchWiki('8조법')">8조법</span>
+      <span class="wiki-chip" onclick="searchWiki('위만조선')">위만조선</span>
+      <span class="wiki-chip" onclick="searchWiki('고인돌')">고인돌</span>
+    </div>
+  </div>
+
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>만주와 한반도에 <b>청동기</b>가 전해지며 잉여 생산물이 생기고 계급이 나타났어요. 군장(족장)이 종교적 권위와 정치권력을 함께 가진 <b>제정일치</b> 사회를 이끌었고, 지배층이 죽으면 고인돌 같은 무덤을 만들었어요.</p><p>이런 청동기 문화를 바탕으로 우리 역사상 최초의 국가 <b>고조선</b>이 성립했어요. 8조법(범금 8조)을 통해 사유 재산과 신분 제도가 있었음을 알 수 있어요. 이후 철기 문화를 바탕으로 부여·고구려·옥저·동예·삼한 등 여러 나라가 성장했어요.</p></div></div>
+
   <div class="section-head"><div class="num">01</div><h2>고조선일까, 초기 철기 시대 여러 나라일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +189,11 @@
   <footer>EAIM 사회 수업 · 국가의 형성과 발전</footer>
 
 <script>
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "청동기 문화를 바탕으로 성립한 우리 역사상 최초의 국가", "correct": "고조선"}, {"key": "v1", "label": "만주와 한반도 일대에 철기 문화를 바탕으로 등장했다", "correct": "초기 철기 시대 여러 나라"}, {"key": "v2", "label": "8조법(범금 8조)으로 사회 질서를 유지했다", "correct": "고조선"}, {"key": "v3", "label": "부여, 옥저, 동예 등이 대표적이다", "correct": "초기 철기 시대 여러 나라"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +231,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "우리 역사상 최초의 국가로, 청동기 문화를 바탕으로 성립한 나라는?", "opts": ["고조선", "발해", "고려", "신라"], "answer": 0, "fb": "고조선은 청동기 문화를 바탕으로 성립한 우리 역사상 최초의 국가예요."}, {"q": "고조선의 사회 모습을 알려 주는, 8개 조항으로 이루어진 법을 무엇이라 하는가?", "opts": ["8조법", "경국대전", "삼국사기", "균전제"], "answer": 0, "fb": "8조법(범금 8조)은 고조선의 사회 질서와 생활 모습을 보여 주는 대표적인 법으로, 현재는 3개 조항만 전해져요."}, {"q": "철기 문화를 바탕으로 만주와 한반도 일대에 등장한 여러 나라로 알맞지 않은 것은?", "opts": ["부여", "고구려", "옥저", "가야연맹"], "answer": 3, "fb": "가야연맹은 이후 삼국 시대에 낙동강 하류에서 성립한 나라예요. 초기 철기 시대에 만주·한반도에 등장한 나라로는 부여, 고구려, 옥저, 동예, 삼한 등이 있어요."}];
+const QUIZ = [{"q":"우리 역사상 최초의 국가로, 청동기 문화를 바탕으로 성립한 나라는?","opts":["고조선","발해","고려","신라"],"answer":0,"fb":"고조선은 청동기 문화를 바탕으로 성립한 우리 역사상 최초의 국가예요."},{"q":"고조선의 사회 모습을 알려 주는, 8개 조항으로 이루어진 법을 무엇이라 하는가?","opts":["8조법","경국대전","삼국사기","균전제"],"answer":0,"fb":"8조법(범금 8조)은 고조선의 사회 질서와 생활 모습을 보여 주는 대표적인 법으로, 현재는 3개 조항만 전해져요."},{"q":"청동기 시대에 종교적 권위와 정치권력을 모두 가지고 부족을 다스리던 지배자는?","opts":["군장(족장)","노비","평민","외척"],"answer":0,"fb":"청동기 시대에는 잉여 생산물이 생기며 계급이 나타났고, 군장(족장)이 종교적 권위와 정치권력을 함께 가진 제정일치 사회를 이끌었어요. 지배층이 죽으면 고인돌 같은 무덤을 만들었어요."},{"q":"철기 문화를 바탕으로 만주와 한반도 일대에 등장한 여러 나라로 알맞지 않은 것은?","opts":["부여","고구려","옥저","가야연맹"],"answer":3,"fb":"가야연맹은 이후 삼국 시대에 낙동강 하류에서 성립한 나라예요. 초기 철기 시대에 만주·한반도에 등장한 나라로는 부여, 고구려, 옥저, 동예, 삼한 등이 있어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

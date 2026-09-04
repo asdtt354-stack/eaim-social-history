@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>근대 국가의 수립을 위한 노력의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>1876년 일본과 <b>강화도 조약</b>을 맺으며 조선은 개항했어요. 이후 조선 정부는 근대화를 추진했지만, 신식 군대(별기군)와 차별받던 구식 군인들이 <b>임오군란</b>(1882)을 일으키는 등 개화 과정에서 갈등도 있었어요.</p><p>갑신정변, 동학 농민 운동, 갑오개혁 등 다양한 방식의 개혁 시도를 거쳐, 1897년 고종은 <b>대한제국</b>을 선포하며 자주독립 국가임을 대내외에 알렸어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('강화도조약')">강화도조약</span><span class="wiki-chip" onclick="searchWiki('갑신정변')">갑신정변</span><span class="wiki-chip" onclick="searchWiki('동학농민운동')">동학농민운동</span><span class="wiki-chip" onclick="searchWiki('갑오개혁')">갑오개혁</span><span class="wiki-chip" onclick="searchWiki('대한제국')">대한제국</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>근대적 조약과 체제 수립일까, 근대 개혁 운동일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 근·현대 사회로의 전환</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "강화도 조약으로 개항했다", "correct": "근대적 조약과 체제 수립"}, {"key": "v1", "label": "갑신정변으로 근대적 개혁을 시도했다", "correct": "근대 개혁 운동"}, {"key": "v2", "label": "대한제국을 선포해 자주독립을 알렸다", "correct": "근대적 조약과 체제 수립"}, {"key": "v3", "label": "동학 농민 운동과 갑오개혁이 이어졌다", "correct": "근대 개혁 운동"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "1876년 조선이 외국과 맺은 최초의 근대적 조약으로, 불평등 조약이었던 것은?", "opts": ["강화도 조약", "한일 병합 조약", "제물포 조약", "을사늑약"], "answer": 0, "fb": "강화도 조약은 1876년 일본과 맺은 조선 최초의 근대적 조약으로, 치외 법권 등을 인정한 불평등 조약이었어요."}, {"q": "1897년 고종이 자주독립 국가임을 선포하며 세운 나라는?", "opts": ["대한제국", "대한민국", "조선민주주의인민공화국", "고려"], "answer": 0, "fb": "고종은 1897년 환구단에서 황제 즉위식을 갖고 대한제국을 선포해 자주독립 국가임을 대내외에 알렸어요."}, {"q": "갑신정변, 동학 농민 운동, 갑오개혁 등을 통해 나타난 공통적인 시대적 흐름은?", "opts": ["근대적 개혁을 추구하려는 움직임", "전통 체제를 완전히 유지하려는 움직임", "외세 배척과 완전한 쇄국", "왕권을 더욱 절대화하려는 움직임"], "answer": 0, "fb": "갑신정변, 동학 농민 운동, 갑오개혁은 각기 다른 방식이었지만 모두 낡은 체제를 개혁하고 근대적인 국가를 세우려 했던 움직임이었어요."}];
+const QUIZ = [{"q":"1876년 조선이 외국과 맺은 최초의 근대적 조약으로, 불평등 조약이었던 것은?","opts":["강화도 조약","한일 병합 조약","제물포 조약","을사늑약"],"answer":0,"fb":"강화도 조약은 1876년 일본과 맺은 조선 최초의 근대적 조약으로, 치외 법권 등을 인정한 불평등 조약이었어요."},{"q":"1897년 고종이 자주독립 국가임을 선포하며 세운 나라는?","opts":["대한제국","대한민국","조선민주주의인민공화국","고려"],"answer":0,"fb":"고종은 1897년 환구단에서 황제 즉위식을 갖고 대한제국을 선포해 자주독립 국가임을 대내외에 알렸어요."},{"q":"갑신정변, 동학 농민 운동, 갑오개혁 등을 통해 나타난 공통적인 시대적 흐름은?","opts":["근대적 개혁을 추구하려는 움직임","전통 체제를 완전히 유지하려는 움직임","외세 배척과 완전한 쇄국","왕권을 더욱 절대화하려는 움직임"],"answer":0,"fb":"갑신정변, 동학 농민 운동, 갑오개혁은 각기 다른 방식이었지만 모두 낡은 체제를 개혁하고 근대적인 국가를 세우려 했던 움직임이었어요."},{"q":"개화 정책으로 신식 군대(별기군)와 차별 대우를 받던 구식 군인들이 밀린 급료에 겨와 모래가 섞인 것에 분노해 일으킨 사건은?","opts":["임오군란","갑신정변","동학 농민 운동","을미의병"],"answer":0,"fb":"임오군란(1882)은 신식 군대보다 낮은 대우를 받던 구식 군인들이, 13개월 만에 받은 급료에 겨와 모래가 섞여 있자 분노해 일으킨 사건이에요. 도시 하층민까지 합세해 규모가 커졌어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{

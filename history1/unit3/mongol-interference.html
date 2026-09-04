@@ -21,6 +21,22 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
+  .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
+  .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
+  .concept-box p { margin:0 0 10px; font-size:0.9em; line-height:1.75; color:#ddd; }
+  .concept-box p:last-child { margin-bottom:0; }
+  .concept-box b { color:#fcd34d; }
+
   .section-head { max-width:780px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.15em; }
@@ -75,6 +91,17 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>몽골(원)의 간섭과 고려의 개혁의 핵심 개념을 이해하고, 관련 사례를 스스로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>몽골의 침입에 맞서 고려는 강화도로 수도를 옮기고 항쟁했고, 강화 이후에도 <b>삼별초</b>는 진도·제주도로 옮겨 가며 끝까지 저항했어요.</p><p>원 간섭기에는 정동행성이 설치되고 고려 왕실의 호칭도 격하되는 등(폐하→전하, 태자→세자) 간섭이 심했어요. 이후 <b>공민왕</b>은 원의 세력이 약해진 틈을 타 반원 자주 정책을 펴고 개혁을 추진했어요.</p></div></div>
+
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('삼별초')">삼별초</span><span class="wiki-chip" onclick="searchWiki('공민왕')">공민왕</span><span class="wiki-chip" onclick="searchWiki('쌍성총관부')">쌍성총관부</span><span class="wiki-chip" onclick="searchWiki('정동행성')">정동행성</span><span class="wiki-chip" onclick="searchWiki('전민변정도감')">전민변정도감</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>몽골에 맞선 항쟁일까, 원 간섭기 이후의 개혁일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -101,6 +128,12 @@
   <footer>EAIM 사회 수업 · 고려의 성립과 변천</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "강화도로 수도를 옮기고 항쟁했다", "correct": "몽골에 맞선 항쟁"}, {"key": "v1", "label": "공민왕이 반원 자주 정책을 폈다", "correct": "원 간섭기 이후의 개혁"}, {"key": "v2", "label": "삼별초가 진도·제주도까지 옮겨가며 저항했다", "correct": "몽골에 맞선 항쟁"}, {"key": "v3", "label": "빼앗겼던 영토를 되찾으려 했다", "correct": "원 간섭기 이후의 개혁"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
@@ -138,7 +171,7 @@ function checkVars(){
   }
 }
 
-const QUIZ = [{"q": "고려가 몽골의 침입에 맞서 수도를 옮기고 오랜 기간 항쟁한 곳은?", "opts": ["강화도", "제주도", "울릉도", "거제도"], "answer": 0, "fb": "고려 정부는 몽골의 침입에 맞서 강화도로 수도를 옮기고 오랜 기간 항쟁을 이어 갔어요."}, {"q": "몽골과의 강화 이후에도 개경 환도에 반대하며 끝까지 항쟁한 고려의 특수 부대는?", "opts": ["삼별초", "별기군", "중앙군", "광군"], "answer": 0, "fb": "삼별초는 몽골과의 강화와 개경 환도에 반대하며 진도, 제주도 등으로 근거지를 옮겨 가며 끝까지 항쟁했어요."}, {"q": "원 간섭기 이후, 반원 자주 정책을 펴며 개혁을 추진한 왕은?", "opts": ["공민왕", "충렬왕", "충선왕", "고종"], "answer": 0, "fb": "공민왕은 원의 세력이 약해진 틈을 타 반원 자주 정책을 펴고, 빼앗겼던 영토를 되찾는 등 개혁을 추진했어요."}];
+const QUIZ = [{"q":"고려가 몽골의 침입에 맞서 수도를 옮기고 오랜 기간 항쟁한 곳은?","opts":["강화도","제주도","울릉도","거제도"],"answer":0,"fb":"고려 정부는 몽골의 침입에 맞서 강화도로 수도를 옮기고 오랜 기간 항쟁을 이어 갔어요."},{"q":"몽골과의 강화 이후에도 개경 환도에 반대하며 끝까지 항쟁한 고려의 특수 부대는?","opts":["삼별초","별기군","중앙군","광군"],"answer":0,"fb":"삼별초는 몽골과의 강화와 개경 환도에 반대하며 진도, 제주도 등으로 근거지를 옮겨 가며 끝까지 항쟁했어요."},{"q":"원 간섭기 이후, 반원 자주 정책을 펴며 개혁을 추진한 왕은?","opts":["공민왕","충렬왕","충선왕","고종"],"answer":0,"fb":"공민왕은 원의 세력이 약해진 틈을 타 반원 자주 정책을 펴고, 빼앗겼던 영토를 되찾는 등 개혁을 추진했어요."},{"q":"원 간섭기에 고려 왕실의 호칭이 격하된 사례로 알맞은 것은?","opts":["\"폐하\"가 \"전하\"로, \"태자\"가 \"세자\"로 낮춰 불렸다","왕의 지위가 오히려 황제로 격상되었다","호칭에 아무 변화가 없었다","고려가 원보다 더 높은 지위를 얻었다"],"answer":0,"fb":"원 간섭기에는 고려 왕실의 호칭과 관직 이름도 제후국 수준으로 격이 낮아졌어요. \"폐하\"는 \"전하\"로, \"태자\"는 \"세자\"로 바뀌었고, 왕의 시호에는 원 황제에게 충성한다는 뜻의 \"충(忠)\" 자가 붙었어요."}];
 function renderQuiz(){
   const area = document.getElementById('quizArea'); area.innerHTML='';
   QUIZ.forEach((item,qi)=>{
