@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.2em; }
@@ -80,6 +89,15 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>지리적 관점의 구성 요소를 설명하고, 어떤 장소의 특성을 자연적 특성과 인문적 특성으로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('지리학')">지리학</span><span class="wiki-chip" onclick="searchWiki('절대적 위치')">절대적 위치</span><span class="wiki-chip" onclick="searchWiki('상대적 위치')">상대적 위치</span><span class="wiki-chip" onclick="searchWiki('자연환경')">자연환경</span><span class="wiki-chip" onclick="searchWiki('인문환경')">인문환경</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>지리적 관점으로 보는 4단계</h2></div>
   <div class="stage-wrap">
     <div class="stage-track" id="stageTrack"></div>
@@ -110,6 +128,12 @@
   <footer>EAIM 사회 수업 · 세계화 시대, 지리의 힘</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const STAGES = [
   { icon:'📍', name:'위치 파악', title:'① 위치 파악', desc:'그 장소가 지구상 어디에 있는지 먼저 확인하는 단계이다. 위치에는 두 종류가 있다. <b>절대적 위치</b>는 위도·경도나 대륙·해양으로 나타내며 거의 바뀌지 않는다. <b>상대적 위치</b>는 주변 국가와의 정치·경제적 관계로 나타나며, 시대에 따라 달라질 수 있다.' },
   { icon:'🏔️', name:'자연환경', title:'② 자연환경 확인', desc:'지형, 기후, 식생 등 자연이 만들어 낸 특성을 살펴보는 단계이다. 예: 산지가 많은지, 강수량이 많은지.' },

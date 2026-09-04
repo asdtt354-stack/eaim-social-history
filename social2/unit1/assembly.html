@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -84,6 +93,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>국회</b>는 국민이 뽑은 국회의원들로 구성되어 법률을 만들고 국가의 중요한 일을 결정하는 국가기관이에요. 국회의 대표적 역할은 크게 세 가지예요: 법률을 만들고 고치는 <b>입법 기능</b>, 예산을 심사·확정하는 <b>재정 기능</b>, 국정 감사·조사 같은 <b>일반 국정 기능</b>.</p><p>이 밖에도 국회는 헌법 개정안을 제안·의결하고, 대통령이 외국과 맺은 조약에 동의권을 가져요. 국정 감사·조사를 통해 정부가 법을 제대로 집행하는지 감시하고 견제하는 역할도 해요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('국회')">국회</span><span class="wiki-chip" onclick="searchWiki('입법과정')">입법과정</span><span class="wiki-chip" onclick="searchWiki('국정감사')">국정감사</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>국회의 입법 기능일까, 국회의 견제 기능일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -110,6 +128,12 @@
   <footer>EAIM 사회 수업 · 헌법과 국가기관</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "법률을 제정하고 개정한다", "correct": "국회의 입법 기능"}, {"key": "v1", "label": "국정 감사·조사로 정부를 감시한다", "correct": "국회의 견제 기능"}, {"key": "v2", "label": "새로운 법을 만든다", "correct": "국회의 입법 기능"}, {"key": "v3", "label": "예산안을 심사하고 확정한다", "correct": "국회의 견제 기능"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

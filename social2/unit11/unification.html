@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -126,6 +135,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>한반도에 평화가 정착되면 이산가족의 고통 해소, 북한 주민 인권 개선, 대륙과의 육상 교통로 연결 등 여러 이점이 있어요. 한반도 평화는 동아시아 전체의 안정·번영과도 밀접하게 연결돼 있어요.</p><p>통일 국토의 미래를 준비하려면 남북한의 자연·인문 환경을 함께 이해하고, 대화와 교류로 신뢰를 쌓아가는 노력이 필요해요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('남북정상회담')">남북정상회담</span><span class="wiki-chip" onclick="searchWiki('판문점 선언')">판문점 선언</span><span class="wiki-chip" onclick="searchWiki('한반도 평화')">한반도 평화</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>한반도 평화 정착으로 얻을 수 있는 것일까, 평화를 위해 필요한 노력일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -159,6 +177,12 @@
   <footer>EAIM 사회 수업 · 북부지역</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "대륙과 연결되는 철도·도로가 열린다", "correct": "한반도 평화 정착으로 얻을 수 있는 것"}, {"key": "v1", "label": "대화와 교류를 통한 신뢰 형성", "correct": "평화를 위해 필요한 노력"}, {"key": "v2", "label": "남북 경제 협력의 가능성이 커진다", "correct": "한반도 평화 정착으로 얻을 수 있는 것"}, {"key": "v3", "label": "갈등보다 협력을 추구하는 태도", "correct": "평화를 위해 필요한 노력"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

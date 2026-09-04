@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -84,6 +93,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>임금을 받고 일하는 모든 사람을 <b>근로자</b>라고 해요(공무원 포함). 헌법은 근로자에게 노동조합을 만드는 <b>단결권</b>, 사용자와 근로 조건을 협의하는 <b>단체교섭권</b>, 단체 행동을 할 수 있는 <b>단체행동권</b>, 이 세 가지 "노동 3권"을 보장해요.</p><p>근로기준법은 원칙적으로 1일 8시간·1주 40시간을 초과할 수 없고, 해고하려면 30일 전에 문서로 알려야 한다고 정해요. 최저 임금 미만 지급, 부당 해고 등 노동권이 침해되면 <b>노동위원회</b>에 구제를 신청할 수 있어요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('노동 3권')">노동 3권</span><span class="wiki-chip" onclick="searchWiki('최저임금제')">최저임금제</span><span class="wiki-chip" onclick="searchWiki('노동위원회')">노동위원회</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>근로자의 노동 3권일까, 노동 3권에 해당하지 않는 것일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -117,6 +135,12 @@
   <footer>EAIM 사회 수업 · 인권과 기본권</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "노동조합을 만들 수 있는 단결권", "correct": "근로자의 노동 3권"}, {"key": "v1", "label": "사장이 근로자를 마음대로 해고할 권리", "correct": "노동 3권에 해당하지 않는 것"}, {"key": "v2", "label": "사용자와 근로 조건을 협의하는 단체교섭권", "correct": "근로자의 노동 3권"}, {"key": "v3", "label": "회사의 이익을 근로자와 상관없이 결정하는 권리", "correct": "노동 3권에 해당하지 않는 것"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.2em; }
@@ -77,6 +86,15 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>세계화가 지역에 미치는 긍정적·부정적 영향을 사례를 통해 설명하고, 지역화의 의미를 이해할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('한류')">한류</span><span class="wiki-chip" onclick="searchWiki('지역화')">지역화</span><span class="wiki-chip" onclick="searchWiki('글로컬')">글로컬</span><span class="wiki-chip" onclick="searchWiki('초국적 기업')">초국적 기업</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>긍정적 영향일까, 부정적 영향일까?</h2></div>
   <div class="card-wrap" id="cardWrap"></div>
   <div class="sort-summary" id="sortSummary"></div>
@@ -104,6 +122,12 @@
   <footer>EAIM 사회 수업 · 세계화 시대, 지리의 힘</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const CARDS = [
   { text:'세계 각국의 다양한 음식을 우리 동네에서도 맛볼 수 있게 되었다.', correct:'긍정적 영향' },
   { text:'값싼 외국산 제품과의 경쟁으로 지역의 작은 가게들이 어려움을 겪는다.', correct:'부정적 영향' },

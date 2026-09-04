@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -126,6 +135,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>우리나라는 계절에 따라 기온·강수량 차이가 커서 가뭄·홍수·태풍·폭설 같은 기후 관련 자연재해와, 지진 같은 지형 관련 자연재해가 발생해요. 특히 여름철엔 장마·태풍으로 인한 홍수가 잦아요.</p><p>피해를 줄이려면 기상청 정보를 평소에 확인하고 재해 대비 훈련에 참여하며, 안전한 곳의 위치와 대피로를 미리 파악해 가족과 공유하는 것이 중요해요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('태풍')">태풍</span><span class="wiki-chip" onclick="searchWiki('자연재해')">자연재해</span><span class="wiki-chip" onclick="searchWiki('기상청')">기상청</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>우리나라 여름철 자연재해일까, 자연재해 피해를 줄이는 노력일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -159,6 +177,12 @@
   <footer>EAIM 사회 수업 · 우리나라의 자연환경과 인간생활</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "태풍과 집중 호우", "correct": "우리나라 여름철 자연재해"}, {"key": "v1", "label": "재해 예보 시스템과 안전 교육", "correct": "자연재해 피해를 줄이는 노력"}, {"key": "v2", "label": "홍수와 산사태", "correct": "우리나라 여름철 자연재해"}, {"key": "v3", "label": "창문·시설물 점검과 위험 지역 대피", "correct": "자연재해 피해를 줄이는 노력"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -84,6 +93,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>기본권을 마음대로 행사하면 다른 사람의 권리를 침해하거나 사회 질서를 해칠 수 있어요. 그래서 헌법 제37조는 <b>국가 안전 보장·질서 유지·공공복리를 위해 필요한 경우에만, 법률로써</b> 기본권을 제한할 수 있다고 정해요. 이때도 자유와 권리의 본질적인 내용은 침해할 수 없어요.</p><p>기본권을 침해당했다면 <b>법원</b>(재판·소송), <b>헌법재판소</b>(헌법 소원), <b>국가인권위원회</b>·국민권익위원회(진정) 등에 도움을 요청해 구제받을 수 있어요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('헌법 제37조')">헌법 제37조</span><span class="wiki-chip" onclick="searchWiki('국가인권위원회')">국가인권위원회</span><span class="wiki-chip" onclick="searchWiki('헌법소원')">헌법소원</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>기본권 제한의 올바른 원칙일까, 잘못된 기본권 제한일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -110,6 +128,12 @@
   <footer>EAIM 사회 수업 · 인권과 기본권</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "법률에 근거해 필요한 최소한으로 제한한다", "correct": "기본권 제한의 올바른 원칙"}, {"key": "v1", "label": "아무 근거 없이 마음대로 권리를 제한한다", "correct": "잘못된 기본권 제한"}, {"key": "v2", "label": "공공복리를 위해 필요한 경우에만 제한한다", "correct": "기본권 제한의 올바른 원칙"}, {"key": "v3", "label": "법률 없이 자의적으로 권리를 빼앗는다", "correct": "잘못된 기본권 제한"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -84,6 +93,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>우리나라는 유라시아 대륙과 태평양을 잇는 지리적 요충지에 있어 주변 강대국(미국·러시아·일본·중국)과 이해관계가 얽혀 있고, 남북 분단으로 군사적 긴장이 계속되는 <b>안보 문제</b>를 겪고 있어요.</p><p>이 밖에도 독도 영유권·역사 교과서 왜곡 같은 <b>역사·영토 문제</b>, 경제·환경·난민 문제 등 다양한 국제 문제에 직면해 있어요. 정확한 역사적 사실과 국제법적 근거를 바탕으로 논리적으로 대응하는 자세가 중요해요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('독도')">독도</span><span class="wiki-chip" onclick="searchWiki('동북공정')">동북공정</span><span class="wiki-chip" onclick="searchWiki('한반도 안보')">한반도 안보</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>우리나라가 직면한 국제 문제일까, 국제 문제 해결을 위한 올바른 태도일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -117,6 +135,12 @@
   <footer>EAIM 사회 수업 · 국제사회와 한반도</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "독도 영유권을 둘러싼 주장", "correct": "우리나라가 직면한 국제 문제"}, {"key": "v1", "label": "역사적 사실을 정확히 알고 논리적으로 대응한다", "correct": "국제 문제 해결을 위한 올바른 태도"}, {"key": "v2", "label": "역사 교과서 왜곡 문제", "correct": "우리나라가 직면한 국제 문제"}, {"key": "v3", "label": "국제 사회에 정확한 정보를 알리는 활동을 한다", "correct": "국제 문제 해결을 위한 올바른 태도"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -89,6 +98,15 @@
     </div>
   </div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('미디어 리터러시')">미디어 리터러시</span><span class="wiki-chip" onclick="searchWiki('대중매체')">대중매체</span><span class="wiki-chip" onclick="searchWiki('가짜뉴스')">가짜뉴스</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>미디어를 통한 문화 경험의 장점일까, 미디어 이용 시 주의할 점일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -115,6 +133,12 @@
   <footer>EAIM 사회 수업 · 다양한 문화의 이해</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "가보지 않은 나라의 축제를 영상으로 볼 수 있다", "correct": "미디어를 통한 문화 경험의 장점"}, {"key": "v1", "label": "왜곡되거나 편향된 정보를 그대로 믿을 수 있다", "correct": "미디어 이용 시 주의할 점"}, {"key": "v2", "label": "시공간 제약 없이 다양한 문화를 접할 수 있다", "correct": "미디어를 통한 문화 경험의 장점"}, {"key": "v3", "label": "정보의 출처를 비판적으로 확인해야 한다", "correct": "미디어 이용 시 주의할 점"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

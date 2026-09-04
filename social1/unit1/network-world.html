@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .section-head { max-width:700px; margin:50px auto 18px; padding:0 20px; }
   .section-head .num { font-size:0.72em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:4px; }
   .section-head h2 { margin:0; font-size:1.2em; }
@@ -80,6 +89,15 @@
     <div class="goal-box"><div class="label">학습 목표</div><p>교통·통신 기술 발달이 세계를 어떻게 연결해 왔는지 설명하고, 사례를 교통 네트워크와 통신 네트워크로 구분할 수 있다.</p></div>
   </section>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('공간적 상호작용')">공간적 상호작용</span><span class="wiki-chip" onclick="searchWiki('시공간 압축')">시공간 압축</span><span class="wiki-chip" onclick="searchWiki('해저 케이블')">해저 케이블</span><span class="wiki-chip" onclick="searchWiki('세계화')">세계화</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>세계를 연결해 온 기술의 발달</h2></div>
   <div class="stage-wrap">
     <div class="stage-track" id="stageTrack"></div>
@@ -111,6 +129,12 @@
   <footer>EAIM 사회 수업 · 세계화 시대, 지리의 힘</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const STAGES = [
   { icon:'🚶', name:'도보·마차', title:'① 도보·마차의 시대', desc:'먼 거리를 이동하는 데 몇 주, 몇 달이 걸리던 시대. 세계는 서로 거의 단절되어 있었다.' },
   { icon:'🚢', name:'증기선·철도', title:'② 증기선·철도의 등장', desc:'19세기 증기 기관의 발명으로 대륙 간 이동 시간이 크게 줄어들며 국제 무역이 활발해졌다.' },

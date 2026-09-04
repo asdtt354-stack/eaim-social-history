@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -84,6 +93,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>인권</b>은 인간이 인간이라는 이유만으로 당연히 누려야 할 기본적인 권리예요. 태어나면서부터 갖는 <b>천부성</b>, 국가가 보장하기 전부터 자연적으로 갖는 <b>자연권</b>, 모든 인간이 누리는 <b>보편성</b>, 영구히 보장되는 <b>항구성</b>이라는 특징을 지녀요.</p><p>헌법은 이런 기본적 인권을 <b>기본권</b>으로 규정해요. 국가의 부당한 간섭이나 침해로부터 개인의 인권을 지키기 위해서예요. 참정권(선거 참여), 평등권(차별받지 않을 권리) 등이 헌법에 보장된 기본권의 예시예요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('인권')">인권</span><span class="wiki-chip" onclick="searchWiki('기본권')">기본권</span><span class="wiki-chip" onclick="searchWiki('천부인권')">천부인권</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>인권의 특징일까, 인권이라고 보기 어려운 것일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -110,6 +128,12 @@
   <footer>EAIM 사회 수업 · 인권과 기본권</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "태어나면서부터 갖는 천부적 권리이다", "correct": "인권의 특징"}, {"key": "v1", "label": "국가가 마음대로 없앨 수 있는 특권", "correct": "인권이라고 보기 어려운 것"}, {"key": "v2", "label": "모든 인간이 보편적으로 누린다", "correct": "인권의 특징"}, {"key": "v3", "label": "특정 사람에게만 주어지는 혜택", "correct": "인권이라고 보기 어려운 것"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

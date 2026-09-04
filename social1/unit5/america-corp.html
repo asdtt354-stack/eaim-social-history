@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -131,6 +140,15 @@
     </div>
   </div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('초국적 기업')">초국적 기업</span><span class="wiki-chip" onclick="searchWiki('공간적 분업')">공간적 분업</span><span class="wiki-chip" onclick="searchWiki('다국적기업')">다국적기업</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>초국적 기업 진출의 이점일까, 초국적 기업 진출의 문제점일까?</h2></div>
   <p style="max-width:700px;margin:-6px auto 20px;padding:0 20px;font-size:0.78em;color:#888;">🔗 <b>단원 연결 고리</b> — 초국적 기업이 전 세계에서 활동할 수 있는 배경엔 <a href="../unit1/network-world.html" style="color:#f59e0b;">Ⅰ단원 "네트워크로 연결된 세계"</a>에서 배운 교통·통신 네트워크의 발달이 있어요.</p>
   <div class="activity-wrap">
@@ -165,6 +183,12 @@
   <footer>EAIM 사회 수업 · 아메리카</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "지역에 새로운 일자리가 생긴다", "correct": "초국적 기업 진출의 이점"}, {"key": "v1", "label": "이익의 상당 부분이 본사가 있는 나라로 흘러간다", "correct": "초국적 기업 진출의 문제점"}, {"key": "v2", "label": "새로운 기술이 지역에 전해진다", "correct": "초국적 기업 진출의 이점"}, {"key": "v3", "label": "환경 오염 문제가 발생하기도 한다", "correct": "초국적 기업 진출의 문제점"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

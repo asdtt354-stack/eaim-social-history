@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -126,6 +135,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p>제주도는 연교차가 작고 강수량이 많은 기후 덕분에 감귤나무 같은 난대성 식물이 자라요. 한라산·용암동굴·오름 등 화산 지형이 만든 독특한 자연환경과 문화유산으로 세계적인 관광지가 됐어요.</p><p>하지만 관광객 증가로 교통 혼잡·쓰레기·환경 훼손 문제도 생겼어요. 제주도민들은 <b>성장을 계속 추구</b>해야 한다는 입장과 <b>자연·전통문화를 보전</b>해야 한다는 입장으로 나뉘어 있어요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('한라산')">한라산</span><span class="wiki-chip" onclick="searchWiki('제주도')">제주도</span><span class="wiki-chip" onclick="searchWiki('오름')">오름</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>제주도가 세계적 관광지로 성장한 배경일까, 제주도가 겪는 관광 관련 문제일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -159,6 +177,12 @@
   <footer>EAIM 사회 수업 · 남부지역</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "화산 지형 등 독특한 자연환경", "correct": "제주도가 세계적 관광지로 성장한 배경"}, {"key": "v1", "label": "교통 혼잡과 쓰레기, 환경 훼손 문제", "correct": "제주도가 겪는 관광 관련 문제"}, {"key": "v2", "label": "한라산, 용암동굴 같은 문화유산", "correct": "제주도가 세계적 관광지로 성장한 배경"}, {"key": "v3", "label": "무분별한 개발로 인한 환경 훼손", "correct": "제주도가 겪는 관광 관련 문제"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';

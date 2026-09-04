@@ -21,6 +21,15 @@
   .goal-box .label { font-size:0.7em; font-weight:800; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
   .goal-box p { margin:0; font-size:0.86em; line-height:1.65; color:#e5d8fb; }
 
+  .wiki-search { max-width:700px; margin:36px auto 0; padding:0 20px; }
+  .wiki-box { background:#121012; border:1px solid #262022; border-radius:14px; padding:16px 20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .wiki-box .wl { font-size:0.78em; color:#999; white-space:nowrap; }
+  .wiki-box input { flex:1; min-width:140px; background:#1a1618; border:1px solid #333; border-radius:8px; padding:9px 12px; color:#eee; font-size:0.86em; }
+  .wiki-box button { background:var(--accent); color:#1a1220; border:none; border-radius:8px; padding:9px 16px; font-weight:700; font-size:0.84em; cursor:pointer; white-space:nowrap; }
+  .wiki-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .wiki-chip { background:#1a1618; border:1px solid #333; border-radius:20px; padding:6px 13px; font-size:0.78em; color:#ccc; cursor:pointer; }
+  .wiki-chip:hover { border-color:var(--accent); color:var(--accent); }
+
   .concept-wrap { max-width:700px; margin:36px auto 0; padding:0 20px; }
   .concept-box { background:#121012; border:1px solid #262022; border-radius:16px; padding:22px 24px; }
   .concept-box .ct { font-size:0.72em; font-weight:800; color:#fcd34d; letter-spacing:1px; margin-bottom:10px; }
@@ -126,6 +135,15 @@
 
   <div class="concept-wrap"><div class="concept-box"><div class="ct">📖 핵심 개념</div><p><b>수도권</b>(서울·인천·경기)은 우리나라 인구의 절반이 사는 곳이에요. 서울은 조선 시대부터 정치·경제·문화의 중심지였고, 인천은 국제공항·인천항으로 국제 물류를 담당해요.</p><p>인구와 기능이 집중되면서 교통 혼잡·주택 부족 같은 문제도 생겨요. 정부는 공공기관 지방 이전, 지역 균형 발전 정책으로 이를 완화하려 노력해요.</p></div></div>
 
+  <div class="wiki-search">
+    <div class="wiki-box">
+      <span class="wl">🔍 더 궁금하면</span>
+      <input type="text" id="wikiQ" placeholder="궁금한 용어를 검색해보자..." onkeydown="if(event.key==='Enter')searchWiki()">
+      <button onclick="searchWiki()">위키백과에서 찾아보기</button>
+    </div>
+    <div class="wiki-chips"><span class="wiki-chip" onclick="searchWiki('수도권')">수도권</span><span class="wiki-chip" onclick="searchWiki('서울')">서울</span><span class="wiki-chip" onclick="searchWiki('인천')">인천</span></div>
+  </div>
+
   <div class="section-head"><div class="num">01</div><h2>수도권 집중의 문제점일까, 수도권 집중 완화 정책일까?</h2></div>
   <div class="activity-wrap">
     <div class="scenario-box">
@@ -152,6 +170,12 @@
   <footer>EAIM 사회 수업 · 중부지역</footer>
 
 <script>
+
+function searchWiki(term) {
+  const q = term || document.getElementById('wikiQ').value.trim();
+  if (!q) return;
+  window.open('https://ko.wikipedia.org/wiki/특수:검색/' + encodeURIComponent(q), '_blank');
+}
 const VARS = [{"key": "v0", "label": "교통 혼잡과 주택 부족", "correct": "수도권 집중의 문제점"}, {"key": "v1", "label": "공공기관의 지방 이전", "correct": "수도권 집중 완화 정책"}, {"key": "v2", "label": "지역 간 불균형 심화", "correct": "수도권 집중의 문제점"}, {"key": "v3", "label": "지역 균형 발전 정책 추진", "correct": "수도권 집중 완화 정책"}];
 function renderVars(){
   const row = document.getElementById('varRow'); row.innerHTML='';
