@@ -30,7 +30,8 @@
   @media (max-width: 640px) { .lesson-grid { grid-template-columns: 1fr; } }
   .lcard { display: flex; align-items: center; gap: 14px; background: #121012; border: 1.5px solid #262022; border-radius: 16px; padding: 16px 18px; transition: all .2s; }
   .lcard:hover { border-color: var(--main-color); transform: translateY(-2px); }
-  .lcard .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
+  .lcard .l-thumb { width:118px; height:78px; object-fit:cover; border-radius:10px; flex-shrink:0; border:1px solid #333; }
+  .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
   .lcard .l-body { flex: 1; min-width: 0; }
   .lcard .l-title { font-size: 0.94em; font-weight: 800; color: #fff; margin-bottom: 3px; }
   .lcard .l-desc { font-size: 0.76em; color: #999; line-height: 1.5; }
@@ -131,11 +132,11 @@
   <footer>EAIM 사회 수업 · 국가의 형성과 발전</footer>
 
 <script>
-const GROUP1 = [{"icon": "🏺", "title": "고조선과 여러 나라의 형성", "desc": "고조선 · 초기 철기 시대 여러 나라 분류 활동 + 확인 퀴즈", "href": "unit1/gojoseon.html"}, {"icon": "⚔️", "title": "삼국과 가야의 성립과 발전", "desc": "4~5세기(백제·고구려 전성기) · 6세기(신라 전성기) 분류 활동 + 확인 퀴즈", "href": "unit1/three-kingdoms.html"}, {"icon": "🗿", "title": "삼국과 가야의 문화와 대외 교류", "desc": "불교 수용의 목적 · 대외 교류의 증거 분류 활동 + 확인 퀴즈", "href": "unit1/three-kingdoms-culture.html"}];
+const GROUP1 = [{"icon": "🏺", "img": "assets/illustrations/lesson01.jpg", "title": "고조선과 여러 나라의 형성", "desc": "고조선 · 초기 철기 시대 여러 나라 분류 활동 + 확인 퀴즈", "href": "unit1/gojoseon.html"}, {"icon": "⚔️", "img": "assets/illustrations/lesson02.jpg", "title": "삼국과 가야의 성립과 발전", "desc": "4~5세기(백제·고구려 전성기) · 6세기(신라 전성기) 분류 활동 + 확인 퀴즈", "href": "unit1/three-kingdoms.html"}, {"icon": "🗿", "img": "assets/illustrations/lesson03.jpg", "title": "삼국과 가야의 문화와 대외 교류", "desc": "불교 수용의 목적 · 대외 교류의 증거 분류 활동 + 확인 퀴즈", "href": "unit1/three-kingdoms-culture.html"}];
 function renderGroup(id, items){
   document.getElementById(id).innerHTML = items.map(item => `
     <a class="lcard" href="${item.href}">
-      <div class="l-icon">${item.icon}</div>
+      <img class="l-thumb" src="${item.img}" alt="${item.title} 일러스트">
       <div class="l-body">
         <div class="l-title">${item.title}</div>
         <div class="l-desc">${item.desc}</div>

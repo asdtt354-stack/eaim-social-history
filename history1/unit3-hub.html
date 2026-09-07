@@ -31,7 +31,8 @@
   @media (max-width: 640px) { .lesson-grid { grid-template-columns: 1fr; } }
   .lcard { display: flex; align-items: center; gap: 14px; background: #121012; border: 1.5px solid #262022; border-radius: 16px; padding: 16px 18px; transition: all .2s; }
   .lcard:hover { border-color: var(--main-color); transform: translateY(-2px); }
-  .lcard .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
+  .lcard .l-thumb { width:118px; height:78px; object-fit:cover; border-radius:10px; flex-shrink:0; border:1px solid #333; }
+  .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
   .lcard .l-body { flex: 1; min-width: 0; }
   .lcard .l-title { font-size: 0.94em; font-weight: 800; color: #fff; margin-bottom: 3px; }
   .lcard .l-desc { font-size: 0.76em; color: #999; line-height: 1.5; }
@@ -81,11 +82,11 @@
   <footer>EAIM 사회 수업 · 고려의 성립과 변천</footer>
 
 <script>
-const GROUP1 = [{"icon": "👑", "title": "고려의 성립과 통치 체제 정비", "desc": "왕건의 호족 포섭 정책 · 고려의 중앙 정치 조직 분류 활동 + 확인 퀴즈", "href": "unit3/goryeo-foundation.html"}, {"icon": "🛡️", "title": "고려의 정치 변화와 대외 관계", "desc": "거란 침입과 고려의 대응 · 무신정변 관련 사실 분류 활동 + 확인 퀴즈", "href": "unit3/goryeo-foreign.html"}, {"icon": "🐎", "title": "몽골(원)의 간섭과 고려의 개혁", "desc": "몽골에 맞선 항쟁 · 원 간섭기 이후의 개혁 분류 활동 + 확인 퀴즈", "href": "unit3/mongol-interference.html"}, {"icon": "📖", "title": "고려의 대외 교류와 문화", "desc": "고려의 인쇄 문화 · 고려의 대외 교류 분류 활동 + 확인 퀴즈", "href": "unit3/goryeo-culture.html"}];
+const GROUP1 = [{"icon": "👑", "img": "assets/illustrations/lesson07.jpg", "title": "고려의 성립과 통치 체제 정비", "desc": "왕건의 호족 포섭 정책 · 고려의 중앙 정치 조직 분류 활동 + 확인 퀴즈", "href": "unit3/goryeo-foundation.html"}, {"icon": "🛡️", "img": "assets/illustrations/lesson08.jpg", "title": "고려의 정치 변화와 대외 관계", "desc": "거란 침입과 고려의 대응 · 무신정변 관련 사실 분류 활동 + 확인 퀴즈", "href": "unit3/goryeo-foreign.html"}, {"icon": "🐎", "img": "assets/illustrations/lesson09.jpg", "title": "몽골(원)의 간섭과 고려의 개혁", "desc": "몽골에 맞선 항쟁 · 원 간섭기 이후의 개혁 분류 활동 + 확인 퀴즈", "href": "unit3/mongol-interference.html"}, {"icon": "📖", "img": "assets/illustrations/lesson10.jpg", "title": "고려의 대외 교류와 문화", "desc": "고려의 인쇄 문화 · 고려의 대외 교류 분류 활동 + 확인 퀴즈", "href": "unit3/goryeo-culture.html"}];
 function renderGroup(id, items){
   document.getElementById(id).innerHTML = items.map(item => `
     <a class="lcard" href="${item.href}">
-      <div class="l-icon">${item.icon}</div>
+      <img class="l-thumb" src="${item.img}" alt="${item.title} 일러스트">
       <div class="l-body">
         <div class="l-title">${item.title}</div>
         <div class="l-desc">${item.desc}</div>

@@ -35,8 +35,9 @@
   .unit-wrap { max-width: 920px; margin: 50px auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
   @media (max-width: 700px) { .unit-wrap { grid-template-columns: 1fr; } }
 
-  .ucard { display: flex; gap: 16px; align-items: flex-start; background: #121012; border: 1.5px solid #262022; border-radius: 18px; padding: 20px; transition: all .2s; }
+  .ucard { display: flex; flex-wrap:wrap; gap: 16px; align-items: flex-start; background: #121012; border: 1.5px solid #262022; border-radius: 18px; padding: 20px; transition: all .2s; }
   .ucard.ready:hover { border-color: var(--main-color); transform: translateY(-3px); }
+  .ucard .u-img { width:100%; height:180px; object-fit:cover; border-radius:13px; display:block; border:1px solid #30282a; }
   .ucard .u-roman { font-size: 1.6em; font-weight: 900; color: var(--accent); flex-shrink: 0; width: 44px; text-align: center; }
   .ucard .u-body { flex: 1; min-width: 0; }
   .ucard .u-title { font-size: 1.02em; font-weight: 800; color: #fff; margin-bottom: 4px; }
@@ -92,18 +93,19 @@
 
 <script>
 const UNITS = [
-  { roman:'Ⅰ', title:'국가의 형성과 발전', desc:'고조선, 삼국과 가야의 성립·발전·문화', href:'unit1-hub.html' },
-  { roman:'Ⅱ', title:'통일신라와 발해', desc:'삼국 통일, 통일신라·발해의 발전과 문화', href:'unit2-hub.html' },
-  { roman:'Ⅲ', title:'고려의 성립과 변천', desc:'고려 건국, 대외 관계, 몽골 간섭, 문화', href:'unit3-hub.html' },
-  { roman:'Ⅳ', title:'조선의 성립과 발전', desc:'조선 건국, 성리학적 질서, 왜란과 호란', href:'unit4-hub.html' },
-  { roman:'Ⅴ', title:'조선 사회의 변동', desc:'탕평책, 세도 정치와 흥선 대원군, 서민 문화', href:'unit5-hub.html' },
-  { roman:'Ⅵ', title:'근·현대 사회로의 전환', desc:'근대 국가 수립, 민족 운동, 민주주의 발전', href:'unit6-hub.html' },
+  { roman:'Ⅰ', title:'국가의 형성과 발전', desc:'고조선, 삼국과 가야의 성립·발전·문화', href:'unit1-hub.html', img:'assets/illustrations/unit1.jpg' },
+  { roman:'Ⅱ', title:'통일신라와 발해', desc:'삼국 통일, 통일신라·발해의 발전과 문화', href:'unit2-hub.html', img:'assets/illustrations/unit2.jpg' },
+  { roman:'Ⅲ', title:'고려의 성립과 변천', desc:'고려 건국, 대외 관계, 몽골 간섭, 문화', href:'unit3-hub.html', img:'assets/illustrations/unit3.jpg' },
+  { roman:'Ⅳ', title:'조선의 성립과 발전', desc:'조선 건국, 성리학적 질서, 왜란과 호란', href:'unit4-hub.html', img:'assets/illustrations/unit4.jpg' },
+  { roman:'Ⅴ', title:'조선 사회의 변동', desc:'탕평책, 세도 정치와 흥선 대원군, 서민 문화', href:'unit5-hub.html', img:'assets/illustrations/unit5.jpg' },
+  { roman:'Ⅵ', title:'근·현대 사회로의 전환', desc:'근대 국가 수립, 민족 운동, 민주주의 발전', href:'unit6-hub.html', img:'assets/illustrations/unit6.jpg' },
 ];
 
 function render(){
   const wrap = document.getElementById('unitWrap');
   wrap.innerHTML = UNITS.map(u => {
     const inner = `
+      <img class="u-img" src="${u.img}" alt="${u.title} 역사 일러스트">
       <div class="u-roman">${u.roman}</div>
       <div class="u-body">
         <div class="u-title">${u.title}</div>
