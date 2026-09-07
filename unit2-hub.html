@@ -31,8 +31,8 @@
   @media (max-width: 640px) { .lesson-grid { grid-template-columns: 1fr; } }
   .lcard { display: flex; align-items: center; gap: 14px; background: #121012; border: 1.5px solid #262022; border-radius: 16px; padding: 16px 18px; transition: all .2s; }
   .lcard:hover { border-color: var(--main-color); transform: translateY(-2px); }
-  .lcard .l-icon { font-size: 1.7em; overflow:hidden; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
-  .lcard .l-icon img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
+  .lcard .l-thumb { width:118px; height:78px; object-fit:cover; border-radius:10px; flex-shrink:0; border:1px solid #333; }
+  .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
   .lcard .l-body { flex: 1; min-width: 0; }
   .lcard .l-title { font-size: 0.94em; font-weight: 800; color: #fff; margin-bottom: 3px; }
   .lcard .l-desc { font-size: 0.76em; color: #999; line-height: 1.5; }
@@ -82,11 +82,11 @@
   <footer>EAIM 사회 수업 · 통일신라와 발해</footer>
 
 <script>
-const GROUP1 = [{"icon": "assets/unit2.svg", "title": "신라의 삼국 통일과 발해의 성립", "desc": "삼국 통일 과정의 사건 · 발해 성립 관련 사실 분류 활동 + 확인 퀴즈", "href": "unit2/unification.html"}, {"icon": "assets/unit2.svg", "title": "통일신라와 발해의 발전", "desc": "통일신라의 지방 제도 · 발해의 지방 제도 분류 활동 + 확인 퀴즈", "href": "unit2/development.html"}, {"icon": "assets/unit2.svg", "title": "통일신라와 발해의 문화", "desc": "통일신라의 문화유산 · 발해의 문화유산 분류 활동 + 확인 퀴즈", "href": "unit2/unified-culture.html"}];
+const GROUP1 = [{"icon": "🤝", "img": "assets/illustrations/lesson04.jpg", "title": "신라의 삼국 통일과 발해의 성립", "desc": "삼국 통일 과정의 사건 · 발해 성립 관련 사실 분류 활동 + 확인 퀴즈", "href": "unit2/unification.html"}, {"icon": "🏯", "img": "assets/illustrations/lesson05.jpg", "title": "통일신라와 발해의 발전", "desc": "통일신라의 지방 제도 · 발해의 지방 제도 분류 활동 + 확인 퀴즈", "href": "unit2/development.html"}, {"icon": "🛕", "img": "assets/illustrations/lesson06.jpg", "title": "통일신라와 발해의 문화", "desc": "통일신라의 문화유산 · 발해의 문화유산 분류 활동 + 확인 퀴즈", "href": "unit2/unified-culture.html"}];
 function renderGroup(id, items){
   document.getElementById(id).innerHTML = items.map(item => `
     <a class="lcard" href="${item.href}">
-      <div class="l-icon"><img src="${item.icon}" alt=""></div>
+      <img class="l-thumb" src="${item.img}" alt="${item.title} 일러스트">
       <div class="l-body">
         <div class="l-title">${item.title}</div>
         <div class="l-desc">${item.desc}</div>

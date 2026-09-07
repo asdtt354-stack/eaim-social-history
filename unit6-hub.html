@@ -31,8 +31,8 @@
   @media (max-width: 640px) { .lesson-grid { grid-template-columns: 1fr; } }
   .lcard { display: flex; align-items: center; gap: 14px; background: #121012; border: 1.5px solid #262022; border-radius: 16px; padding: 16px 18px; transition: all .2s; }
   .lcard:hover { border-color: var(--main-color); transform: translateY(-2px); }
-  .lcard .l-icon { font-size: 1.7em; overflow:hidden; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
-  .lcard .l-icon img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
+  .lcard .l-thumb { width:118px; height:78px; object-fit:cover; border-radius:10px; flex-shrink:0; border:1px solid #333; }
+  .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
   .lcard .l-body { flex: 1; min-width: 0; }
   .lcard .l-title { font-size: 0.94em; font-weight: 800; color: #fff; margin-bottom: 3px; }
   .lcard .l-desc { font-size: 0.76em; color: #999; line-height: 1.5; }
@@ -82,11 +82,11 @@
   <footer>EAIM 사회 수업 · 근·현대 사회로의 전환</footer>
 
 <script>
-const GROUP1 = [{"icon": "assets/unit6.svg", "title": "근대 국가의 수립을 위한 노력", "desc": "근대적 조약과 체제 수립 · 근대 개혁 운동 분류 활동 + 확인 퀴즈", "href": "unit6/modern-nation.html"}, {"icon": "assets/unit6.svg", "title": "다양한 민족 운동의 전개", "desc": "3·1 운동과 임시 정부 · 다양한 방식의 독립운동 분류 활동 + 확인 퀴즈", "href": "unit6/national-movement.html"}, {"icon": "assets/unit6.svg", "title": "민주주의의 발전", "desc": "4·19 혁명·5·18 민주화 운동 · 6월 민주 항쟁 분류 활동 + 확인 퀴즈", "href": "unit6/democracy-dev.html"}, {"icon": "assets/unit6.svg", "title": "지속가능한 사회", "desc": "지속가능한 사회의 과제 · 남북 평화를 위한 노력 분류 활동 + 확인 퀴즈", "href": "unit6/sustainable-society.html"}];
+const GROUP1 = [{"icon": "🌅", "img": "assets/illustrations/lesson17.jpg", "title": "근대 국가의 수립을 위한 노력", "desc": "근대적 조약과 체제 수립 · 근대 개혁 운동 분류 활동 + 확인 퀴즈", "href": "unit6/modern-nation.html"}, {"icon": "✊", "img": "assets/illustrations/lesson18.jpg", "title": "다양한 민족 운동의 전개", "desc": "3·1 운동과 임시 정부 · 다양한 방식의 독립운동 분류 활동 + 확인 퀴즈", "href": "unit6/national-movement.html"}, {"icon": "🗳️", "img": "assets/illustrations/lesson19.jpg", "title": "민주주의의 발전", "desc": "4·19 혁명·5·18 민주화 운동 · 6월 민주 항쟁 분류 활동 + 확인 퀴즈", "href": "unit6/democracy-dev.html"}, {"icon": "🕊️", "img": "assets/illustrations/lesson20.jpg", "title": "지속가능한 사회", "desc": "지속가능한 사회의 과제 · 남북 평화를 위한 노력 분류 활동 + 확인 퀴즈", "href": "unit6/sustainable-society.html"}];
 function renderGroup(id, items){
   document.getElementById(id).innerHTML = items.map(item => `
     <a class="lcard" href="${item.href}">
-      <div class="l-icon"><img src="${item.icon}" alt=""></div>
+      <img class="l-thumb" src="${item.img}" alt="${item.title} 일러스트">
       <div class="l-body">
         <div class="l-title">${item.title}</div>
         <div class="l-desc">${item.desc}</div>
