@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>선생님 대시보드 - 사회 셀프체크룸</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root { --main-color:#22d3ee; --bg-dark:#07090c; --accent:#a855f7; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg-dark); color:#fff; font-family:'Pretendard',-apple-system,sans-serif; min-height:100vh; }
+  a { color:inherit; text-decoration:none; }
+  .topbar { position:sticky; top:0; z-index:40; background:rgba(7,9,12,0.92); backdrop-filter:blur(10px); border-bottom:1px solid #1a1e24; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .crumb { font-size:0.78em; color:#888; } .crumb b{ color:#ccc; font-weight:600; }
+  .hub-link { font-size:0.72em; color:#aaa; padding:6px 12px; border:1px solid #2c313a; border-radius:8px; }
+  .hub-link:hover { border-color:var(--accent); color:#fff; }
+
+  .login-shell { max-width:420px; margin:100px auto; padding:0 20px; text-align:center; }
+  .login-shell h1 { font-size:1.4em; margin-bottom:10px; }
+  .login-shell p { color:#999; font-size:0.86em; line-height:1.7; margin-bottom:26px; }
+  .google-btn { display:inline-flex; align-items:center; gap:10px; background:#fff; color:#222; font-weight:800; padding:12px 22px; border-radius:12px; border:none; cursor:pointer; font-size:0.9em; }
+
+  .dash-wrap { max-width:900px; margin:0 auto; padding:30px 20px 60px; display:none; }
+  .dash-wrap.open { display:block; }
+
+  .qr-card { background:#0d0f14; border:1.5px solid #1a1e24; border-radius:20px; padding:24px; text-align:center; margin-bottom:30px; }
+  .qr-card h2 { margin:0 0 6px; font-size:1.05em; }
+  .qr-card p { color:#999; font-size:0.82em; margin-bottom:18px; }
+  .qr-card #qrcodeCanvas { background:#fff; padding:14px; border-radius:16px; display:inline-block; }
+  .qr-card .qr-url { margin-top:14px; font-size:0.72em; color:#777; word-break:break-all; }
+
+  .filter-row { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .filter-row select { background:#141215; border:1.5px solid #2c313a; color:#eee; padding:8px 12px; border-radius:9px; font-size:0.82em; }
+  .live-badge { font-size:0.72em; color:#34d399; font-weight:800; display:flex; align-items:center; gap:6px; margin-left:auto; }
+  .live-dot { width:7px; height:7px; border-radius:50%; background:#34d399; animation:pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  table { width:100%; border-collapse:collapse; font-size:0.84em; }
+  thead th { text-align:left; color:#888; font-weight:700; padding:10px 12px; border-bottom:1px solid #1a1e24; font-size:0.85em; }
+  tbody td { padding:10px 12px; border-bottom:1px solid #141518; }
+  tbody tr:hover { background:#0d0f14; }
+  .score-good { color:#34d399; font-weight:800; }
+  .score-mid { color:#fbbf24; font-weight:800; }
+  .score-low { color:#f43f5e; font-weight:800; }
+  .empty-note { text-align:center; color:#666; padding:40px 20px; font-size:0.86em; }
+  .weak-tag { display:inline-block; background:#1a1a1c; color:#fda4af; padding:2px 7px; border-radius:6px; font-size:0.78em; margin:1px; }
+  .fb-cell { display:flex; gap:6px; align-items:center; min-width:200px; }
+  .fb-cell input { flex:1; background:#141215; border:1.5px solid #2c313a; color:#eee; padding:6px 9px; border-radius:7px; font-size:0.8em; }
+  .fb-cell input.saved { border-color:#34d399; }
+  .fb-cell button { border:none; background:var(--main-color); color:#04222b; font-weight:800; padding:6px 10px; border-radius:7px; font-size:0.76em; cursor:pointer; flex-shrink:0; }
+  .fb-saved-check { color:#34d399; font-size:0.78em; margin-left:4px; display:none; }
+
+  footer { text-align:center; padding:10px 20px 50px; color:#555; font-size:0.75em; }
+
+  .present-btn { border:none; background:var(--main-color); color:#04222b; font-weight:800; padding:9px 16px; border-radius:9px; font-size:0.78em; cursor:pointer; margin-top:6px; }
+
+  .present-overlay { display:none; position:fixed; inset:0; z-index:200; background:#07090c; align-items:center; justify-content:center; flex-direction:column; padding:20px; }
+  .present-overlay.open { display:flex; }
+  .present-overlay .po-title { font-size:1.6em; font-weight:900; margin-bottom:8px; }
+  .present-overlay .po-sub { color:#999; font-size:1em; margin-bottom:30px; }
+  .present-overlay #qrcodeCanvasBig { background:#fff; padding:24px; border-radius:24px; }
+  .present-overlay .po-close { margin-top:30px; border:1.5px solid #2c313a; background:#141215; color:#ccc; padding:10px 22px; border-radius:10px; font-size:0.85em; cursor:pointer; }
+
+  .written-btn { border:1px solid #2c313a; background:#161a20; color:#c4b5fd; font-size:0.74em; font-weight:700; padding:6px 10px; border-radius:7px; cursor:pointer; }
+  .written-btn:hover { border-color:var(--accent); }
+  .written-modal-overlay { display:none; position:fixed; inset:0; z-index:150; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
+  .written-modal-overlay.open { display:flex; }
+  .written-modal-box { background:#0d0f14; border:1.5px solid var(--accent); border-radius:20px; padding:26px 24px; max-width:520px; width:100%; max-height:80vh; overflow-y:auto; position:relative; }
+  .written-modal-box .wm-close { position:absolute; top:14px; right:16px; background:none; border:none; color:#888; font-size:1.3em; cursor:pointer; }
+  .written-modal-box .wm-title { font-size:1.02em; font-weight:900; margin-bottom:16px; }
+  .wm-item { background:#141215; border-left:3px solid var(--accent); border-radius:8px; padding:12px 14px; margin-bottom:10px; }
+  .wm-item .wm-topic { font-size:0.72em; color:#a78bfa; font-weight:800; margin-bottom:4px; }
+  .wm-item .wm-q { font-size:0.8em; color:#ccc; margin-bottom:8px; }
+  .wm-item .wm-a { font-size:0.86em; color:#fff; line-height:1.6; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="crumb"><b>🔍 셀프체크룸</b> / 👩‍🏫 선생님 대시보드</div>
+    <a class="hub-link" href="index.html">← 셀프체크룸</a>
+  </div>
+
+  <div class="login-shell" id="loginShell">
+    <h1>👩‍🏫 선생님 대시보드</h1>
+    <p>구글 계정으로 로그인하면, 반 학생들의 셀프체크룸 학습 결과를 실시간으로 확인할 수 있어요.</p>
+    <button class="google-btn" onclick="doLogin()">🔑 구글 계정으로 로그인</button>
+  </div>
+
+  <div class="dash-wrap" id="dashWrap">
+    <div class="qr-card">
+      <h2>📱 우리 반 접속 QR</h2>
+      <p>이 QR을 학생들에게 보여주세요. 스캔한 학생의 셀프체크룸 결과가 이 화면에 실시간으로 모입니다.</p>
+      <div id="qrcodeCanvas"></div>
+      <div class="qr-url" id="qrUrlText"></div>
+      <div><button class="present-btn" onclick="openPresentMode()">🖥️ 발표용 QR만 크게 보기 (학생 정보 안 보임)</button></div>
+    </div>
+
+    <div class="present-overlay" id="presentOverlay">
+      <div class="po-title">📱 QR을 스캔해서 접속하세요</div>
+      <div class="po-sub">셀프체크룸으로 바로 들어갑니다</div>
+      <div id="qrcodeCanvasBig"></div>
+      <button class="po-close" onclick="closePresentMode()">✕ 발표 모드 닫고 결과 보기</button>
+    </div>
+
+    <div class="filter-row">
+      <select id="subjectFilter" onchange="renderTable()">
+        <option value="">전체 과목</option>
+        <option value="social1">사회1</option>
+        <option value="social2">사회2</option>
+        <option value="history1">역사1</option>
+        <option value="history2">역사2</option>
+      </select>
+      <div class="live-badge"><span class="live-dot"></span>실시간 반영 중</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>학생</th><th>과목</th><th>단원</th><th>점수</th><th>헷갈린 부분</th><th>서술형</th><th>시각</th><th>피드백</th></tr>
+      </thead>
+      <tbody id="resultBody"></tbody>
+    </table>
+    <div class="empty-note" id="emptyNote" style="display:none;">아직 들어온 학생 결과가 없어요. QR을 학생들에게 보여주고 셀프체크룸을 풀어보게 해보세요.</div>
+  </div>
+
+  <div class="written-modal-overlay" id="writtenModalOverlay" onclick="if(event.target===this) closeWrittenModal()">
+    <div class="written-modal-box">
+      <button class="wm-close" onclick="closeWrittenModal()">✕</button>
+      <div class="wm-title" id="wmTitle"></div>
+      <div id="wmBody"></div>
+    </div>
+  </div>
+
+  <footer>EAIM 사회역사 수업 · 셀프체크룸</footer>
+
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBalg0f5x0ydfHxn_nzgZ1pAELvJw6PzoY",
+  authDomain: "eaim-classroom.firebaseapp.com",
+  projectId: "eaim-classroom",
+  storageBucket: "eaim-classroom.firebasestorage.app",
+  messagingSenderId: "294479576192",
+  appId: "1:294479576192:web:c60e994e319dbd2f11ba65"
+};
+firebase.initializeApp(FIREBASE_CONFIG);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let teacherUid = null;
+let allRecords = [];
+let unsub = null;
+let currentQrUrl = '';
+
+function doLogin(){
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(e => alert('로그인 실패: ' + e.message));
+}
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    teacherUid = user.uid;
+    document.getElementById('loginShell').style.display = 'none';
+    document.getElementById('dashWrap').classList.add('open');
+    renderQR();
+    subscribeRecords();
+  } else {
+    teacherUid = null;
+    document.getElementById('loginShell').style.display = 'block';
+    document.getElementById('dashWrap').classList.remove('open');
+    if (unsub) unsub();
+  }
+});
+
+function renderQR(){
+  const url = new URL('index.html', window.location.href).href + '?t=' + teacherUid;
+  document.getElementById('qrUrlText').textContent = url;
+  const box = document.getElementById('qrcodeCanvas');
+  box.innerHTML = '';
+  new QRCode(box, { text: url, width: 220, height: 220, colorDark:'#07090c', colorLight:'#ffffff' });
+  currentQrUrl = url;
+}
+
+function openPresentMode(){
+  const box = document.getElementById('qrcodeCanvasBig');
+  box.innerHTML = '';
+  new QRCode(box, { text: currentQrUrl, width: 320, height: 320, colorDark:'#07090c', colorLight:'#ffffff' });
+  document.getElementById('presentOverlay').classList.add('open');
+}
+function closePresentMode(){
+  document.getElementById('presentOverlay').classList.remove('open');
+}
+
+function subscribeRecords(){
+  if (unsub) unsub();
+  unsub = db.collection('teachers').doc(teacherUid).collection('socialRecords')
+    .orderBy('createdAt', 'desc').limit(300)
+    .onSnapshot(snap => {
+      allRecords = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderTable();
+    }, err => console.warn('결과 실시간 조회 오류', err));
+}
+
+function renderTable(){
+  const filter = document.getElementById('subjectFilter').value;
+  const rows = allRecords.filter(r => !filter || r.subject === filter);
+  const body = document.getElementById('resultBody');
+  const empty = document.getElementById('emptyNote');
+
+  if (!rows.length) { body.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  body.innerHTML = rows.map(r => {
+    const pct = r.total ? r.correct / r.total : 0;
+    const scoreClass = pct >= 0.8 ? 'score-good' : (pct >= 0.5 ? 'score-mid' : 'score-low');
+    const SUBJECT_LABELS = { social1:'사회1', social2:'사회2', history1:'역사1', history2:'역사2' };
+    const subjectLabel = SUBJECT_LABELS[r.subject] || r.subject;
+    const weakHtml = (r.weakTopics || []).map(w => `<span class="weak-tag">${w}</span>`).join('') || '<span style="color:#555">-</span>';
+    const time = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleString('ko-KR') : '-';
+    const fbVal = (r.feedback || '').replace(/"/g, '&quot;');
+    const wCount = (r.writtenAnswers || []).length;
+    const writtenHtml = wCount
+      ? `<button class="written-btn" onclick="openWrittenModal('${r.id}')">✍️ 보기 (${wCount})</button>`
+      : '<span style="color:#555">-</span>';
+    return `<tr>
+      <td>${r.studentName || '이름 미입력'}</td>
+      <td>${subjectLabel}</td>
+      <td>${r.unitLabel || r.unitKey || '-'}</td>
+      <td class="${scoreClass}">${r.correct}/${r.total}</td>
+      <td>${weakHtml}</td>
+      <td>${writtenHtml}</td>
+      <td style="color:#777;font-size:0.85em">${time}</td>
+      <td>
+        <div class="fb-cell">
+          <input type="text" id="fb-${r.id}" value="${fbVal}" placeholder="한 줄 피드백 남기기...">
+          <button onclick="saveFeedback('${r.id}')">저장</button>
+          <span class="fb-saved-check" id="fbcheck-${r.id}">✓</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openWrittenModal(id){
+  const r = allRecords.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('wmTitle').textContent = `${r.studentName || '이름 미입력'} 학생 · ${r.unitLabel || ''} 서술형 답안`;
+  document.getElementById('wmBody').innerHTML = (r.writtenAnswers || []).map(w => `
+    <div class="wm-item">
+      <div class="wm-topic">${w.topic || ''}</div>
+      <div class="wm-q">Q. ${w.question || ''}</div>
+      <div class="wm-a">${w.answer || '(작성하지 않음)'}</div>
+    </div>
+  `).join('');
+  document.getElementById('writtenModalOverlay').classList.add('open');
+}
+function closeWrittenModal(){
+  document.getElementById('writtenModalOverlay').classList.remove('open');
+}
+
+function saveFeedback(id){
+  const input = document.getElementById('fb-' + id);
+  const text = input.value.trim();
+  db.collection('teachers').doc(teacherUid).collection('socialRecords').doc(id)
+    .update({ feedback: text, feedbackAt: firebase.firestore.FieldValue.serverTimestamp() })
+    .then(() => {
+      input.classList.add('saved');
+      const check = document.getElementById('fbcheck-' + id);
+      if (check) { check.style.display = 'inline'; setTimeout(() => check.style.display = 'none', 1800); }
+    })
+    .catch(e => alert('저장 실패: ' + e.message));
+}
+</script>
+</body>
+</html>
