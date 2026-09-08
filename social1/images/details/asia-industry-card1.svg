@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 240" width="340" height="240">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e2740"/>
+      <stop offset="100%" stop-color="#115a8b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="340" height="240" rx="24" fill="url(#bg)"/>
+  <rect width="340" height="240" rx="24" fill="url(#glass)"/>
+  <rect y="182" width="340" height="58" fill="#111" opacity="0.2"/><rect x="31.799999999999997" y="124.80000000000001" width="154.0" height="72.8" rx="12" fill="#95d3ef"/><polygon points="31.799999999999997,138.8 59.8,119.20000000000002 92.0,138.8 125.6,119.20000000000002 157.8,138.8 185.8,119.20000000000002 185.8,197.60000000000002 31.799999999999997,197.60000000000002" fill="#79bada"/><rect x="55.599999999999994" y="82.80000000000001" width="16.8" height="42.0" rx="4" fill="#d1dde7"/><rect x="97.6" y="68.80000000000001" width="16.8" height="56.0" rx="4" fill="#d1dde7"/><circle cx="63.99999999999999" cy="71.60000000000001" r="14.0" fill="#ffffff" opacity="0.45"/><circle cx="92.0" cy="54.80000000000001" r="18.2" fill="#ffffff" opacity="0.45"/><line x1="231.20000000000002" y1="48.5" x2="231.20000000000002" y2="178.5" stroke="#f0e7c0" stroke-width="8" stroke-linecap="round"/><line x1="194.8" y1="78.4" x2="267.6" y2="78.4" stroke="#f0e7c0" stroke-width="7" stroke-linecap="round"/><line x1="189.60000000000002" y1="174.6" x2="231.20000000000002" y2="52.39999999999999" stroke="#f0e7c0" stroke-width="6" stroke-linecap="round"/><line x1="272.8" y1="174.6" x2="231.20000000000002" y2="52.39999999999999" stroke="#f0e7c0" stroke-width="6" stroke-linecap="round"/><path d="M 254.60000000000002 78.4 q 23.4 7.8 39.0 23.4" fill="none" stroke="#f5b642" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="276.70000000000005" cy="109.6" r="15.6" fill="#1d1d1f"/>
+</svg>

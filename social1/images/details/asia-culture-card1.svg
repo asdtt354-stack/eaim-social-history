@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 240" width="340" height="240">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5a3010"/>
+      <stop offset="100%" stop-color="#d67a2b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="340" height="240" rx="24" fill="url(#bg)"/>
+  <rect width="340" height="240" rx="24" fill="url(#glass)"/>
+  <rect y="172" width="340" height="68" fill="#111" opacity="0.14"/><polygon points="85.0,153.6 112.2,100.8 139.4,153.6" fill="#ffffff"/><rect x="98.6" y="110.4" width="27.2" height="43.199999999999996" rx="4" fill="#f7d995"/><rect x="95.2" y="134.4" width="34.0" height="19.2" rx="4" fill="#b87333"/><rect x="187.00000000000003" y="105.6" width="61.199999999999996" height="38.4" rx="8" fill="#f2e4ca"/><circle cx="217.6" cy="100.8" r="48" fill="none" stroke="#f5b642" stroke-width="10"/><line x1="217.6" y1="81.60000000000001" x2="217.6" y2="148.8" stroke="#f5b642" stroke-width="6" stroke-linecap="round"/><circle cx="128.99999999999997" cy="149.60000000000002" r="8.4" fill="#ffcf6b"/><rect x="121.99999999999997" y="159.4" width="14.0" height="19.6" rx="10" fill="#98e0ff"/><circle cx="159.79999999999998" cy="149.60000000000002" r="8.4" fill="#8fd3ff"/><rect x="152.79999999999998" y="159.4" width="14.0" height="19.6" rx="10" fill="#f3c96c"/><circle cx="190.59999999999997" cy="149.60000000000002" r="8.4" fill="#ff8ac5"/><rect x="183.59999999999997" y="159.4" width="14.0" height="19.6" rx="10" fill="#b6e388"/>
+</svg>

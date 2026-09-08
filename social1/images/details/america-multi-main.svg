@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5a3010"/>
+      <stop offset="100%" stop-color="#d67a2b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="800" height="400" rx="24" fill="url(#bg)"/>
+  <rect width="800" height="400" rx="24" fill="url(#glass)"/>
+  <rect y="304" width="800" height="96" fill="#111" opacity="0.15"/><circle cx="208.64" cy="208.64000000000004" r="11.52" fill="#ffcf6b"/><rect x="199.04" y="222.08000000000004" width="19.200000000000003" height="26.880000000000003" rx="10" fill="#98e0ff"/><circle cx="250.88" cy="208.64000000000004" r="11.52" fill="#8fd3ff"/><rect x="241.28" y="222.08000000000004" width="19.200000000000003" height="26.880000000000003" rx="10" fill="#f3c96c"/><circle cx="293.12" cy="208.64000000000004" r="11.52" fill="#ff8ac5"/><rect x="283.52" y="222.08000000000004" width="19.200000000000003" height="26.880000000000003" rx="10" fill="#b6e388"/><circle cx="335.36" cy="208.64000000000004" r="11.52" fill="#b6e388"/><rect x="325.76" y="222.08000000000004" width="19.200000000000003" height="26.880000000000003" rx="10" fill="#98e0ff"/><path d="M 468.0 196.0 q 21.599999999999998 -26.4 45.6 0 l 21.599999999999998 21.599999999999998 q -12.0 21.599999999999998 -31.200000000000003 21.599999999999998 h -19.2 q -16.8 0 -21.599999999999998 -16.8 z" fill="#79bada"/><path d="M 588.0 196.0 q -21.599999999999998 -26.4 -45.6 0 l -21.599999999999998 21.599999999999998 q 12.0 21.599999999999998 31.200000000000003 21.599999999999998 h 19.2 q 16.8 0 21.599999999999998 -16.8 z" fill="#f3c96c"/><rect x="508.8" y="205.6" width="38.4" height="16.8" rx="12" fill="#f1d1b5"/><circle cx="640.0" cy="88.0" r="32" fill="#ffd064"/>
+</svg>

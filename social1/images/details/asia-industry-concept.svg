@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e2740"/>
+      <stop offset="100%" stop-color="#115a8b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="220" height="220" rx="24" fill="url(#bg)"/>
+  <rect width="220" height="220" rx="24" fill="url(#glass)"/>
+  <rect y="167" width="220" height="53" fill="#111" opacity="0.2"/><rect x="33.0" y="114.4" width="74.80000000000001" height="35.36" rx="12" fill="#95d3ef"/><polygon points="33.0,121.2 46.60000000000001,111.68 62.24000000000001,121.2 78.56,111.68 94.2,121.2 107.80000000000001,111.68 107.80000000000001,149.76 33.0,149.76" fill="#79bada"/><rect x="44.56" y="94.0" width="8.16" height="20.4" rx="4" fill="#d1dde7"/><rect x="64.96000000000001" y="87.2" width="8.16" height="27.200000000000003" rx="4" fill="#d1dde7"/><circle cx="48.64" cy="88.56" r="6.800000000000001" fill="#ffffff" opacity="0.45"/><circle cx="62.24000000000001" cy="80.4" r="8.84" fill="#ffffff" opacity="0.45"/><line x1="149.60000000000002" y1="77.0" x2="149.60000000000002" y2="137.0" stroke="#f0e7c0" stroke-width="8" stroke-linecap="round"/><line x1="132.8" y1="90.8" x2="166.40000000000003" y2="90.8" stroke="#f0e7c0" stroke-width="7" stroke-linecap="round"/><line x1="130.40000000000003" y1="135.2" x2="149.60000000000002" y2="78.8" stroke="#f0e7c0" stroke-width="6" stroke-linecap="round"/><line x1="168.8" y1="135.2" x2="149.60000000000002" y2="78.8" stroke="#f0e7c0" stroke-width="6" stroke-linecap="round"/><path d="M 160.40000000000003 90.8 q 10.799999999999999 3.5999999999999996 18.0 10.799999999999999" fill="none" stroke="#f5b642" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="170.60000000000002" cy="105.2" r="7.199999999999999" fill="#1d1d1f"/>
+</svg>

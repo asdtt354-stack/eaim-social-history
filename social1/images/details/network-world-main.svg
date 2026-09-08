@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1b2a4a"/>
+      <stop offset="100%" stop-color="#12355b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="800" height="400" rx="24" fill="url(#bg)"/>
+  <rect width="800" height="400" rx="24" fill="url(#glass)"/>
+  <circle cx="272.0" cy="184.0" r="96" fill="#56b6ff" stroke="#f5b642" stroke-width="7"/><path d="M 228.8 160.0 q 19.200000000000003 -14.399999999999999 43.2 -5.76 q 9.600000000000001 9.600000000000001 15.36 17.28 q -5.76 4.800000000000001 -7.68 15.36 q -15.36 4.800000000000001 -23.04 11.52 q -4.800000000000001 15.36 -17.28 21.12 q -15.36 0 -26.880000000000003 -9.600000000000001 q 1.92 -15.36 8.64 -24.0 q -2.88 -9.600000000000001 7.68 -25.92 z" fill="#78d47a"/><path d="M 281.6 201.28 q 13.440000000000001 -3.84 23.04 4.800000000000001 q -2.88 9.600000000000001 -13.440000000000001 17.28 q -11.52 0 -17.28 -7.68 q 0 -8.64 7.68 -14.399999999999999 z" fill="#78d47a"/><path d="M 190.4 184.0 h 163.2" fill="none" stroke="#d7ecff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/><path d="M 272.0 102.4 v 163.2" fill="none" stroke="#d7ecff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/><circle cx="496.0" cy="136.0" r="20.160000000000004" fill="#ff6868"/><polygon points="496.0,179.2 483.04,148.96 508.96,148.96" fill="#ff6868"/><circle cx="496.0" cy="136.0" r="7.2" fill="#fff"/><circle cx="463.99999999999994" cy="248.0" r="16.8" fill="#ff6868"/><polygon points="463.99999999999994,284.0 453.19999999999993,258.8 474.79999999999995,258.8" fill="#ff6868"/><circle cx="463.99999999999994" cy="248.0" r="6.0" fill="#fff"/><circle cx="608.0" cy="208.0" r="15.680000000000001" fill="#ff6868"/><polygon points="608.0,241.6 597.92,218.08 618.08,218.08" fill="#ff6868"/><circle cx="608.0" cy="208.0" r="5.6000000000000005" fill="#fff"/><path d="M 336.0 160.0 Q 400.0 88.0 496.0 136.0" fill="none" stroke="#f5b642" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 336.0 216.0 Q 400.0 240.0 463.99999999999994 248.0" fill="none" stroke="#7ce3cf" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 336.0 200.0 Q 463.99999999999994 144.0 608.0 208.0" fill="none" stroke="#d9f3ff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

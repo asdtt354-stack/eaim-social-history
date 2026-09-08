@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08344a"/>
+      <stop offset="100%" stop-color="#116a82"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="220" height="220" rx="24" fill="url(#bg)"/>
+  <rect width="220" height="220" rx="24" fill="url(#glass)"/>
+  <rect y="162" width="220" height="58" fill="#111" opacity="0.16"/><polygon points="40.8,121.2 74.4,111.12 83.92,125.68 50.32,135.76" fill="#7bc4ff" stroke="#d9f3ff" stroke-width="3"/><line x1="49.199999999999996" y1="119.8" x2="58.72" y2="134.35999999999999" stroke="#d9f3ff" stroke-width="2.5" stroke-linecap="round"/><line x1="57.599999999999994" y1="118.4" x2="67.12" y2="132.95999999999998" stroke="#d9f3ff" stroke-width="2.5" stroke-linecap="round"/><line x1="66.0" y1="117.0" x2="75.52" y2="131.56" stroke="#d9f3ff" stroke-width="2.5" stroke-linecap="round"/><line x1="57.04" y1="136.88" x2="61.519999999999996" y2="148.08" stroke="#d7ecff" stroke-width="5" stroke-linecap="round"/><line x1="68.24" y1="133.52" x2="72.72" y2="144.72" stroke="#d7ecff" stroke-width="5" stroke-linecap="round"/><circle cx="88.4" cy="101.6" r="7.840000000000001" fill="#ffd064"/><line x1="105.6" y1="149.60000000000002" x2="180.39999999999998" y2="149.60000000000002" stroke="#d2c19c" stroke-width="6" stroke-linecap="round"/><rect x="136.4" y="105.6" width="22" height="56" rx="4" fill="#dfe7ee"/><rect x="154.0" y="92.39999999999999" width="30" height="68" rx="4" fill="#bfd5e6"/>
+</svg>
