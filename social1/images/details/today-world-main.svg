@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e2437"/>
+      <stop offset="100%" stop-color="#384e77"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="800" height="400" rx="24" fill="url(#bg)"/>
+  <rect width="800" height="400" rx="24" fill="url(#glass)"/>
+  <rect y="300" width="800" height="100" fill="#111" opacity="0.18"/><circle cx="272.0" cy="180.0" r="90" fill="#56b6ff" stroke="#f5b642" stroke-width="7"/><path d="M 231.5 157.5 q 18.0 -13.5 40.5 -5.3999999999999995 q 9.0 9.0 14.4 16.2 q -5.3999999999999995 4.5 -7.2 14.4 q -14.4 4.5 -21.599999999999998 10.799999999999999 q -4.5 14.4 -16.2 19.8 q -14.4 0 -25.200000000000003 -9.0 q 1.8 -14.4 8.1 -22.5 q -2.6999999999999997 -9.0 7.2 -24.3 z" fill="#78d47a"/><path d="M 281.0 196.2 q 12.600000000000001 -3.6 21.599999999999998 4.5 q -2.6999999999999997 9.0 -12.600000000000001 16.2 q -10.799999999999999 0 -16.2 -7.2 q 0 -8.1 7.2 -13.5 z" fill="#78d47a"/><path d="M 195.5 180.0 h 153.0" fill="none" stroke="#d7ecff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/><path d="M 272.0 103.5 v 153.0" fill="none" stroke="#d7ecff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/><circle cx="512.0" cy="136.0" r="33.6" fill="#ff6868"/><polygon points="512.0,208.0 490.4,157.6 533.6,157.6" fill="#ff6868"/><circle cx="512.0" cy="136.0" r="12.0" fill="#fff"/><polygon points="349.0,269.25 400.0,205.5 451.0,269.25" fill="#6bb06e"/><polygon points="315.0,277.75 370.25,231.0 417.0,277.75" fill="#4a8054"/><polygon points="408.5,277.75 463.75,224.2 514.75,277.75" fill="#82c98a"/><path d="M 80.0 288.0 q 80.0 -32.0 160.0 0 t 160.0 0 t 160.0 0 t 160.0 0" fill="none" stroke="#78d47a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+</svg>

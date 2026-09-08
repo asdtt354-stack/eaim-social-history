@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d3047"/>
+      <stop offset="100%" stop-color="#294f73"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="220" height="220" rx="24" fill="url(#bg)"/>
+  <rect width="220" height="220" rx="24" fill="url(#glass)"/>
+  <rect y="171" width="220" height="49" fill="#111" opacity="0.16"/><rect x="37.4" y="105.00000000000001" width="57.2" height="44.199999999999996" rx="12" fill="#e7eef7" stroke="#345" stroke-width="4"/><rect x="54.56" y="127.36000000000001" width="22.88" height="21.84" rx="6" fill="#345"/><rect x="46.239999999999995" y="113.84000000000002" width="9.36" height="8.32" rx="4" fill="#9ddcff"/><rect x="59.76" y="113.84000000000002" width="9.36" height="8.32" rx="4" fill="#9ddcff"/><rect x="73.28" y="113.84000000000002" width="9.36" height="8.32" rx="4" fill="#9ddcff"/><circle cx="117.04" cy="124.96" r="5.279999999999999" fill="#ffcf6b"/><rect x="112.64" y="131.12" width="8.8" height="12.32" rx="10" fill="#98e0ff"/><circle cx="136.4" cy="124.96" r="5.279999999999999" fill="#8fd3ff"/><rect x="132.0" y="131.12" width="8.8" height="12.32" rx="10" fill="#f3c96c"/><circle cx="155.76" cy="124.96" r="5.279999999999999" fill="#ff8ac5"/><rect x="151.35999999999999" y="131.12" width="8.8" height="12.32" rx="10" fill="#b6e388"/><circle cx="171.6" cy="83.6" r="10.080000000000002" fill="#7ce3cf"/><polygon points="171.6,105.19999999999999 165.12,90.08 178.07999999999998,90.08" fill="#7ce3cf"/><circle cx="171.6" cy="83.6" r="3.6" fill="#fff"/>
+</svg>
