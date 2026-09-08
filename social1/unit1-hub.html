@@ -31,7 +31,7 @@
   @media (max-width: 640px) { .lesson-grid { grid-template-columns: 1fr; } }
   .lcard { display: flex; align-items: center; gap: 14px; background: #121012; border: 1.5px solid #262022; border-radius: 16px; padding: 16px 18px; transition: all .2s; }
   .lcard:hover { border-color: var(--main-color); transform: translateY(-2px); }
-  .lcard .l-icon { font-size: 1.7em; flex-shrink: 0; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #1a1a1c; border-radius: 12px; }
+  .lcard .l-icon{flex:0 0 48px;width:48px;height:48px;border-radius:50%;overflow:hidden;padding:0;margin:0;background:#111;border:2px solid #f5b642;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
   .lcard .l-body { flex: 1; min-width: 0; }
   .lcard .l-page { font-size: 0.68em; color: #777; margin-bottom: 3px; }
   .lcard .l-title { font-size: 0.94em; font-weight: 800; color: #fff; margin-bottom: 3px; }
@@ -49,11 +49,21 @@
   .topic-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;max-width:900px;margin:34px auto 0;padding:0 20px}
   .topic-tile{background:#121012;border:1.5px solid #262022;border-radius:18px;padding:14px;text-align:center;transition:.2s}
   .topic-tile:hover{transform:translateY(-3px);border-color:var(--main-color)}
-  .topic-tile img{width:112px;height:112px;border-radius:50%;object-fit:contain;object-position:center;display:block;margin:0 auto 10px;border:3px solid #f5b642;background:#111;padding:9px;box-sizing:border-box;}
+  .topic-tile > img{display:none;}
   .topic-no{font-size:.7em;color:#f59e0b;font-weight:800;margin-bottom:5px}
   .topic-title{font-size:.84em;font-weight:800;line-height:1.35;color:#fff}
-  .lcard .l-icon{overflow:hidden;padding:0;background:#1a1a1c}
-  .lcard .l-icon img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#111;padding:3px;box-sizing:border-box;}
+  .lcard .l-icon{flex:0 0 48px;width:48px;height:48px;border-radius:50%;overflow:hidden;padding:0;margin:0;background:#111;border:2px solid #f5b642;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
+  .lcard .l-icon img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;border-radius:50%;padding:0;margin:0;background:#111;}
+
+
+  /* === EAIM 사회1 원형 썸네일 안정화 === */
+  .circle-frame{width:124px;height:124px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#171315;border:3px solid #f5b642;box-sizing:border-box;margin:0 auto 10px;overflow:hidden;padding:0;}
+  .circle-inner{width:108px;height:108px;border-radius:50%;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center;box-sizing:border-box;flex:0 0 108px;padding:0;margin:0;}
+  .circle-inner img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;border-radius:50%;padding:0;margin:0;}
+  @media(max-width:700px){
+    .circle-frame{width:124px;height:124px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#171315;border:3px solid #f5b642;box-sizing:border-box;margin:0 auto 10px;overflow:hidden;padding:0;}
+    .circle-inner{width:108px;height:108px;border-radius:50%;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center;box-sizing:border-box;flex:0 0 108px;padding:0;margin:0;}
+  }
 
 </style>
 </head>
@@ -113,7 +123,7 @@ function renderGroup(id, items){
 renderGroup('group1', GROUP1);
 document.getElementById('topicStrip').innerHTML = GROUP1.map((item,idx)=>`
   <a class="topic-tile" href="${item.href}">
-    <img src="${item.img}" alt="${item.title}">
+    <div class="circle-frame"><div class="circle-inner"><img src="${item.img}" alt="${item.title}"></div></div>
     <div class="topic-no">${String(idx+1).padStart(2,'0')}</div>
     <div class="topic-title">${item.title}</div>
   </a>
