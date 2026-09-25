@@ -587,13 +587,24 @@ window.handleCreateRoom = async () => {
   const groupSize = Number(document.getElementById('group-size').value) || 4;
 
   const { code } = await createRoom({ title, mode, classes, groupSize });
-  const link = studentLink(code, currentApp);
-  document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" style="border-radius:10px">`;
+  openQrModal(code, currentApp);
+  refreshRooms();
+};
+
+/* QR 창 열기 — QR은 교실 모듈이 화면에서 직접 그림(외부 QR 서비스 사용 안 함) */
+function openQrModal(code, app) {
+  let link;
+  try {
+    link = studentLink(code, app);
+  } catch (e) {
+    alert('입장 링크를 만들지 못했어요: ' + e.message);
+    return;
+  }
+  document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" alt="학생 입장 QR 코드" style="border-radius:10px;background:#fff;max-width:100%">`;
   document.getElementById('qr-code-text').textContent = '입장 코드: ' + code;
   document.getElementById('qr-link').value = link;
   document.getElementById('qr-modal').style.display = 'block';
-  refreshRooms();
-};
+}
 
 async function refreshRooms() {
   rooms = await listMyRooms();
@@ -622,13 +633,7 @@ async function refreshRooms() {
   gameSelEl.innerHTML = rooms.map(r => `<option value="${r.id}">${r.title} (${r.code})</option>`).join('');
 }
 
-window.showQR = (code, app) => {
-  const link = studentLink(code, app);
-  document.getElementById('qr-img').innerHTML = `<img src="${qrImageUrl(link)}" style="border-radius:10px">`;
-  document.getElementById('qr-code-text').textContent = '입장 코드: ' + code;
-  document.getElementById('qr-link').value = link;
-  document.getElementById('qr-modal').style.display = 'block';
-};
+window.showQR = (code, app) => openQrModal(code, app);
 window.toggleOpen = async (roomId, val) => { await toggleRoomOpen(roomId, val); refreshRooms(); };
 
 window.copyQrLink = () => {

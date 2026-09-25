@@ -1,13 +1,23 @@
 /* ══════════════════════════════════════════════════════════
-   EAIM Classroom Core
+   EAIM Classroom Core  v1.0 (2026-09-25)
+   - 기준본: 사회·역사 저장소(eaim-social-history). 고칠 때는 기준본을 먼저
+     고치고 버전을 올린 뒤, 다른 저장소의 사본을 같은 버전으로 맞춥니다.
+     (다른 저장소는 shared/eaim-classroom-core.js 로 복사하고, 같은 폴더에
+      qrcode-generator.js 도 함께 복사합니다.)
    - 기존 eaim-classroom Firebase 프로젝트를 그대로 재사용합니다.
-   - 국어 플레이(eaim-korean-play) / 과학 3종과 동일한 구조:
+   - 공통규칙이 목표로 하는 교실 구조:
        teachers/{uid}/rooms/{roomId}
        roomCodes/{code} → {teacherUid, roomId}   (학생 공개 조회용)
        teachers/{uid}/rooms/{roomId}/students/{studentId}
        teachers/{uid}/rooms/{roomId}/submissions/{subId}
-   - 이 파일 하나를 4개 앱(역사신문/사회사전/게임방/세계탐구)에서
-     동일하게 <script type="module" src="eaim-classroom-core.js"> 로 불러옵니다.
+   - 사회·역사에서는 허브와 4개 앱(역사신문/사회사전/게임방/세계탐구)이
+     <script type="module" src="eaim-classroom-core.js"> 로 불러옵니다.
+   - 변경 기록
+     v1.0 (2026-09-25) 버전 표시 시작 / QR을 저장소 안 라이브러리로 화면에서
+          그림(외부 QR 서비스 제거) / 모르는 앱이면 역사신문으로 보내지 않고
+          오류를 냄, 앱 파일 표를 각 저장소에서 넣을 수 있게 함 / 수업 방에
+          교과(platform) 값 저장 / 머리 주석 바로잡음(국어·과학은 아직 이
+          모듈을 쓰지 않음)
    ══════════════════════════════════════════════════════════ */
 
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -20,6 +30,7 @@ import {
   collection, addDoc, query, where, orderBy, getDocs,
   onSnapshot, serverTimestamp, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import qrcode from "./qrcode-generator.js";
 
 // ⚠️ 기존 eaim-classroom 프로젝트의 값을 그대로 넣으세요 (다른 앱들과 동일한 값)
 const firebaseConfig = {
@@ -47,6 +58,11 @@ const persistenceReady = setPersistence(auth, browserSessionPersistence).catch((
 /* ── 이 파일을 쓰는 앱의 이름을 각 HTML에서 지정 ──
    예) window.EAIM_APP_TYPE = 'history' | 'dict' | 'game' | 'world'; */
 const APP_TYPE = () => window.EAIM_APP_TYPE || 'unknown';
+
+/* ── 이 저장소의 교과 이름 (공통규칙 10-1: 수업 방에 교과와 앱을 적는다) ──
+   다른 저장소에서 쓸 때는 HTML에서 모듈보다 먼저 지정합니다.
+   예) <script>window.EAIM_PLATFORM = 'science';</script> */
+const PLATFORM = () => window.EAIM_PLATFORM || 'social-history';
 
 /* ════════ 교사 인증 ════════ */
 export async function teacherLogin() {
@@ -99,6 +115,7 @@ export async function createRoom({ title, mode, classes = [], groupSize = 4 }) {
   const uid = auth.currentUser.uid;
   const roomsCol = collection(db, `teachers/${uid}/rooms`);
   const roomRef = await addDoc(roomsCol, {
+    platform: PLATFORM(),
     app: APP_TYPE(),
     title, mode, classes, groupSize,
     isOpen: true,
@@ -296,12 +313,27 @@ export async function getLiveLeaderboard(teacherUid, roomId, sessionId) {
   return Object.values(byStudent).sort((a, b) => b.totalPoints - a.totalPoints);
 }
 
-/* ════════ QR 코드 렌더 (외부 라이브러리 없이, 이미지 API 사용) ════════ */
+/* ════════ QR 코드 (저장소 안 라이브러리로 화면에서 그림) ════════
+   ⚠️ 외부 QR 서비스를 쓰지 않습니다(공통규칙 3번): 배포 환경에서 막힐 수 있고,
+   수업 코드가 든 주소가 외부로 전송되기 때문입니다.
+   이름은 예전과 같지만, 이제 인터넷 주소 대신 그림 자체(data: 주소)를 돌려줍니다.
+   그래서 <img src="${qrImageUrl(link)}"> 처럼 쓰던 코드는 그대로 동작합니다. */
 export function qrImageUrl(link, size = 260) {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(link)}`;
+  const qr = qrcode(0, 'M');          // 0 = 주소 길이에 맞춰 크기 자동
+  qr.addData(link);
+  qr.make();
+  const count = qr.getModuleCount();
+  const margin = 4;                    // QR 표준의 흰 테두리(칸 4개)
+  const cell = Math.max(2, Math.floor(size / (count + margin * 2)));
+  const svg = qr.createSvgTag({ cellSize: cell, margin: cell * margin, scalable: false });
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
+
 /** 방이 속한 앱(app)에 맞는 실제 파일로 학생 입장 링크를 만듭니다.
- *  ⚠️ 'student.html' 같은 공용 페이지는 존재하지 않으므로, 반드시 app별 실제 파일명으로 매핑합니다. */
+ *  ⚠️ 'student.html' 같은 공용 페이지는 존재하지 않으므로, 반드시 app별 실제 파일명으로 매핑합니다.
+ *  다른 저장소에서 쓸 때는 HTML에서 앱 파일 표를 넣습니다.
+ *  예) <script>window.EAIM_APP_FILES = { space: 'space.html' };</script>
+ *  표에 없는 앱이면 엉뚱한 앱으로 보내지 않고 오류를 냅니다. */
 const APP_FILE = {
   history: 'eaim-history-news.html',
   dict: 'eaim-social-dict.html',
@@ -309,6 +341,10 @@ const APP_FILE = {
   game: 'eaim-social-game.html',
 };
 export function studentLink(code, app, baseUrl = location.origin + location.pathname.replace(/[^/]+$/, '')) {
-  const file = APP_FILE[app] || 'eaim-history-news.html';
+  const files = { ...APP_FILE, ...(window.EAIM_APP_FILES || {}) };
+  const file = files[app];
+  if (!file) {
+    throw new Error(`"${app}" 앱의 학생 입장 파일을 찾을 수 없어요. 앱 파일 표(EAIM_APP_FILES)에 추가해 주세요.`);
+  }
   return `${baseUrl}${file}?code=${code}`;
 }

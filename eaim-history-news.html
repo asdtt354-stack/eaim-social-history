@@ -1886,7 +1886,7 @@ async function genHistoryImage(prompt, style='watercolor') {
     illustration: '교과서 삽화 스타일, 상세하고 교육적인 역사 일러스트',
   };
   const styleText = styleMap[style] || styleMap.watercolor;
-  const fullPrompt = `${styleText}. ${prompt}. 어린이/청소년 교육용으로 안전하고 적절한 내용, 텍스트나 글자는 넣지 마세요.`;
+  const fullPrompt = `${styleText}. ${prompt}. 어린이/청소년 교육용으로 안전하고 적절한 내용, 텍스트나 글자는 넣지 마세요. 국기(태극기 포함)는 그리지 마세요.`;
   return await callGeminiImage(fullPrompt);
 }
 
