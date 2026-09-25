@@ -216,6 +216,7 @@ main{max-width:720px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 .cat-tab.on{background:var(--sky);border-color:#1A90C0;color:#fff;box-shadow:0 3px 12px rgba(56,189,248,.35)}
 
 </style>
+<script src="ai-relay.js"></script>
 </head>
 <body>
 
@@ -495,7 +496,7 @@ window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
 </script>
 
 <script>
-let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let stuName='', apiKey='';
 let currentTerm=null;
 let dictEntries=[];
 let selImgUrl='';
@@ -587,7 +588,7 @@ const MOOD_LABELS = { great:'최고예요', good:'좋아요', normal:'그저 그
 /** AI가 그때그때 새로 만든 위로/응원 문구를 반환 (키 없거나 실패하면 고정 문구로 대체) */
 async function genMoodMessage(mood){
   const fallback = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return fallback;
   try{
     const extra = mood==='down' ? ' 특히 오늘 마음이 힘들다고 했으니, 위로하면서 선생님이나 주변 사람에게 이야기하는 것도 좋다는 걸 자연스럽게 한 마디 덧붙여주세요.' : '';
@@ -610,12 +611,12 @@ async function pickMood(mood){
 
 /** Gemini TTS로 뮤토 목소리 생성해서 재생 (실패해도 조용히 넘어감 — 텍스트는 이미 화면에 보이므로) */
 async function speakMuto(text){
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return;
   const statusEl = document.getElementById('mood-speak-status');
   if(statusEl){ statusEl.style.display='block'; statusEl.textContent='🔊 뮤토가 말하는 중...'; }
   try{
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key='+key,{
+    const r = await EAIM_AI.fetch('tts',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         contents: [{ parts: [{ text }] }],
@@ -699,11 +700,11 @@ async function pushSubmission(kind, title, content){
 }
 
 async function callGemini(prompt,maxTokens=800,jsonMode=false){
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key)throw new Error('NO_KEY');
   const generationConfig={maxOutputTokens:maxTokens,temperature:0.8,thinkingConfig:{thinkingBudget:0}};
   if(jsonMode) generationConfig.responseMimeType='application/json';
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r=await EAIM_AI.fetch('text',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig})
   });
@@ -714,9 +715,9 @@ async function callGemini(prompt,maxTokens=800,jsonMode=false){
 
 /** 구글 검색 그라운딩을 켜서 호출 — 실시간 검색 결과를 참고해 더 정확한 사실 정보를 만들 때 사용 */
 async function callGeminiSearch(prompt,maxTokens=1000){
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key)throw new Error('NO_KEY');
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r=await EAIM_AI.fetch('text',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       contents:[{parts:[{text:prompt}]}],
@@ -761,11 +762,11 @@ function sanitizeJsonStrings(s){
 }
 
 async function genAIImage(prompt) {
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if (!key) return null;
   try {
     const fullPrompt = `교육용 일러스트, 컬러풀, 어린이/청소년에게 안전하고 적절한 내용, 플랫 디자인 스타일. ${prompt}. 텍스트나 글자는 넣지 마세요. 국기(태극기 포함)는 그리지 마세요.`;
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=' + key, {
+    const r = await EAIM_AI.fetch('image-lite', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
     });
@@ -804,7 +805,7 @@ async function searchTerm(){
   document.getElementById('search-loading').style.display='block';
   document.getElementById('search-preview').style.display='none';
 
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
 
   _kws=[term,'사회','개념','용어','학습','이해'];
   initParticles(_kws);
@@ -851,14 +852,14 @@ ${factText}
       currentTerm={name:term,category:'사회',definition:term+'에 대한 정의입니다.',keywords:_kws,related:[],wikiSearch:term,story:'',imgUrl:''};
       document.getElementById('preview-name').textContent=term;
       document.getElementById('preview-cat').textContent='사회';
-      document.getElementById('preview-def').textContent='API 키를 설정하면 AI가 자세한 설명을 제공해요.';
+      document.getElementById('preview-def').textContent='AI 설명을 정리하지 못했어요. 다시 검색해 보세요.';
       document.getElementById('search-loading').style.display='none';
       document.getElementById('search-preview').style.display='block';
       buildTermCard();
       loadTermImages(term);
     }
   } else {
-    currentTerm={name:term,category:'사회',definition:term+'에 대한 용어예요. API 키를 설정하면 자세한 설명을 볼 수 있어요.',keywords:_kws,related:[],wikiSearch:term,story:'',imgUrl:''};
+    currentTerm={name:term,category:'사회',definition:term+'에 대한 용어예요. '+EAIM_AI.NO_AI,keywords:_kws,related:[],wikiSearch:term,story:'',imgUrl:''};
     document.getElementById('preview-name').textContent=term;
     document.getElementById('preview-cat').textContent='사회';
     document.getElementById('preview-def').textContent=currentTerm.definition;
@@ -958,9 +959,9 @@ async function genStory(type){
   const ld=document.getElementById('story-loading');
   el.textContent='';ld.style.display='flex';
 
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key){
-    el.textContent=`📖 "${currentTerm.name}" 이야기\n\nAPI 키를 설정하면 AI가 재미있는 스토리를 만들어줘요!\n교사 패널에서 Gemini API 키를 입력해주세요.`;
+    el.textContent=`📖 "${currentTerm.name}" 이야기\n\n${EAIM_AI.NO_AI}\n선생님 QR·링크로 들어오면 AI가 재미있는 스토리를 만들어줘요!`;
     ld.style.display='none';return;
   }
 
@@ -1179,7 +1180,7 @@ async function aiNoteCheck(){
     const terms=dictEntries.map(e=>e.name).join(', ');
     const result=await callGemini(`중학생이 사회 용어(${terms})를 공부하고 쓴 정리 노트를 첨삭해주세요.\n\n노트:\n${text}\n\n✅ 잘한 점:\n✏️ 보완할 부분:\n💡 추가하면 좋은 내용:\n⭐ 격려 한마디:\n\n짧고 따뜻하게 한국어로 피드백해주세요.`,400);
     txt.textContent=result;
-  }catch(e){txt.textContent='API 키를 설정하면 AI 첨삭을 받을 수 있어요.';}
+  }catch(e){txt.textContent=EAIM_AI.why(e,'AI 첨삭');}
 }
 
 async function aiNoteHelp(){
@@ -1191,7 +1192,7 @@ async function aiNoteHelp(){
     const terms=dictEntries.map(e=>e.name).join(', ');
     const result=await callGemini(`중학생이 사회 용어(${terms})에 대한 정리 노트를 쓰려고 합니다.\n도움이 될 힌트를 주세요:\n🌟 시작 문장 예시:\n💭 생각해볼 질문 2개:\n📝 꼭 포함하면 좋은 내용:\n\n짧고 격려하는 방식으로 한국어로 답해주세요.`,350);
     txt.textContent=result;
-  }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
+  }catch(e){txt.textContent=EAIM_AI.why(e,'AI 도움');}
 }
 
 function sT(n){

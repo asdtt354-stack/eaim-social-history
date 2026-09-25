@@ -191,6 +191,7 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
   .match-grid{grid-template-columns:repeat(3,1fr)}
 }
 </style>
+<script src="ai-relay.js"></script>
 </head>
 <body>
 
@@ -439,7 +440,7 @@ window.EAIM = { resolveRoomByCode, joinRoom, saveGameResult, studentEnter, liste
 
 <script>
 let stuName = '';
-let apiKey = localStorage.getItem('eaim_gemini_key') || '';
+let apiKey='';
 let totalScore = 0;
 let streak = 0;
 let currentGame = null;
@@ -619,7 +620,7 @@ const MOOD_LABELS = { great:'최고예요', good:'좋아요', normal:'그저 그
 /** AI가 그때그때 새로 만든 위로/응원 문구를 반환 (키 없거나 실패하면 고정 문구로 대체) */
 async function genMoodMessage(mood){
   const fallback = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return fallback;
   try{
     const extra = mood==='down' ? ' 특히 오늘 마음이 힘들다고 했으니, 위로하면서 선생님이나 주변 사람에게 이야기하는 것도 좋다는 걸 자연스럽게 한 마디 덧붙여주세요.' : '';
@@ -642,12 +643,12 @@ async function pickMood(mood){
 
 /** Gemini TTS로 뮤토 목소리 생성해서 재생 (실패해도 조용히 넘어감 — 텍스트는 이미 화면에 보이므로) */
 async function speakMuto(text){
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return;
   const statusEl = document.getElementById('mood-speak-status');
   if(statusEl){ statusEl.style.display='block'; statusEl.textContent='🔊 뮤토가 말하는 중...'; }
   try{
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key='+key,{
+    const r = await EAIM_AI.fetch('tts',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         contents: [{ parts: [{ text }] }],
@@ -859,9 +860,9 @@ function updateSelCount(){
 }
 
 async function callGemini(prompt, maxTokens=600){
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) throw new Error('NO_KEY');
-  const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r = await EAIM_AI.fetch('text',{
     method:'POST', headers:{'Content-Type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:maxTokens,temperature:0.8,thinkingConfig:{thinkingBudget:0}}})
   });
@@ -1026,7 +1027,7 @@ function checkGuess(ans, el){
 
 async function showRandomQuestion(){
   const term = getRandTerm();
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
 
   if(!key){
     gameState.guessAnswer = term;
@@ -1094,7 +1095,7 @@ async function showStoryQuestion(){
   const term = getRandTerm();
   const others = getRandTerms(10).filter(t=>t!==term).slice(0,3);
   const choices = [term,...others].sort(()=>Math.random()-.5);
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
 
   let story = `오늘 수업에서 선생님이 "${getDef(term)}"에 대해 설명했어요. 이 용어는 무엇일까요?`;
 

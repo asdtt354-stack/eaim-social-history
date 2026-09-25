@@ -264,6 +264,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
 /* ── 학급 연결 배지 ── */
 .class-badge{background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);border-radius:99px;padding:4px 12px;font-size:.72rem;color:#38BDF8;font-weight:700;display:none}
 </style>
+<script src="ai-relay.js"></script>
 </head>
 <body>
 
@@ -419,7 +420,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div class="ct">🎨 시대 배경 이미지</div>
 
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
-      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 그림 생성 (Gemini API 키 사용)</div>
+      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 그림 생성</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px">
         <button onclick="selImgStyle('watercolor',this)" class="img-style-btn on">🖌️ 수채화</button>
         <button onclick="selImgStyle('minhwa',this)" class="img-style-btn">🎭 민화</button>
@@ -486,7 +487,7 @@ main{max-width:800px;margin:0 auto;padding:20px 14px;position:relative;z-index:1
     <div class="ct">🎨 인물 이미지</div>
 
     <div style="background:linear-gradient(135deg,rgba(139,32,16,.1),rgba(200,148,10,.08));border-radius:10px;padding:13px;margin-bottom:12px;border:1.5px solid rgba(200,148,10,.2)">
-      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성 (Gemini API 키 사용)</div>
+      <div style="font-size:.74rem;font-weight:700;color:var(--gold);margin-bottom:8px">🎨 AI 인물 그림 생성</div>
       <div style="font-size:.7rem;font-weight:700;color:var(--ink3);margin-bottom:5px">📸 무엇을 그릴까요?</div>
       <div style="display:flex;gap:6px;margin-bottom:9px">
         <button onclick="selImageSubject('portrait',this)" id="subj-portrait-btn" class="person-style-btn on" style="flex:1">👤 인물 초상화</button>
@@ -866,7 +867,7 @@ window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
 </script>
 
 <script>
-let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let stuName='', apiKey='';
 let searchMode = 'person'; // 'person' | 'event'
 
 function setSearchMode(mode, btn){
@@ -993,7 +994,7 @@ const MOOD_LABELS = { great:'최고예요', good:'좋아요', normal:'그저 그
 /** AI가 그때그때 새로 만든 위로/응원 문구를 반환 (키 없거나 실패하면 고정 문구로 대체) */
 async function genMoodMessage(mood){
   const fallback = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return fallback;
   try{
     const extra = mood==='down' ? ' 특히 오늘 마음이 힘들다고 했으니, 위로하면서 선생님이나 주변 사람에게 이야기하는 것도 좋다는 걸 자연스럽게 한 마디 덧붙여주세요.' : '';
@@ -1016,12 +1017,12 @@ async function pickMood(mood){
 
 /** Gemini TTS로 뮤토 목소리 생성해서 재생 (실패해도 조용히 넘어감 — 텍스트는 이미 화면에 보이므로) */
 async function speakMuto(text){
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return;
   const statusEl = document.getElementById('mood-speak-status');
   if(statusEl){ statusEl.style.display='block'; statusEl.textContent='🔊 뮤토가 말하는 중...'; }
   try{
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key='+key,{
+    const r = await EAIM_AI.fetch('tts',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         contents: [{ parts: [{ text }] }],
@@ -1106,11 +1107,11 @@ async function pushSubmission(kind, title, content){
 }
 
 async function callGemini(prompt,maxTokens=1000,jsonMode=false){
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key)throw new Error('NO_KEY');
   const generationConfig={maxOutputTokens:maxTokens,temperature:0.7,thinkingConfig:{thinkingBudget:0}};
   if(jsonMode) generationConfig.responseMimeType='application/json';
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r=await EAIM_AI.fetch('text',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig})
   });
@@ -1121,9 +1122,9 @@ async function callGemini(prompt,maxTokens=1000,jsonMode=false){
 
 /** 구글 검색 그라운딩을 켜서 호출 — 실시간 검색 결과를 참고해 더 정확한 사실 정보를 만들 때 사용 */
 async function callGeminiSearch(prompt,maxTokens=1200){
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key)throw new Error('NO_KEY');
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r=await EAIM_AI.fetch('text',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       contents:[{parts:[{text:prompt}]}],
@@ -1200,7 +1201,7 @@ async function searchPerson(){
   if(!name){alert(searchMode==='event'?'사건을 입력해주세요!':'인물을 입력해주세요!');return;}
   sT(2);
 
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
 
   const defaultKws=[name,'역사','조선','한국','전통','문화','역사적',searchMode==='event'?'사건':'인물'];
   initParticles(defaultKws);
@@ -1269,7 +1270,7 @@ ${factText}
       buildPersonCard();
     }
   } else {
-    currentPerson={name,era:'시대 미상',birth:'',title:'',desc:'API 키를 설정하면 AI가 자세한 설명을 제공해요.',achievements:[],keywords:defaultKws,article:''};
+    currentPerson={name,era:'시대 미상',birth:'',title:'',desc:EAIM_AI.NO_AI,achievements:[],keywords:defaultKws,article:''};
     renderEraKeywords(defaultKws);
     buildPersonCard();
   }
@@ -1644,7 +1645,7 @@ async function aiEssayCheck(){
     const names=articles.map(a=>a.name).join(', ');
     const result=await callGemini(`중학생이 역사 인물(${names})에 대해 쓴 감상문을 첨삭해주세요.\n\n감상문:\n${text}\n\n✅ 잘한 점:\n✏️ 더 풍부하게 쓸 수 있는 부분:\n💡 추천 표현:\n⭐ 격려 한마디:\n\n짧고 따뜻하게 한국어로 피드백해주세요.`,500);
     txt.textContent=result;
-  }catch(e){txt.textContent='API 키를 설정하면 AI 첨삭을 받을 수 있어요.';}
+  }catch(e){txt.textContent=EAIM_AI.why(e,'AI 첨삭');}
 }
 
 async function aiEssayInspire(){
@@ -1656,7 +1657,7 @@ async function aiEssayInspire(){
     const names=articles.map(a=>a.name).join(', ');
     const result=await callGemini(`중학생이 역사 인물(${names})에 대한 감상문을 쓰려고 합니다.\n도움이 될 글쓰기 힌트를 주세요:\n🌟 시작 문장 예시 2개:\n💭 생각해볼 질문 3개:\n📝 꼭 포함하면 좋을 내용:\n\n짧고 격려하는 방식으로 한국어로 답해주세요.`,400);
     txt.textContent=result;
-  }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
+  }catch(e){txt.textContent=EAIM_AI.why(e,'AI 도움');}
 }
 
 function sT(n){
@@ -1794,7 +1795,7 @@ async function genHistSuno() {
   const names  = articles.map(a => a.name).join(', ');
   const descs  = articles.map(a => `[${a.name}] ${a.era ? '('+a.era+')' : ''}: ${(a.desc||'').substring(0,100)}`).join('\n');
 
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
 
   if (!key) {
     const basicLyrics = articles.map(a =>
@@ -1890,12 +1891,12 @@ async function genHistoryImage(prompt, style='watercolor') {
   return await callGeminiImage(fullPrompt);
 }
 
-/** Gemini 2.5 Flash Image로 이미지 생성 → data URL 반환 (실패 시 null) */
+/** 중계 함수(image-lite = Gemini 3.1 Flash Lite Image)로 이미지 생성 → data URL 반환 (실패 시 null) */
 async function callGeminiImage(prompt) {
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if (!key) return null;
   try {
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=' + key, {
+    const r = await EAIM_AI.fetch('image-lite', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
     });
@@ -1949,7 +1950,7 @@ async function genBgImage() {
     document.getElementById('bg-gen-img').src = imgUrl;
     document.getElementById('bg-generated').style.display = 'block';
   } else {
-    alert('이미지 생성에 실패했어요. API 키를 확인하거나 직접 업로드해주세요!');
+    alert(EAIM_AI.ready() ? '이미지를 만들지 못했어요. 잠시 뒤 다시 해 보거나 직접 업로드해 주세요!' : EAIM_AI.NO_AI + ' 지금은 직접 업로드해 주세요!');
   }
 }
 
@@ -1991,7 +1992,7 @@ async function genPersonImage() {
     document.getElementById('person-gen-img').src = imgUrl;
     document.getElementById('person-generated').style.display = 'block';
   } else {
-    alert('이미지 생성에 실패했어요. API 키를 확인하거나 직접 업로드해주세요!');
+    alert(EAIM_AI.ready() ? '이미지를 만들지 못했어요. 잠시 뒤 다시 해 보거나 직접 업로드해 주세요!' : EAIM_AI.NO_AI + ' 지금은 직접 업로드해 주세요!');
   }
 }
 

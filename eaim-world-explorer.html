@@ -175,6 +175,7 @@ main{max-width:800px;margin:0 auto;padding:18px 14px;position:relative;z-index:1
 }
 @media print{header,.sn,.no-print{display:none!important}body{background:#fff}}
 </style>
+<script src="ai-relay.js"></script>
 </head>
 <body>
 
@@ -510,7 +511,7 @@ window.EAIM = { resolveRoomByCode, joinRoom, saveSubmission, studentEnter };
 </script>
 
 <script>
-let stuName='', apiKey=localStorage.getItem('eaim_gemini_key')||'';
+let stuName='', apiKey='';
 let currentCountry=null;
 let exploredCountries=[];
 let selImgUrl='';
@@ -641,7 +642,7 @@ const MOOD_LABELS = { great:'최고예요', good:'좋아요', normal:'그저 그
 /** AI가 그때그때 새로 만든 위로/응원 문구를 반환 (키 없거나 실패하면 고정 문구로 대체) */
 async function genMoodMessage(mood){
   const fallback = MOOD_MESSAGES[mood] || MOOD_MESSAGES.normal;
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return fallback;
   try{
     const extra = mood==='down' ? ' 특히 오늘 마음이 힘들다고 했으니, 위로하면서 선생님이나 주변 사람에게 이야기하는 것도 좋다는 걸 자연스럽게 한 마디 덧붙여주세요.' : '';
@@ -664,12 +665,12 @@ async function pickMood(mood){
 
 /** Gemini TTS로 뮤토 목소리 생성해서 재생 (실패해도 조용히 넘어감 — 텍스트는 이미 화면에 보이므로) */
 async function speakMuto(text){
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if(!key) return;
   const statusEl = document.getElementById('mood-speak-status');
   if(statusEl){ statusEl.style.display='block'; statusEl.textContent='🔊 뮤토가 말하는 중...'; }
   try{
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key='+key,{
+    const r = await EAIM_AI.fetch('tts',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         contents: [{ parts: [{ text }] }],
@@ -754,11 +755,11 @@ async function pushSubmission(kind, title, content){
 }
 
 async function callGemini(prompt,maxTokens=1000,jsonMode=false){
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key)throw new Error('NO_KEY');
   const generationConfig={maxOutputTokens:maxTokens,temperature:0.7,thinkingConfig:{thinkingBudget:0}};
   if(jsonMode) generationConfig.responseMimeType='application/json';
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r=await EAIM_AI.fetch('text',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig})
   });
@@ -769,9 +770,9 @@ async function callGemini(prompt,maxTokens=1000,jsonMode=false){
 
 /** 구글 검색 그라운딩을 켜서 호출 — 실시간 검색 결과를 참고해 더 정확한 사실 정보를 만들 때 사용 */
 async function callGeminiSearch(prompt,maxTokens=1500){
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
   if(!key)throw new Error('NO_KEY');
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key='+key,{
+  const r=await EAIM_AI.fetch('text',{
     method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
       contents:[{parts:[{text:prompt}]}],
@@ -863,7 +864,7 @@ async function selectCountry(name){
   initParticles([name,'문화','역사','정치','경제','음악','전통','세계']);
   sT(2);
 
-  const key=apiKey||localStorage.getItem('eaim_gemini_key')||'';
+  const key=EAIM_AI.ready();
 
   if(key){
     let factText = '';
@@ -928,7 +929,7 @@ ${factText}
       buildCountryCard();loadCountryImgs(name);buildExplore();buildStory();buildMusic();addExplored(name);
     }
   } else {
-    currentCountry={name,nameKo:name,flag:'🌍',capital:'API 키 필요',population:'API 키를 설정하면 볼 수 있어요.',language:'',religion:'',area:'',continent:'',keywords:[name],politics:'교사 패널에서 Gemini API 키를 설정해주세요.',economy:'',culture:'',history:'',koreaRelation:'',story:'API 키를 설정하면 AI 스토리를 볼 수 있어요.',music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, world music',sunoPrompt:'[Style: '+name+' traditional music, world music]\n\n[Lyrics]\n(API 키를 설정하면 자동 생성돼요)'},wikiSearch:name};
+    currentCountry={name,nameKo:name,flag:'🌍',capital:'AI 연결 필요',population:EAIM_AI.NO_AI,language:'',religion:'',area:'',continent:'',keywords:[name],politics:EAIM_AI.NO_AI,economy:'',culture:'',history:'',koreaRelation:'',story:EAIM_AI.NO_AI,music:{traditional:'',instrument:'',composer:'',modern:'',youtubeSearch:name+' 전통음악',sunoStyle:name+' traditional music',sunoMood:'cultural, world music',sunoPrompt:'[Style: '+name+' traditional music, world music]\n\n[Lyrics]\n(선생님 QR·링크로 들어오면 자동 생성돼요)'},wikiSearch:name};
     buildCountryCard();loadCountryImgs(name);buildExplore();buildStory();buildMusic();addExplored(name);
   }
   document.getElementById('country-loading').style.display='none';
@@ -956,11 +957,11 @@ function buildCountryCard(){
 }
 
 async function genAIImage(prompt) {
-  const key = apiKey || localStorage.getItem('eaim_gemini_key') || '';
+  const key = EAIM_AI.ready();
   if (!key) return null;
   try {
     const fullPrompt = `아름다운 풍경 사진 스타일, 컬러풀, 교육용. ${prompt}. 텍스트나 글자는 넣지 마세요. 국기(태극기 포함)는 그리지 마세요.`;
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=' + key, {
+    const r = await EAIM_AI.fetch('image-lite', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
     });
@@ -1124,7 +1125,7 @@ async function aiNoteCheck(){
   try{
     const result=await callGemini(`중학생이 세계 나라(${exploredCountries.join(', ')})를 탐구하고 쓴 정리 노트를 첨삭해주세요.\n\n노트:\n${text}\n\n✅ 잘한 점:\n✏️ 보완할 부분:\n💡 추가하면 좋은 내용:\n⭐ 격려 한마디:\n\n짧고 따뜻하게 한국어로.`,400);
     txt.textContent=result;
-  }catch(e){txt.textContent='API 키를 설정하면 AI 첨삭을 받을 수 있어요.';}
+  }catch(e){txt.textContent=EAIM_AI.why(e,'AI 첨삭');}
 }
 async function aiNoteHelp(){
   const el=document.getElementById('note-ai');
@@ -1134,7 +1135,7 @@ async function aiNoteHelp(){
   try{
     const result=await callGemini(`중학생이 세계 나라(${exploredCountries.join(', ')})를 탐구했습니다.\n정리 노트 쓰기 힌트:\n🌟 시작 문장 예시:\n💭 생각해볼 질문 2개:\n📝 꼭 포함하면 좋은 내용:\n\n짧고 격려하는 방식으로.`,350);
     txt.textContent=result;
-  }catch(e){txt.textContent='API 키를 설정하면 AI 도움을 받을 수 있어요.';}
+  }catch(e){txt.textContent=EAIM_AI.why(e,'AI 도움');}
 }
 
 function copyNote(){
